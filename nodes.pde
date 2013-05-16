@@ -6,7 +6,7 @@ ControlP5 cp5;
 UnProjector proj;
 
 void setup() {
-  size(800, 600, P3D);
+  size(640, 480 , P3D);
   
   cam = new PeasyCam(this, 0, 0, 0, 500);
   
@@ -14,9 +14,11 @@ void setup() {
   cp5 = new ControlP5(this);
   proj = new UnProjector();
   
-  new Node(cp5, "n1", proj).setPosition(0,0,0).setSize(30);
-  new Node(cp5, "n2", proj).setPosition(50,50,0).setSize(20);
+  //new Node(cp5, "n1", proj).setPosition(0,0,0).setSize(30);
+  //new Node(cp5, "n2", proj).setPosition(50,50,0).setSize(20);
   new Node(cp5, "n3", proj).setPosition(40,120,-50).setSize(45);
+  //new Node(cp5, "n4", proj).setPosition(200,200,200).setSize(45);
+  
 }
 
 void draw() {

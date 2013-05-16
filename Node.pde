@@ -22,12 +22,11 @@ class Node extends Controller<Node> {
         public void display(PApplet p, Object n) {
           Node node = (Node) n;
           
-          PVector pos = node.getPosition();
+          
           
           p.pushMatrix();
-          p.translate(pos.x, pos.y, pos.z);
           p.fill(currentCol);
-          p.sphere(node.size);
+          p.sphere(node.size); // Translate() called already
           p.popMatrix();
         }
       }
@@ -52,8 +51,18 @@ class Node extends Controller<Node> {
     // phi is the angular displacement of the radius of the node
     float phi = atan(size/obj.mag());
     
-    //print(obj);
-    if (keyPressed) print(size + " " + obj.mag() + "\n");
+    
+    if (keyPressed) {
+      //print(obj);
+      //print(theta + " " + phi + "\n");
+      PVector t = getPosition().get();
+      pushMatrix();
+      printMatrix();
+      translate(t.x,t.y,t.z);
+      fill(0xFFFFFFFF);
+      box(30);
+      popMatrix();
+    }
 
     // the cursor is inside the node if theta is less than phi
     return theta < phi;
