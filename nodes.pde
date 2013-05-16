@@ -16,14 +16,12 @@ void setup() {
   
   new Node(cp5, "n1", proj).setPosition(0,0,0).setSize(30);
   new Node(cp5, "n2", proj).setPosition(50,50,0).setSize(20);
+  new Node(cp5, "n3", proj).setPosition(40,120,-50).setSize(45);
 }
 
 void draw() {
   proj.captureViewMatrix((PGraphics3D) this.g);
   
   background(0);
-
-  
-  
 }
 

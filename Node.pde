@@ -8,12 +8,15 @@ class Node extends Controller<Node> {
   
   float size;
   
+  UnProjector proj;
   
     
   // name of controller is the URI or "literal_XXX"
   // UnProjector is for 3D extension of inside()
-  Node(ControlP5 cp5, String name, UnProjector proj) {
+  Node(ControlP5 cp5, String name, UnProjector unProj) {
     super(cp5, name);
+
+    proj = unProj;
     
     setView(new ControllerView() {
         public void display(PApplet p, Object n) {
@@ -29,6 +32,31 @@ class Node extends Controller<Node> {
         }
       }
     );
+  }
+
+  public boolean inside() {
+
+    proj.calculatePickPoints(mouseX, mouseY);
+    
+    // vector mouse is from cursor inward orthogonally from the screen
+    PVector mouse = proj.ptEndPos.get();
+    mouse.sub(proj.ptStartPos);
+
+    // vector obj is from the cursor to the position of the node
+    PVector obj = getPosition().get();;
+    obj.sub(proj.ptStartPos);
+
+    // theta is the angle between the mouse vector and the object vector
+    float theta = PVector.angleBetween(mouse, obj);
+
+    // phi is the angular displacement of the radius of the node
+    float phi = atan(size/obj.mag());
+    
+    //print(obj);
+    if (keyPressed) print(size + " " + obj.mag() + "\n");
+
+    // the cursor is inside the node if theta is less than phi
+    return theta < phi;
   }
   
   public Node setPosition(final float x, final float y, final float z) {
