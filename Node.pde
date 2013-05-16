@@ -23,10 +23,11 @@ class Node extends Controller<Node> {
           Node node = (Node) n;
           
           
-          
           p.pushMatrix();
           p.fill(currentCol);
-          p.sphere(node.size); // Translate() called already
+          // Translate(x,y,0) called already, but nodes are in 3D
+          p.translate(0,0,node.getPosition().z);
+          p.sphere(node.size); 
           p.popMatrix();
         }
       }
@@ -50,19 +51,6 @@ class Node extends Controller<Node> {
 
     // phi is the angular displacement of the radius of the node
     float phi = atan(size/obj.mag());
-    
-    
-    if (keyPressed) {
-      //print(obj);
-      //print(theta + " " + phi + "\n");
-      PVector t = getPosition().get();
-      pushMatrix();
-      printMatrix();
-      translate(t.x,t.y,t.z);
-      fill(0xFFFFFFFF);
-      box(30);
-      popMatrix();
-    }
 
     // the cursor is inside the node if theta is less than phi
     return theta < phi;
