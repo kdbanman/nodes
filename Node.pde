@@ -41,7 +41,7 @@ class Node extends Controller<Node> {
     // vector mouse is from cursor inward orthogonally from the screen
     PVector mouse = proj.ptEndPos.get();
     mouse.sub(proj.ptStartPos);
-
+    
     // vector obj is from the cursor to the position of the node
     PVector obj = getPosition().get();;
     obj.sub(proj.ptStartPos);
