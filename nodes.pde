@@ -6,13 +6,18 @@ ControlP5 cp5;
 UnProjector proj;
 
 void setup() {
-  size(640, 480 , P3D);
+  int w = 800;
+  int h = 600;
+  size(w, h , P3D);
   
-  cam = new PeasyCam(this, 0, 0, 0, 500);
+  cam = new PeasyCam(this, 0, 0, 0, 100);
+  cam.setMinimumDistance(10);
+  cam.setMaximumDistance(200);
   
   
   cp5 = new ControlP5(this);
   proj = new UnProjector();
+  
   
   Node n1 = new Node(cp5, "n1", proj)  
                   .setPosition(0,0,0)
@@ -35,6 +40,9 @@ void setup() {
 void draw() {
   proj.captureViewMatrix((PGraphics3D) this.g);
   
-  background(0);
+  proj.calculatePickPoints(mouseX, mouseY);
+  pointLight(255, 255, 255, proj.ptStartPos.x, proj.ptStartPos.y, proj.ptStartPos.z);
+  
+  background(#E07924);
 }
 
