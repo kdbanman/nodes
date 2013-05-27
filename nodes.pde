@@ -10,9 +10,9 @@ void setup() {
   int h = 600;
   size(w, h , P3D);
   
-  cam = new PeasyCam(this, 0, 0, 0, 100);
+  cam = new PeasyCam(this, 0, 0, 0, 300);
   cam.setMinimumDistance(10);
-  cam.setMaximumDistance(200);
+  cam.setMaximumDistance(1000);
   
   
   cp5 = new ControlP5(this);

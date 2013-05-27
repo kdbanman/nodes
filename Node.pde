@@ -11,7 +11,7 @@ class Node extends Controller<Node> {
   UnProjector proj;
   
     
-  // name of controller is the URI or "literal_XXX"
+  // name of controller is the URI or literal value
   // UnProjector is for 3D extension of inside()
   Node(ControlP5 cp5, String name, UnProjector unProj) {
     super(cp5, name);
