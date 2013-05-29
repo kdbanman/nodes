@@ -1,3 +1,12 @@
+/*
+  Coloring triples colors edges.
+  Coloring resources colors nodes.
+  
+  Only nodes may be moved.
+  
+  Only triples may be hidden/shown.
+*/
+
 import controlP5.*;
 import peasy.*;
 

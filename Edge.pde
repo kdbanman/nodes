@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 class Edge extends Controller<Edge> {
   int defaultCol = 0xFF1A4969;
   int hoverCol = 0xFF5FEA6D;
@@ -14,6 +16,8 @@ class Edge extends Controller<Edge> {
   
   Node src;
   Node dst;
+  
+  ArrayList<String> predicates;
   
   UnProjector proj;
   
