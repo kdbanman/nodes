@@ -15,8 +15,8 @@ ControlP5 cp5;
 UnProjector proj;
 
 void setup() {
-  int w = 800;
-  int h = 600;
+  int w = 400;
+  int h = 300;
   size(w, h , P3D);
   
   cam = new PeasyCam(this, 0, 0, 0, 300);
@@ -44,6 +44,8 @@ void setup() {
   new Edge(cp5, "e13", proj, n1, n3).setSize(5);
   new Edge(cp5, "e23", proj, n2, n3).setSize(5);
   new Edge(cp5, "e34", proj, n3, n4).setSize(5);
+  
+
 }
 
 void draw() {
