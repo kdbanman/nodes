@@ -76,7 +76,7 @@ class Graph {
   *
   * returns the new node or the existing node.
   */
-  private Node addNode(String id) {
+  public Node addNode(String id) {
     if (adjacent.containsKey(id)) {
       return (Node) cp5.getController(id);
     } else {
@@ -98,18 +98,19 @@ class Graph {
   * 
   * returns the new edge or the existing edge.
   */
-  private Edge addEdge(String s, String d) {
+  public Edge addEdge(String s, String d) {
     if (adjacent.get(s).contains(d)) {
       Edge e = (Edge) cp5.getController(s + "|" + d);
       
       if (e == null) e = (Edge) cp5.getController(d + "|" + s);
       
-      if (e == null) println("Edge connecting\n"+s+"\nand\n"+d+"\nnot found.");
+      if (e == null) println("Edge connecting \n"+s+"\nand\n"+d+"\nnot found");
       return e;
     } else {
       Node src = (Node) cp5.getController(s);
       Node dst = (Node) cp5.getController(d);
-      Edge e = new Edge(cp5, s + "|" + d, proj, src, dst).setSize(5);
+      Edge e = new Edge(cp5, s + "|" + d, proj, src, dst)
+                    .setSize(5);
       
       adjacent.get(s).add(d);
       adjacent.get(d).add(s);
@@ -119,18 +120,18 @@ class Graph {
     }
     
   }
-  private Edge addEdge(Node s, Node d) {
+  public Edge addEdge(Node s, Node d) {
     return addEdge(s.getName(), d.getName());
   }
   
   /*
   * returns true if successful, false otherwise.
   */ 
-  private boolean removeNode(String id) {
+  public boolean removeNode(String id) {
     if (!adjacent.containsKey(id)) {
       println("Cannot remove nonexistent node\n" + id);
       return false;
-    } else if (adjacent.get(id).isEmpty()) {
+    } else if (!adjacent.get(id).isEmpty()) {
       println("Cannot remove still-connected node\n" + id);
       return false;
     } else {
@@ -143,14 +144,14 @@ class Graph {
       return true;
     }
   }
-  private boolean removeNode(Node n) {
+  public boolean removeNode(Node n) {
     return removeNode(n.getName());
   }
   
   /*
   * returns true if successful, false otherwise.
   */ 
-  private boolean removeEdge(String s, String d) {
+  public boolean removeEdge(String s, String d) {
     if ( ! (adjacent.containsKey(s) && adjacent.containsKey(d))) {
       println("Cannot remove edge, one of src or dst doesn't exist:\n"+s+"\n"+d);
       return false;
@@ -170,10 +171,10 @@ class Graph {
       return true;
     }
   }
-  private boolean removeEdge(Node s, Node d) {
+  public boolean removeEdge(Node s, Node d) {
     return removeEdge(s.getName(), d.getName());
   }
-  private boolean removeEdge(Edge e) {
+  public boolean removeEdge(Edge e) {
     return removeEdge(e.src, e.dst);
   }
   

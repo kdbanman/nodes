@@ -14,6 +14,11 @@ PeasyCam cam;
 ControlP5 cp5;
 UnProjector proj;
 
+// Virtuoso test environment data
+String url = "jdbc:virtuoso://129.128.212.41:1111";
+String user = "dba";
+String pass = "marek";
+
 void setup() {
   int w = 400;
   int h = 300;
