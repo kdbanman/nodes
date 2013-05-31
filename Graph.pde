@@ -18,8 +18,7 @@ destination Node.
 import java.util.HashMap;
 import java.util.ArrayList;
 
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
+import com.hp.hpl.jena.rdf.model.*;
 
 class Graph {
   
@@ -35,6 +34,9 @@ class Graph {
   // NOTE: if things get slow for edge operations, try Set instead of ArrayList 
   HashMap<String, ArrayList<String>> adjacent;
   
+  float coulomb = 10;
+  float hooke = .005;
+  
   Graph(UnProjector p, ControlP5 c) {
     proj = p;
     cp5 = c;
@@ -47,14 +49,77 @@ class Graph {
     adjacent = new HashMap<String, ArrayList<String>>();
   }
   
-  /*
-  TODO
-  * adds triples to model, adding (transformed) Nodes and Edges as necessary
-  *
-  public void importTriples(Model toAdd) {
+  public void layout() {
+    // TODO:  Something in this layout messes with how the edges render.  All else works though.
+    HashMap<String, PVector> deltas = new HashMap<String, PVector>();
     
+    for (String nodeID : adjacent.keySet()) {
+      deltas.put(nodeID, cp5.getController(nodeID).getPosition().get());
+    }
+    for (String nodeID : adjacent.keySet()) {
+      PVector delta = deltas.get(nodeID);
+      Node n = (Node) cp5.getController(nodeID);
+      PVector nodePos = n.getPosition();
+      
+      for (String nbrID : adjacent.get(nodeID)) {
+        PVector diff = cp5.getController(nbrID).getPosition().get();
+        diff.sub(nodePos);
+        float dist = diff.mag();
+        diff.normalize();
+        diff.mult(hooke * (dist));
+        delta.add(diff);
+      }
+      
+      for (String otherID : adjacent.keySet()) {
+        if (otherID != nodeID) {
+          PVector diff = cp5.getController(otherID).getPosition().get();
+          diff.sub(nodePos);
+          float dist = diff.mag();
+          diff.normalize();
+          diff.mult(coulomb / (dist));
+          delta.sub(diff);
+        }
+      }
+    }
+    
+    for (String nodeID : adjacent.keySet()) {
+      cp5.getController(nodeID).setPosition(deltas.get(nodeID));
+      //print(deltas.get(nodeID));
+    }
+    
+    println("layout done");
   }
+  
+  /*
+  * adds triples to model, adding (transformed) Nodes and Edges as necessary
   */
+  public void addTriples(Model toAdd) {
+    StmtIterator it = toAdd.listStatements();
+    if (it.hasNext()) {
+      while (it.hasNext()) {
+        Statement s = it.nextStatement();
+        addTriple(s);
+      }
+    } else {
+      println("empty");
+    }
+  }
+  
+  public Edge addTriple(Statement triple) {
+    String sub = triple.getSubject().toString();
+    String pred = triple.getPredicate().toString();
+    String obj = triple.getObject().toString();
+    
+    Edge e;
+    
+    // add*** just returns the existing *** if a new *** need not be created.  (this already feels stupid.)
+    addNode(sub);
+    addNode(obj);
+    e = addEdge(sub, obj);
+    e.predicates.add(pred);
+    return e;
+  }
+  
   
   public ArrayList<String> getNbrs(String id) {
     return adjacent.get(id);
@@ -62,12 +127,6 @@ class Graph {
   public ArrayList<String> getNbrs(Node n) {
     return getNbrs(n.getName());
   }
-  
-  /* TODO
-  public Edge addTriple(Statement triple) {
-    
-  }
-  */
   
   /*
   * to be called by addTriple and .
@@ -81,7 +140,7 @@ class Graph {
       return (Node) cp5.getController(id);
     } else {
       Node n = new Node(cp5, id, proj)  
-                    .setPosition(0,0,0)
+                    .setPosition(random(-100,100), random(-100,100), random(-100,100))
                     .setSize(10);
                     
       adjacent.put(id, new ArrayList<String>());
@@ -100,12 +159,7 @@ class Graph {
   */
   private Edge addEdge(String s, String d) {
     if (adjacent.get(s).contains(d)) {
-      Edge e = (Edge) cp5.getController(s + "|" + d);
-      
-      if (e == null) e = (Edge) cp5.getController(d + "|" + s);
-      
-      if (e == null) println("Edge connecting\n"+s+"\nand\n"+d+"\nnot found.");
-      return e;
+      return getEdge(s, d);
     } else {
       Node src = (Node) cp5.getController(s);
       Node dst = (Node) cp5.getController(d);
@@ -130,7 +184,7 @@ class Graph {
     if (!adjacent.containsKey(id)) {
       println("Cannot remove nonexistent node\n" + id);
       return false;
-    } else if (adjacent.get(id).isEmpty()) {
+    } else if (!adjacent.get(id).isEmpty()) {
       println("Cannot remove still-connected node\n" + id);
       return false;
     } else {
@@ -175,6 +229,15 @@ class Graph {
   }
   private boolean removeEdge(Edge e) {
     return removeEdge(e.src, e.dst);
+  }
+  
+  private Edge getEdge(String s, String d) {
+    Edge e = (Edge) cp5.getController(s + "|" + d);
+      
+    if (e == null) e = (Edge) cp5.getController(d + "|" + s);
+    
+    if (e == null) println("Edge connecting\n"+s+"\nand\n"+d+"\nnot found.");
+    return e;
   }
   
 }

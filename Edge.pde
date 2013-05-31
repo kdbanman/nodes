@@ -26,6 +26,8 @@ class Edge extends Controller<Edge> {
     
     src = s;
     dst = d;
+    
+    predicates = new ArrayList<String>();
 
     proj = unProj;
     

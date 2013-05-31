@@ -10,50 +10,51 @@
 import controlP5.*;
 import peasy.*;
 
+import com.hp.hpl.jena.query.*;
+import com.hp.hpl.jena.rdf.model.*;
+import virtuoso.jena.driver.*;
+
 PeasyCam cam;
 ControlP5 cp5;
 UnProjector proj;
 
+Graph graph;
+
 // Virtuoso test environment data
-String url = "jdbc:virtuoso://129.128.212.41:1111";
-String user = "dba";
-String pass = "marek";
+String URL = "jdbc:virtuoso://129.128.212.41:1111";
+String USER = "dba";
+String PASS = "marek";
+String GRAPH = "Arts";
+String START_URI = "http://dbpedia.org/resource/Edvard_Munch";
 
 void setup() {
-  int w = 400;
-  int h = 300;
+  int w = 800;
+  int h = 600;
   size(w, h , P3D);
   
   cam = new PeasyCam(this, 0, 0, 0, 300);
   cam.setMinimumDistance(10);
-  cam.setMaximumDistance(1000);
+  cam.setMaximumDistance(10000);
   
   
   cp5 = new ControlP5(this);
   proj = new UnProjector();
   
+  graph = new Graph(proj, cp5);
   
-  Node n1 = new Node(cp5, "n1", proj)  
-                  .setPosition(0,0,0)
-                  .setSize(30);
-  Node n2 = new Node(cp5, "n2", proj)
-                   .setPosition(50,50,0)
-                   .setSize(20);
-  Node n3 = new Node(cp5, "n3", proj)
-                   .setPosition(-40,-120,-50)
-                   .setSize(10);
-  Node n4 = new Node(cp5, "n4", proj)
-                   .setPosition(200,200,200)
-                   .setSize(10);
+  VirtGraph g = new VirtGraph(GRAPH, URL, USER, PASS);
+  Query sparql = QueryFactory.create(getStarQuery(START_URI));
+  VirtuosoQueryExecution vqe = VirtuosoQueryExecutionFactory.create (sparql, g);
+  Model toAdd = ModelFactory.createDefaultModel();
+  vqe.execConstruct(toAdd);
   
-  new Edge(cp5, "e13", proj, n1, n3).setSize(5);
-  new Edge(cp5, "e23", proj, n2, n3).setSize(5);
-  new Edge(cp5, "e34", proj, n3, n4).setSize(5);
-  
+  graph.addTriples(toAdd);
 
 }
 
 void draw() {
+  if (keyPressed && key == ' ') graph.layout();
+  
   proj.captureViewMatrix((PGraphics3D) this.g);
   
   proj.calculatePickPoints(mouseX, mouseY);
@@ -62,3 +63,6 @@ void draw() {
   background(#E07924);
 }
 
+String getStarQuery(String URI) {
+  return "CONSTRUCT { <" + URI + "> ?p ?o } WHERE { GRAPH <" + GRAPH + "> { <" + URI + "> ?p ?o } }";
+}
