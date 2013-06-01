@@ -39,6 +39,8 @@ class Edge extends Controller<Edge> {
         public void display(PApplet p, Object e) {
           Edge edge = (Edge) e;
           
+          edge.setPosition();
+          
           // get vector between the source and the destination nodes
           PVector between = edge.dst.getPosition().get();
           between.sub(edge.src.getPosition());
