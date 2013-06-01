@@ -57,7 +57,7 @@ void setup() {
         try {
           virtAddNeighbors(n.getName());
         } catch (Exception e) {
-          print("Cannot query uri:\n" + n.getName());
+          print("Cannot query node:\n" + n.getName());
         }
       }
     }
@@ -67,7 +67,7 @@ void setup() {
 }
 
 void draw() {
-  if (keyPressed && key == ' ') graph.layout();
+  graph.layout();
   
   proj.captureViewMatrix((PGraphics3D) this.g);
   

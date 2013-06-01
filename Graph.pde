@@ -86,8 +86,6 @@ class Graph {
       cp5.getController(nodeID).setPosition(deltas.get(nodeID));
       //print(deltas.get(nodeID));
     }
-    
-    println("layout done");
   }
   
   /*
@@ -101,7 +99,7 @@ class Graph {
         addTriple(s);
       }
     } else {
-      println("empty");
+      println("Empty query result.");
     }
   }
   
