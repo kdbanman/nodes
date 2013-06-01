@@ -53,10 +53,10 @@ void setup() {
     public void controlEvent(CallbackEvent event) {
       if (event.getAction() == ControlP5.ACTION_PRESSED
           && event.getController() instanceof Node) {
+            Node n = (Node) event.getController();
         try {
-          Node n = (Node) event.getController();
           virtAddNeighbors(n.getName());
-        } catch {
+        } catch (Exception e) {
           print("Cannot query uri:\n" + n.getName());
         }
       }
