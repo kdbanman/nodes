@@ -34,9 +34,6 @@ class Graph {
   // NOTE: if things get slow for edge operations, try Set instead of ArrayList 
   HashMap<String, ArrayList<String>> adjacent;
   
-  float coulomb = 10;
-  float hooke = .005;
-  
   Graph(UnProjector p, ControlP5 c) {
     proj = p;
     cp5 = c;
@@ -50,11 +47,15 @@ class Graph {
   }
   
   public void layout() {
-    // TODO:  Something in this layout messes with how the edges render.  All else works though.
     HashMap<String, PVector> deltas = new HashMap<String, PVector>();
     
+    float coulomb = 10000;
+    float hooke = .05;
+    
+    float saturation = 50;
+    
     for (String nodeID : adjacent.keySet()) {
-      deltas.put(nodeID, cp5.getController(nodeID).getPosition().get());
+      deltas.put(nodeID, new PVector(0,0,0));
     }
     for (String nodeID : adjacent.keySet()) {
       PVector delta = deltas.get(nodeID);
@@ -66,24 +67,34 @@ class Graph {
         diff.sub(nodePos);
         float dist = diff.mag();
         diff.normalize();
-        diff.mult(hooke * (dist));
+        diff.mult(hooke * sq(dist));
         delta.add(diff);
       }
       
       for (String otherID : adjacent.keySet()) {
         if (otherID != nodeID) {
+          float degreeScale = float(getDegree(otherID) * getDegree(nodeID));
+          
           PVector diff = cp5.getController(otherID).getPosition().get();
           diff.sub(nodePos);
+          
           float dist = diff.mag();
+          
           diff.normalize();
-          diff.mult(coulomb / (dist));
+          diff.mult(degreeScale * coulomb / dist);
           delta.sub(diff);
         }
       }
     }
     
     for (String nodeID : adjacent.keySet()) {
-      cp5.getController(nodeID).setPosition(deltas.get(nodeID));
+      //apply damping and set
+      PVector delta = deltas.get(nodeID);
+      float mag = delta.mag();
+      delta.limit(log(mag)/log(2));
+      
+      PVector pos = cp5.getController(nodeID).getPosition();
+      pos.add(delta);
       //print(deltas.get(nodeID));
     }
   }
@@ -110,7 +121,7 @@ class Graph {
     
     Edge e;
     
-    // add*** just returns the existing *** if a new *** need not be created.  (this already feels stupid.)
+    // add*** just returns the existing *** if a new *** need not be created.  (think sets)
     addNode(sub);
     addNode(obj);
     e = addEdge(sub, obj);
@@ -126,6 +137,14 @@ class Graph {
     return getNbrs(n.getName());
   }
   
+  // return node's degree for view graph, not for the relational graph
+  public int getDegree(String id) {
+    return getNbrs(id).size();
+  }
+  public int getDegree(Node n) {
+    return getDegree(n.getName());
+  }
+  
   /*
   * to be called by addTriple and .
   * affects cp5, nodeCount, and adjacent iff the node is new.
@@ -137,8 +156,11 @@ class Graph {
     if (adjacent.containsKey(id)) {
       return (Node) cp5.getController(id);
     } else {
+      int initBoundary = 500;
       Node n = new Node(cp5, id, proj)  
-                    .setPosition(random(-100,100), random(-100,100), random(-100,100))
+                    .setPosition(random(-initBoundary,initBoundary), 
+                                 random(-initBoundary,initBoundary), 
+                                 random(-initBoundary,initBoundary))
                     .setSize(10);
                     
       adjacent.put(id, new ArrayList<String>());
