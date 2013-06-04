@@ -17,7 +17,8 @@ class Edge extends Controller<Edge> {
   Node src;
   Node dst;
   
-  ArrayList<String> predicates;
+  // boolean value is true for fwd-direction predicates
+  HashMap<String, boolean> predicates;
   
   UnProjector proj;
   
@@ -27,7 +28,7 @@ class Edge extends Controller<Edge> {
     src = s;
     dst = d;
     
-    predicates = new ArrayList<String>();
+    predicates = new HashMap<String, boolean>();
 
     proj = unProj;
     

@@ -124,8 +124,13 @@ class Graph {
     // add*** just returns the existing *** if a new *** need not be created.  (think sets)
     addNode(sub);
     addNode(obj);
+    
     e = addEdge(sub, obj);
-    e.predicates.add(pred);
+    if (e.src.getName().equals(sub)) {
+      e.predicates.put(pred, true);
+    } else {
+      e.predicates.put(pred, false);
+    }
     return e;
   }
   
