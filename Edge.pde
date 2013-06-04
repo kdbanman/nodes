@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+import java.util.HashMap;
 
 class Edge extends Controller<Edge> {
   int defaultCol = 0xFF1A4969;
@@ -18,7 +18,7 @@ class Edge extends Controller<Edge> {
   Node dst;
   
   // boolean value is true for fwd-direction predicates
-  HashMap<String, boolean> predicates;
+  HashMap<String, Boolean> predicates;
   
   UnProjector proj;
   
@@ -28,7 +28,7 @@ class Edge extends Controller<Edge> {
     src = s;
     dst = d;
     
-    predicates = new HashMap<String, boolean>();
+    predicates = new HashMap<String, Boolean>();
 
     proj = unProj;
     

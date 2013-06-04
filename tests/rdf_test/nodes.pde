@@ -240,9 +240,11 @@ String getEdgeString(Edge e) {
                  + "\nwith predicates\n  ";
   
   for (String p : e.predicates.keySet()) {
-    if (e.predicates.get(p)) toAdd += "--> ";
-    else toAdd += "<-- ";
-    
+    if (e.predicates.get(p)) {
+      toAdd += "--> ";
+    } else {
+      toAdd += "<-- ";
+    }
     toAdd += p + "\n  ";
   }
   return toAdd + "\n\n";

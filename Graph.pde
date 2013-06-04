@@ -112,6 +112,8 @@ class Graph {
     } else {
       println("Empty query result.");
     }
+    
+    triples.add(toAdd);
   }
   
   public Edge addTriple(Statement triple) {
