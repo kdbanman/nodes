@@ -204,8 +204,10 @@ public class TestFrame extends PApplet {
   
   public void draw() {
     String toDisp = "";
-    for (String s : dispHolder) {
-      toDisp += s;
+    synchronized(dispHolder) {
+      for (String s : dispHolder) {
+        toDisp += s;
+      }
     }
     info.setText(toDisp);
     background(0);
