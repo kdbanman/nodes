@@ -17,6 +17,10 @@ import virtuoso.jena.driver.*;
 import java.awt.Frame;
 import java.awt.BorderLayout;
 
+import java.util.Collections;
+import java.util.ArrayList;
+import java.util.List;
+
 PeasyCam cam;
 int initZoom;
 int backG;
@@ -27,7 +31,7 @@ UnProjector proj;
 Graph graph;
 
 TestFrame tf;
-ArrayList<String> dispHolder;
+List<String> dispHolder;
 String defaultDisp;
 
 // Virtuoso test environment data
@@ -40,12 +44,12 @@ String EDVARD_URI = "http://dbpedia.org/resource/Edvard_Munch";
 String CLIFFORD_URI = "http://dbpedia.org/resource/Clifton_Pugh";
 
 void setup() {
-  int w = 800;
-  int h = 600;
+  int w = 1024;
+  int h = 768;
   size(w, h , P3D);
   
   initZoom = 1500;
-  dispHolder = new ArrayList<String>();
+  dispHolder = Collections.synchronizedList(new ArrayList<String>());
   defaultDisp = "Hover over graph elements for information:\n\n";
   dispHolder.add(defaultDisp);
   

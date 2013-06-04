@@ -1,4 +1,0 @@
-#!/bin/sh
-
-APPDIR=$(dirname "$0")
-java  -Djava.library.path="$APPDIR:$APPDIR/lib" -cp "$APPDIR/lib/commons-codec-1.6.jar:$APPDIR/lib/controlP5.jar:$APPDIR/lib/httpclient-4.2.3.jar:$APPDIR/lib/httpcore-4.2.2.jar:$APPDIR/lib/jcl-over-slf4j-1.6.4.jar:$APPDIR/lib/jena-arq-2.10.1.jar:$APPDIR/lib/jena-core-2.10.1.jar:$APPDIR/lib/jena-iri-0.9.6.jar:$APPDIR/lib/jena-tdb-0.10.1.jar:$APPDIR/lib/log4j-1.2.16.jar:$APPDIR/lib/peasycam.jar:$APPDIR/lib/slf4j-api-1.6.4.jar:$APPDIR/lib/slf4j-log4j12-1.6.4.jar:$APPDIR/lib/virt_jena.jar:$APPDIR/lib/virtjdbc3.jar:$APPDIR/lib/xercesImpl-2.11.0.jar:$APPDIR/lib/xml-apis-1.4.01.jar:$APPDIR/lib/nodes.jar:$APPDIR/lib/core.jar:$APPDIR/lib/jogl-all.jar:$APPDIR/lib/gluegen-rt.jar:$APPDIR/lib/jogl-all-natives-linux-i586.jar:$APPDIR/lib/gluegen-rt-natives-linux-i586.jar:$APPDIR/lib/controlP5.jar" nodes "$@"

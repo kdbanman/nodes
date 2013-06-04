@@ -1,3 +1,0 @@
-
-nodes
-commons-codec-1.6.jar,controlP5.jar,httpclient-4.2.3.jar,httpcore-4.2.2.jar,jcl-over-slf4j-1.6.4.jar,jena-arq-2.10.1.jar,jena-core-2.10.1.jar,jena-iri-0.9.6.jar,jena-tdb-0.10.1.jar,log4j-1.2.16.jar,peasycam.jar,slf4j-api-1.6.4.jar,slf4j-log4j12-1.6.4.jar,virt_jena.jar,virtjdbc3.jar,xercesImpl-2.11.0.jar,xml-apis-1.4.01.jar,nodes.jar,core.jar,jogl-all.jar,gluegen-rt.jar,jogl-all-natives-windows-i586.jar,gluegen-rt-natives-windows-i586.jar,controlP5.jar
