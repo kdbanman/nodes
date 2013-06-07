@@ -1,6 +1,0 @@
-There is a view window and a controller window:
-
-- click and drag on the view window to rotate
-- click in the "Zoom" slider to zoom in and out
-- click the "Layout" button to run a force-directed layout (click it again to stop it)
-- hover the mouse over the graph to get information.
