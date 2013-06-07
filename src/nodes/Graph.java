@@ -158,7 +158,7 @@ public class Graph {
   *
   * returns the new node or the existing node.
   */
-  private Node addNode(String id) {
+  public Node addNode(String id) {
     if (adjacent.containsKey(id)) {
       return (Node) cp5.getController(id);
     } else {
@@ -183,7 +183,7 @@ public class Graph {
   * 
   * returns the new edge or the existing edge.
   */
-  private Edge addEdge(String s, String d) {
+  public Edge addEdge(String s, String d) {
     if (adjacent.get(s).contains(d)) {
       return getEdge(s, d);
     } else {
@@ -199,14 +199,14 @@ public class Graph {
     }
     
   }
-  private Edge addEdge(Node s, Node d) {
+  public Edge addEdge(Node s, Node d) {
     return addEdge(s.getName(), d.getName());
   }
   
   /*
   * returns true if successful, false otherwise.
   */ 
-  private boolean removeNode(String id) {
+  public boolean removeNode(String id) {
     if (!adjacent.containsKey(id)) {
       PApplet.println("Cannot remove nonexistent node\n" + id);
       return false;
@@ -223,14 +223,14 @@ public class Graph {
       return true;
     }
   }
-  private boolean removeNode(Node n) {
+  public boolean removeNode(Node n) {
     return removeNode(n.getName());
   }
   
   /*
   * returns true if successful, false otherwise.
   */ 
-  private boolean removeEdge(String s, String d) {
+  public boolean removeEdge(String s, String d) {
     if ( ! (adjacent.containsKey(s) && adjacent.containsKey(d))) {
       PApplet.println("Cannot remove edge, one of src or dst doesn't exist:\n"+s+"\n"+d);
       return false;
@@ -250,14 +250,14 @@ public class Graph {
       return true;
     }
   }
-  private boolean removeEdge(Node s, Node d) {
+  public boolean removeEdge(Node s, Node d) {
     return removeEdge(s.getName(), d.getName());
   }
-  private boolean removeEdge(Edge e) {
+  public boolean removeEdge(Edge e) {
     return removeEdge(e.src, e.dst);
   }
   
-  private Edge getEdge(String s, String d) {
+  public Edge getEdge(String s, String d) {
     Edge e = (Edge) cp5.getController(s + "|" + d);
       
     if (e == null) e = (Edge) cp5.getController(d + "|" + s);
