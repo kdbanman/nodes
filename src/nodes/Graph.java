@@ -158,7 +158,7 @@ public class Graph {
   *
   * returns the new node or the existing node.
   */
-  public Node addNode(String id) {
+  private Node addNode(String id) {
     if (adjacent.containsKey(id)) {
       return (Node) cp5.getController(id);
     } else {
@@ -183,7 +183,7 @@ public class Graph {
   * 
   * returns the new edge or the existing edge.
   */
-  public Edge addEdge(String s, String d) {
+  private Edge addEdge(String s, String d) {
     if (adjacent.get(s).contains(d)) {
       return getEdge(s, d);
     } else {
@@ -199,14 +199,14 @@ public class Graph {
     }
     
   }
-  public Edge addEdge(Node s, Node d) {
+  private Edge addEdge(Node s, Node d) {
     return addEdge(s.getName(), d.getName());
   }
   
   /*
   * returns true if successful, false otherwise.
   */ 
-  public boolean removeNode(String id) {
+  private boolean removeNode(String id) {
     if (!adjacent.containsKey(id)) {
       PApplet.println("Cannot remove nonexistent node\n" + id);
       return false;
@@ -223,14 +223,14 @@ public class Graph {
       return true;
     }
   }
-  public boolean removeNode(Node n) {
+  private boolean removeNode(Node n) {
     return removeNode(n.getName());
   }
   
   /*
   * returns true if successful, false otherwise.
   */ 
-  public boolean removeEdge(String s, String d) {
+  private boolean removeEdge(String s, String d) {
     if ( ! (adjacent.containsKey(s) && adjacent.containsKey(d))) {
       PApplet.println("Cannot remove edge, one of src or dst doesn't exist:\n"+s+"\n"+d);
       return false;
@@ -250,10 +250,10 @@ public class Graph {
       return true;
     }
   }
-  public boolean removeEdge(Node s, Node d) {
+  private boolean removeEdge(Node s, Node d) {
     return removeEdge(s.getName(), d.getName());
   }
-  public boolean removeEdge(Edge e) {
+  private boolean removeEdge(Edge e) {
     return removeEdge(e.src, e.dst);
   }
   
