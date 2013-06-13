@@ -5,12 +5,14 @@
 package nodes;
 
 import controlP5.ControlP5;
+import controlP5.ControlFont;
+import controlP5.Group;
 import controlP5.ListBox;
-import controlP5.RadioButton;
 import controlP5.Tab;
 import processing.core.PApplet;
 
 import java.awt.Frame;
+import java.util.ArrayList;
 
 /**
  *
@@ -21,6 +23,24 @@ public class ControlPanel extends PApplet {
     String name;
     
     ControlP5 cp5;
+    
+    // TODO:  use these fonts.
+    ControlFont tabFont;
+    ControlFont button;
+    
+    int tabHeight;
+    int padding;
+    int elementHeight;
+    int labelledElementHeight;
+    int buttonWidth;
+    int buttonHeight;
+    int modifiersBoxHeight;
+    
+    
+    ArrayList<Group> transformHackTabs;
+    Group openTransformHackTab;
+    
+    int colorPickerDefault;
     
     public ControlPanel() {
         w = 400;
@@ -36,45 +56,96 @@ public class ControlPanel extends PApplet {
         f.setLocation(0, 0);
         f.setResizable(false);
         f.setVisible(true);
+                
+        padding = 10;
+        
+        tabHeight = 30;
+        
+        elementHeight = 20;
+        
+        labelledElementHeight = 40;
+        
+        buttonWidth = 100;
+        buttonHeight = 40;
+        
+        modifiersBoxHeight = 200;
+        
+        transformHackTabs = new ArrayList<>();
+        
+        colorPickerDefault = 0xFF1A4969;
     }
     
     public void setup() {
         cp5 = new ControlP5(this);
         
         Tab importTab = cp5.addTab("Import")
-                .setSize(w / 4, 30)
+                .setWidth(w / 4)
+                .setHeight(tabHeight)
                 .setActive(true);
         Tab transformTab = cp5.addTab("Transform")
-                .setSize(w / 4, 30);
+                .setWidth(w / 4)
+                .setHeight(tabHeight);
         Tab optionTab = cp5.addTab("Options")
-                .setSize(w / 4, 30);
+                .setWidth(w / 4)
+                .setHeight(tabHeight);
         Tab saveTab = cp5.addTab("Save")
-                .setSize(w / 4, 30);
+                .setWidth(w / 4)
+                .setHeight(tabHeight);
         cp5.getDefaultTab().remove();
         
         // Import tab elements
-        cp5.addTextfield("IP:Port", 10, 50, w - 60, 20)
+        cp5.addTextfield("IP:Port", 
+                    padding, 
+                    tabHeight + padding, 
+                    w - 2 * padding, 
+                    elementHeight)
                 .setAutoClear(false)
                 .moveTo(importTab);
-        cp5.addTextfield("Username", 10, 100, w - 60, 20)
+        cp5.addTextfield("Username", 
+                    padding, 
+                    tabHeight + labelledElementHeight + padding, 
+                    w - 2 * padding, 
+                    elementHeight)
                 .setAutoClear(false)
                 .moveTo(importTab);
-        cp5.addTextfield("Password", 10, 150, w - 60, 20)
+        cp5.addTextfield("Password", 
+                    padding, 
+                    tabHeight + 2 * labelledElementHeight + padding, 
+                    w - 2 * padding, 
+                    elementHeight)
                 .setAutoClear(false)
                 .setPasswordMode(true)
                 .moveTo(importTab);
-        cp5.addTextfield("Query", 10, 200, w - 60, 20)
+        cp5.addTextfield("Query", 
+                    padding, 
+                    tabHeight + 3 * labelledElementHeight + padding, 
+                    w - 2 * padding, 
+                    elementHeight)
                 .setAutoClear(false)
                 .moveTo(importTab);
         
         cp5.addButton("Add to Graph")
-           .setPosition(280, 430)
-           .moveTo(importTab);
+                .setSize(buttonWidth, buttonHeight)
+                .setPosition(w - buttonWidth - padding, 
+                    tabHeight + 4 * labelledElementHeight + padding)
+                .moveTo(importTab);
         
         // Transform tab elements
-        ListBox modifiers = cp5.addListBox("Selection Modifiers", 10, 50, w - 60, 200)
-                .setBarHeight(25)
+        ListBox modifiers = cp5.addListBox("Selection Modifiers", 
+                    padding, 
+                    2 * tabHeight + padding, 
+                    w - 2 * padding, 
+                    modifiersBoxHeight)
+                .setBarHeight(tabHeight)
+                .setItemHeight(elementHeight)
+                .setScrollbarWidth(elementHeight)
                 .moveTo(transformTab);
+        modifiers.addItem("Clear selection", 7);
+        modifiers.addItem("Remove edges from selection", 8);
+        modifiers.addItem("Remove nodes from selection", 9);
+        modifiers.addItem("Select all nodes", 10);
+        modifiers.addItem("Select all edges", 11);
+        modifiers.addItem("Select entire graph", 12);
         modifiers.addItem("Select all neighbors", 0);
         modifiers.addItem("Select all nodes of same rdf:Type", 1);
         modifiers.addItem("Select shortest path between nodes", 2);
@@ -83,31 +154,71 @@ public class ControlPanel extends PApplet {
         modifiers.addItem("Select nodes sharing this predicate", 5);
         modifiers.addItem("Select nodes sharing this predicate and object", 6);
         
-        // nested tabs are sketchy.  use Groups activated by toggles, even
-        // thought that's stupid.
-        Tab positionTab = cp5.addTab("Position")
-                .setPosition(0, 300)
-                .setSize(w / 4, 30)
+        int transformTabsVert = modifiersBoxHeight + 3 * tabHeight + padding;
+        
+        Group positionGroup = new HackTab(cp5, "Position")
+                .setBarHeight(tabHeight)
+                .setPosition(0, transformTabsVert)
+                .setWidth(w / 4)
+                .hideArrow()
+                .setOpen(true)
                 .moveTo(transformTab);
-        Tab colorTab = cp5.addTab("Color")
-                .setPosition(w / 4, 300)
-                .setSize(w / 4, 30)
+        Group colorGroup = new HackTab(cp5, "Color")
+                .setBarHeight(tabHeight)
+                .setPosition(w / 4, transformTabsVert)
+                .setWidth(w / 4)
+                .hideArrow()
+                .setOpen(false)
                 .moveTo(transformTab);
-        Tab labelTab = cp5.addTab("Label")
-                .setPosition(w / 2, 300)
-                .setSize(w / 4, 300)
+        Group labelGroup = new HackTab(cp5, "Label")
+                .setBarHeight(tabHeight)
+                .setPosition(w / 2, transformTabsVert)
+                .setWidth(w / 4)
+                .hideArrow()
+                .setOpen(false)
                 .moveTo(transformTab);
-        Tab hideTab = cp5.addTab("Hide")
-                .setPosition(3 * (w / 4), 300)
-                .setSize(w / 4, 300)
+        Group hideGroup = new HackTab(cp5, "Hide")
+                .setBarHeight(tabHeight)
+                .setPosition(3 * (w / 4), transformTabsVert)
+                .setWidth(w / 4)
+                .hideArrow()
+                .setOpen(false)
                 .moveTo(transformTab);
         
-        RadioButton positionRadio = cp5.addRadioButton("Layout Choice", 10, 350)
-                .moveTo(positionTab);
+        transformHackTabs.add(positionGroup);
+        transformHackTabs.add(colorGroup);
+        transformHackTabs.add(labelGroup);
+        transformHackTabs.add(hideGroup);
         
-        positionRadio.addItem("Drag and Drop", 0);
-        positionRadio.addItem("Auto Layout", 1);
+        openTransformHackTab = positionGroup;
         
+        cp5.addRadioButton("Layout Choice", padding, padding)
+                .setPosition(padding, padding)
+                .setItemHeight(elementHeight)
+                .setItemWidth(elementHeight)
+                .addItem("Drag and Drop", 0)
+                .addItem("Auto Layout", 1)
+                .activate(0)
+                .moveTo(positionGroup);
+        
+        cp5.addColorPicker("Color Choice")
+                .setPosition(-(w / 4) + padding, padding)
+                .setColorValue(colorPickerDefault)
+                .moveTo(colorGroup);
+        
+        cp5.addRadioButton("Label Visibility", padding, padding)
+                .setPosition(padding - w / 2, padding)
+                .setItemHeight(elementHeight)
+                .setItemWidth(elementHeight)
+                .addItem("Show Labels", 0)
+                .addItem("Hide Labels", 1)
+                .activate(0)
+                .moveTo(labelGroup);
+        
+        cp5.addButton("Hide Nodes")
+                .setPosition(padding - 3 * (w / 4), padding)
+                .setSize(buttonWidth, buttonHeight)
+                .moveTo(hideGroup);
         
         // Options tab elements
         
@@ -116,6 +227,40 @@ public class ControlPanel extends PApplet {
     
     public void draw() {
         
+        for (Group g : transformHackTabs) {
+          if (g.isOpen() && g != openTransformHackTab) {
+            openTransformHackTab.setOpen(false);
+            openTransformHackTab = g;
+          }
+        }
+        
         background(0);
+    }
+    
+    private class HackTab extends Group {
+      
+        HackTab(ControlP5 theControlP5, String theName) {
+          super(theControlP5, theName);
+        }
+      
+        protected void postDraw(PApplet theApplet) {
+            if (isBarVisible) {
+                theApplet.fill(isOpen ? color.getActive() : 
+                        (isInside ? color.getForeground() : color.getBackground()));
+                theApplet.rect(0, -1, _myWidth - 1, -_myHeight);
+                _myLabel.draw(theApplet, 0, -_myHeight-1, this);
+                if (isCollapse && isArrowVisible) {
+                    theApplet.fill(_myLabel.getColor());
+                    theApplet.pushMatrix();
+
+                    if (isOpen) {
+                            theApplet.triangle(_myWidth - 10, -_myHeight / 2 - 3, _myWidth - 4, -_myHeight / 2 - 3, _myWidth - 7, -_myHeight / 2);
+                    } else {
+                            theApplet.triangle(_myWidth - 10, -_myHeight / 2, _myWidth - 4, -_myHeight / 2, _myWidth - 7, -_myHeight / 2 - 3);
+                    }
+                    theApplet.popMatrix();
+                }
+            }
+        }
     }
 }
