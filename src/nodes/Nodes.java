@@ -30,7 +30,7 @@ public class Nodes extends PApplet {
     int h = 300;
     size(w,h);
     
-    ControlWindow cw = new ControlWindow();
+    ControlPanel panel = new ControlPanel();
   }
 
   @Override
