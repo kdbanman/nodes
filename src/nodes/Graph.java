@@ -1,14 +1,13 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package nodes;
 
 import java.util.HashMap;
 import java.util.ArrayList;
 
 import com.hp.hpl.jena.rdf.model.*;
+
 import controlP5.ControlP5;
+
 import processing.core.PApplet;
 import processing.core.PVector;
 
@@ -30,6 +29,8 @@ public class Graph {
   
   // adjacent maps node ids (uris and literal values) to lists of node ids
   // NOTE: if things get slow for edge operations, try Set instead of ArrayList 
+  // UPGRADE NOTE:  storing this as strings may be redundant and consumptive.
+  //                storing as Node, ArrayList<Node> is likely better.
   HashMap<String, ArrayList<String>> adjacent;
   
   Graph(UnProjector u, ControlP5 c, PApplet p) {
@@ -42,7 +43,8 @@ public class Graph {
     nodeCount = 0;
     edgeCount = 0;
     
-    adjacent = new HashMap<String, ArrayList<String>>();
+    adjacent = new HashMap<>();
+    
   }
   
   public void layout() {
