@@ -1,6 +1,7 @@
 
 package nodes;
 
+import com.hp.hpl.jena.graph.Triple;
 import java.util.HashMap;
 import java.util.ArrayList;
 
@@ -117,12 +118,8 @@ public class Graph {
     triples.add(toAdd);
   }
   
-  public Edge addTriple(Statement triple) {
-    String sub = triple.getSubject().toString();
-    String pred = triple.getPredicate().toString();
-    String obj = triple.getObject().toString();
-    
-    Edge e;
+  public Edge addTriple(String sub, String pred, String obj) {
+      Edge e;
     
     // add*** just returns the existing *** if a new *** need not be created.  (think sets)
     addNode(sub);
@@ -135,6 +132,20 @@ public class Graph {
       e.predicates.put(pred, false);
     }
     return e;
+  }
+  public Edge addTriple(Statement triple) {
+    String sub = triple.getSubject().toString();
+    String pred = triple.getPredicate().toString();
+    String obj = triple.getObject().toString();
+    
+    return addTriple(sub, pred, obj);
+  }
+  public Edge addTriple(Triple triple) {
+    String sub = triple.getSubject().toString();
+    String pred = triple.getPredicate().toString();
+    String obj = triple.getObject().toString();
+    
+    return addTriple(sub, pred, obj);
   }
   
   
