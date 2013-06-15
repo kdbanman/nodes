@@ -127,4 +127,12 @@ public class UnProjector
     return m_bValid;
   }
   
+  public PVector getDir(int x, int y) {
+    calculatePickPoints(x, y);
+    PVector dir = ptEndPos.get();
+    dir.sub(ptStartPos);
+    
+    return dir;
+  }
+  
 }

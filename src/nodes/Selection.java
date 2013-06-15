@@ -1,9 +1,4 @@
-/*
- * Click adds to selection.
- * Shift + Click removes from selection.
- * Click and drag adds to selection.
- * Shift + Click and drag removes from selection.
- */
+
 package nodes;
 
 import java.util.HashSet;

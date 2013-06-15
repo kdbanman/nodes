@@ -1,17 +1,24 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * CONTROLLER INTERACTION
+ * ======================
+ * 
+ * VIEW INTERACTION
+ * ================
+ * 
+ * Click adds to selection.
+ * Backspace + Click removes from selection.
+ * Click and drag adds to selection.
+ * Backspace + Click and drag removes from selection.
  */
 package nodes;
-
-import com.hp.hpl.jena.graph.Triple;
-
 
 import processing.core.*;
 
 import controlP5.ControlP5;
-import controlP5.CallbackEvent;
 import peasy.PeasyCam;
+import static processing.core.PApplet.max;
+import static processing.core.PApplet.min;
+import processing.opengl.PGraphics3D;
 
 
 /**
@@ -34,8 +41,10 @@ public class Nodes extends PApplet {
     Graph graph;
     Selection selection;
     
+    // mouse information for click and drag selection
     int lastPressedX;
     int lastPressedY;
+    boolean leftDragging;
     
   @Override
   public void setup() {
@@ -45,7 +54,10 @@ public class Nodes extends PApplet {
     
     ControlPanel panel = new ControlPanel();
     
-    cam = new PeasyCam(this, 0, 0, 0, 50);
+    cam = new PeasyCam(this, 0, 0, 0, 100);
+    cam.setLeftDragHandler(null);
+    cam.setRightDragHandler(cam.getRotateDragHandler());
+    cam.setWheelHandler(cam.getZoomWheelHandler());
     
     
     cp5 = new ControlP5(this);
@@ -56,55 +68,91 @@ public class Nodes extends PApplet {
     lastPressedX = 0;
     lastPressedY = 0;
     
-    /* test code for next commit - nonfuctional for now 
-    com.hp.hpl.jena.graph.Node sub = new com.hp.hpl.jena.graph.Node("the");
-    com.hp.hpl.jena.graph.Node pred = new com.hp.hpl.jena.graph.Node("butt");
-    com.hp.hpl.jena.graph.Node ob = new com.hp.hpl.jena.graph.Node("donkey");
-    graph.addTriple(new Triple(sub, pred, ob));
-    */
+    // test data
+    graph.addTriple("John", "knows", "Bill");
+    graph.addTriple("John", "worksAt", "Facecloud");
+    graph.addTriple("John", "knows", "Amy");
+    graph.addTriple("Amy", "hasPet", "John");
   }
 
   @Override
   public void draw() {
-    
     background(0xFFE07924);
+    
+    // necessary for unprojection functionality
+    proj.captureViewMatrix((PGraphics3D) this.g);
+    
+    // pretty light
+    proj.calculatePickPoints(mouseX, mouseY);
+    pointLight(255, 255, 255, proj.ptStartPos.x, proj.ptStartPos.y, proj.ptStartPos.z);
+    
+    if (leftDragging) {
+        // draw transparent rectangle over selection area
+        int minX = min(mouseX, lastPressedX);
+        int minY = min(mouseY, lastPressedY);
 
+        int maxX = max(mouseX, lastPressedX);
+        int maxY = max(mouseY, lastPressedY);
+         
+        cam.beginHUD();
+        fill(0x33333333);
+        noStroke();
+        rect(minX, minY, maxX-minX, maxY-minY);
+        cam.endHUD();
+    }
   }
   
   @Override
   public void mousePressed() {
+      // called only when the mouse button is depressed, NOT while it is held
       lastPressedX = mouseX;
       lastPressedY = mouseY;
   }
   
   @Override
   public void mouseDragged() {
-      int minX = min(mouseX, lastPressedX);
-      int minY = min(mouseY, lastPressedY);
+      // called only when the mouse is moved while a button is depressed
+      if (mouseButton == LEFT) {
+        leftDragging = true;
       
-      // min gives direction between near and far frustum planes @ drag box min
-      proj.calculatePickPoints(minX, minY);
-      PVector min = proj.ptEndPos.get();
-      min.sub(proj.ptStartPos);
-      
-      int maxX = max(mouseX, lastPressedX);
-      int maxY = max(mouseY, lastPressedY);
-      
-      proj.calculatePickPoints(maxX, maxY);
-      PVector max = proj.ptEndPos.get();
-      max.sub(proj.ptStartPos);
-      
-      print(min);
-      print("  ");
-      println(max);
-      
-      // angular sweep of drag from camera in X direction
-      
-      // angular sweep of drag from camera in Y direction
-      
-      
-  }
+        // determine nodes and edges within the drag box to selection
+        int minX = min(mouseX, lastPressedX);
+        int minY = min(mouseY, lastPressedY);
 
+        int maxX = max(mouseX, lastPressedX);
+        int maxY = max(mouseY, lastPressedY);
+        
+        // refDir is the direction to the upper left corner of screen
+        PVector refDir = proj.getDir(0, 0);
+        
+        // leftDir is the direction to left boundary of selection horizontal from refDir
+        PVector leftDir = proj.getDir(minX, 0);
+        float leftAngle = PVector.angleBetween(refDir, leftDir);
+
+        // rightDir is ... right boundary ...
+        PVector rightDir = proj.getDir(maxX, 0);
+        float rightAngle = PVector.angleBetween(refDir, rightDir);
+        
+        // topDir is ... top boundary of selection vertically from refDir
+        PVector topDir = proj.getDir(0, minY);
+        float topAngle = PVector.angleBetween(refDir, topDir);
+        
+        // bottomDir is ... bottom boundary ...
+        PVector bottomDir = proj.getDir(0, maxY);
+        float bottomAngle = PVector.angleBetween(refDir, bottomDir);
+
+        // test membership of each graph element
+        
+        
+        // remove from selection if Backspace is held, add otherwise
+      }
+  }
+  
+  public void mouseReleased() {
+      leftDragging = false;
+  }
+  
+ 
    /**
    * @param args the command line arguments
    */

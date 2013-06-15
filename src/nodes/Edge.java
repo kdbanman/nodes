@@ -190,4 +190,16 @@ public class Edge  extends Controller<Edge> {
   protected void mouseReleasedOutside() {
     currentCol = defaultCol;
   }
+  
+  @Override
+  public boolean equals(Object e) {
+      if (!(e instanceof Edge)) return false;
+      
+      return getName().equals(((Edge) e).getName());
+  }
+  
+  @Override
+  public int hashCode() {
+      return getName().hashCode();
+  }
 }

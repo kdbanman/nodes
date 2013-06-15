@@ -100,4 +100,16 @@ public class Node extends Controller<Node> {
   protected void mouseReleasedOutside() {
     currentCol = defaultCol;
   }
+  
+  @Override
+  public boolean equals(Object n) {
+      if (!(n instanceof Node)) return false;
+      
+      return getName().equals(((Node) n).getName());
+  }
+  
+  @Override
+  public int hashCode() {
+      return getName().hashCode();
+  }
 }
