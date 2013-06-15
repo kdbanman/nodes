@@ -33,8 +33,7 @@ public class Graph {
   // NOTE: it's formally redundant to include a set of edges along with
   //       an adjacency list, but it's definitely convenient
   
-  // TODO: LAST COMMIT BEFORE THE FOLLOWING LINE IS CHANGED FROM STRINGS TO NODES
-  HashMap<String, ArrayList<String>> adjacent;
+  HashMap<Node, ArrayList<Node>> adjacent;
   HashSet<Edge> edges;
   
   Graph(UnProjector u, ControlP5 c, PApplet p) {
@@ -53,23 +52,22 @@ public class Graph {
   }
   
   public void layout() {
-    HashMap<String, PVector> deltas = new HashMap<String, PVector>();
+    HashMap<Node, PVector> deltas = new HashMap<>();
     
     float coulomb = 10000;
     float hooke = .05f;
     
     float saturation = 50;
     
-    for (String nodeID : adjacent.keySet()) {
-      deltas.put(nodeID, new PVector(0,0,0));
+    for (Node node : adjacent.keySet()) {
+      deltas.put(node, new PVector(0,0,0));
     }
-    for (String nodeID : adjacent.keySet()) {
-      PVector delta = deltas.get(nodeID);
-      Node n = (Node) cp5.getController(nodeID);
+    for (Node n : adjacent.keySet()) {
+      PVector delta = deltas.get(n);
       PVector nodePos = n.getPosition();
       
-      for (String nbrID : adjacent.get(nodeID)) {
-        PVector diff = cp5.getController(nbrID).getPosition().get();
+      for (Node nbr : adjacent.get(n)) {
+        PVector diff = nbr.getPosition().get();
         diff.sub(nodePos);
         float dist = diff.mag();
         diff.normalize();
@@ -77,11 +75,11 @@ public class Graph {
         delta.add(diff);
       }
       
-      for (String otherID : adjacent.keySet()) {
-        if (!otherID.equals(nodeID)) {
-          float degreeScale = (float) (getDegree(otherID) * getDegree(nodeID));
+      for (Node other : adjacent.keySet()) {
+        if (!other.equals(n)) {
+          float degreeScale = (float) (getDegree(other) * getDegree(other));
           
-          PVector diff = cp5.getController(otherID).getPosition().get();
+          PVector diff = other.getPosition().get();
           diff.sub(nodePos);
           
           float dist = diff.mag();
@@ -93,13 +91,13 @@ public class Graph {
       }
     }
     
-    for (String nodeID : adjacent.keySet()) {
+    for (Node node : adjacent.keySet()) {
       //apply damping and set
-      PVector delta = deltas.get(nodeID);
+      PVector delta = deltas.get(node);
       float mag = delta.mag();
       delta.limit(PApplet.log(mag)/PApplet.log(2));
       
-      PVector pos = cp5.getController(nodeID).getPosition();
+      PVector pos = node.getPosition();
       pos.add(delta);
       //print(deltas.get(nodeID));
     }
@@ -152,21 +150,26 @@ public class Graph {
     return addTriple(sub, pred, obj);
   }
   
-  /* TODO: once adjacent is changed from strings
+  /* TODO:  this cast might fuck stuff.  test after the refactor.
   public HashSet<Node> getNodes() {
-      return adjacent.keySet();
+      return (HashSet) adjacent.keySet();
   }
   public HashSet<Edge> getEdges() {
       return edges;
   }
   */
   
-  
-  public ArrayList<String> getNbrs(String id) {
-    return adjacent.get(id);
+  /**
+   * returns null if node nonexistent
+   */
+  public ArrayList<Node> getNbrs(String id) {
+    return adjacent.get((Node) cp5.getController(id));
   }
-  public ArrayList<String> getNbrs(Node n) {
-    return getNbrs(n.getName());
+   /**
+   * returns null if node nonexistent
+   */
+  public ArrayList<Node> getNbrs(Node n) {
+    return adjacent.get(n);
   }
   
   // return node's degree for view graph, not for the relational graph
@@ -174,7 +177,7 @@ public class Graph {
     return getNbrs(id).size();
   }
   public int getDegree(Node n) {
-    return getDegree(n.getName());
+    return getNbrs(n).size();
   }
   
   /*
@@ -185,17 +188,20 @@ public class Graph {
   * returns the new node or the existing node.
   */
   private Node addNode(String id) {
-    if (adjacent.containsKey(id)) {
-      return (Node) cp5.getController(id);
+      
+    // ControlP5's source has been checked, this should be reliable and fast
+    Node n = (Node) cp5.getController(id);
+    if (n != null) {
+      return n;
     } else {
       int initBoundary = 500;
-      Node n = new Node(cp5, id, proj, pApp)  
+      n = new Node(cp5, id, proj, pApp)  
                     .setPosition(pApp.random(-initBoundary,initBoundary), 
                                  pApp.random(-initBoundary,initBoundary), 
                                  pApp.random(-initBoundary,initBoundary))
                     .setSize(10);
                     
-      adjacent.put(id, new ArrayList<String>());
+      adjacent.put(n, new ArrayList<Node>());
       
       nodeCount += 1;
       
@@ -210,15 +216,23 @@ public class Graph {
   * returns the new edge or the existing edge.
   */
   private Edge addEdge(String s, String d) {
-    if (adjacent.get(s).contains(d)) {
+    
+    Node src = (Node) cp5.getController(s);
+    Node dst = (Node) cp5.getController(d);
+    
+    // make sure the nodes exist
+    if (src == null || dst == null) {
+        printNullEdgeTargets(s, d, src, dst);
+    }
+    
+    if (adjacent.get(src).contains(dst)) {
       return getEdge(s, d);
     } else {
-      Node src = (Node) cp5.getController(s);
-      Node dst = (Node) cp5.getController(d);
+      
       Edge e = new Edge(cp5, s + "|" + d, proj, pApp, src, dst).setSize(5);
       
-      adjacent.get(s).add(d);
-      adjacent.get(d).add(s);
+      adjacent.get(src).add(dst);
+      adjacent.get(dst).add(src);
       edgeCount += 1;
       
       return e;
@@ -233,19 +247,23 @@ public class Graph {
   * returns true if successful, false otherwise.
   */ 
   private boolean removeNode(String id) {
-    if (!adjacent.containsKey(id)) {
-      PApplet.println("Cannot remove nonexistent node\n" + id);
+    
+    Node n = (Node) cp5.getController(id);
+    
+    if (n == null) {
+      PApplet.println("ERROR: Cannot remove nonexistent node\n" + id);
       return false;
-    } else if (!adjacent.get(id).isEmpty()) {
-      PApplet.println("Cannot remove still-connected node\n" + id);
+    } else if (!adjacent.get(n).isEmpty()) {
+      PApplet.println("ERROR: Cannot remove still-connected node\n" + id);
       return false;
     } else {
       //node exists and has no neighbors
-      cp5.getController(id).remove();
       
-      adjacent.remove(id);
+      adjacent.remove(n);
       nodeCount -= 1;
       
+      n.remove();
+
       return true;
     }
   }
@@ -257,20 +275,23 @@ public class Graph {
   * returns true if successful, false otherwise.
   */ 
   private boolean removeEdge(String s, String d) {
-    if ( ! (adjacent.containsKey(s) && adjacent.containsKey(d))) {
-      PApplet.println("Cannot remove edge, one of src or dst doesn't exist:\n"+s+"\n"+d);
+    
+    Node src = (Node) cp5.getController(s);
+    Node dst = (Node) cp5.getController(d);
+      
+    if (src == null || dst == null) {
+      printNullEdgeTargets(s, d, src, dst);
       return false;
-    } else if (!adjacent.get(s).contains(d)) {
+    } else if (!adjacent.get(src).contains(dst)) {
       PApplet.println("Cannot remove nonexistent edge between:\n"+s+"\n"+d);
       return false;
     } else {
-      Edge e = (Edge) cp5.getController(s + "|" + d);
-      if (e == null) e = (Edge) cp5.getController(d + "|" + s);
+      Edge e = getEdge(s, d);
       
       e.remove();
       
-      adjacent.get(s).remove(d);
-      adjacent.get(d).remove(s);
+      adjacent.get(src).remove(dst);
+      adjacent.get(dst).remove(src);
       
       edgeCount -= 1;
       return true;
@@ -290,5 +311,12 @@ public class Graph {
     
     if (e == null) PApplet.println("Edge connecting\n"+s+"\nand\n"+d+"\nnot found.");
     return e;
+  }
+  
+  private void printNullEdgeTargets(String s, String d, Node src, Node dst) {
+        PApplet.println("ERROR: Edge cannot be created between /n" 
+                + s + " and /n" + d);
+        String problem = (src == null) ? s : d;
+        PApplet.println("   " + problem + "/n  doesn't exist as Node.");
   }
 }
