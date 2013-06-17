@@ -43,20 +43,13 @@ public class ControlPanel extends PApplet {
     int colorPickerDefault;
     
     public ControlPanel() {
+        // window parameters
         w = 400;
         h = 500;
         
         name = "Control Panel";
-        
-        Frame f = new Frame(name);
-        f.add(this);
-        this.init();
-        f.setTitle(name);
-        f.setSize(w, h);
-        f.setLocation(0, 0);
-        f.setResizable(false);
-        f.setVisible(true);
                 
+        // element size parameters
         padding = 10;
         
         tabHeight = 30;
@@ -70,11 +63,25 @@ public class ControlPanel extends PApplet {
         
         modifiersBoxHeight = 200;
         
+        // control element miscellany
         transformHackTabs = new ArrayList<>();
         
         colorPickerDefault = 0xFF1A4969;
+        
+        // window frame initialization.
+        // keep this section LAST in the constructor because this.init() depends
+        // upon things declared above
+        Frame f = new Frame(name);
+        f.add(this);
+        this.init();        
+        f.setTitle(name);
+        f.setSize(w, h);
+        f.setLocation(0, 0);
+        f.setResizable(false);
+        f.setVisible(true);
     }
     
+    @Override
     public void setup() {
         cp5 = new ControlP5(this);
         

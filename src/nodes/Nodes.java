@@ -16,8 +16,6 @@ import processing.core.*;
 
 import controlP5.ControlP5;
 import peasy.PeasyCam;
-import static processing.core.PApplet.max;
-import static processing.core.PApplet.min;
 import processing.opengl.PGraphics3D;
 
 
@@ -148,6 +146,7 @@ public class Nodes extends PApplet {
       }
   }
   
+    @Override
   public void mouseReleased() {
       leftDragging = false;
   }
