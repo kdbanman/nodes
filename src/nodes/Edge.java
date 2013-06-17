@@ -45,21 +45,22 @@ public class Edge  extends Controller<Edge> {
     src = s;
     dst = d;
     
-    predicates = new HashMap<String, Boolean>();
+    predicates = new HashMap<>();
 
     proj = unProj;
     
     pApp = p;
     
-    setPosition();
+    //updatePosition();
     
     lengthScale = 0.9f;
     
     setView(new ControllerView() {
+        @Override
         public void display(PApplet p, Object e) {
           Edge edge = (Edge) e;
           
-          edge.setPosition();
+          edge.updatePosition();
           
           // get vector between the source and the destination nodes
           PVector between = edge.dst.getPosition().get();
@@ -93,6 +94,7 @@ public class Edge  extends Controller<Edge> {
     );
   }
   
+  @Override
   public boolean inside() {
     // NOTE:  steps 1** and 2** switched give +8% framerate @ 5000 nodes, ~250K edges
     
@@ -156,17 +158,17 @@ public class Edge  extends Controller<Edge> {
     return false;
   }
   
-  public Edge setPosition() {
+  public Edge updatePosition() {
     PVector sPos = src.getPosition();
     PVector dPos = dst.getPosition();
     
     float dist = PVector.dist(sPos, dPos);
     
-    // get the offset in midpoint between the nodes w.r.t their radii
-    float scale = 0.5f * (1 + (src.size - dst.size) / dist);
+    // offset in midpoint between the nodes w.r.t their radii
+    float offset = 0.5f * (1 + (src.size - dst.size) / dist);
     
-    // get the (scaled) midpoint between the source and the destination
-    PVector midpoint = PVector.lerp(sPos, dPos, scale);
+    // get the (offset) midpoint between the source and the destination
+    PVector midpoint = PVector.lerp(sPos, dPos, offset);
     return setPosition(midpoint);
   }
   
@@ -175,18 +177,22 @@ public class Edge  extends Controller<Edge> {
     return setSize(s, s);
   }
   
+  @Override
   protected void onClick() {
     currentCol = clickCol;
   }
   
+  @Override
   protected void onEnter() {
     currentCol = hoverCol;
   }
   
+  @Override
   protected void onLeave() {
     currentCol = defaultCol;
   }
   
+  @Override
   protected void mouseReleasedOutside() {
     currentCol = defaultCol;
   }

@@ -33,12 +33,13 @@ public class Nodes extends PApplet {
    * - Local Jena model to store all incoming data
    * - Subgraph cache for data mid-manipulation
    */
+    ControlPanelFrame panel;
     PeasyCam cam;
     ControlP5 cp5;
     UnProjector proj;
     Graph graph;
     Selection selection;
-    
+
     // mouse information for click and drag selection
     int lastPressedX;
     int lastPressedY;
@@ -50,9 +51,9 @@ public class Nodes extends PApplet {
     int h = 300;
     size(w, h, P3D);
     
-    ControlPanel panel = new ControlPanel();
+    panel = new ControlPanelFrame();
     
-    cam = new PeasyCam(this, 0, 0, 0, 100);
+    cam = new PeasyCam(this, 0, 0, 0, 200);
     cam.setLeftDragHandler(null);
     cam.setRightDragHandler(cam.getRotateDragHandler());
     cam.setWheelHandler(cam.getZoomWheelHandler());

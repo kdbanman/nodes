@@ -17,7 +17,8 @@ import processing.core.PVector;
  *
  * @author kdbanman
  * 
- * 
+ * NOTE:  consider making (most) of the private methods public, making sure that
+ *   consistency is maintained within them.
  */
 public class Graph {
   UnProjector proj;
@@ -28,6 +29,8 @@ public class Graph {
   
   int nodeCount;
   int edgeCount;
+  
+  float initPositionSparsity;
   
   // adjacent maps node ids (uris and literal values) to lists of node ids
   // NOTE: it's formally redundant to include a set of edges along with
@@ -46,6 +49,8 @@ public class Graph {
     nodeCount = 0;
     edgeCount = 0;
     
+    initPositionSparsity = 10e7f;
+    
     adjacent = new HashMap<>();
     edges = new HashSet<>();
     
@@ -56,8 +61,6 @@ public class Graph {
     
     float coulomb = 10000;
     float hooke = .05f;
-    
-    float saturation = 50;
     
     for (Node node : adjacent.keySet()) {
       deltas.put(node, new PVector(0,0,0));
@@ -92,11 +95,12 @@ public class Graph {
     }
     
     for (Node node : adjacent.keySet()) {
-      //apply damping and set
+      //apply saturation damping to delta
       PVector delta = deltas.get(node);
       float mag = delta.mag();
       delta.limit(PApplet.log(mag)/PApplet.log(2));
       
+      // apply delta to position
       PVector pos = node.getPosition();
       pos.add(delta);
       //print(deltas.get(nodeID));
@@ -172,7 +176,9 @@ public class Graph {
     return adjacent.get(n);
   }
   
-  // return node's degree for view graph, not for the relational graph
+  /**
+   * return node's degree for view graph, not for the relational graph
+   */
   public int getDegree(String id) {
     return getNbrs(id).size();
   }
@@ -180,8 +186,8 @@ public class Graph {
     return getNbrs(n).size();
   }
   
-  /*
-  * to be called by addTriple and .
+  /**
+  * to be called by addTriple.
   * affects cp5, nodeCount, and adjacent iff the node is new.
   * a new entry in adjacent will map to an empty ArrayList since no edges may exist yet.
   *
@@ -194,7 +200,13 @@ public class Graph {
     if (n != null) {
       return n;
     } else {
-      int initBoundary = 500;
+      
+      // set random initial position within reasonable boundary.
+      // (cube root for volume)
+      float initBoundary = PApplet.pow((float) nodeCount, 0.333f) 
+              * initPositionSparsity;
+      initBoundary = PApplet.min(initBoundary, 100);
+      
       n = new Node(cp5, id, proj, pApp)  
                     .setPosition(pApp.random(-initBoundary,initBoundary), 
                                  pApp.random(-initBoundary,initBoundary), 
@@ -209,7 +221,7 @@ public class Graph {
     }
   }
   
-  /*
+  /**
   * to be called by addTriple, both nodes must exist.
   * affects cp5, edgeCount, and adjacent iff the edge is new.
   * 
@@ -243,8 +255,9 @@ public class Graph {
     return addEdge(s.getName(), d.getName());
   }
   
-  /*
+  /**
   * returns true if successful, false otherwise.
+  * succeeds iff node exists and is not connected
   */ 
   private boolean removeNode(String id) {
     
@@ -254,7 +267,7 @@ public class Graph {
       PApplet.println("ERROR: Cannot remove nonexistent node\n" + id);
       return false;
     } else if (!adjacent.get(n).isEmpty()) {
-      PApplet.println("ERROR: Cannot remove still-connected node\n" + id);
+      //PApplet.println("ERROR: Cannot remove still-connected node\n" + id);
       return false;
     } else {
       //node exists and has no neighbors
@@ -271,8 +284,9 @@ public class Graph {
     return removeNode(n.getName());
   }
   
-  /*
+  /**
   * returns true if successful, false otherwise.
+  * succeeds iff given src and dst nodes exist and edge exists between them.
   */ 
   private boolean removeEdge(String s, String d) {
     
@@ -304,6 +318,16 @@ public class Graph {
     return removeEdge(e.src, e.dst);
   }
   
+  /**
+   * 
+   * @param s id of source node
+   * @param d id of destination node
+   * @return Edge between nodes, or null if nonexistent
+   * 
+   * returns the existing edge between s and d.
+   * order of s and d are actually irrelevant, the correct edge will be 
+   * retrieved.
+   */
   public Edge getEdge(String s, String d) {
     Edge e = (Edge) cp5.getController(s + "|" + d);
       
@@ -313,6 +337,9 @@ public class Graph {
     return e;
   }
   
+  /**
+   * prints error message for edge creation between nonexistent nodes
+   */
   private void printNullEdgeTargets(String s, String d, Node src, Node dst) {
         PApplet.println("ERROR: Edge cannot be created between /n" 
                 + s + " and /n" + d);

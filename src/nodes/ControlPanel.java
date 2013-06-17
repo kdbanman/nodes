@@ -9,9 +9,9 @@ import controlP5.ControlFont;
 import controlP5.Group;
 import controlP5.ListBox;
 import controlP5.Tab;
+
 import processing.core.PApplet;
 
-import java.awt.Frame;
 import java.util.ArrayList;
 
 /**
@@ -20,7 +20,6 @@ import java.util.ArrayList;
  */
 public class ControlPanel extends PApplet {
     int w, h;
-    String name;
     
     ControlP5 cp5;
     
@@ -42,13 +41,10 @@ public class ControlPanel extends PApplet {
     
     int colorPickerDefault;
     
-    public ControlPanel() {
-        // window parameters
-        w = 400;
-        h = 500;
+    public ControlPanel(int frameWidth, int frameHeight) {
+        w = frameWidth;
+        h = frameHeight;
         
-        name = "Control Panel";
-                
         // element size parameters
         padding = 10;
         
@@ -67,22 +63,12 @@ public class ControlPanel extends PApplet {
         transformHackTabs = new ArrayList<>();
         
         colorPickerDefault = 0xFF1A4969;
-        
-        // window frame initialization.
-        // keep this section LAST in the constructor because this.init() depends
-        // upon things declared above
-        Frame f = new Frame(name);
-        f.add(this);
-        this.init();        
-        f.setTitle(name);
-        f.setSize(w, h);
-        f.setLocation(0, 0);
-        f.setResizable(false);
-        f.setVisible(true);
     }
     
     @Override
     public void setup() {
+        size(w, h);
+        
         cp5 = new ControlP5(this);
         
         Tab importTab = cp5.addTab("Import")
@@ -232,12 +218,13 @@ public class ControlPanel extends PApplet {
         // Save tab elements
     }
     
+    @Override
     public void draw() {
         
-        for (Group g : transformHackTabs) {
-          if (g.isOpen() && g != openTransformHackTab) {
+        for (Group hackTab : transformHackTabs) {
+          if (hackTab.isOpen() && hackTab != openTransformHackTab) {
             openTransformHackTab.setOpen(false);
-            openTransformHackTab = g;
+            openTransformHackTab = hackTab;
           }
         }
         
@@ -250,6 +237,7 @@ public class ControlPanel extends PApplet {
           super(theControlP5, theName);
         }
       
+        @Override
         protected void postDraw(PApplet theApplet) {
             if (isBarVisible) {
                 theApplet.fill(isOpen ? color.getActive() : 
