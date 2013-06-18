@@ -335,6 +335,16 @@ public class Graph implements Iterable<GraphElement> {
     private boolean removeEdge(Edge e) {
         return removeEdge(e.src, e.dst);
     }
+    
+    public Node getNode(String n) {
+        Node ret = (Node) cp5.getController(n);
+        
+        if (ret == null) {
+            PApplet.println("Node " + n + " not found.");
+        }
+        
+        return ret;
+    }
 
     /**
      *

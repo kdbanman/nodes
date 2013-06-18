@@ -72,6 +72,10 @@ public class Nodes extends PApplet {
     graph.addTriple("John", "worksAt", "Facecloud");
     graph.addTriple("John", "knows", "Amy");
     graph.addTriple("Amy", "hasPet", "John");
+    
+    //DEBUG
+    //selection.add(graph.getEdge("John", "Amy"));
+    //selection.add(graph.getNode("John"));
   }
 
   @Override
