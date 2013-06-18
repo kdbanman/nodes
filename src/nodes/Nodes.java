@@ -106,46 +106,43 @@ public class Nodes extends PApplet {
       // called only when the mouse button is depressed, NOT while it is held
       lastPressedX = mouseX;
       lastPressedY = mouseY;
+      
+      // if shift is pressed, user is selectively removing graph elements
+      if (!(keyPressed && key == CODED && keyCode == SHIFT)) selection.clear();
   }
   
-  @Override
-  public void mouseDragged() {
-      // called only when the mouse is moved while a button is depressed
-      if (mouseButton == LEFT) {
-        leftDragging = true;
-      
-        // determine nodes and edges within the drag box to selection
-        int minX = min(mouseX, lastPressedX);
-        int minY = min(mouseY, lastPressedY);
+    @Override
+    public void mouseDragged() {
+        // called only when the mouse is moved while a button is depressed
+        if (mouseButton == LEFT) {
+            leftDragging = true;
 
-        int maxX = max(mouseX, lastPressedX);
-        int maxY = max(mouseY, lastPressedY);
-        
-        // refDir is the direction to the upper left corner of screen
-        PVector refDir = proj.getDir(0, 0);
-        
-        // leftDir is the direction to left boundary of selection horizontal from refDir
-        PVector leftDir = proj.getDir(minX, 0);
-        float leftAngle = PVector.angleBetween(refDir, leftDir);
+            // determine nodes and edges within the drag box to selection
+            int minX = min(mouseX, lastPressedX);
+            int minY = min(mouseY, lastPressedY);
 
-        // rightDir is ... right boundary ...
-        PVector rightDir = proj.getDir(maxX, 0);
-        float rightAngle = PVector.angleBetween(refDir, rightDir);
-        
-        // topDir is ... top boundary of selection vertically from refDir
-        PVector topDir = proj.getDir(0, minY);
-        float topAngle = PVector.angleBetween(refDir, topDir);
-        
-        // bottomDir is ... bottom boundary ...
-        PVector bottomDir = proj.getDir(0, maxY);
-        float bottomAngle = PVector.angleBetween(refDir, bottomDir);
+            int maxX = max(mouseX, lastPressedX);
+            int maxY = max(mouseY, lastPressedY);
 
-        // test membership of each graph element
-        
-        
-        // remove from selection if Backspace is held, add otherwise
-      }
-  }
+            for (GraphElement n : graph) {
+                PVector nPos = n.getPosition();
+                float nX = screenX(nPos.x, nPos.y, nPos.z);
+                float nY = screenY(nPos.x, nPos.y, nPos.z);
+
+                // test membership of graph element
+                if (nX <= maxX && nX >= minX && nY <= maxY && nY >= minY) {
+                    // remove from selection if Shift held, add otherwise
+                    if (keyPressed && key == CODED && keyCode == SHIFT) {
+                        selection.remove(n);
+                    } else {
+                        selection.add(n);
+                    }
+                    //DEBUG
+                    println(selection.nodeCount() + "  " + selection.edgeCount());
+                }
+            }
+        }
+    }
   
     @Override
   public void mouseReleased() {
