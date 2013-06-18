@@ -14,19 +14,58 @@ import processing.core.PApplet;
  */
 public class GraphElement<T> extends Controller<T> {
 
-    int defaultCol = 0xFF1A4969;
-    int hoverCol = 0xFF5FEA6D;
-    int selectCol = 0xFFEA5F84;
-    int currentCol = defaultCol;
+    int hoverCol;
+    int selectCol;
+    
+    // defaultCol responds to transformations and selection
+    int defaultCol;
+    int selectTmp;
+    
+    // currentCol responds to mouse hover
+    int currentCol;
+    
+    boolean selected;
+    
     float size;
+    
     UnProjector proj;
     PApplet pApp;
 
     public GraphElement(ControlP5 cp5, String name, UnProjector unProj, PApplet pApplet) {
         super(cp5, name);
+        
+        hoverCol = 0xFF5FEA6D;
+        selectCol = 0xFFEA5F84;
+    
+        defaultCol = 0xFF1A4969;
+        selectTmp = defaultCol;
+    
+        currentCol = defaultCol;
+    
+        selected = false;
+        
+        size = 10;
 
         proj = unProj;
         pApp = pApplet;
+    }
+    
+    public void setSelected(boolean s) {
+        // selection overrides default/transformed color
+        if (s && !selected) {
+            selectTmp = defaultCol;
+            currentCol = selectCol;
+            defaultCol = selectCol;
+        } else if (!s && selected) {
+            defaultCol = selectTmp;
+            currentCol = defaultCol;
+        }
+        
+        selected = s;
+    }
+    
+    public void setColor(int col) {
+      defaultCol = col;
     }
 
     public T setSize(final int s) {
