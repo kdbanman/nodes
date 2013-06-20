@@ -4,7 +4,6 @@
  */
 package nodes;
 
-import controlP5.ControlP5;
 import controlP5.ControllerView;
 import java.util.HashMap;
 import processing.core.PApplet;
@@ -27,8 +26,8 @@ public class Edge extends GraphElement<Edge>  {
     // boolean value is true for fwd-direction predicates
     HashMap<String, Boolean> predicates;
 
-    Edge(ControlP5 cp5, String name, UnProjector unProj, PApplet p, Node s, Node d) {
-      super(cp5, name, unProj, p);
+    Edge(Graph parentGraph, String name, Node s, Node d) {
+      super(parentGraph, name);
 
       src = s;
       dst = d;
@@ -50,6 +49,7 @@ public class Edge extends GraphElement<Edge>  {
 
 
             p.pushMatrix();
+            updateColor();
             p.fill(currentCol);
             // Translate(x,y,0) called already in Controller, but nodes are in 3D
             p.translate(0,0,edge.getPosition().z);

@@ -4,7 +4,6 @@
  */
 package nodes;
 
-import controlP5.ControlP5;
 import controlP5.Controller;
 import processing.core.PApplet;
 
@@ -16,52 +15,35 @@ public class GraphElement<T> extends Controller<T> {
 
     int hoverCol;
     int selectCol;
-    
-    // defaultCol responds to transformations and selection
     int defaultCol;
-    int selectTmp;
     
     // currentCol responds to mouse hover
     int currentCol;
     
-    boolean selected;
-    
     float size;
     
+    Graph graph;
     UnProjector proj;
     PApplet pApp;
+    Selection selection;
 
-    public GraphElement(ControlP5 cp5, String name, UnProjector unProj, PApplet pApplet) {
-        super(cp5, name);
+    //public GraphElement(ControlP5 cp5, String name, UnProjector unProj, PApplet pApplet) {
+    public GraphElement(Graph parentGraph, String name) {
+        super(parentGraph.cp5, name);
+        
+        graph = parentGraph;
+        proj = parentGraph.proj;
+        pApp = parentGraph.pApp;
+        selection = parentGraph.selection;
         
         hoverCol = 0xFF5FEA6D;
         selectCol = 0xFFEA5F84;
     
         defaultCol = 0xFF1A4969;
-        selectTmp = defaultCol;
     
         currentCol = defaultCol;
-    
-        selected = false;
         
         size = 10;
-
-        proj = unProj;
-        pApp = pApplet;
-    }
-    
-    public void setSelected(boolean s) {
-        // selection overrides default/transformed color
-        if (s && !selected) {
-            selectTmp = defaultCol;
-            currentCol = selectCol;
-            defaultCol = selectCol;
-        } else if (!s && selected) {
-            defaultCol = selectTmp;
-            currentCol = defaultCol;
-        }
-        
-        selected = s;
     }
     
     public void setColor(int col) {
@@ -80,12 +62,20 @@ public class GraphElement<T> extends Controller<T> {
 
     @Override
     protected void onLeave() {
-        currentCol = defaultCol;
+        updateColor();
     }
 
     @Override
     protected void mouseReleasedOutside() {
-        currentCol = defaultCol;
+        updateColor();
+    }
+    
+    public void updateColor() {
+        if (selection.contains(this)) {
+            currentCol = selectCol;
+        } else {
+             currentCol = defaultCol;
+        }
     }
 
     @Override

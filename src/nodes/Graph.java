@@ -28,6 +28,8 @@ public class Graph implements Iterable<GraphElement> {
     ControlP5 cp5;
     PApplet pApp;
     
+    Selection selection;
+    
     Model triples;
     
     int nodeCount;
@@ -46,6 +48,8 @@ public class Graph implements Iterable<GraphElement> {
         proj = u;
         cp5 = c;
         pApp = p;
+        
+        selection = new Selection();
 
         triples = ModelFactory.createDefaultModel();
 
@@ -218,7 +222,7 @@ public class Graph implements Iterable<GraphElement> {
                     * initPositionSparsity;
             initBoundary = PApplet.min(initBoundary, 100);
 
-            n = new Node(cp5, id, proj, pApp)
+            n = new Node(this, id)
                     .setPosition(pApp.random(-initBoundary, initBoundary),
                     pApp.random(-initBoundary, initBoundary),
                     pApp.random(-initBoundary, initBoundary))
@@ -252,7 +256,7 @@ public class Graph implements Iterable<GraphElement> {
             return getEdge(s, d);
         } else {
 
-            Edge e = new Edge(cp5, s + "|" + d, proj, pApp, src, dst).setSize(5);
+            Edge e = new Edge(this, s + "|" + d, src, dst).setSize(5);
 
             adjacent.get(src).add(dst);
             adjacent.get(dst).add(src);

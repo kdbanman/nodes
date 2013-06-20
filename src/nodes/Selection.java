@@ -1,9 +1,8 @@
 /*
- * Selection is currently stupid, and I'm not sure how to rectify that.  Notes:
- *   - the GraphElements have to know when they're selected for rendering purposes (color)
- *   - the selection modifier menu needs quick access to the number of selected nodes and edges, separately
- *   - the selection menue should also needs to know the selected resources themselves for rendering and for query generation
- * 
+ * TODO: addToBuffer()
+ *       removeFromBuffer()
+ *       flushBuffer()
+ *       clearBuffer()
  */
 package nodes;
 
@@ -20,33 +19,52 @@ public class Selection {
     private final Set<Node> nodes;
     private final Set<Edge> edges;
     
+    private final Set<Node> nodeBuffer;
+    private final Set<Edge> edgeBuffer;
+    
     Selection() {
         nodes = Collections.synchronizedSet(new HashSet<Node>());
         edges = Collections.synchronizedSet(new HashSet<Edge>());
+        
+        nodeBuffer = Collections.synchronizedSet(new HashSet<Node>());
+        edgeBuffer = Collections.synchronizedSet(new HashSet<Edge>());
+    }
+    
+    public Set<Node> getNodes() {
+        return nodes;
+    }
+    
+    public Set<Edge> getEdges() {
+        return edges;
     }
     
     public int nodeCount() {
-        return nodes.size();
+        return nodes.size() + nodeBuffer.size();
     }
     
     public int edgeCount() {
-        return edges.size();
+        return edges.size() + edgeBuffer.size();
     }
     
     public boolean contains(Node n) {
-        return nodes.contains(n);
+        return nodes.contains(n) || nodeBuffer.contains(n);
     }
     public boolean contains(Edge e) {
-        return edges.contains(e);
+        return edges.contains(e) || edgeBuffer.contains(e);
+    }
+    public boolean contains(GraphElement e) {
+        boolean ret = false;
+        if (e instanceof Node) ret = contains((Node) e);
+        else if (e instanceof Edge) ret = contains((Edge) e);
+        
+        return ret;
     }
     
-    public void add(Node n) {
+    private void add(Node n) {
         nodes.add(n);
-        n.setSelected(true);
     }
-    public void add(Edge e) {
+    private void add(Edge e) {
         edges.add(e);
-        e.setSelected(true);
     }
     public void add(GraphElement e) {
         if (e instanceof Edge) add((Edge ) e);
@@ -54,29 +72,91 @@ public class Selection {
         else PApplet.println("ERROR: only Node or Edge may be added to Selection");
     }
     
-    public void remove(Node n) {
+    private void remove(Node n) {
         nodes.remove(n);
-        n.setSelected(false);
     }
-    public void remove(Edge e) {
+    private void remove(Edge e) {
         edges.remove(e);
-        e.setSelected(false);
     }
     public void remove(GraphElement e) {
-        if (e instanceof Edge) remove((Edge ) e);
+        if (e instanceof Edge) remove((Edge) e);
         else if (e instanceof Node) remove((Node) e);
         else PApplet.println("ERROR: only Node or Edge may be removed from Selection");
     }
     
+    public void invert(GraphElement e) {
+        if (contains(e)) {
+            remove(e);
+        } else {
+            add(e);
+        }
+    }
+    
     public void clear() {
-        for (Node n : nodes) {
-          n.setSelected(false);
+        synchronized (nodes) {
+            nodes.clear();
         }
-        nodes.clear();
-        
-        for (Edge e : edges) {
-          e.setSelected(false);
+        synchronized (edges) {
+            edges.clear();
         }
-        edges.clear();
+    }
+     
+    /**
+     * merge ignores buffer
+     */
+    public void merge(Selection toAdd) {
+        nodes.addAll(toAdd.getNodes());
+        edges.addAll(toAdd.getEdges());
+    }
+    
+    /*
+     * Buffer operations
+     */
+    
+    public void addToBuffer(Node n) {
+        if (!nodes.contains(n)) {
+            nodeBuffer.add(n);
+        }
+    }
+    public void addToBuffer(Edge e) {
+        if (!edges.contains(e)) {
+            edgeBuffer.add(e);
+        }
+    }
+    public void addToBuffer(GraphElement e) {
+        if (e instanceof Edge) addToBuffer((Edge ) e);
+        else if (e instanceof Node) addToBuffer((Node) e);
+        else PApplet.println("ERROR: only Node or Edge may be added to Selection");
+    }
+    
+    public void removeFromBuffer(Node n) {
+        nodeBuffer.remove(n);
+    }
+    public void removeFromBuffer(Edge e) {
+        edgeBuffer.remove(e);
+    }
+    public void removeFromBuffer(GraphElement e) {
+        if (e instanceof Edge) removeFromBuffer((Edge) e);
+        else if (e instanceof Node) removeFromBuffer((Node) e);
+        else PApplet.println("ERROR: only Node or Edge may be removed from Selection");
+    }
+    
+    public void commitBuffer() {
+        synchronized(nodes) {
+            nodes.addAll(nodeBuffer);
+        }
+        synchronized(edges) {
+            edges.addAll(edgeBuffer);
+        }
+        clearBuffer();
+    }
+    
+    public void clearBuffer() {
+        synchronized (nodeBuffer) {
+            nodeBuffer.clear();
+        }
+        synchronized (edgeBuffer) {
+            edgeBuffer.clear();
+        }
     }
 }
