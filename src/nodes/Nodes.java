@@ -5,8 +5,8 @@
  * VIEW INTERACTION
  * ================
  * 
- * Click (and drag) adds to selection.
- * Shift + Click (and drag) removes from selection.
+ * Click (and drag) starts selection.
+ * Shift + Click (and drag) adds to selection.
  * 
  * Right Click and drag rotates the camera
  */
@@ -19,7 +19,7 @@ import peasy.PeasyCam;
 import processing.opengl.PGraphics3D;
 
 /**
- * Non-controlP5 related mouse and key interaction is here:
+ * Non-controlP5 related mouse and key interaction is in this class:
  * - mouse selection modification
  * 
  * @author kdbanman
@@ -37,7 +37,7 @@ public class Nodes extends PApplet {
     ControlP5 cp5;
     UnProjector proj;
     Graph graph;
-    Selection selection;
+    
     // mouse information for click and drag selection
     int lastPressedX;
     int lastPressedY;
@@ -60,10 +60,13 @@ public class Nodes extends PApplet {
         cp5 = new ControlP5(this);
         proj = new UnProjector(this);
         graph = new Graph(proj, cp5, this);
-        selection = new Selection();
-
+        
+        
+        //TODO:  add event listener to invert selection on click.
+        
         lastPressedX = 0;
         lastPressedY = 0;
+        
 
         // test data
         graph.addTriple("John", "knows", "Bill");
@@ -107,11 +110,9 @@ public class Nodes extends PApplet {
             lastPressedX = mouseX;
             lastPressedY = mouseY;
 
-            // if shift is pressed, user is selectively removing graph elements
+            // if shift is pressed, user is selectively adding graph elements (with the buffer
             if (!(shiftPressed())) {
-                selection.clear();
-                //DEBUG
-                println("cleared selection");
+                graph.selection.clear();
             }
         }
     }
@@ -129,6 +130,7 @@ public class Nodes extends PApplet {
             int maxX = max(mouseX, lastPressedX);
             int maxY = max(mouseY, lastPressedY);
 
+            graph.selection.clearBuffer();
             for (GraphElement n : graph) {
                 PVector nPos = n.getPosition();
                 float nX = screenX(nPos.x, nPos.y, nPos.z);
@@ -136,12 +138,9 @@ public class Nodes extends PApplet {
 
                 // test membership of graph element
                 if (nX <= maxX && nX >= minX && nY <= maxY && nY >= minY) {
-                    // remove from selection if Shift held, add otherwise
-                    if (shiftPressed()) {
-                        selection.remove(n);
-                    } else {
-                        selection.add(n);
-                    }
+                    graph.selection.addToBuffer(n);
+                } else {
+                    graph.selection.removeFromBuffer(n);
                 }
             }
         }
@@ -150,6 +149,7 @@ public class Nodes extends PApplet {
     @Override
     public void mouseReleased() {
         leftDragging = false;
+        graph.selection.commitBuffer();
     }
 
     public boolean shiftPressed() {

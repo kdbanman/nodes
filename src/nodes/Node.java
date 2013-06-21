@@ -4,7 +4,6 @@
  */
 package nodes;
 
-import controlP5.ControlP5;
 import controlP5.ControllerView;
 
 import processing.core.PApplet;
@@ -18,8 +17,8 @@ public class Node extends GraphElement<Node> {
   
     // name of controller is the URI or literal value
     // UnProjector is for 3D extension of inside()
-    Node(ControlP5 cp5, String name, UnProjector unProj, PApplet parent) {
-      super(cp5, name, unProj, parent);
+    Node(Graph parentGraph, String name) {
+      super(parentGraph, name);
 
       setView(new ControllerView() {
           @Override
@@ -28,6 +27,7 @@ public class Node extends GraphElement<Node> {
 
             // render in 3D
             p.pushMatrix();
+            updateColor();
             p.fill(currentCol);
             // Translate(x,y,0) called already, but nodes are in 3D
             p.translate(0,0,node.getPosition().z);
