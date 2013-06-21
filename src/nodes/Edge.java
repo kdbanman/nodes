@@ -49,8 +49,11 @@ public class Edge extends GraphElement<Edge>  {
 
 
             p.pushMatrix();
-            updateColor();
-            p.fill(currentCol);
+            if (selected()) {
+                p.fill(selectCol);
+            } else {
+                p.fill(currentCol);
+            }
             // Translate(x,y,0) called already in Controller, but nodes are in 3D
             p.translate(0,0,edge.getPosition().z);
 

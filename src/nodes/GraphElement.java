@@ -62,20 +62,16 @@ public class GraphElement<T> extends Controller<T> {
 
     @Override
     protected void onLeave() {
-        updateColor();
+        currentCol = defaultCol;
     }
 
     @Override
     protected void mouseReleasedOutside() {
-        updateColor();
+        currentCol = defaultCol;
     }
     
-    public void updateColor() {
-        if (selection.contains(this)) {
-            currentCol = selectCol;
-        } else {
-             currentCol = defaultCol;
-        }
+    public boolean selected() {
+        return selection.contains(this);
     }
 
     @Override
