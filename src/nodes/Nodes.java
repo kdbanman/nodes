@@ -62,8 +62,6 @@ public class Nodes extends PApplet {
         proj = new UnProjector(this);
         graph = new Graph(proj, cp5, this);
         
-        //TODO:  add event listener to invert selection on click.
-        
         lastPressedX = 0;
         lastPressedY = 0;
         
@@ -87,6 +85,15 @@ public class Nodes extends PApplet {
         proj.calculatePickPoints(mouseX, mouseY);
         pointLight(255, 255, 255, proj.ptStartPos.x, proj.ptStartPos.y, proj.ptStartPos.z);
 
+        //DEBUG
+        pushMatrix();
+        stroke(0); 
+        if (shiftPressed()) rotate(PI/4, 0, 0, 100);
+        line(0,0,0,0,100,0);
+        textSize(10);
+        text("WORD word wWOOrrrdd", proj.ptStartPos.x, proj.ptStartPos.y, proj.ptStartPos.z);
+        popMatrix();
+        
         if (leftDragging) {
             // draw transparent rectangle over selection area
             int minX = min(mouseX, lastPressedX);

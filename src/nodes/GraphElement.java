@@ -5,6 +5,7 @@
 package nodes;
 
 import controlP5.Controller;
+import controlP5.Textarea;
 import processing.core.PApplet;
 
 /**
@@ -21,6 +22,10 @@ public class GraphElement<T> extends Controller<T> {
     int currentCol;
     
     float size;
+    
+    Textarea labelBox;
+    boolean displayLabel;
+    float labelSize;
     
     Graph graph;
     UnProjector proj;
@@ -44,6 +49,9 @@ public class GraphElement<T> extends Controller<T> {
         currentCol = defaultCol;
         
         size = 10;
+        
+        displayLabel = false;
+        labelSize = 10;
     }
     
     public void setColor(int col) {
@@ -58,20 +66,35 @@ public class GraphElement<T> extends Controller<T> {
     @Override
     protected void onEnter() {
         currentCol = hoverCol;
+        displayLabel();
     }
 
     @Override
     protected void onLeave() {
         currentCol = defaultCol;
+        hideLabel();
     }
 
     @Override
     protected void mouseReleasedOutside() {
         currentCol = defaultCol;
+        hideLabel();
     }
     
     public boolean selected() {
         return selection.contains(this);
+    }
+    
+    public void displayLabel() {
+        displayLabel = true;
+    }
+    
+    public void hideLabel() {
+        displayLabel = false;
+    }
+    
+    public void setLabelSize(int s) {
+        labelSize = s;
     }
 
     @Override
