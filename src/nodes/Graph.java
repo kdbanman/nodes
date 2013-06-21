@@ -50,6 +50,8 @@ public class Graph implements Iterable<GraphElement> {
         pApp = p;
         
         selection = new Selection();
+        
+        cp5.addCallback(new SingleSelector(selection));
 
         triples = ModelFactory.createDefaultModel();
 

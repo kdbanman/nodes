@@ -57,10 +57,10 @@ public class Nodes extends PApplet {
         cam.setWheelHandler(cam.getZoomWheelHandler());
 
 
+        // this ControlP5 is only for the Graph, the ControlWindow has its own
         cp5 = new ControlP5(this);
         proj = new UnProjector(this);
         graph = new Graph(proj, cp5, this);
-        
         
         //TODO:  add event listener to invert selection on click.
         

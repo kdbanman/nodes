@@ -1,8 +1,5 @@
 /*
- * TODO: addToBuffer()
- *       removeFromBuffer()
- *       flushBuffer()
- *       clearBuffer()
+ * 
  */
 package nodes;
 
