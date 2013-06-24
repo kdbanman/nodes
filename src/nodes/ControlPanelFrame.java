@@ -23,15 +23,15 @@ public class ControlPanelFrame extends Frame {
         w = 400;
         h = 500;
            
-
         
-        setLayout(null);
+        setLayout(new BorderLayout());
+
         setSize(w, h);
         setLocation(0, 0);
         setResizable(false);
         setVisible(true);
         
-        PApplet controlPanel = new ControlPanel(w, h - 50);
+        PApplet controlPanel = new ControlPanel(w, h);
         add(controlPanel, BorderLayout.CENTER);
         validate();
         controlPanel.init();  
