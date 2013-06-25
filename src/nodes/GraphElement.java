@@ -7,6 +7,7 @@ package nodes;
 import controlP5.Controller;
 import controlP5.Textarea;
 import processing.core.PApplet;
+import processing.core.PVector;
 
 /**
  *
@@ -23,7 +24,7 @@ public class GraphElement<T> extends Controller<T> {
     
     float size;
     
-    Textarea labelBox;
+    String labelText;
     boolean displayLabel;
     float labelSize;
     
@@ -50,6 +51,7 @@ public class GraphElement<T> extends Controller<T> {
         
         size = 10;
         
+        labelText = "GraphElement default";
         displayLabel = false;
         labelSize = 10;
     }
@@ -66,35 +68,55 @@ public class GraphElement<T> extends Controller<T> {
     @Override
     protected void onEnter() {
         currentCol = hoverCol;
-        displayLabel();
     }
 
     @Override
     protected void onLeave() {
         currentCol = defaultCol;
-        hideLabel();
     }
 
     @Override
     protected void mouseReleasedOutside() {
         currentCol = defaultCol;
-        hideLabel();
     }
     
     public boolean selected() {
         return selection.contains(this);
     }
     
-    public void displayLabel() {
-        displayLabel = true;
-    }
-    
-    public void hideLabel() {
-        displayLabel = false;
+    public void setDisplayLabel(boolean setVal) {
+        displayLabel = setVal;
     }
     
     public void setLabelSize(int s) {
         labelSize = s;
+    }
+    
+    public void displayLabel() {
+        //TODO:  this is fucking weird.  resetMatrix() is unpredictable so I might need
+        // to depend upon the translate() calls within the display() method.  the rotation is stupid.
+        if (isInside() || displayLabel) {
+            pApp.pushMatrix();
+            pApp.resetMatrix();
+            
+            pApp.stroke(0); 
+            
+            proj.calculatePickPoints(0, pApp.height);
+            PVector screenVert = proj.ptStartPos.get();
+            proj.calculatePickPoints(0, 0);
+            screenVert.sub(proj.ptStartPos);
+            
+            float toScreenVert = PVector.angleBetween(screenVert, new PVector(0,100,0));
+            
+            pApp.rotate(toScreenVert, proj.ptStartPos.x, proj.ptStartPos.y, proj.ptStartPos.z);
+        
+            pApp.textSize(labelSize);
+            pApp.text(labelText, getPosition().x, getPosition().y, getPosition().z);
+            //pApp.text(labelText, 0,0,0);
+            
+            pApp.noStroke();
+            pApp.popMatrix();
+        }
     }
 
     @Override

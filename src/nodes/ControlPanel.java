@@ -71,7 +71,7 @@ public class ControlPanel extends PApplet {
         
         cp5 = new ControlP5(this);
         
-        Tab importTab = cp5.addTab("Import")
+        Tab importTab = cp5.addTab("Get Triples")
                 .setWidth(w / 4)
                 .setHeight(tabHeight)
                 .setActive(true);
