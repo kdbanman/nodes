@@ -47,7 +47,6 @@ public class Edge extends GraphElement<Edge>  {
             PVector between = edge.dst.getPosition().get();
             between.sub(edge.src.getPosition());
 
-
             p.pushMatrix();
             if (selected()) {
                 p.fill(selectCol);
@@ -58,16 +57,16 @@ public class Edge extends GraphElement<Edge>  {
             // Translate(x,y,0) called already in Controller, but nodes are in 3D
             p.translate(0,0,edge.getPosition().z);
             
-            displayLabel();
+            if (isInside() || displayLabel) {
+                 displayLabel();
+            }
             
             // Rotate towards the destination node to orient the edge
             PVector  target = between.get();
-            target.normalize();
 
             PVector up = new PVector(0,0,1);
 
             PVector axis = target.cross(up);
-            axis.normalize();
 
             float angle = PVector.angleBetween(target, up);
 

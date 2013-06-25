@@ -5,7 +5,6 @@
 package nodes;
 
 import controlP5.Controller;
-import controlP5.Textarea;
 import processing.core.PApplet;
 import processing.core.PVector;
 
@@ -93,30 +92,75 @@ public class GraphElement<T> extends Controller<T> {
     }
     
     public void displayLabel() {
-        //TODO:  this is fucking weird.  resetMatrix() is unpredictable so I might need
-        // to depend upon the translate() calls within the display() method.  the rotation is stupid.
-        if (isInside() || displayLabel) {
-            pApp.pushMatrix();
-            pApp.resetMatrix();
-            
-            pApp.stroke(0); 
-            
-            proj.calculatePickPoints(0, pApp.height);
+            // NOTE: the rotate calls are differing for each element
+            // get screen axes
+        /*
+            proj.calculatePickPoints(pApp.width / 2, 0);
             PVector screenVert = proj.ptStartPos.get();
-            proj.calculatePickPoints(0, 0);
+            
+            proj.calculatePickPoints(pApp.width, pApp.height / 2);
+            PVector screenHoriz = proj.ptStartPos.get();
+            
+            proj.calculatePickPoints(pApp.width / 2, pApp.height / 2);
+            PVector screenIn = proj.ptEndPos.get();
+            
             screenVert.sub(proj.ptStartPos);
+            screenHoriz.sub(proj.ptStartPos);
+            screenIn.sub(proj.ptStartPos);
+            
+            // get angles from default to axes
+            PVector defVert = new PVector(0,100,0);
+            PVector defHoriz = new PVector(100,0,0);
+            PVector defIn = new PVector(0,0,100);
+            
+            //DEBUG
+            // red is horiz
+            pApp.stroke(0xFFFF0000);
+            pApp.line(0,0,0, 100,0,0);
+            // vert is blue
+            pApp.stroke(0xFF0000FF);
+            pApp.line(0,0,0, 0,100,0);
+            // in is white
+            pApp.stroke(0xFFFFFFFF);
+            pApp.line(0,0,0, 0,0,100);
+            pApp.noStroke();
             
             float toScreenVert = PVector.angleBetween(screenVert, new PVector(0,100,0));
+            float toScreenHoriz = PVector.angleBetween(screenHoriz, new PVector(100, 0, 0));
+            float toScreenIn = PVector.angleBetween(screenIn, new PVector(0, 0, 100));
             
-            pApp.rotate(toScreenVert, proj.ptStartPos.x, proj.ptStartPos.y, proj.ptStartPos.z);
+            // rotate to align with screen orthogonally
+            pApp.pushMatrix();
+            pApp.rotateY(toScreenVert);
+            pApp.rotateX(toScreenHoriz);
+            pApp.rotateZ(toScreenIn);
         
             pApp.textSize(labelSize);
-            pApp.text(labelText, getPosition().x, getPosition().y, getPosition().z);
-            //pApp.text(labelText, 0,0,0);
             
-            pApp.noStroke();
+            // translate() already called within display() function
+            pApp.text(labelText, 0,0,0);
+            
             pApp.popMatrix();
-        }
+            * */
+        proj.calculatePickPoints(pApp.width / 2, pApp.height / 2);
+        PVector screenIn = proj.ptEndPos.get();
+        screenIn.sub(proj.ptStartPos);
+
+        PVector up = new PVector(0,1,0);
+
+        PVector axis = screenIn.cross(up);
+
+        float angle = PVector.angleBetween(screenIn, up);
+
+        pApp.pushMatrix();
+        pApp.rotate(-1*angle, axis.x, axis.y, axis.z);
+
+        pApp.textSize(labelSize);
+
+        // translate() already called within display() function
+        pApp.text(labelText, 0,0,0);
+
+        pApp.popMatrix();
     }
 
     @Override
