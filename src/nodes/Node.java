@@ -32,6 +32,9 @@ public class Node extends GraphElement<Node> {
             } else {
                 p.fill(currentCol);
             }
+            
+            displayLabel();
+            
             // Translate(x,y,0) called already, but nodes are in 3D
             p.translate(0,0,node.getPosition().z);
             p.sphere(node.size); 
