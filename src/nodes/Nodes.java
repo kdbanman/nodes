@@ -45,8 +45,8 @@ public class Nodes extends PApplet {
 
     @Override
     public void setup() {
-        int w = 400;
-        int h = 300;
+        int w = 800;
+        int h = 600;
         size(w, h, P3D);
 
         panel = new ControlPanelFrame();
@@ -71,6 +71,7 @@ public class Nodes extends PApplet {
         graph.addTriple("John", "worksAt", "Facecloud");
         graph.addTriple("John", "knows", "Amy");
         graph.addTriple("Amy", "hasPet", "John");
+        graph.addTriple("Amy", "flies", "WOWOWOWOWWWOOOOOOOtdiuttditdtditidtdiOOOOOOO");
 
     }
 

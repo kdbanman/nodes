@@ -19,6 +19,9 @@ public class Node extends GraphElement<Node> {
     // UnProjector is for 3D extension of inside()
     Node(Graph parentGraph, String name) {
       super(parentGraph, name);
+      
+      labelText = name;
+      labelW = charW * labelText.length();
 
       setView(new ControllerView() {
           @Override
@@ -27,6 +30,7 @@ public class Node extends GraphElement<Node> {
 
             // render in 3D
             p.pushMatrix();
+            
             if (selected()) {
                 p.fill(selectCol);
             } else {
@@ -35,12 +39,11 @@ public class Node extends GraphElement<Node> {
                         
             // Translate(x,y,0) called already, but nodes are in 3D
             p.translate(0,0,node.getPosition().z);
-            
+            p.sphere(node.size);
             if (isInside() || displayLabel) {
                  displayLabel();
             }
             
-            p.sphere(node.size); 
             p.popMatrix();
           }
         }

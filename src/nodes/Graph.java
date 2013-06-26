@@ -141,11 +141,7 @@ public class Graph implements Iterable<GraphElement> {
         addNode(obj);
 
         e = addEdge(sub, obj);
-        if (e.src.getName().equals(sub)) {
-            e.predicates.put(pred, true);
-        } else {
-            e.predicates.put(pred, false);
-        }
+        e.addTriple(sub, pred, obj);
         return e;
     }
 

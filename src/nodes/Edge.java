@@ -48,11 +48,6 @@ public class Edge extends GraphElement<Edge>  {
             between.sub(edge.src.getPosition());
 
             p.pushMatrix();
-            if (selected()) {
-                p.fill(selectCol);
-            } else {
-                p.fill(currentCol);
-            }
             
             // Translate(x,y,0) called already in Controller, but nodes are in 3D
             p.translate(0,0,edge.getPosition().z);
@@ -65,15 +60,20 @@ public class Edge extends GraphElement<Edge>  {
             PVector  target = between.get();
 
             PVector up = new PVector(0,0,1);
-
             PVector axis = target.cross(up);
-
             float angle = PVector.angleBetween(target, up);
 
             p.rotate(-1*angle, axis.x, axis.y, axis.z);
 
             float len = between.mag() - edge.src.size - edge.dst.size;
+            
+            if (selected()) {
+                p.fill(selectCol);
+            } else {
+                p.fill(currentCol);
+            }
             p.box(edge.size, edge.size, edge.lengthScale*len); 
+            
             p.popMatrix();
           }
         }
@@ -156,5 +156,28 @@ public class Edge extends GraphElement<Edge>  {
       // get the (offset) midpoint between the source and the destination
       PVector midpoint = PVector.lerp(sPos, dPos, offset);
       return setPosition(midpoint);
+    }
+    
+    public void addTriple(String sub, String pred, String obj) {
+        if (src.getName().equals(sub) && dst.getName().equals(obj) 
+                || src.getName().equals(obj) && dst.getName().equals(sub)) {
+            if (src.getName().equals(sub)) {
+                predicates.put(pred, true);
+            } else {
+                predicates.put(pred, false);
+            }
+            
+            if (predicates.size() == 1) {
+                labelText = pred;
+                labelW = charW * labelText.length();
+            } else {
+                labelText += "\n" + pred;
+                labelW = pApp.max(labelW, pred.length() * charW);
+                labelH += charH;
+            }
+        } else {
+            PApplet.println("ERROR:  triple\n  " + sub + "\n  " + pred + "\n  " + obj
+                    + "\ndoes not belong to edge\n  " + getName());
+        }
     }
 }
