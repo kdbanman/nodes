@@ -6,8 +6,7 @@ package nodes;
 
 import controlP5.Controller;
 import processing.core.PApplet;
-import processing.core.PVector;
-
+import processing.core.PMatrix3D;
 /**
  *
  * @author kdbanman
@@ -92,102 +91,20 @@ public class GraphElement<T> extends Controller<T> {
     }
     
     public void displayLabel() {
-            // NOTE: the rotate calls are differing for each element
-            // get screen axes
-        /*
-            proj.calculatePickPoints(pApp.width / 2, 0);
-            PVector screenVert = proj.ptStartPos.get();
-            
-            proj.calculatePickPoints(pApp.width, pApp.height / 2);
-            PVector screenHoriz = proj.ptStartPos.get();
-            
-            proj.calculatePickPoints(pApp.width / 2, pApp.height / 2);
-            PVector screenIn = proj.ptEndPos.get();
-            
-            screenVert.sub(proj.ptStartPos);
-            screenHoriz.sub(proj.ptStartPos);
-            screenIn.sub(proj.ptStartPos);
-            
-            // get angles from default to axes
-            PVector defVert = new PVector(0,100,0);
-            PVector defHoriz = new PVector(100,0,0);
-            PVector defIn = new PVector(0,0,100);
-            
-            //DEBUG
-            // red is horiz
-            pApp.stroke(0xFFFF0000);
-            pApp.line(0,0,0, 100,0,0);
-            // vert is blue
-            pApp.stroke(0xFF0000FF);
-            pApp.line(0,0,0, 0,100,0);
-            // in is white
-            pApp.stroke(0xFFFFFFFF);
-            pApp.line(0,0,0, 0,0,100);
-            pApp.noStroke();
-            
-            float toScreenVert = PVector.angleBetween(screenVert, new PVector(0,100,0));
-            float toScreenHoriz = PVector.angleBetween(screenHoriz, new PVector(100, 0, 0));
-            float toScreenIn = PVector.angleBetween(screenIn, new PVector(0, 0, 100));
-            
-            // rotate to align with screen orthogonally
-            pApp.pushMatrix();
-            pApp.rotateY(toScreenVert);
-            pApp.rotateX(toScreenHoriz);
-            pApp.rotateZ(toScreenIn);
+        // set transform matrix for spherical billboard
+        float[] tmp = new float[16];
+        pApp.getMatrix().get(tmp);
         
-            pApp.textSize(labelSize);
-            
-            // translate() already called within display() function
-            pApp.text(labelText, 0,0,0);
-            
-            pApp.popMatrix();
-            * */
-        // normalized camera direction vector 
-        PVector screenIn = proj.getDir(pApp.width / 2, pApp.height / 2);
-        screenIn.normalize();
+        for (int i=0; i < 3; i++) {
+            for (int j=0; j < 3; j++) {
+                tmp[i*4 + j] = i==j ? 1 : 0;
+            }
+        }
+        PMatrix3D billboarded = new PMatrix3D();
+        billboarded.set(tmp);
         
-        PVector screenCenter = proj.ptStartPos.get();
-        
-        // project reference horizontal (1,0,0) onto screen plane (near frustum)
-            //The projection of a point q = (x, y, z) onto a plane given by a point p = (a, b, c) and a normal n = (d, e, f) is
-            //q_proj = q - dot(q - p, n) * n
-            //This calculation assumes that n is a unit vector.
-        PVector horiz = new PVector(100,0,0);
-        float projectionCoeff = PVector.sub(horiz, screenCenter).dot(screenIn);
-        PVector projectedHoriz = PVector.sub(horiz, PVector.mult(screenIn, projectionCoeff));
-        
-        PVector origin = new PVector(0,0,0);
-        projectionCoeff = PVector.sub(origin, screenCenter).dot(screenIn);
-        PVector projectedOrigin = PVector.sub(origin, PVector.mult(screenIn, projectionCoeff));
-        
-        projectedHoriz.sub(screenCenter);
-        projectedOrigin.sub(screenCenter);
-        projectedHoriz.sub(projectedOrigin);
-        
-        //DEBUG
-        pApp.stroke(0);
-        pApp.line(0,0,0, projectedHoriz.x, projectedHoriz.y, projectedHoriz.z);
-        pApp.line(0,0,0, projectedOrigin.x, projectedOrigin.y, projectedOrigin.z);
-        pApp.noStroke();
-        
-        // get angle of rotation to keep text vertically aligned
-        proj.calculatePickPoints(pApp.width, pApp.height / 2);
-        PVector screenHoriz = proj.ptStartPos.get();
-        screenHoriz.sub(screenCenter);
-        float vertAngle = PVector.angleBetween(projectedHoriz, screenHoriz);
-        //DEBUG
-        pApp.println(vertAngle);
-        
-        // get axis and angle of rotation to align orthogonally to text rendering plane
-        PVector in = new PVector(0,0,-1);
-        PVector inAxis = screenIn.cross(in);
-        float inAngle = PVector.angleBetween(screenIn, in);
-
         pApp.pushMatrix();
-        // rotate to align orthogonally to text rendering plane
-        pApp.rotate(-inAngle, inAxis.x, inAxis.y, inAxis.z);
-        // rotate to align with text rendering plane's horizontal and vertical axes
-        pApp.rotateZ(vertAngle);
+        pApp.setMatrix(billboarded);
 
         pApp.textSize(labelSize);
 
