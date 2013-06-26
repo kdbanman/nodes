@@ -5,9 +5,8 @@
 package nodes;
 
 import controlP5.Controller;
-import controlP5.Textarea;
 import processing.core.PApplet;
-
+import processing.core.PMatrix3D;
 /**
  *
  * @author kdbanman
@@ -23,7 +22,7 @@ public class GraphElement<T> extends Controller<T> {
     
     float size;
     
-    Textarea labelBox;
+    String labelText;
     boolean displayLabel;
     float labelSize;
     
@@ -50,6 +49,7 @@ public class GraphElement<T> extends Controller<T> {
         
         size = 10;
         
+        labelText = "GraphElement default";
         displayLabel = false;
         labelSize = 10;
     }
@@ -66,35 +66,53 @@ public class GraphElement<T> extends Controller<T> {
     @Override
     protected void onEnter() {
         currentCol = hoverCol;
-        displayLabel();
     }
 
     @Override
     protected void onLeave() {
         currentCol = defaultCol;
-        hideLabel();
     }
 
     @Override
     protected void mouseReleasedOutside() {
         currentCol = defaultCol;
-        hideLabel();
     }
     
     public boolean selected() {
         return selection.contains(this);
     }
     
-    public void displayLabel() {
-        displayLabel = true;
-    }
-    
-    public void hideLabel() {
-        displayLabel = false;
+    public void setDisplayLabel(boolean setVal) {
+        displayLabel = setVal;
     }
     
     public void setLabelSize(int s) {
         labelSize = s;
+    }
+    
+    public void displayLabel() {
+        // set transform matrix for spherical billboard
+        float[] tmp = new float[16];
+        pApp.getMatrix().get(tmp);
+        
+        for (int i=0; i < 3; i++) {
+            for (int j=0; j < 3; j++) {
+                tmp[i*4 + j] = i==j ? 1 : 0;
+            }
+        }
+        PMatrix3D billboarded = new PMatrix3D();
+        billboarded.set(tmp);
+        
+        pApp.pushMatrix();
+        pApp.setMatrix(billboarded);
+
+        pApp.textSize(labelSize);
+
+        // translate() already called within display() function, so
+        // text @ (0,0,0) + size offset for separation
+        pApp.text(labelText, size,size,size);
+
+        pApp.popMatrix();
     }
 
     @Override
