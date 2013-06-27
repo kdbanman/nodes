@@ -35,6 +35,8 @@ public class ControlPanel extends PApplet {
     int buttonHeight;
     int modifiersBoxHeight;
     
+    ArrayList<Group> importHackTabs;
+    Group openImportHackTab;
     
     ArrayList<Group> transformHackTabs;
     Group openTransformHackTab;
@@ -60,6 +62,7 @@ public class ControlPanel extends PApplet {
         modifiersBoxHeight = 200;
         
         // control element miscellany
+        importHackTabs = new ArrayList<>();
         transformHackTabs = new ArrayList<>();
         
         colorPickerDefault = 0xFF1A4969;
@@ -70,6 +73,8 @@ public class ControlPanel extends PApplet {
         size(w, h);
         
         cp5 = new ControlP5(this);
+        
+        // Main tabs
         
         Tab importTab = cp5.addTab("Get Triples")
                 .setWidth(w / 4)
@@ -86,44 +91,108 @@ public class ControlPanel extends PApplet {
                 .setHeight(tabHeight);
         cp5.getDefaultTab().remove();
         
-        // Import tab elements
+        //===================
+        //Import tab elements
+        //===================
+        
+        int importTabsVert = 2 * tabHeight + padding;
+        
+        Group webGroup = new HackTab(cp5, "Web")
+                .setBarHeight(tabHeight)
+                .setPosition(0, importTabsVert)
+                .setWidth(w / 4)
+                .hideArrow()
+                .setOpen(true)
+                .moveTo(importTab);
+        Group virtuosoGroup = new HackTab(cp5, "Virtuoso")
+                .setBarHeight(tabHeight)
+                .setPosition(w / 4, importTabsVert)
+                .setWidth(w / 4)
+                .hideArrow()
+                .setOpen(false)
+                .moveTo(importTab);
+        Group exploreGroup = new HackTab(cp5, "Explore")
+                .setBarHeight(tabHeight)
+                .setPosition(w / 2, importTabsVert)
+                .setWidth(w / 4)
+                .hideArrow()
+                .setOpen(false)
+                .moveTo(importTab);
+        
+        importHackTabs.add(webGroup);
+        importHackTabs.add(virtuosoGroup);
+        importHackTabs.add(exploreGroup);
+        
+        openImportHackTab = webGroup;
+        
+        // Web import elements
+        
+        cp5.addTextfield("URI",
+                padding,
+                padding,
+                w - 2 * padding,
+                elementHeight)
+                .setAutoClear(false)
+                .moveTo(webGroup);
+        cp5.addButton("Query Web")
+                .setSize(buttonWidth, buttonHeight)
+                .setPosition(w - buttonWidth - padding, 
+                    labelledElementHeight + padding)
+                .moveTo(webGroup);
+        
+        // Virtuoso import elements
+        
         cp5.addTextfield("IP:Port", 
+                    padding - w / 4, 
                     padding, 
-                    tabHeight + padding, 
                     w - 2 * padding, 
                     elementHeight)
                 .setAutoClear(false)
-                .moveTo(importTab);
+                .moveTo(virtuosoGroup);
         cp5.addTextfield("Username", 
-                    padding, 
-                    tabHeight + labelledElementHeight + padding, 
+                    padding - w / 4, 
+                    labelledElementHeight + padding, 
                     w - 2 * padding, 
                     elementHeight)
                 .setAutoClear(false)
-                .moveTo(importTab);
+                .moveTo(virtuosoGroup);
         cp5.addTextfield("Password", 
-                    padding, 
-                    tabHeight + 2 * labelledElementHeight + padding, 
+                    padding - w / 4, 
+                    2 * labelledElementHeight + padding, 
                     w - 2 * padding, 
                     elementHeight)
                 .setAutoClear(false)
                 .setPasswordMode(true)
-                .moveTo(importTab);
+                .moveTo(virtuosoGroup);
         cp5.addTextfield("Query", 
-                    padding, 
-                    tabHeight + 3 * labelledElementHeight + padding, 
+                    padding - w / 4, 
+                    3 * labelledElementHeight + padding, 
                     w - 2 * padding, 
                     elementHeight)
                 .setAutoClear(false)
-                .moveTo(importTab);
+                .moveTo(virtuosoGroup);
         
-        cp5.addButton("Add to Graph")
+        cp5.addButton("Query Virtuoso")
                 .setSize(buttonWidth, buttonHeight)
-                .setPosition(w - buttonWidth - padding, 
-                    tabHeight + 4 * labelledElementHeight + padding)
-                .moveTo(importTab);
+                .setPosition(w - buttonWidth - padding - w / 4, 
+                    4 * labelledElementHeight + padding)
+                .moveTo(virtuosoGroup);
         
+        // Explore tab elements
+        
+        cp5.addRadioButton("Source Choice")
+                .setPosition(padding - w / 2, padding)
+                .setItemHeight(elementHeight)
+                .setItemWidth(elementHeight)
+                .addItem("Query linked data web", 0)
+                .addItem("Query virtuoso server", 1)
+                .activate(0)
+                .moveTo(exploreGroup);
+        
+        //=======================
         // Transform tab elements
+        //=======================
+        
         ListBox modifiers = cp5.addListBox("Selection Modifiers", 
                     padding, 
                     2 * tabHeight + padding, 
@@ -199,7 +268,7 @@ public class ControlPanel extends PApplet {
                 .setColorValue(colorPickerDefault)
                 .moveTo(colorGroup);
         
-        cp5.addRadioButton("Label Visibility", padding, padding)
+        cp5.addRadioButton("Label Visibility")
                 .setPosition(padding - w / 2, padding)
                 .setItemHeight(elementHeight)
                 .setItemWidth(elementHeight)
@@ -226,6 +295,13 @@ public class ControlPanel extends PApplet {
             openTransformHackTab.setOpen(false);
             openTransformHackTab = hackTab;
           }
+        }
+        
+        for (Group hackTab : importHackTabs) {
+            if (hackTab.isOpen() && hackTab != openImportHackTab) {
+                openImportHackTab.setOpen(false);
+                openImportHackTab = hackTab;
+            }
         }
         
         background(0);
