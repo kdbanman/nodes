@@ -16,13 +16,12 @@ public class ControlPanelFrame extends Frame {
     int w, h;
     String name;
     
-    public ControlPanelFrame() {
+    public ControlPanelFrame(Graph g) {
         super("Control Panel");
         
         // window parameters
         w = 400;
         h = 500;
-           
         
         setLayout(new BorderLayout());
 
@@ -31,7 +30,7 @@ public class ControlPanelFrame extends Frame {
         setResizable(false);
         setVisible(true);
         
-        PApplet controlPanel = new ControlPanel(w, h);
+        PApplet controlPanel = new ControlPanel(g, w, h);
         add(controlPanel, BorderLayout.CENTER);
         validate();
         controlPanel.init();  
