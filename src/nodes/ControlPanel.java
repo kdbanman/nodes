@@ -22,6 +22,7 @@ public class ControlPanel extends PApplet {
     int w, h;
     
     ControlP5 cp5;
+    Graph graph;
     
     // TODO:  use these fonts.
     ControlFont tabFont;
@@ -43,9 +44,11 @@ public class ControlPanel extends PApplet {
     
     int colorPickerDefault;
     
-    public ControlPanel(int frameWidth, int frameHeight) {
+    public ControlPanel(int frameWidth, int frameHeight, Graph parentGraph) {
         w = frameWidth;
         h = frameHeight;
+        
+        graph = parentGraph;
         
         // element size parameters
         padding = 10;
@@ -91,9 +94,11 @@ public class ControlPanel extends PApplet {
                 .setHeight(tabHeight);
         cp5.getDefaultTab().remove();
         
-        //===================
-        //Import tab elements
-        //===================
+        //====================
+        // Import tab elements
+        //====================
+        
+        // import subtabs
         
         int importTabsVert = 2 * tabHeight + padding;
         
@@ -218,6 +223,8 @@ public class ControlPanel extends PApplet {
         
         int transformTabsVert = modifiersBoxHeight + 3 * tabHeight + padding;
         
+        // Transform subtabs
+        
         Group positionGroup = new HackTab(cp5, "Position")
                 .setBarHeight(tabHeight)
                 .setPosition(0, transformTabsVert)
@@ -254,6 +261,8 @@ public class ControlPanel extends PApplet {
         
         openTransformHackTab = positionGroup;
         
+        // transformation controllers
+        
         cp5.addRadioButton("Layout Choice", padding, padding)
                 .setPosition(padding, padding)
                 .setItemHeight(elementHeight)
@@ -282,9 +291,13 @@ public class ControlPanel extends PApplet {
                 .setSize(buttonWidth, buttonHeight)
                 .moveTo(hideGroup);
         
+        //=====================
         // Options tab elements
+        //=====================
         
+        //==================
         // Save tab elements
+        //==================
     }
     
     @Override

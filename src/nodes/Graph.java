@@ -117,7 +117,7 @@ public class Graph implements Iterable<GraphElement> {
     }
 
     /*
-     * adds triples to model, adding (transformed) Nodes and Edges as necessary
+     * adds triples to model, adding Nodes and Edges as necessary
      */
     public void addTriples(Model toAdd) {
         StmtIterator it = toAdd.listStatements();
@@ -300,6 +300,7 @@ public class Graph implements Iterable<GraphElement> {
 
             return true;
         }
+        
     }
 
     private boolean removeNode(Node n) {
@@ -319,17 +320,22 @@ public class Graph implements Iterable<GraphElement> {
             printNullEdgeTargets(s, d, src, dst);
             return false;
         } else if (!adjacent.get(src).contains(dst)) {
-            PApplet.println("Cannot remove nonexistent edge between:\n" + s + "\n" + d);
+            PApplet.println("ERROR: Cannot remove nonexistent edge between:\n" + s + "\n" + d);
             return false;
         } else {
             Edge e = getEdge(s, d);
-
+            // TODO: remove triples from model
+            
+            
+            // remove controller
             e.remove();
 
+            // adjust adjacency list and size
             adjacent.get(src).remove(dst);
             adjacent.get(dst).remove(src);
 
             edgeCount -= 1;
+            
             return true;
         }
     }

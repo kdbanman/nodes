@@ -9,6 +9,9 @@
  * Shift + Click (and drag) adds to selection.
  * 
  * Right Click and drag rotates the camera
+ * Mouse wheel zooms camera
+ * 
+ * 
  */
 package nodes;
 
@@ -49,8 +52,6 @@ public class Nodes extends PApplet {
         int h = 300;
         size(w, h, P3D);
 
-        panel = new ControlPanelFrame();
-
         cam = new PeasyCam(this, 0, 0, 0, 200);
         cam.setLeftDragHandler(null);
         cam.setRightDragHandler(cam.getRotateDragHandler());
@@ -61,6 +62,8 @@ public class Nodes extends PApplet {
         cp5 = new ControlP5(this);
         proj = new UnProjector(this);
         graph = new Graph(proj, cp5, this);
+        
+        panel = new ControlPanelFrame(graph);
         
         lastPressedX = 0;
         lastPressedY = 0;

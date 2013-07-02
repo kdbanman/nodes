@@ -1,9 +1,17 @@
 #MISC
 #####
 
+- ugh.  merge with work machine for framed labels
+
+- update node and edge removal within Graph to maintain the model.
+
+- updtae node removal process to remove all attached edges and singlet nodes
+
+- refactor edge member predicates into a list of jena Statements
+	- update label machinery accordingly
+
 - implement Graph method to change color of selected nodes
 - ... change label display of selected nodes
-- ... remove nodes and edges altogether.  remember to maintain the model and the size and the selection.
 
 - (probably within main application loop) implement drag and drop movement of selected nodes.  keep in mind that the controller is currently prepared to prohibit the user from doing this unless the appropriate radio button is active.  this might be stupid.
 
