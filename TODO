@@ -1,0 +1,56 @@
+#MISC
+#####
+
+- implement Graph method to change color of selected nodes
+- ... change label display of selected nodes
+- ... remove nodes and edges altogether.  remember to maintain the model and the size and the selection.
+
+- (probably within main application loop) implement drag and drop movement of selected nodes.  keep in mind that the controller is currently prepared to prohibit the user from doing this unless the appropriate radio button is active.  this might be stupid.
+
+- within main application loop, implement the auto layout of graph when the radio button is selected
+
+- implement web-retrieval of RDF from URI (will be used within control panel and in exploration mode)
+
+- move auto-layout to a permanent spot at the bottom of the control panel as a toggle, remove drag and drop radio
+
+- replace layout tab with size tab
+	- size nodes
+		- degree
+		- betweenness centrality
+	- size edges
+		- number of predicates
+		- betweenness centrality
+
+#CLASSES AND INTERFACES
+#######################
+
+- implement basic graph stack
+	- ensure deep copying (may have to keep within Graph so that references to it elsewhere don't get screwed up)
+
+- write first few selection modifiers to unearth the necessary interface
+	- test context-sensitivity with:
+		- only nodes
+		- only edges
+		- clear selection
+
+- implement error/notification popup window system
+
+#CONTROL LOGIC
+##############
+
+- disable auto-layout as soon as its tab is not active
+
+- populate selection modifiers based on selection nature
+
+- disable certain sizing options based on selection nature
+
+#MODIFIERS
+##########
+
+- select shortest path between 2 nodes
+
+#OPTIONS
+########
+
+- exploration: colorize based on database or web retrieval
+- exploration: get from web, database, or both
