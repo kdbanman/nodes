@@ -24,6 +24,8 @@ public class ControlPanel extends PApplet {
     ControlP5 cp5;
     Graph graph;
     
+    Graph graph;
+    
     // TODO:  use these fonts.
     ControlFont tabFont;
     ControlFont button;
@@ -44,11 +46,19 @@ public class ControlPanel extends PApplet {
     
     int colorPickerDefault;
     
+<<<<<<< HEAD
     public ControlPanel(int frameWidth, int frameHeight, Graph parentGraph) {
         w = frameWidth;
         h = frameHeight;
         
         graph = parentGraph;
+=======
+    public ControlPanel(Graph g, int frameWidth, int frameHeight) {
+        w = frameWidth;
+        h = frameHeight;
+        
+        graph = g;
+>>>>>>> ba501779954799fae4a5b14f8b4537c42cde8bc5
         
         // element size parameters
         padding = 10;
@@ -268,8 +278,8 @@ public class ControlPanel extends PApplet {
                 .setItemHeight(elementHeight)
                 .setItemWidth(elementHeight)
                 .addItem("Drag and Drop", 0)
-                .addItem("Auto Layout", 1)
-                .activate(0)
+                .addItem("Expand", 1)
+                .addItem("Auto Layout (affects entire graph)", 2)
                 .moveTo(positionGroup);
         
         cp5.addColorPicker("Color Choice")

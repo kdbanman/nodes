@@ -25,6 +25,10 @@ public class GraphElement<T> extends Controller<T> {
     String labelText;
     boolean displayLabel;
     float labelSize;
+    int labelW;
+    int labelH;
+    int charW;
+    int charH;
     
     Graph graph;
     UnProjector proj;
@@ -52,6 +56,10 @@ public class GraphElement<T> extends Controller<T> {
         labelText = "GraphElement default";
         displayLabel = false;
         labelSize = 10;
+        labelW = (int) labelSize * labelText.length();
+        labelH = 8;
+        charW = 5;
+        charH = 8;
     }
     
     public void setColor(int col) {
@@ -105,12 +113,16 @@ public class GraphElement<T> extends Controller<T> {
         
         pApp.pushMatrix();
         pApp.setMatrix(billboarded);
+        
+        pApp.fill(0xFF222222);
+        pApp.rect(size - 3, 0, labelW + 6, labelH + 3, 2);
 
         pApp.textSize(labelSize);
-
+        pApp.textFont(cp5.getFont().getFont());
+        pApp.fill(0xFF999999);
         // translate() already called within display() function, so
-        // text @ (0,0,0) + size offset for separation
-        pApp.text(labelText, size,size,size);
+        // text spaced for separation and box alignment
+        pApp.text(labelText, size, labelSize / 2, 0);
 
         pApp.popMatrix();
     }
