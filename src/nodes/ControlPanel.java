@@ -24,8 +24,6 @@ public class ControlPanel extends PApplet {
     ControlP5 cp5;
     Graph graph;
     
-    Graph graph;
-    
     // TODO:  use these fonts.
     ControlFont tabFont;
     ControlFont button;
@@ -46,19 +44,11 @@ public class ControlPanel extends PApplet {
     
     int colorPickerDefault;
     
-<<<<<<< HEAD
     public ControlPanel(int frameWidth, int frameHeight, Graph parentGraph) {
         w = frameWidth;
         h = frameHeight;
         
         graph = parentGraph;
-=======
-    public ControlPanel(Graph g, int frameWidth, int frameHeight) {
-        w = frameWidth;
-        h = frameHeight;
-        
-        graph = g;
->>>>>>> ba501779954799fae4a5b14f8b4537c42cde8bc5
         
         // element size parameters
         padding = 10;

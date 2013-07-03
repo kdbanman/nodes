@@ -65,8 +65,6 @@ public class Nodes extends PApplet {
 
         panel = new ControlPanelFrame(graph);
         
-        panel = new ControlPanelFrame(graph);
-        
         lastPressedX = 0;
         lastPressedY = 0;
         
