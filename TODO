@@ -1,7 +1,7 @@
 #MISC
 #####
 
-- ugh.  merge with work machine for framed labels
+- try stable processing 2 release
 
 - update node and edge removal within Graph to maintain the model.
 
@@ -14,17 +14,17 @@
 - ... change label display of selected nodes
 
 - (probably within main application loop) implement drag and drop movement of selected nodes.  keep in mind that the controller is currently prepared to prohibit the user from doing this unless the appropriate radio button is active.  this might be stupid.
+	- remove drag and drop radio
 
-- within main application loop, implement the auto layout of graph when the radio button is selected
+- within main application loop, implement the auto layout of graph when the toggle is selected
 
-- implement web-retrieval of RDF from URI (will be used within control panel and in exploration mode)
+- add radial lexicographical sorting (sensitive to common subject?  sounds expensive.  maybe just let the user dumbass if they want))
 
-- move auto-layout to a permanent spot at the bottom of the control panel as a toggle, remove drag and drop radio
-
-- replace layout tab with size tab
+- add size tab (will require respacing other transform tabs)
 	- size nodes
 		- degree
 		- betweenness centrality
+		- relative lexicographic position (user defined scale)
 	- size edges
 		- number of predicates
 		- betweenness centrality
@@ -62,3 +62,14 @@
 
 - exploration: colorize based on database or web retrieval
 - exploration: get from web, database, or both
+
+
+###########################
+COMPLETED        (:r !date)
+###########################
+
+
+Wed  3 Jul 2013 11:43:53 MDT
+- implement web-retrieval of RDF from URI (will be used within control panel and in exploration mode)
+
+- ugh.  merge with work machine for framed labels
