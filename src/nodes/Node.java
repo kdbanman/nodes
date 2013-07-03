@@ -52,25 +52,29 @@ public class Node extends GraphElement<Node> {
 
     @Override
     public boolean inside() {
+        try {
+            proj.calculatePickPoints(pApp.mouseX, pApp.mouseY);
+        } catch (NullPointerException e) {
+            System.err.println("DEBUG: null caught in Node");
+            return false;
+        }
 
-      proj.calculatePickPoints(pApp.mouseX, pApp.mouseY);
+        // vector mouse is from cursor inward orthogonally from the screen
+        PVector mouse = proj.ptEndPos.get();
+        mouse.sub(proj.ptStartPos);
 
-      // vector mouse is from cursor inward orthogonally from the screen
-      PVector mouse = proj.ptEndPos.get();
-      mouse.sub(proj.ptStartPos);
+        // vector obj is from the cursor to the position of the node
+        PVector obj = getPosition().get();
+        obj.sub(proj.ptStartPos);
 
-      // vector obj is from the cursor to the position of the node
-      PVector obj = getPosition().get();;
-      obj.sub(proj.ptStartPos);
+        // theta is the angle between the mouse vector and the object vector
+        float theta = PVector.angleBetween(mouse, obj);
 
-      // theta is the angle between the mouse vector and the object vector
-      float theta = PVector.angleBetween(mouse, obj);
+        // phi is the angular displacement of the radius of the node
+        float phi = PApplet.atan(size/obj.mag());
 
-      // phi is the angular displacement of the radius of the node
-      float phi = PApplet.atan(size/obj.mag());
-
-      // the cursor is inside the node if theta is less than phi
-      return theta < phi;
+        // the cursor is inside the node if theta is less than phi
+        return theta < phi;
     }
 
     public Node setPosition(final float x, final float y, final float z) {

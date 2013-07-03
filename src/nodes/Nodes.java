@@ -52,10 +52,11 @@ public class Nodes extends PApplet {
         int h = 600;
         size(w, h, P3D);
 
-        cam = new PeasyCam(this, 0, 0, 0, 200);
+        cam = new PeasyCam(this, 0, 0, 0, 400);
         cam.setLeftDragHandler(null);
         cam.setRightDragHandler(cam.getRotateDragHandler());
         cam.setWheelHandler(cam.getZoomWheelHandler());
+        cam.setRotationScale(0.3);
 
 
         // this ControlP5 is only for the Graph, the ControlWindow has its own
@@ -70,12 +71,17 @@ public class Nodes extends PApplet {
         
 
         // test data
+        /*
         graph.addTriple("John", "knows", "Bill");
         graph.addTriple("John", "worksAt", "Facecloud");
         graph.addTriple("John", "knows", "Amy");
+        graph.addTriple("John", "sees", "Amy");
+        graph.addTriple("John", "shootsAt", "Amy");
+        graph.addTriple("John", "pays", "Amy");
+        graph.addTriple("John", "drawsOn", "Amy");
         graph.addTriple("Amy", "hasPet", "John");
         graph.addTriple("Amy", "flies", "WOWOWOWOWWWOOOOOOOtdiuttditdtditidtdiOOOOOOO");
-
+        */
     }
 
     @Override

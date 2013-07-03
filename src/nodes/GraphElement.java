@@ -6,6 +6,7 @@ package nodes;
 
 import controlP5.Controller;
 import processing.core.PApplet;
+import processing.core.PFont;
 import processing.core.PMatrix3D;
 /**
  *
@@ -22,9 +23,11 @@ public class GraphElement<T> extends Controller<T> {
     
     float size;
     
-    String labelText;
-    boolean displayLabel;
     float labelSize;
+    PFont labelFont;
+    String labelText;
+    
+    boolean displayLabel;
     int labelW;
     int labelH;
     int charW;
@@ -53,13 +56,17 @@ public class GraphElement<T> extends Controller<T> {
         
         size = 10;
         
+        labelSize = 12;
+        labelFont = pApp.createFont("cour.ttf", labelSize);
         labelText = "GraphElement default";
+        
+        charW = labelFont.getGlyph('A').width;
+        charH = labelFont.getGlyph('A').height;
+        
+        labelW = (int) charW * labelText.length();
+        labelH = charH;
+        
         displayLabel = false;
-        labelSize = 10;
-        labelW = (int) labelSize * labelText.length();
-        labelH = 8;
-        charW = 5;
-        charH = 8;
     }
     
     public void setColor(int col) {
@@ -114,15 +121,20 @@ public class GraphElement<T> extends Controller<T> {
         pApp.pushMatrix();
         pApp.setMatrix(billboarded);
         
-        pApp.fill(0xFF222222);
-        pApp.rect(size - 3, 0, labelW + 6, labelH + 3, 2);
+        pApp.fill(0xFF333333);
+        
+        pApp.pushMatrix();
+        pApp.translate(0,0,size);
+        pApp.rect(size - 3, -3, labelW + 6, labelH + 6, 2);
+        pApp.popMatrix();
 
-        pApp.textSize(labelSize);
-        pApp.textFont(cp5.getFont().getFont());
+        //DEBUG
+        //pApp.textSize(labelSize);
         pApp.fill(0xFF999999);
+        pApp.textFont(labelFont);
         // translate() already called within display() function, so
         // text spaced for separation and box alignment
-        pApp.text(labelText, size, labelSize / 2, 0);
+        pApp.text(labelText, size, charH, size);
 
         pApp.popMatrix();
     }

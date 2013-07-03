@@ -122,12 +122,17 @@ public class Graph implements Iterable<GraphElement> {
     public void addTriples(Model toAdd) {
         StmtIterator it = toAdd.listStatements();
         if (it.hasNext()) {
+            // stop rendering (think concurrency)
+            cp5.setAutoDraw(false);
+            
             while (it.hasNext()) {
                 Statement s = it.nextStatement();
                 addTriple(s);
             }
+            // begin rendering again
+            cp5.setAutoDraw(true);
         } else {
-            PApplet.println("Empty query result.");
+            PApplet.println("Empty query result - no triples to add.");
         }
 
         triples.add(toAdd);
@@ -218,7 +223,7 @@ public class Graph implements Iterable<GraphElement> {
             // (cube root for volume)
             float initBoundary = PApplet.pow((float) nodeCount, 0.333f)
                     * initPositionSparsity;
-            initBoundary = PApplet.min(initBoundary, 100);
+            initBoundary = PApplet.min(initBoundary, 300);
 
             n = new Node(this, id)
                     .setPosition(pApp.random(-initBoundary, initBoundary),

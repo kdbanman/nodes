@@ -4,11 +4,15 @@
  */
 package nodes;
 
+import com.hp.hpl.jena.rdf.model.Model;
+import controlP5.CallbackEvent;
+import controlP5.CallbackListener;
 import controlP5.ControlP5;
 import controlP5.ControlFont;
 import controlP5.Group;
 import controlP5.ListBox;
 import controlP5.Tab;
+import controlP5.Textfield;
 
 import processing.core.PApplet;
 
@@ -41,6 +45,8 @@ public class ControlPanel extends PApplet {
     
     ArrayList<Group> transformHackTabs;
     Group openTransformHackTab;
+    
+    Textfield importWebURI;
     
     int colorPickerDefault;
     
@@ -132,18 +138,20 @@ public class ControlPanel extends PApplet {
         
         // Web import elements
         
-        cp5.addTextfield("URI",
+        importWebURI = cp5.addTextfield("URI",
                 padding,
                 padding,
                 w - 2 * padding,
                 elementHeight)
                 .setAutoClear(false)
-                .moveTo(webGroup);
+                .moveTo(webGroup)
+                .setText("http://dbpedia.org/resource/Albert_Einstein");
         cp5.addButton("Query Web")
                 .setSize(buttonWidth, buttonHeight)
                 .setPosition(w - buttonWidth - padding, 
                     labelledElementHeight + padding)
-                .moveTo(webGroup);
+                .moveTo(webGroup)
+                .addCallback(new QueryWebListener());
         
         // Virtuoso import elements
         
@@ -344,6 +352,24 @@ public class ControlPanel extends PApplet {
                     }
                     theApplet.popMatrix();
                 }
+            }
+        }
+    }
+    
+    /*************
+     * Callback listeners
+     *************/
+    
+    /*
+     * attach to web query button in import tab
+     */
+    private class QueryWebListener implements CallbackListener {
+        @Override
+        public void controlEvent(CallbackEvent event) {
+            if (event.getAction() == ControlP5.ACTION_PRESSED) {
+                String uri = importWebURI.getText();
+                Model toAdd = Importer.getDescriptionFromWeb(uri);
+                graph.addTriples(toAdd);
             }
         }
     }

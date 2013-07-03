@@ -172,8 +172,8 @@ public class Edge extends GraphElement<Edge>  {
                 labelW = charW * labelText.length();
             } else {
                 labelText += "\n" + pred;
-                labelW = pApp.max(labelW, pred.length() * charW);
-                labelH += charH;
+                labelW = PApplet.max(labelW, pred.length() * charW);
+                labelH += 5 * charH / 3;
             }
         } else {
             PApplet.println("ERROR:  triple\n  " + sub + "\n  " + pred + "\n  " + obj

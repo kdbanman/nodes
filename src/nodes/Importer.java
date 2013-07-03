@@ -23,10 +23,10 @@ public class Importer {
     
     /**
      * 
-     * @param uri non-namespaced http uri to query with
+     * @param uri non-namespaced http uri to query
      * @return 
      */
-    public static Model getNeigborhoodFromWeb(String uri) {
+    public static Model getDescriptionFromWeb(String uri) {
         Model m = ModelFactory.createDefaultModel();
         
         try {
@@ -36,14 +36,6 @@ public class Importer {
         }
         
         StmtIterator it = m.listStatements();
-        
-        while (it.hasNext()) {
-            Statement stmt = it.nextStatement();
-            String s = stmt.getSubject().getURI();
-            if (!s.equals(uri)) {
-                it.remove();
-            }
-        }
         
         return m;
     }
