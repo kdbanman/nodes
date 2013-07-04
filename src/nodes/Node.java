@@ -20,8 +20,8 @@ public class Node extends GraphElement<Node> {
     Node(Graph parentGraph, String name) {
       super(parentGraph, name);
       
-      labelText = name;
-      labelW = charW * labelText.length();
+      labelText.add(name);
+      updateLabel();
 
       setView(new ControllerView() {
           @Override

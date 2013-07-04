@@ -5,6 +5,7 @@
 package nodes;
 
 import controlP5.Controller;
+import java.util.ArrayList;
 import processing.core.PApplet;
 import processing.core.PFont;
 import processing.core.PMatrix3D;
@@ -25,7 +26,8 @@ public class GraphElement<T> extends Controller<T> {
     
     float labelSize;
     PFont labelFont;
-    String labelText;
+    ArrayList<String> labelText;
+    String constructedLabel;
     
     boolean displayLabel;
     int labelW;
@@ -58,12 +60,13 @@ public class GraphElement<T> extends Controller<T> {
         
         labelSize = 12;
         labelFont = pApp.createFont("cour.ttf", labelSize);
-        labelText = "GraphElement default";
+        labelText = new ArrayList<>();
+        constructedLabel = "";
         
         charW = labelFont.getGlyph('A').width;
         charH = labelFont.getGlyph('A').height;
         
-        labelW = (int) charW * labelText.length();
+        labelW = charW;
         labelH = charH;
         
         displayLabel = false;
@@ -105,6 +108,34 @@ public class GraphElement<T> extends Controller<T> {
         labelSize = s;
     }
     
+    public void recalculateLabelDim() {
+        labelH = labelText.size() * charH * 5 / 4;
+        int labelW = 0;
+        for (String line : labelText) {
+            labelW = PApplet.max(labelW, line.length());
+        }
+    }
+    
+    public void constructLabel() {
+        constructedLabel = "";
+        for (String line : labelText) {
+            constructedLabel += line + "\n";
+        }
+    }
+    
+    /* TODO: find out if alteration during iteration sticks around
+    public void prefixLabel() {
+        for (String line : labelText) {
+            line = graph.prefixed(line);
+        }
+    }*/
+    
+    public void updateLabel() {
+        recalculateLabelDim();
+        constructLabel();
+        //TODO: prefixLabel();
+    }
+    
     public void displayLabel() {
         // set transform matrix for spherical billboard
         float[] tmp = new float[16];
@@ -132,9 +163,10 @@ public class GraphElement<T> extends Controller<T> {
         //pApp.textSize(labelSize);
         pApp.fill(0xFF999999);
         pApp.textFont(labelFont);
+        
         // translate() already called within display() function, so
-        // text spaced for separation and box alignment
-        pApp.text(labelText, size, charH, size);
+        // text position spaced relative to GraphElement for separation/alignment
+        pApp.text(constructedLabel, size, charH, size);
 
         pApp.popMatrix();
     }

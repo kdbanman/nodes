@@ -1,10 +1,7 @@
 #MISC
 #####
 
-- try stable processing 2 release
-
-- add prefix/unprefix triple methods to graph
-	- ensure model is updated before any nodes/edges are created
+- prexfixLabel() function iterates through lines, best called from addNode() and addEdge(), since that is when new prefixes could be discovered
 	- push prefixing to label mechanism to avoid violating uniqueness of controller names.  
 		- think about how to deal with edges properly.  probably similarly to nodes, but it will be a bit slow iterating through the predicates to check all of them.  actually no, there should never be so many predicates as to slow it down significantly, the code will just be a fair bit uglier
 
@@ -13,11 +10,13 @@
 
 - ensure label size adjustment is in the label tab
 
+- try stable processing 2 release
+	
 - update node and edge removal within Graph to maintain the model.
 
 - updtae node removal process to remove all attached edges and singlet nodes
 
-- refactor edge member predicates into a list of jena Statements
+- refactor edge member predicates into a list of jena Triples (or something)
 	- update label machinery accordingly
 
 - implement Graph method to change color of selected nodes
@@ -78,6 +77,14 @@
 COMPLETED        (:r !date)
 ###########################
 
+
+Thu Jul  4 15:02:31 MDT 2013
+- label text content from String to List of Strings (lines of text) so that multiline literals are easy, and so is post-discovery prefixing.
+
+- recalculateLabelDimensions() iterates through list.  should be called within prefixLabel() and anywhere else label is dicked with
+
+- add prefix/unprefix triple methods to graph
+	- ensure model is updated before any nodes/edges are created
 
 Wed  3 Jul 2013 11:43:53 MDT
 - implement web-retrieval of RDF from URI (will be used within control panel and in exploration mode)
