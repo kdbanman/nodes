@@ -120,9 +120,26 @@ public class Graph implements Iterable<GraphElement> {
      * adds triples to model, adding Nodes and Edges as necessary
      */
     public void addTriples(Model toAdd) {
+        // add to model first so that prefixes are used in the GraphElements
+        triples.add(toAdd);
+        
+        int prevMapSize = triples.getNsPrefixMap().size();
+        int toAddMapSize = toAdd.getNsPrefixMap().size();
+        
+        triples.withDefaultMappings(toAdd);
+        int newMapSize = triples.getNsPrefixMap().size();
+        
+        // if the prefix map for the Model triples changes or defines a
+        // prefix for uris that already exist in the model (with the old or no
+        // prefix), then uniqueness is broken. the assertion of sizes here
+        // protects from changes, but not from definitions.
+        if (newMapSize != prevMapSize + toAddMapSize) {
+            System.out.println("ERROR:  prefix overwritten");
+        }
+        
         StmtIterator it = toAdd.listStatements();
         if (it.hasNext()) {
-            // stop rendering (think concurrency)
+            // stop rendering because of transient ugliness and for possible concurrency issues
             cp5.setAutoDraw(false);
             
             while (it.hasNext()) {
@@ -134,16 +151,26 @@ public class Graph implements Iterable<GraphElement> {
         } else {
             PApplet.println("Empty query result - no triples to add.");
         }
-
-        triples.add(toAdd);
+    }
+    
+    public String prefixed(String uri) {
+        return triples.shortForm(uri);
+    }
+    public String expanded(String prefixed) {
+        return triples.expandPrefix(prefixed);
     }
 
     public Edge addTriple(String sub, String pred, String obj) {
         Edge e;
 
+        //TODO remove prefixing in controller names and push it to the label mechanism:
+        sub = prefixed(sub);
+        pred = prefixed(pred);
+        obj = prefixed(obj);
+        
         // add*** just returns the existing *** if a new *** need not be created.  (think sets)
-        addNode(triples.shortForm(sub));
-        addNode(triples.shortForm(obj));
+        addNode(sub);
+        addNode(obj);
 
         e = addEdge(sub, obj);
         e.addTriple(sub, pred, obj);
@@ -204,7 +231,7 @@ public class Graph implements Iterable<GraphElement> {
         return getNbrs(n).size();
     }
 
-    /**
+    /*
      * to be called by addTriple. affects cp5, nodeCount, and adjacent iff the
      * node is new. a new entry in adjacent will map to an empty ArrayList since
      * no edges may exist yet.

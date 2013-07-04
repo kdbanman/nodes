@@ -5,6 +5,11 @@
 
 - add prefix/unprefix triple methods to graph
 	- ensure model is updated before any nodes/edges are created
+	- push prefixing to label mechanism to avoid violating uniqueness of controller names.  
+		- think about how to deal with edges properly.  probably similarly to nodes, but it will be a bit slow iterating through the predicates to check all of them.  actually no, there should never be so many predicates as to slow it down significantly, the code will just be a fair bit uglier
+
+- add paste functionality to text fields
+	- probable best to extend the ControlP5 version and add a keylistener
 
 - ensure label size adjustment is in the label tab
 

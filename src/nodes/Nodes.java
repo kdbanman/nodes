@@ -18,23 +18,18 @@ package nodes;
 import processing.core.*;
 
 import controlP5.ControlP5;
+
+//  this is the PeasyCam from https://github.com/jeffg2k/peasycam
 import peasy.PeasyCam;
 import processing.opengl.PGraphics3D;
 
 /**
- * Non-controlP5 related mouse and key interaction is in this class:
- * - mouse selection modification
+ * 
  * 
  * @author kdbanman
  */
 public class Nodes extends PApplet {
 
-    /*
-     * Main components not written as separate class within package:
-     * - Program state tree (may not be necessary if ControlP5 is reasonably queryable
-     * - Local Jena model to store all incoming data
-     * - Subgraph cache for data mid-manipulation
-     */
     ControlPanelFrame panel;
     PeasyCam cam;
     ControlP5 cp5;

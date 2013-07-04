@@ -366,7 +366,7 @@ public class ControlPanel extends PApplet {
     private class QueryWebListener implements CallbackListener {
         @Override
         public void controlEvent(CallbackEvent event) {
-            if (event.getAction() == ControlP5.ACTION_PRESSED) {
+            if (event.getAction() == ControlP5.ACTION_RELEASED) {
                 String uri = importWebURI.getText();
                 Model toAdd = Importer.getDescriptionFromWeb(uri);
                 graph.addTriples(toAdd);
