@@ -142,8 +142,8 @@ public class Graph implements Iterable<GraphElement> {
         Edge e;
 
         // add*** just returns the existing *** if a new *** need not be created.  (think sets)
-        addNode(sub);
-        addNode(obj);
+        addNode(triples.shortForm(sub));
+        addNode(triples.shortForm(obj));
 
         e = addEdge(sub, obj);
         e.addTriple(sub, pred, obj);

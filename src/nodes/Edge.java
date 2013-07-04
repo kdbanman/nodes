@@ -167,6 +167,7 @@ public class Edge extends GraphElement<Edge>  {
                 predicates.put(pred, false);
             }
             
+            // adjust label size and add predicate to label
             if (predicates.size() == 1) {
                 labelText = pred;
                 labelW = charW * labelText.length();

@@ -52,11 +52,14 @@ public class Nodes extends PApplet {
         int h = 600;
         size(w, h, P3D);
 
-        cam = new PeasyCam(this, 0, 0, 0, 400);
+        cam = new PeasyCam(this, 0, 0, 0, 600);
         cam.setLeftDragHandler(null);
         cam.setRightDragHandler(cam.getRotateDragHandler());
+        cam.setCenterDragHandler(cam.getZoomDragHandler());
         cam.setWheelHandler(cam.getZoomWheelHandler());
-        cam.setRotationScale(0.3);
+        
+        cam.setSpeedLock(false);
+        cam.setDamping(.4, .4, .4);
 
 
         // this ControlP5 is only for the Graph, the ControlWindow has its own

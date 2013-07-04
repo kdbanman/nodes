@@ -3,6 +3,11 @@
 
 - try stable processing 2 release
 
+- add prefix/unprefix triple methods to graph
+	- ensure model is updated before any nodes/edges are created
+
+- ensure label size adjustment is in the label tab
+
 - update node and edge removal within Graph to maintain the model.
 
 - updtae node removal process to remove all attached edges and singlet nodes
