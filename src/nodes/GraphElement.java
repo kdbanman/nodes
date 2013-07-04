@@ -130,6 +130,11 @@ public class GraphElement<T> extends Controller<T> {
         }
     }*/
     
+    /**
+     * recalculates label dimensions and reconstructs the raw string for rendering.
+     * attempts to prefix each line in the label.
+     * 
+     */
     public void updateLabel() {
         recalculateLabelDim();
         constructLabel();

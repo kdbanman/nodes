@@ -169,7 +169,7 @@ public class Edge extends GraphElement<Edge>  {
             
             // adjust label size and add predicate to label
             labelText.add(pred);
-            recalculateLabelDim();
+            updateLabel();
         } else {
             PApplet.println("ERROR:  triple\n  " + sub + "\n  " + pred + "\n  " + obj
                     + "\ndoes not belong to edge\n  " + getName());
