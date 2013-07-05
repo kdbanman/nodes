@@ -58,11 +58,11 @@ public class GraphElement<T> extends Controller<T> {
         
         size = 10;
         
-        labelSize = 12;
-        labelFont = pApp.createFont("cour.ttf", labelSize);
         labelText = new ArrayList<>();
         constructedLabel = "";
         
+        labelSize = 12;
+        labelFont = pApp.createFont("cour.ttf", labelSize);
         charW = labelFont.getGlyph('A').width;
         charH = labelFont.getGlyph('A').height;
         
@@ -106,13 +106,16 @@ public class GraphElement<T> extends Controller<T> {
     
     public void setLabelSize(int s) {
         labelSize = s;
+        labelFont = pApp.createFont("cour.ttf", labelSize);
+        charW = labelFont.getGlyph('A').width;
+        charH = labelFont.getGlyph('A').height;
     }
     
     public void recalculateLabelDim() {
-        labelH = labelText.size() * charH * 5 / 4;
+        labelH = charH + (labelText.size() - 1) * charH * 5 / 3;
         labelW = 0;
         for (String line : labelText) {
-            labelW = PApplet.max(labelW, line.length());
+            labelW = PApplet.max(labelW, line.length() * charW);
         }
     }
     
