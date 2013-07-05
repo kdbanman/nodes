@@ -1,6 +1,8 @@
 #MISC
 #####
 
+- find and fix the cause of the SERIOUS performance hit after querying the web
+
 - add paste functionality to text fields
 	- probable best to extend the ControlP5 version and add a keylistener
 

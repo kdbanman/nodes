@@ -145,7 +145,7 @@ public class ControlPanel extends PApplet {
                 elementHeight)
                 .setAutoClear(false)
                 .moveTo(webGroup)
-                .setText("http://dbpedia.org/resource/Albert_Einstein");
+                .setText("http://www.w3.org/1999/02/22-rdf-syntax-ns");
         cp5.addButton("Query Web")
                 .setSize(buttonWidth, buttonHeight)
                 .setPosition(w - buttonWidth - padding, 
