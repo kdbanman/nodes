@@ -110,12 +110,16 @@ public class GraphElement<T> extends Controller<T> {
     
     public void recalculateLabelDim() {
         labelH = labelText.size() * charH * 5 / 4;
-        int labelW = 0;
+        labelW = 0;
         for (String line : labelText) {
             labelW = PApplet.max(labelW, line.length());
         }
     }
     
+    /**
+     * converts labelText list of lines into a single label.
+     * AFFECTS STATE: constructedLabel field
+     */
     public void constructLabel() {
         constructedLabel = "";
         for (String line : labelText) {
@@ -123,12 +127,15 @@ public class GraphElement<T> extends Controller<T> {
         }
     }
     
-    /* TODO: find out if alteration during iteration sticks around
+    /**
+     * attempts to convert each line in labelText to a prefixed uri.
+     * AFFECTS STATE: strings within Set labelText
+     */
     public void prefixLabel() {
         for (String line : labelText) {
             line = graph.prefixed(line);
         }
-    }*/
+    }
     
     /**
      * recalculates label dimensions and reconstructs the raw string for rendering.
@@ -136,9 +143,10 @@ public class GraphElement<T> extends Controller<T> {
      * 
      */
     public void updateLabel() {
-        recalculateLabelDim();
+        // order of the next three calls is critical
+        prefixLabel();
         constructLabel();
-        //TODO: prefixLabel();
+        recalculateLabelDim();
     }
     
     public void displayLabel() {

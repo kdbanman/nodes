@@ -162,16 +162,13 @@ public class Graph implements Iterable<GraphElement> {
 
     public Edge addTriple(String sub, String pred, String obj) {
         Edge e;
-
-        //TODO remove prefixing in controller names and push it to the label mechanism:
-        sub = prefixed(sub);
-        pred = prefixed(pred);
-        obj = prefixed(obj);
         
-        // add*** just returns the existing *** if a new *** need not be created.  (think sets)
+        // addNode just returns the existing Node if a new one need not be created
         addNode(sub);
         addNode(obj);
 
+        // addEdge returns the existing edge if one already exists between the two nodes
+        //      note:  node order does not matter.
         e = addEdge(sub, obj);
         e.addTriple(sub, pred, obj);
         return e;

@@ -1,10 +1,6 @@
 #MISC
 #####
 
-- prexfixLabel() function iterates through lines, best called from addNode() and addEdge(), since that is when new prefixes could be discovered
-	- push prefixing to label mechanism to avoid violating uniqueness of controller names.  
-		- think about how to deal with edges properly.  probably similarly to nodes, but it will be a bit slow iterating through the predicates to check all of them.  actually no, there should never be so many predicates as to slow it down significantly, the code will just be a fair bit uglier
-
 - add paste functionality to text fields
 	- probable best to extend the ControlP5 version and add a keylistener
 
@@ -15,9 +11,6 @@
 - update node and edge removal within Graph to maintain the model.
 
 - updtae node removal process to remove all attached edges and singlet nodes
-
-- refactor edge member predicates into a list of jena Triples (or something)
-	- update label machinery accordingly
 
 - implement Graph method to change color of selected nodes
 - ... change label display of selected nodes
@@ -79,6 +72,18 @@ COMPLETED        (:r !date)
 
 
 Thu Jul  4 15:02:31 MDT 2013
+
+- refactor edge member predicates into a list of jena Triples (or something) (update label machinery accordingly)
+	- this will greatly simplify matching Model query results to graph subsets
+	- the current implementation of relations, where each edge has a map from predicates to boolean values (latter indicating direction), will overwrite the triple <A,B,C> if the triple <C,B,A> is added
+	- question.  since edges are identified by source and destination node identifiers, is it still important to leave the triples unprefixed for uniqueness' sake?
+		- yes. imagine the triple <aaaA,b:B,c:C> is added, then the prefix a (for aaa) is discovered, then the same triple is added again.  the new triple will be added to the list, which is incorrect.  
+	- label prefixing isn't as simple as just iterating through labelText and prefixing each. (unless jena will replace all occurrences of nsPrefixMap keys in a string instead of just the first occurrence)  TESTED:  it will not.
+
+- prexfixLabel() function iterates through lines, best called from addNode() and addEdge(), since that is when new prefixes could be discovered
+	- push prefixing to label mechanism to avoid violating uniqueness of controller names.  
+		- think about how to deal with edges properly.  probably similarly to nodes, but it will be a bit slow iterating through the predicates to check all of them.  actually no, there should never be so many predicates as to slow it down significantly, the code will just be a fair bit uglier
+
 - label text content from String to List of Strings (lines of text) so that multiline literals are easy, and so is post-discovery prefixing.
 
 - recalculateLabelDimensions() iterates through list.  should be called within prefixLabel() and anywhere else label is dicked with
@@ -87,6 +92,7 @@ Thu Jul  4 15:02:31 MDT 2013
 	- ensure model is updated before any nodes/edges are created
 
 Wed  3 Jul 2013 11:43:53 MDT
+
 - implement web-retrieval of RDF from URI (will be used within control panel and in exploration mode)
 
 - ugh.  merge with work machine for framed labels

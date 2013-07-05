@@ -1,11 +1,11 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * currently, existing edges will only be prefixed when their labels are updated
+ * upon addition of triples
  */
 package nodes;
 
 import controlP5.ControllerView;
-import java.util.HashMap;
+import java.util.HashSet;
 import processing.core.PApplet;
 import processing.core.PVector;
 
@@ -23,8 +23,7 @@ public class Edge extends GraphElement<Edge>  {
     Node src;
     Node dst;
 
-    // boolean value is true for fwd-direction predicates
-    HashMap<String, Boolean> predicates;
+    HashSet<Triple> triples;
 
     Edge(Graph parentGraph, String name, Node s, Node d) {
       super(parentGraph, name);
@@ -32,7 +31,7 @@ public class Edge extends GraphElement<Edge>  {
       src = s;
       dst = d;
 
-      predicates = new HashMap<>();
+      triples = new HashSet<>();
 
       lengthScale = 0.9f;
 
@@ -158,21 +157,54 @@ public class Edge extends GraphElement<Edge>  {
       return setPosition(midpoint);
     }
     
+    /**
+     * prefixes and assembles each line of the labelText
+     */
+    @Override
+    public void prefixLabel() {
+        labelText.clear();
+        // iterate through triples
+        for (Triple t : triples) {
+            //  prefix each member of the triple
+            labelText.add("<" + graph.prefixed(t.getSubject()) 
+                    + "> <" + graph.prefixed(t.getPredicate())
+                    + "> <" + graph.prefixed(t.getObject()) + ">");
+        }
+    }
+    
     public void addTriple(String sub, String pred, String obj) {
         if (src.getName().equals(sub) && dst.getName().equals(obj) 
                 || src.getName().equals(obj) && dst.getName().equals(sub)) {
-            if (src.getName().equals(sub)) {
-                predicates.put(pred, true);
-            } else {
-                predicates.put(pred, false);
-            }
             
-            // adjust label size and add predicate to label
-            labelText.add(pred);
+            triples.add(new Triple(sub, pred, obj));
+            
+            // with overridden prefixLabel(), updateLabel() will work
             updateLabel();
         } else {
             PApplet.println("ERROR:  triple\n  " + sub + "\n  " + pred + "\n  " + obj
                     + "\ndoes not belong to edge\n  " + getName());
+        }
+    }
+    
+    private class Triple {
+        private String sub;
+        private String pred;
+        private String obj;
+        
+        public Triple(String s, String p, String o) {
+            sub = s;
+            pred = p;
+            obj = o;
+        }
+        
+        public String getSubject() {
+            return sub;
+        }
+        public String getPredicate() {
+            return pred;
+        }
+        public String getObject() {
+            return obj;
         }
     }
 }
