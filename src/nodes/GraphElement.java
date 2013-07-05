@@ -109,9 +109,11 @@ public class GraphElement<T> extends Controller<T> {
         labelFont = pApp.createFont("cour.ttf", labelSize);
         charW = labelFont.getGlyph('A').width;
         charH = labelFont.getGlyph('A').height;
+        
+        calculateLabelDim();
     }
     
-    public void recalculateLabelDim() {
+    public void calculateLabelDim() {
         labelH = charH + (labelText.size() - 1) * charH * 5 / 3;
         labelW = 0;
         for (String line : labelText) {
@@ -149,7 +151,7 @@ public class GraphElement<T> extends Controller<T> {
         // order of the next three calls is critical
         prefixLabel();
         constructLabel();
-        recalculateLabelDim();
+        calculateLabelDim();
     }
     
     public void displayLabel() {
