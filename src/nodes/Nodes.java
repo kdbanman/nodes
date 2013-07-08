@@ -69,7 +69,7 @@ public class Nodes extends PApplet {
         
 
         // test data
-        
+        /*
         graph.addTriple("John", "knows", "Bill");
         graph.addTriple("John", "worksAt", "Facecloud");
         graph.addTriple("John", "knows", "Amy");
@@ -79,7 +79,8 @@ public class Nodes extends PApplet {
         graph.addTriple("John", "drawsOn", "Amy");
         graph.addTriple("Amy", "hasPet", "John");
         graph.addTriple("Amy", "flies", "WOWOWOWOWWWOOOOOOOtdiuttditdtditidtdiOOOOOOO");
-        
+        */
+        //graph.addTriples(Importer.getDescriptionFromWeb("Albert_Einstein.rdf"));
     }
 
     @Override

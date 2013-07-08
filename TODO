@@ -1,8 +1,6 @@
 #MISC
 #####
 
-- find and fix the cause of the SERIOUS performance hit after querying the web
-
 - add paste functionality to text fields
 	- probable best to extend the ControlP5 version and add a keylistener
 
@@ -72,6 +70,12 @@
 COMPLETED        (:r !date)
 ###########################
 
+Mon  8 Jul 2013 14:01:50 MDT
+
+- find and fix the cause of the SERIOUS performance hit after querying the web
+	NOTE:  the performance hit doesn't come from querying the web, this is just a very resource-intensive program.  I only have so much control over performance optimizations since there is such heavy dependence upon ControlP5.  I have the choice:
+		1) learn more about the guts of ControlP5 to stop unnecessary computation by better placement of method and state.
+		2) reimplement the parts of the ControlP5 that I'm using for button/hover functionality, and structure the code for my 3D performance needs.
 
 Thu Jul  4 15:02:31 MDT 2013
 
