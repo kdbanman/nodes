@@ -1,11 +1,6 @@
 #MISC
 #####
 
-- add paste functionality to text fields
-	- probable best to extend the ControlP5 version and add a keylistener
-
-- ensure label size adjustment is in the label tab
-
 - try stable processing 2 release
 	
 - update node and edge removal within Graph to maintain the model.
@@ -21,15 +16,6 @@
 - within main application loop, implement the auto layout of graph when the toggle is selected
 
 - add radial lexicographical sorting (sensitive to common subject?  sounds expensive.  maybe just let the user dumbass if they want))
-
-- add size tab (will require respacing other transform tabs)
-	- size nodes
-		- degree
-		- betweenness centrality
-		- relative lexicographic position (user defined scale)
-	- size edges
-		- number of predicates
-		- betweenness centrality
 
 #CLASSES AND INTERFACES
 #######################
@@ -71,6 +57,21 @@ COMPLETED        (:r !date)
 ###########################
 
 Mon  8 Jul 2013 14:01:50 MDT
+
+- add size tab (will require respacing other transform tabs)
+	- size nodes
+		- degree
+		- betweenness centrality
+		- relative lexicographic position (user defined scale)
+	- size edges
+		- number of predicates
+		- betweenness centrality
+	NOTE:  size and color are just under the same tab.  sizing algorithms not for this version.  that's for when EVERYTHING gets all context-reactive
+
+- ensure label size adjustment is in the label tab
+
+- add paste functionality to text fields
+	- probable best to extend the ControlP5 version and add a keylistener
 
 - find and fix the cause of the SERIOUS performance hit after querying the web
 	NOTE:  the performance hit doesn't come from querying the web, this is just a very resource-intensive program.  I only have so much control over performance optimizations since there is such heavy dependence upon ControlP5.  I have the choice:

@@ -5,18 +5,29 @@
 package nodes;
 
 import com.hp.hpl.jena.rdf.model.Model;
+
 import controlP5.CallbackEvent;
 import controlP5.CallbackListener;
 import controlP5.ControlP5;
 import controlP5.ControlFont;
+import controlP5.ControlKey;
 import controlP5.Group;
 import controlP5.ListBox;
 import controlP5.Tab;
 import controlP5.Textfield;
+import controlP5.Toggle;
 
 import processing.core.PApplet;
 
 import java.util.ArrayList;
+
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.io.IOException;
 
 /**
  *
@@ -48,6 +59,8 @@ public class ControlPanel extends PApplet {
     
     Textfield importWebURI;
     
+    Toggle autoLayout;
+    
     int colorPickerDefault;
     
     public ControlPanel(int frameWidth, int frameHeight, Graph parentGraph) {
@@ -66,7 +79,7 @@ public class ControlPanel extends PApplet {
         labelledElementHeight = 40;
         
         buttonWidth = 100;
-        buttonHeight = 40;
+        buttonHeight = 30;
         
         modifiersBoxHeight = 200;
         
@@ -81,7 +94,9 @@ public class ControlPanel extends PApplet {
     public void setup() {
         size(w, h);
         
-        cp5 = new ControlP5(this);
+        cp5 = new ControlP5(this)
+                .mapKeyFor(new PasteListener(), CONTROL, 'v')
+                .mapKeyFor(new CopyListener(), CONTROL, 'c');
         
         // Main tabs
         
@@ -240,7 +255,7 @@ public class ControlPanel extends PApplet {
                 .hideArrow()
                 .setOpen(true)
                 .moveTo(transformTab);
-        Group colorGroup = new HackTab(cp5, "Color")
+        Group colorSizeGroup = new HackTab(cp5, "Color and Size")
                 .setBarHeight(tabHeight)
                 .setPosition(w / 4, transformTabsVert)
                 .setWidth(w / 4)
@@ -263,36 +278,78 @@ public class ControlPanel extends PApplet {
                 .moveTo(transformTab);
         
         transformHackTabs.add(positionGroup);
-        transformHackTabs.add(colorGroup);
+        transformHackTabs.add(colorSizeGroup);
         transformHackTabs.add(labelGroup);
         transformHackTabs.add(hideGroup);
         
         openTransformHackTab = positionGroup;
         
-        // transformation controllers
+        /*******************
+        * Layout controllers
+        ********************/
         
-        cp5.addRadioButton("Layout Choice", padding, padding)
+        cp5.addButton("Expand")
                 .setPosition(padding, padding)
-                .setItemHeight(elementHeight)
-                .setItemWidth(elementHeight)
-                .addItem("Drag and Drop", 0)
-                .addItem("Expand", 1)
-                .addItem("Auto Layout (affects entire graph)", 2)
+                .setHeight(buttonHeight)
+                .setWidth(buttonWidth)
                 .moveTo(positionGroup);
         
-        cp5.addColorPicker("Color Choice")
+        cp5.addButton("Contract")
+                .setPosition(padding, 2 * padding + buttonHeight)
+                .setHeight(buttonHeight)
+                .setWidth(buttonWidth)
+                .moveTo(positionGroup);
+        
+        cp5.addButton("Radial Sort")
+                .setPosition(padding, 3 * padding + 2 * buttonHeight)
+                .setHeight(buttonHeight)
+                .setWidth(buttonWidth)
+                .moveTo(positionGroup);
+        
+        autoLayout = cp5.addToggle("Auto-Layout")
+                .setPosition(padding, 4 * padding + 3 * buttonHeight)
+                .setHeight(elementHeight)
+                .setWidth(buttonWidth)
+                .moveTo(positionGroup);
+        
+        // color and size controllers
+        
+        cp5.addColorPicker("Color")
                 .setPosition(-(w / 4) + padding, padding)
                 .setColorValue(colorPickerDefault)
-                .moveTo(colorGroup);
+                .moveTo(colorSizeGroup);
         
-        cp5.addRadioButton("Label Visibility")
+        cp5.addSlider("Size")
+                .setPosition(-(w / 4) + padding, 2 * padding + 80)
+                .setHeight(elementHeight)
+                .setWidth(w - 80)
+                .setRange(5, 100)
+                .setValue(10)
+                .moveTo(colorSizeGroup);
+        
+        // label controllers
+        
+        cp5.addButton("Show Labels")
                 .setPosition(padding - w / 2, padding)
-                .setItemHeight(elementHeight)
-                .setItemWidth(elementHeight)
-                .addItem("Show Labels", 0)
-                .addItem("Hide Labels", 1)
-                .activate(0)
+                .setHeight(buttonHeight)
+                .setWidth(buttonWidth)
                 .moveTo(labelGroup);
+        
+        cp5.addButton("Hide Labels")
+                .setPosition(padding - w / 2, buttonHeight + 2 * padding)
+                .setHeight(buttonHeight)
+                .setWidth(buttonWidth)
+                .moveTo(labelGroup);
+        
+        cp5.addSlider("Label Size")
+                .setPosition(padding - w / 2, padding * 3 + 2 * buttonHeight)
+                .setWidth(w - 80)
+                .setHeight(elementHeight)
+                .setRange(5, 100)
+                .setValue(10)
+                .moveTo(labelGroup);
+        
+        // visibility controllers
         
         cp5.addButton("Hide Nodes")
                 .setPosition(padding - 3 * (w / 4), padding)
@@ -357,8 +414,59 @@ public class ControlPanel extends PApplet {
     }
     
     /*************
-     * Callback listeners
+     * Import listeners
      *************/
+    
+    /*
+     * attach to main cp5 for paste functionality
+     */
+    private class PasteListener implements ControlKey {
+        Clipboard cb;
+        
+        @Override
+        public void keyEvent() {
+            for (Textfield c : cp5.getAll(Textfield.class)) {
+                if (cb == null) cb = Toolkit.getDefaultToolkit().getSystemClipboard();
+                
+                if (c.isActive()) {
+                    int idx = c.getIndex();
+                    String before = c.getText().substring(0, idx);
+                    String after = "";
+                    if (c.getIndex() != c.getText().length()) {
+                        after = c.getText().substring(idx, c.getText().length());
+                    }
+                    
+                    Transferable clipData = cb.getContents(this);
+                    String s = "";
+                    try {
+                      s = (String) (clipData.getTransferData(DataFlavor.stringFlavor));
+                    } catch (UnsupportedFlavorException | IOException ee) {
+                        System.out.println("Cannot paste clipboard contents.");
+                    }
+                    c.setText(before + s + after);
+                }
+            }
+        }
+    }
+    
+    /*
+     * attach to main cp5 for copy functionality
+     */
+    private class CopyListener implements ControlKey {
+        Clipboard cb;
+        
+        @Override
+        public void keyEvent() {
+            for (Textfield c : cp5.getAll(Textfield.class)) {
+                if (cb == null) cb = Toolkit.getDefaultToolkit().getSystemClipboard();
+                
+                if (c.isActive()) {
+                    StringSelection data = new StringSelection(c.getText());
+                    cb.setContents(data, data);
+                }
+            }
+        }
+    }
     
     /*
      * attach to web query button in import tab
@@ -373,4 +481,15 @@ public class ControlPanel extends PApplet {
             }
         }
     }
+    
+    /*************
+     * Transformation listeners
+     *************/
+    
+    /*
+     * attach to layout expansion button
+     *
+    private class LayoutExpandListener implements CallbackListener {
+        
+    }*/
 }
