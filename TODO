@@ -11,9 +11,6 @@
 - ... change label display of selected nodes
 
 - (probably within main application loop) implement drag and drop movement of selected nodes.  keep in mind that the controller is currently prepared to prohibit the user from doing this unless the appropriate radio button is active.  this might be stupid.
-	- remove drag and drop radio
-
-- within main application loop, implement the auto layout of graph when the toggle is selected
 
 - add radial lexicographical sorting (sensitive to common subject?  sounds expensive.  maybe just let the user dumbass if they want))
 
@@ -57,6 +54,10 @@ COMPLETED        (:r !date)
 ###########################
 
 Mon  8 Jul 2013 14:01:50 MDT
+
+- remove drag and drop radio
+
+- within main application loop, implement the auto layout of graph when the toggle is selected
 
 - add size tab (will require respacing other transform tabs)
 	- size nodes

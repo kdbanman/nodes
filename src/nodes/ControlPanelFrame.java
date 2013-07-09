@@ -15,6 +15,7 @@ import processing.core.PApplet;
 public class ControlPanelFrame extends Frame {
     int w, h;
     String name;
+    ControlPanel controls;
     
     public ControlPanelFrame(Graph graph) {
         super("Control Panel");
@@ -29,10 +30,10 @@ public class ControlPanelFrame extends Frame {
         setLocation(0, 0);
         setResizable(false);
         setVisible(true);
-        PApplet controlPanel = new ControlPanel(w, h, graph);
+        controls = new ControlPanel(w, h, graph);
         
-        add(controlPanel, BorderLayout.CENTER);
+        add(controls, BorderLayout.CENTER);
         validate();
-        controlPanel.init();  
+        controls.init();  
     }
 }

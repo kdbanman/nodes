@@ -51,6 +51,11 @@ public class ControlPanel extends PApplet {
     int buttonHeight;
     int modifiersBoxHeight;
     
+    // Control elements that need to be accessed outside of setup
+    
+    Tab transformTab;
+    Group positionGroup;
+    
     ArrayList<Group> importHackTabs;
     Group openImportHackTab;
     
@@ -84,6 +89,7 @@ public class ControlPanel extends PApplet {
         modifiersBoxHeight = 200;
         
         // control element miscellany
+        
         importHackTabs = new ArrayList<>();
         transformHackTabs = new ArrayList<>();
         
@@ -104,7 +110,7 @@ public class ControlPanel extends PApplet {
                 .setWidth(w / 4)
                 .setHeight(tabHeight)
                 .setActive(true);
-        Tab transformTab = cp5.addTab("Transform")
+        transformTab = cp5.addTab("Transform")
                 .setWidth(w / 4)
                 .setHeight(tabHeight);
         Tab optionTab = cp5.addTab("Options")
@@ -248,7 +254,7 @@ public class ControlPanel extends PApplet {
         
         // Transform subtabs
         
-        Group positionGroup = new HackTab(cp5, "Position")
+        positionGroup = new HackTab(cp5, "Position")
                 .setBarHeight(tabHeight)
                 .setPosition(0, transformTabsVert)
                 .setWidth(w / 4)
@@ -368,6 +374,7 @@ public class ControlPanel extends PApplet {
     @Override
     public void draw() {
         
+        // make hackTabs perform as tabs instead of Groups
         for (Group hackTab : transformHackTabs) {
           if (hackTab.isOpen() && hackTab != openTransformHackTab) {
             openTransformHackTab.setOpen(false);
@@ -380,6 +387,11 @@ public class ControlPanel extends PApplet {
                 openImportHackTab.setOpen(false);
                 openImportHackTab = hackTab;
             }
+        }
+        
+        // stop autoLayout if any other tab is selected
+        if (autoLayout.getState() && (!transformTab.isOpen() || !positionGroup.isOpen())) {
+            autoLayout.setState(false);
         }
         
         background(0);

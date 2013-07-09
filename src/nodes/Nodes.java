@@ -30,7 +30,7 @@ import processing.opengl.PGraphics3D;
  */
 public class Nodes extends PApplet {
 
-    ControlPanelFrame panel;
+    ControlPanelFrame panelFrame;
     PeasyCam cam;
     ControlP5 cp5;
     UnProjector proj;
@@ -62,14 +62,14 @@ public class Nodes extends PApplet {
         proj = new UnProjector(this);
         graph = new Graph(proj, cp5, this);
 
-        panel = new ControlPanelFrame(graph);
+        panelFrame = new ControlPanelFrame(graph);
         
         lastPressedX = 0;
         lastPressedY = 0;
         
 
         // test data
-        /*
+        
         graph.addTriple("John", "knows", "Bill");
         graph.addTriple("John", "worksAt", "Facecloud");
         graph.addTriple("John", "knows", "Amy");
@@ -79,7 +79,7 @@ public class Nodes extends PApplet {
         graph.addTriple("John", "drawsOn", "Amy");
         graph.addTriple("Amy", "hasPet", "John");
         graph.addTriple("Amy", "flies", "WOWOWOWOWWWOOOOOOOtdiuttditdtditidtdiOOOOOOO");
-        */
+        
         //graph.addTriples(Importer.getDescriptionFromWeb("Albert_Einstein.rdf"));
     }
 
@@ -107,6 +107,12 @@ public class Nodes extends PApplet {
             noStroke();
             rect(minX, minY, maxX - minX, maxY - minY);
             cam.endHUD();
+        }
+        
+        // perform a step of the force-directed layout if the corresponding control
+        // is selected
+        if (panelFrame.controls.autoLayout.getState()) {
+            graph.layout();
         }
     }
 
