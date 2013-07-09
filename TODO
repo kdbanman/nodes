@@ -2,16 +2,23 @@
 #####
 
 - find out why initially displaying labels is very expensive.  even for one node or edge, a hover triggers a very noticeable lag time.  this scales to absolute unusability when only a few dozen labels are triggered for display at the same time (or even it too short an interval of time)
+	- resizing the nodes is similarly expensive
+
+- render labels centered on element position
+
+- fix height/width of text background for labels.
 
 - update node and edge removal within Graph to maintain the model.
 
 - updtae node removal process to remove all attached edges and singlet nodes
 
-- implement Graph method to change color of selected nodes
+- implement main application arrow controls for camera strafe
 
 - (probably within main application loop) implement drag and drop movement of selected nodes.  keep in mind that the controller is currently prepared to prohibit the user from doing this unless the appropriate radio button is active.  this might be stupid.
 
 - add radial lexicographical sorting (sensitive to common subject?  sounds expensive.  maybe just let the user dumbass if they want))
+
+- find some way to swap state around to show color changes on selected nodes
 
 - try stable processing 2 release
 	
@@ -51,6 +58,12 @@
 ###########################
 COMPLETED        (:r !date)
 ###########################
+
+Tue Jul  9 12:15:06 MDT 2013
+
+- implement controlpanel method to change color of selected nodes
+
+- implement controlpanel method to change size of selected nodes
 
 Mon  8 Jul 2013 14:01:50 MDT
 

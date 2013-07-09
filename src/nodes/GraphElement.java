@@ -74,6 +74,7 @@ public class GraphElement<T> extends Controller<T> {
     
     public void setColor(int col) {
       defaultCol = col;
+      currentCol = col;
     }
 
     public T setSize(final int s) {

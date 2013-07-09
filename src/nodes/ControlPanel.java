@@ -8,6 +8,8 @@ import com.hp.hpl.jena.rdf.model.Model;
 
 import controlP5.CallbackEvent;
 import controlP5.CallbackListener;
+import controlP5.ColorPicker;
+import controlP5.ControlEvent;
 import controlP5.ControlP5;
 import controlP5.ControlFont;
 import controlP5.ControlKey;
@@ -69,6 +71,7 @@ public class ControlPanel extends PApplet {
     
     Toggle autoLayout;
     
+    ColorPicker colorPicker;
     int colorPickerDefault;
     
     public ControlPanel(int frameWidth, int frameHeight, Graph parentGraph) {
@@ -325,7 +328,10 @@ public class ControlPanel extends PApplet {
         
         // color and size controllers
         
-        cp5.addColorPicker("Color")
+        //NOTE:  ColorPicker is a ControlGroup, not a Controller, so I can't 
+        //       attach a callback to it.  It's functionality is in the 
+        //       controlEvent() function of the ControlPanel PApplet
+        colorPicker = cp5.addColorPicker("Color")
                 .setPosition(-(w / 4) + padding, padding)
                 .setColorValue(colorPickerDefault)
                 .moveTo(colorSizeGroup);
@@ -336,7 +342,8 @@ public class ControlPanel extends PApplet {
                 .setWidth(w - 80)
                 .setRange(5, 100)
                 .setValue(10)
-                .moveTo(colorSizeGroup);
+                .moveTo(colorSizeGroup)
+                .addCallback(new ElementSizeListener());
         
         // label controllers
         
@@ -403,6 +410,16 @@ public class ControlPanel extends PApplet {
         }
         
         background(0);
+    }
+    
+    public void controlEvent(ControlEvent event) {
+        // adjust color of selected elements
+        if (event.isFrom(colorPicker)) {
+            int newColor = colorPicker.getColorValue();
+            for (GraphElement e : graph.selection) {
+                e.setColor(newColor);
+            }
+        }
     }
     
     private class HackTab extends Group {
@@ -557,6 +574,28 @@ public class ControlPanel extends PApplet {
     }
     
     /*
+     * attach to element size slider
+     */
+    private class ElementSizeListener implements CallbackListener {
+
+        @Override
+        public void controlEvent(CallbackEvent event) {
+            if (event.getAction() == ControlP5.ACTION_RELEASED
+                    || event.getAction() == ControlP5.ACTION_RELEASEDOUTSIDE) {
+                int newSize = 10;
+                try {
+                    newSize = (int) ((Slider) event.getController()).getValue();
+                } catch (Exception e) {
+                    System.out.println("ERROR:  ElementSizeListener not hooked up to a Slider.");
+                }
+                for (GraphElement e : graph.selection) {
+                    e.setSize(newSize);
+                }
+            }
+        }
+    }
+    
+    /*
      * attach to hide label button
      */
     private class HideLabelListener implements CallbackListener {
@@ -593,11 +632,11 @@ public class ControlPanel extends PApplet {
 
         @Override
         public void controlEvent(CallbackEvent event) {
-            if (event.getAction() == ControlP5.ACTION_RELEASED) {
+            if (event.getAction() == ControlP5.ACTION_RELEASED
+                    || event.getAction() == ControlP5.ACTION_RELEASEDOUTSIDE) {
                 int newSize = 10;
                 try {
                     newSize = (int) ((Slider) event.getController()).getValue();
-                    System.out.println(newSize);
                 } catch (Exception e) {
                     System.out.println("ERROR:  LabelSizeListener not hooked up to a Slider.");
                 }
