@@ -33,8 +33,16 @@ public class Selection implements Iterable<GraphElement> {
         return nodes;
     }
     
+    public void clearNodes() {
+        nodes.clear();
+    }
+    
     public Set<Edge> getEdges() {
         return edges;
+    }
+    
+    public void clearEdges() {
+        edges.clear();
     }
     
     public int nodeCount() {

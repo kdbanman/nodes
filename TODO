@@ -28,18 +28,14 @@
 - implement basic graph stack
 	- ensure deep copying (may have to keep within Graph so that references to it elsewhere don't get screwed up)
 
-- write first few selection modifiers to unearth the necessary interface
-	- test context-sensitivity with:
-		- only nodes
-		- only edges
-		- clear selection
-
 - implement error/notification popup window system
+
+- use classloader in constructor of Modifiers when populating modifier list for use of plugins
+
+- move SingleSelector to inner class of Node
 
 #CONTROL LOGIC
 ##############
-
-- populate selection modifiers based on selection nature
 
 - disable certain sizing options based on selection nature
 
@@ -60,6 +56,19 @@ COMPLETED        (:r !date)
 ###########################
 
 Tue Jul  9 12:15:06 MDT 2013
+
+- populate listbox dynamically using populate() (for selection)
+
+- hook up ListBox items to modify() function
+	- maybe populate should maintain the listbox indices, and it should be sent Modifiers.run(event.group().value())
+		- if this is the case, then Modifiers should maintain state - indices to modification methods.  perhaps a Map<Integer, Modifier>?
+
+- write first few selection modifiers to unearth the necessary interface
+	- test context-sensitivity with:
+		- only nodes
+		- only edges
+
+- populate selection modifiers based on selection nature
 
 - implement controlpanel method to change color of selected nodes
 

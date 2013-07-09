@@ -69,6 +69,9 @@ public class ControlPanel extends PApplet {
     
     Textfield importWebURI;
     
+    ListBox modifierMenu;
+    Modifiers modifiers;
+    
     Toggle autoLayout;
     
     ColorPicker colorPicker;
@@ -79,6 +82,7 @@ public class ControlPanel extends PApplet {
         h = frameHeight;
         
         graph = parentGraph;
+        modifiers = new Modifiers(graph);
         
         // element size parameters
         padding = 10;
@@ -232,8 +236,8 @@ public class ControlPanel extends PApplet {
         //=======================
         // Transform tab elements
         //=======================
-        
-        ListBox modifiers = cp5.addListBox("Selection Modifiers", 
+        int listItemIdx = 0;
+        modifierMenu = cp5.addListBox("Selection Modifiers", 
                     padding, 
                     2 * tabHeight + padding, 
                     w - 2 * padding, 
@@ -242,19 +246,7 @@ public class ControlPanel extends PApplet {
                 .setItemHeight(elementHeight)
                 .setScrollbarWidth(elementHeight)
                 .moveTo(transformTab);
-        modifiers.addItem("Clear selection", 7);
-        modifiers.addItem("Remove edges from selection", 8);
-        modifiers.addItem("Remove nodes from selection", 9);
-        modifiers.addItem("Select all nodes", 10);
-        modifiers.addItem("Select all edges", 11);
-        modifiers.addItem("Select entire graph", 12);
-        modifiers.addItem("Select all neighbors", 0);
-        modifiers.addItem("Select all nodes of same rdf:Type", 1);
-        modifiers.addItem("Select shortest path between nodes", 2);
-        modifiers.addItem("Select subgraph of the same namespace", 3);
-        modifiers.addItem("Select similar resources", 4);
-        modifiers.addItem("Select nodes sharing this predicate", 5);
-        modifiers.addItem("Select nodes sharing this predicate and object", 6);
+        modifiers.populate(modifierMenu, graph.selection);
         
         int transformTabsVert = modifiersBoxHeight + 3 * tabHeight + padding;
         
@@ -409,6 +401,8 @@ public class ControlPanel extends PApplet {
             autoLayout.setState(false);
         }
         
+        modifiers.populate(modifierMenu, graph.selection);
+        
         background(0);
     }
     
@@ -419,7 +413,10 @@ public class ControlPanel extends PApplet {
             for (GraphElement e : graph.selection) {
                 e.setColor(newColor);
             }
+        } else if (event.isFrom(modifierMenu)) {
+            modifiers.run((int) event.getValue());
         }
+        
     }
     
     private class HackTab extends Group {
