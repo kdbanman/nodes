@@ -13,11 +13,13 @@ import controlP5.ControlFont;
 import controlP5.ControlKey;
 import controlP5.Group;
 import controlP5.ListBox;
+import controlP5.Slider;
 import controlP5.Tab;
 import controlP5.Textfield;
 import controlP5.Toggle;
 
 import processing.core.PApplet;
+import processing.core.PVector;
 
 import java.util.ArrayList;
 
@@ -28,7 +30,7 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
-import processing.core.PVector;
+
 
 /**
  *
@@ -306,7 +308,8 @@ public class ControlPanel extends PApplet {
                 .setPosition(padding, 2 * padding + buttonHeight)
                 .setHeight(buttonHeight)
                 .setWidth(buttonWidth)
-                .moveTo(positionGroup);
+                .moveTo(positionGroup)
+                .addCallback(new ContractLayoutListener());
         
         cp5.addButton("Radial Sort")
                 .setPosition(padding, 3 * padding + 2 * buttonHeight)
@@ -341,13 +344,15 @@ public class ControlPanel extends PApplet {
                 .setPosition(padding - w / 2, padding)
                 .setHeight(buttonHeight)
                 .setWidth(buttonWidth)
-                .moveTo(labelGroup);
+                .moveTo(labelGroup)
+                .addCallback(new ShowLabelListener());
         
         cp5.addButton("Hide Labels")
                 .setPosition(padding - w / 2, buttonHeight + 2 * padding)
                 .setHeight(buttonHeight)
                 .setWidth(buttonWidth)
-                .moveTo(labelGroup);
+                .moveTo(labelGroup)
+                .addCallback(new HideLabelListener());
         
         cp5.addSlider("Label Size")
                 .setPosition(padding - w / 2, padding * 3 + 2 * buttonHeight)
@@ -355,7 +360,8 @@ public class ControlPanel extends PApplet {
                 .setHeight(elementHeight)
                 .setRange(5, 100)
                 .setValue(10)
-                .moveTo(labelGroup);
+                .moveTo(labelGroup)
+                .addCallback(new LabelSizeListener());
         
         // visibility controllers
         
@@ -519,10 +525,86 @@ public class ControlPanel extends PApplet {
                 
                 // extrapolate all node positions 20% outward from center
                 for (Node n : graph.selection.getNodes()) {
-                    n.getPosition().lerp(center, 1.2f);
+                    n.getPosition().lerp(center, -0.2f);
                 }
             }
         }
-        
+    }
+    
+    /*
+     * attach to layout contraction button
+     */
+    private class ContractLayoutListener implements CallbackListener {
+
+        @Override
+        public void controlEvent(CallbackEvent event) {
+            if (event.getAction() == ControlP5.ACTION_RELEASED) {
+                // calculate center of current selection of nodes
+                PVector center = new PVector();
+                for (Node n : graph.selection.getNodes()) {
+                    center.add(n.getPosition());
+                }
+                center.x =  center.x / graph.selection.nodeCount();
+                center.y =  center.y / graph.selection.nodeCount();
+                center.z =  center.z / graph.selection.nodeCount();
+                
+                // extrapolate all node positions 20% outward from center
+                for (Node n : graph.selection.getNodes()) {
+                    n.getPosition().lerp(center, 0.2f);
+                }
+            }
+        }
+    }
+    
+    /*
+     * attach to hide label button
+     */
+    private class HideLabelListener implements CallbackListener {
+
+        @Override
+        public void controlEvent(CallbackEvent event) {
+            if (event.getAction() == ControlP5.ACTION_RELEASED) {
+                for (GraphElement e : graph.selection) {
+                    e.setDisplayLabel(false);
+                }
+            }
+        }
+    }
+    
+    /*
+     * attach to show label button
+     */
+    private class ShowLabelListener implements CallbackListener {
+
+        @Override
+        public void controlEvent(CallbackEvent event) {
+            if (event.getAction() == ControlP5.ACTION_RELEASED) {
+                for (GraphElement e : graph.selection) {
+                    e.setDisplayLabel(true);
+                }
+            }
+        }
+    }
+    
+    /*
+     * attach to label size slider
+     */
+    private class LabelSizeListener implements CallbackListener {
+
+        @Override
+        public void controlEvent(CallbackEvent event) {
+            if (event.getAction() == ControlP5.ACTION_RELEASED) {
+                int newSize = 10;
+                try {
+                    newSize = (int) ((Slider) event.getController()).getValue();
+                    System.out.println(newSize);
+                } catch (Exception e) {
+                    System.out.println("ERROR:  LabelSizeListener not hooked up to a Slider.");
+                }
+                for (GraphElement e : graph.selection) {
+                    e.setLabelSize(newSize);
+                }
+            }
+        }
     }
 }

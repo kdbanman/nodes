@@ -6,13 +6,15 @@ package nodes;
 import java.util.Collections;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 import processing.core.PApplet;
 
 /**
  *
  * @author kdbanman
  */
-public class Selection {
+public class Selection implements Iterable<GraphElement> {
     private final Set<Node> nodes;
     private final Set<Edge> edges;
     
@@ -154,6 +156,44 @@ public class Selection {
         }
         synchronized (edgeBuffer) {
             edgeBuffer.clear();
+        }
+    }
+    
+    @Override
+    public SelectionIterator iterator() {
+        return new SelectionIterator();
+    }
+    
+    /**
+     * iterates through all nodes then all edges
+     */
+    public class SelectionIterator implements Iterator<GraphElement> {
+        Iterator itNodes;
+        Iterator itEdges;
+        
+        public SelectionIterator() {
+            itNodes = getNodes().iterator();
+            itEdges = getEdges().iterator();
+        }
+        
+        @Override
+        public boolean hasNext() {
+            return itNodes.hasNext() || itEdges.hasNext();
+        }
+        
+        @Override
+        public GraphElement next() {
+            GraphElement ret = null;
+            if (itNodes.hasNext()) ret = (GraphElement) itNodes.next();
+            else if (itEdges.hasNext()) ret = (GraphElement) itEdges.next();
+            else throw new NoSuchElementException();
+            
+            return ret;
+        }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
     }
 }

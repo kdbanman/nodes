@@ -1,19 +1,20 @@
 #MISC
 #####
 
-- try stable processing 2 release
-	
+- find out why initially displaying labels is very expensive.  even for one node or edge, a hover triggers a very noticeable lag time.  this scales to absolute unusability when only a few dozen labels are triggered for display at the same time (or even it too short an interval of time)
+
 - update node and edge removal within Graph to maintain the model.
 
 - updtae node removal process to remove all attached edges and singlet nodes
 
 - implement Graph method to change color of selected nodes
-- ... change label display of selected nodes
 
 - (probably within main application loop) implement drag and drop movement of selected nodes.  keep in mind that the controller is currently prepared to prohibit the user from doing this unless the appropriate radio button is active.  this might be stupid.
 
 - add radial lexicographical sorting (sensitive to common subject?  sounds expensive.  maybe just let the user dumbass if they want))
 
+- try stable processing 2 release
+	
 #CLASSES AND INTERFACES
 #######################
 
@@ -30,8 +31,6 @@
 
 #CONTROL LOGIC
 ##############
-
-- disable auto-layout as soon as its tab is not active
 
 - populate selection modifiers based on selection nature
 
@@ -54,6 +53,12 @@ COMPLETED        (:r !date)
 ###########################
 
 Mon  8 Jul 2013 14:01:50 MDT
+
+- disable auto-layout as soon as its tab is not active
+
+- implement control to change label display of selected graph elements
+
+- implement control to change label size of selected graph elements
 
 - remove drag and drop radio
 
