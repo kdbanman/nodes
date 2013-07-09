@@ -310,7 +310,8 @@ public class ControlPanel extends PApplet {
                 .setPosition(padding, 3 * padding + 2 * buttonHeight)
                 .setHeight(buttonHeight)
                 .setWidth(buttonWidth)
-                .moveTo(positionGroup);
+                .moveTo(positionGroup)
+                .addCallback(new RadialLayoutListener());
         
         autoLayout = cp5.addToggle("Auto-Layout")
                 .setPosition(padding, 4 * padding + 3 * buttonHeight)
@@ -565,6 +566,65 @@ public class ControlPanel extends PApplet {
                 // extrapolate all node positions 20% outward from center
                 for (Node n : graph.selection.getNodes()) {
                     n.getPosition().lerp(center, 0.2f);
+                }
+            }
+        }
+    }
+    
+    /*
+     * attach to radial lexicographical sort button
+     */
+    private class RadialLayoutListener implements CallbackListener {
+
+        @Override
+        public void controlEvent(CallbackEvent event) {
+            if (event.getAction() == ControlP5.ACTION_RELEASED) {
+                // calculate radius of circle from number and size of nodes
+                // along with the midpoint of the nodes
+                PVector center = new PVector();
+                float maxSize = 0;
+                for (Node n : graph.selection.getNodes()) {
+                    center.add(n.getPosition());
+                    maxSize = PApplet.max(maxSize, n.getSize());
+                }
+                // radius is circumference / 2pi, but this has been adjusted for appearance
+                float radius = (float) ((float) graph.selection.nodeCount() * 2 * maxSize) / (PApplet.PI);
+                
+                // center is average position
+                center.x =  center.x / graph.selection.nodeCount();
+                center.y =  center.y / graph.selection.nodeCount();
+                center.z =  center.z / graph.selection.nodeCount();
+                
+                // get horizontal and vertical unit vectors w.r.t. screen
+                
+                //lower right corner
+                graph.proj.calculatePickPoints(graph.pApp.width, graph.pApp.height);
+                PVector horiz = graph.proj.ptStartPos.get();
+                //upper left corner
+                graph.proj.calculatePickPoints(0, 0);
+                PVector vert = graph.proj.ptStartPos.get();
+                
+                //subtract lower left corner (origin) from both, and normalize
+                graph.proj.calculatePickPoints(0, graph.pApp.height);
+                horiz.sub(graph.proj.ptStartPos);
+                horiz.normalize();
+                vert.sub(graph.proj.ptStartPos);
+                vert.normalize();
+                
+                // angular separation of nodes is 2pi / number of nodes
+                float theta = 2 * PApplet.PI / (float) graph.selection.nodeCount();
+                float currAngle = 0;
+                for (Node n : graph.selection.getNodes()) {
+                    PVector hComp = horiz.get();
+                    hComp.mult(PApplet.cos(currAngle) * radius);
+                    
+                    PVector vComp = vert.get();
+                    vComp.mult(PApplet.sin(currAngle) * radius);
+                    
+                    hComp.add(vComp);
+                    n.setPosition(hComp);
+                    
+                    currAngle += theta;
                 }
             }
         }

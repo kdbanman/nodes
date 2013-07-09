@@ -37,6 +37,7 @@ public class Modifiers {
         modifiers.add(new SelectAll());
         modifiers.add(new SelectNodes());
         modifiers.add(new SelectEdges());
+        modifiers.add(new SelectNeighbors());
     }
     
     public void populate(ListBox menu, Selection selection) {
@@ -119,6 +120,22 @@ public class Modifiers {
         
         public void modify() {
             graph.selection.clearNodes();
+        }
+    }
+    
+    private class SelectNeighbors extends Modifier {
+        
+        public String getTitle(Selection s) {
+            return "Select neighbors";
+        }
+        
+        public boolean isCompatible(Selection s) {
+            return s.nodeCount() == 1 && s.edgeCount() == 0;
+        }
+        
+        public void modify() {
+            //Node n = graph.selection.getNodes().iterator().next();
+            //TODO
         }
     }
 }

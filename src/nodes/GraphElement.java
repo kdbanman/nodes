@@ -81,6 +81,10 @@ public class GraphElement<T> extends Controller<T> {
         size = s;
         return setSize(s, s);
     }
+    
+    public float getSize() {
+        return size;
+    }
 
     @Override
     protected void onEnter() {

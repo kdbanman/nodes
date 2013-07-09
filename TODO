@@ -1,6 +1,12 @@
 #MISC
 #####
 
+- add TODOs from notebook
+
+- finish neighbor selection modifier
+
+- finish radial layout.  add lexico
+
 - find out why initially displaying labels is very expensive.  even for one node or edge, a hover triggers a very noticeable lag time.  this scales to absolute unusability when only a few dozen labels are triggered for display at the same time (or even it too short an interval of time)
 	- resizing the nodes is similarly expensive
 
