@@ -28,6 +28,7 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
+import processing.core.PVector;
 
 /**
  *
@@ -298,7 +299,8 @@ public class ControlPanel extends PApplet {
                 .setPosition(padding, padding)
                 .setHeight(buttonHeight)
                 .setWidth(buttonWidth)
-                .moveTo(positionGroup);
+                .moveTo(positionGroup)
+                .addCallback(new ExpandLayoutListener());
         
         cp5.addButton("Contract")
                 .setPosition(padding, 2 * padding + buttonHeight)
@@ -500,8 +502,27 @@ public class ControlPanel extends PApplet {
     
     /*
      * attach to layout expansion button
-     *
-    private class LayoutExpandListener implements CallbackListener {
+     */
+    private class ExpandLayoutListener implements CallbackListener {
+
+        @Override
+        public void controlEvent(CallbackEvent event) {
+            if (event.getAction() == ControlP5.ACTION_RELEASED) {
+                // calculate center of current selection of nodes
+                PVector center = new PVector();
+                for (Node n : graph.selection.getNodes()) {
+                    center.add(n.getPosition());
+                }
+                center.x =  center.x / graph.selection.nodeCount();
+                center.y =  center.y / graph.selection.nodeCount();
+                center.z =  center.z / graph.selection.nodeCount();
+                
+                // extrapolate all node positions 20% outward from center
+                for (Node n : graph.selection.getNodes()) {
+                    n.getPosition().lerp(center, 1.2f);
+                }
+            }
+        }
         
-    }*/
+    }
 }
