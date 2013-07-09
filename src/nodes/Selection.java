@@ -171,9 +171,13 @@ public class Selection implements Iterable<GraphElement> {
         Iterator itNodes;
         Iterator itEdges;
         
+        private boolean iteratingThroughNodes;
+        
         public SelectionIterator() {
             itNodes = getNodes().iterator();
             itEdges = getEdges().iterator();
+            
+            iteratingThroughNodes = true;
         }
         
         @Override
@@ -184,16 +188,25 @@ public class Selection implements Iterable<GraphElement> {
         @Override
         public GraphElement next() {
             GraphElement ret = null;
-            if (itNodes.hasNext()) ret = (GraphElement) itNodes.next();
-            else if (itEdges.hasNext()) ret = (GraphElement) itEdges.next();
-            else throw new NoSuchElementException();
+            if (itNodes.hasNext())  {
+                ret = (GraphElement) itNodes.next();
+            } else if (itEdges.hasNext()) {
+                ret = (GraphElement) itEdges.next();
+                iteratingThroughNodes = false;
+            } else {
+                throw new NoSuchElementException();
+            }
             
             return ret;
         }
 
         @Override
         public void remove() {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            if (iteratingThroughNodes) {
+                itNodes.remove();
+            } else {
+                itEdges.remove();
+            }
         }
     }
 }
