@@ -1,11 +1,16 @@
 #MISC
 #####
 
-- add TODOs from notebook
-
-- finish neighbor selection modifier
-
 - finish radial layout.  add lexico
+
+- add drag and drop movement
+	- click and drag within node.  move entire selection
+
+- implement exploration mode
+
+- test multiple additions for prefix overwrite (rdf then rdfs documents replicates)
+
+- replicate and fix concurrent modification bug when adding triples.
 
 - find out why initially displaying labels is very expensive.  even for one node or edge, a hover triggers a very noticeable lag time.  this scales to absolute unusability when only a few dozen labels are triggered for display at the same time (or even it too short an interval of time)
 	- resizing the nodes is similarly expensive
@@ -13,6 +18,10 @@
 - render labels centered on element position
 
 - fix height/width of text background for labels.
+
+- bolder font with higher contrast color. (pastel orange on default blue)
+
+- brighten main background (scale to white)
 
 - update node and edge removal within Graph to maintain the model.
 
@@ -60,6 +69,9 @@
 ###########################
 COMPLETED        (:r !date)
 ###########################
+Wed Jul 10 17:38:53 MDT 2013
+
+- finish neighbor selection modifier
 
 Tue Jul  9 12:15:06 MDT 2013
 

@@ -16,6 +16,7 @@ public class Modifiers {
     
     private Graph graph;
     private Model model;
+    private Selection selection;
     
     private ArrayList<Modifier> modifiers;
     
@@ -26,6 +27,7 @@ public class Modifiers {
     public Modifiers(Graph g) {
         graph = g;
         model = graph.triples;
+        selection = graph.selection;
         
         modifiers = new ArrayList<>();
         
@@ -44,19 +46,19 @@ public class Modifiers {
         for (Modifier mod : modifiers) {
             // add the modifier to the menu and register it with runIndex
             // if it isn't already and if it's compatible with the current selection
-            if (mod.isCompatible(selection) && !runIndex.containsValue(mod)) {
+            if (mod.isCompatible() && !runIndex.containsValue(mod)) {
                 
-                menu.addItem(mod.getTitle(selection), menuIndex);
+                menu.addItem(mod.getTitle(), menuIndex);
                 runIndex.put(menuIndex, mod);
                 
                 menuIndex++;
             // if the modifier is not compatible with the current selection but
             // it is still registered/in the menu, then remove it from the menu/index
-            } else if (!mod.isCompatible(selection) && runIndex.containsValue(mod)) {
+            } else if (!mod.isCompatible() && runIndex.containsValue(mod)) {
                 
-                int toRemove = menu.getItem(mod.getTitle(selection)).getValue();
+                int toRemove = menu.getItem(mod.getTitle()).getValue();
                 
-                menu.removeItem(mod.getTitle(selection));
+                menu.removeItem(mod.getTitle());
                 runIndex.remove(toRemove);
             }
         }
@@ -71,71 +73,89 @@ public class Modifiers {
     }
     
     private abstract class Modifier {
-        public abstract boolean isCompatible(Selection s);
-        public abstract String getTitle(Selection s);
+        public abstract boolean isCompatible();
+        public abstract String getTitle();
         public abstract void modify();
     }
     
     private class SelectAll extends Modifier {
         
-        public String getTitle(Selection s) {
+        @Override
+        public String getTitle() {
             return "Select all";
         }
         
-        public boolean isCompatible(Selection s) {
+        @Override
+        public boolean isCompatible() {
             return true;
         }
         
+        @Override
         public void modify() {
             for (GraphElement e : graph) {
-                graph.selection.add(e);
+                selection.add(e);
             }
         }
     }
     
     private class SelectNodes extends Modifier {
         
-        public String getTitle(Selection s) {
+        @Override
+        public String getTitle() {
             return "Filter only nodes";
         }
         
-        public boolean isCompatible(Selection s) {
-            return s.nodeCount() > 0 && s.edgeCount() > 0;
+        @Override
+        public boolean isCompatible() {
+            return selection.nodeCount() > 0 && selection.edgeCount() > 0;
         }
         
+        @Override
         public void modify() {
-            graph.selection.clearEdges();
+            selection.clearEdges();
         }
     }
     
     private class SelectEdges extends Modifier {
         
-        public String getTitle(Selection s) {
+        @Override
+        public String getTitle() {
             return "Filter only edges";
         }
         
-        public boolean isCompatible(Selection s) {
-            return s.nodeCount() > 0 && s.edgeCount() > 0;
+        @Override
+        public boolean isCompatible() {
+            return selection.nodeCount() > 0 && selection.edgeCount() > 0;
         }
         
+        @Override
         public void modify() {
-            graph.selection.clearNodes();
+            selection.clearNodes();
         }
     }
     
     private class SelectNeighbors extends Modifier {
         
-        public String getTitle(Selection s) {
-            return "Select neighbors";
+        @Override
+        public String getTitle() {
+            return "Select all neighboring nodes";
         }
         
-        public boolean isCompatible(Selection s) {
-            return s.nodeCount() == 1 && s.edgeCount() == 0;
+        @Override
+        public boolean isCompatible() {
+            return selection.nodeCount() > 0;
         }
         
+        @Override
         public void modify() {
-            //Node n = graph.selection.getNodes().iterator().next();
-            //TODO
+            selection.clearBuffer();
+            for (Node n : selection.getNodes()) {
+                for (Node nbr : graph.getNbrs(n)) {
+                    selection.addToBuffer(nbr);
+                }
+            }
+            selection.clear();
+            selection.commitBuffer();
         }
     }
 }

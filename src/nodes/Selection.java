@@ -99,6 +99,9 @@ public class Selection implements Iterable<GraphElement> {
         }
     }
     
+    /**
+     * clears selection of nodes and edges.  does not affect buffer.
+     */
     public void clear() {
         synchronized (nodes) {
             nodes.clear();
