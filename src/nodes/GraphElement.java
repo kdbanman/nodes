@@ -5,10 +5,12 @@
 package nodes;
 
 import controlP5.Controller;
+import controlP5.Pointer;
 import java.util.ArrayList;
 import processing.core.PApplet;
 import processing.core.PFont;
 import processing.core.PMatrix3D;
+import processing.core.PVector;
 /**
  *
  * @author kdbanman
@@ -94,6 +96,21 @@ public class GraphElement<T> extends Controller<T> {
     @Override
     protected void onEnter() {
         currentCol = hoverCol;
+    }
+    
+    @Override
+    protected void onDrag() {
+        Pointer pointer = getPointer();
+        float rawHoriz = (float) (pointer.x() - pointer.px());
+        float rawVert = (float) (pointer.y() - pointer.py());
+        
+        PVector horiz = proj.getScreenHoriz();
+        PVector vert = proj.getScreenVert();
+        
+        // scale screen drag distances by ratio 
+        //      (camera to cursor distance)/(camera to element distance)
+        
+        
     }
 
     @Override
