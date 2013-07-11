@@ -6,7 +6,6 @@ package nodes;
 
 import java.awt.BorderLayout;
 import java.awt.Frame;
-import processing.core.PApplet;
 
 /**
  *

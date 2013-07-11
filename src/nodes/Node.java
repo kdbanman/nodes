@@ -71,7 +71,7 @@ public class Node extends GraphElement<Node> {
         float theta = PVector.angleBetween(mouse, obj);
 
         // phi is the angular displacement of the radius of the node
-        float phi = PApplet.atan(size/obj.mag());
+        float phi = Nodes.atan(size/obj.mag());
 
         // the cursor is inside the node if theta is less than phi
         return theta < phi;

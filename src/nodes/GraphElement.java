@@ -7,7 +7,7 @@ package nodes;
 import controlP5.Controller;
 import controlP5.Pointer;
 import java.util.ArrayList;
-import processing.core.PApplet;
+
 import processing.core.PFont;
 import processing.core.PMatrix3D;
 import processing.core.PVector;
@@ -39,10 +39,10 @@ public class GraphElement<T> extends Controller<T> {
     
     Graph graph;
     UnProjector proj;
-    PApplet pApp;
+    Nodes pApp;
     Selection selection;
 
-    //public GraphElement(ControlP5 cp5, String name, UnProjector unProj, PApplet pApplet) {
+    //public GraphElement(ControlP5 cp5, String name, UnProjector unProj, Nodes pApplet) {
     public GraphElement(Graph parentGraph, String name) {
         super(parentGraph.cp5, name);
         
@@ -149,7 +149,7 @@ public class GraphElement<T> extends Controller<T> {
         labelH = charH + (labelText.size() - 1) * charH * 5 / 3;
         labelW = 0;
         for (String line : labelText) {
-            labelW = PApplet.max(labelW, line.length() * charW);
+            labelW = Nodes.max(labelW, line.length() * charW);
         }
     }
     

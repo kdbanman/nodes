@@ -6,14 +6,13 @@ package nodes;
 
 import processing.core.PMatrix3D;
 import processing.core.PVector;
-import processing.core.PApplet;
 
 import processing.opengl.PGraphics3D;
 
 
 public class UnProjector
 {
-    private PApplet p;
+    private Nodes p;
 
     // True if near and far points calculated.
     public boolean isValid() { return m_bValid; }
@@ -33,7 +32,7 @@ public class UnProjector
 
     // -------------------------
 
-    UnProjector(PApplet parent) {
+    UnProjector(Nodes parent) {
         p = parent;
     }
 
@@ -81,7 +80,7 @@ public class UnProjector
         // Transform to normalized screen coordinates (-1 to 1).
         in[0] = ((winx - (float)m_aiViewport[0]) / (float)m_aiViewport[2]) * 2.0f - 1.0f;
         in[1] = ((winy - (float)m_aiViewport[1]) / (float)m_aiViewport[3]) * 2.0f - 1.0f;
-        in[2] = PApplet.constrain(winz, 0f, 1f) * 2.0f - 1.0f;
+        in[2] = Nodes.constrain(winz, 0f, 1f) * 2.0f - 1.0f;
         in[3] = 1.0f;
 
         // Calculate homogeneous coordinates.

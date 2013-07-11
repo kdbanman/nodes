@@ -20,8 +20,8 @@ import controlP5.Tab;
 import controlP5.Textfield;
 import controlP5.Toggle;
 
-import processing.core.PApplet;
 import processing.core.PVector;
+import processing.core.PApplet;
 
 import java.util.ArrayList;
 
@@ -323,7 +323,7 @@ public class ControlPanel extends PApplet {
         
         //NOTE:  ColorPicker is a ControlGroup, not a Controller, so I can't 
         //       attach a callback to it.  It's functionality is in the 
-        //       controlEvent() function of the ControlPanel PApplet
+        //       controlEvent() function of the ControlPanel Nodes
         colorPicker = cp5.addColorPicker("Color")
                 .setPosition(-(w / 4) + padding, padding)
                 .setColorValue(colorPickerDefault)
@@ -585,10 +585,10 @@ public class ControlPanel extends PApplet {
                 float maxSize = 0;
                 for (Node n : graph.selection.getNodes()) {
                     center.add(n.getPosition());
-                    maxSize = PApplet.max(maxSize, n.getSize());
+                    maxSize = Nodes.max(maxSize, n.getSize());
                 }
                 // radius is circumference / 2pi, but this has been adjusted for appearance
-                float radius = (float) ((float) graph.selection.nodeCount() * 2 * maxSize) / (PApplet.PI);
+                float radius = (float) ((float) graph.selection.nodeCount() * 2 * maxSize) / (Nodes.PI);
                 
                 // center is average position
                 center.x =  center.x / graph.selection.nodeCount();
@@ -602,14 +602,14 @@ public class ControlPanel extends PApplet {
                 PVector vert = graph.proj.getScreenVert();
                 
                 // angular separation of nodes is 2pi / number of nodes
-                float theta = 2 * PApplet.PI / (float) graph.selection.nodeCount();
+                float theta = 2 * Nodes.PI / (float) graph.selection.nodeCount();
                 float currAngle = 0;
                 for (Node n : graph.selection.getNodes()) {
                     PVector hComp = horiz.get();
-                    hComp.mult(PApplet.cos(currAngle) * radius);
+                    hComp.mult(Nodes.cos(currAngle) * radius);
                     
                     PVector vComp = vert.get();
-                    vComp.mult(PApplet.sin(currAngle) * radius);
+                    vComp.mult(Nodes.sin(currAngle) * radius);
                     
                     hComp.add(vComp);
                     n.setPosition(hComp);

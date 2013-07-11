@@ -8,7 +8,6 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import processing.core.PApplet;
 
 /**
  *
@@ -76,7 +75,7 @@ public class Selection implements Iterable<GraphElement> {
     public void add(GraphElement e) {
         if (e instanceof Edge) add((Edge ) e);
         else if (e instanceof Node) add((Node) e);
-        else PApplet.println("ERROR: only Node or Edge may be added to Selection");
+        else Nodes.println("ERROR: only Node or Edge may be added to Selection");
     }
     
     public void remove(Node n) {
@@ -88,7 +87,7 @@ public class Selection implements Iterable<GraphElement> {
     public void remove(GraphElement e) {
         if (e instanceof Edge) remove((Edge) e);
         else if (e instanceof Node) remove((Node) e);
-        else PApplet.println("ERROR: only Node or Edge may be removed from Selection");
+        else Nodes.println("ERROR: only Node or Edge may be removed from Selection");
     }
     
     public void invert(GraphElement e) {
@@ -136,7 +135,7 @@ public class Selection implements Iterable<GraphElement> {
     public void addToBuffer(GraphElement e) {
         if (e instanceof Edge) addToBuffer((Edge ) e);
         else if (e instanceof Node) addToBuffer((Node) e);
-        else PApplet.println("ERROR: only Node or Edge may be added to Selection");
+        else Nodes.println("ERROR: only Node or Edge may be added to Selection");
     }
     
     public void removeFromBuffer(Node n) {
@@ -148,7 +147,7 @@ public class Selection implements Iterable<GraphElement> {
     public void removeFromBuffer(GraphElement e) {
         if (e instanceof Edge) removeFromBuffer((Edge) e);
         else if (e instanceof Node) removeFromBuffer((Node) e);
-        else PApplet.println("ERROR: only Node or Edge may be removed from Selection");
+        else Nodes.println("ERROR: only Node or Edge may be removed from Selection");
     }
     
     public void commitBuffer() {

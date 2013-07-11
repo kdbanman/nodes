@@ -6,6 +6,7 @@ package nodes;
 
 import controlP5.ControllerView;
 import java.util.HashSet;
+
 import processing.core.PApplet;
 import processing.core.PVector;
 
@@ -114,7 +115,7 @@ public class Edge extends GraphElement<Edge>  {
                       orthogonal.z * src.getPosition().z;
 
       // hooray!
-      float dist = PApplet.abs(mouseC - edgeC);
+      float dist = Nodes.abs(mouseC - edgeC);
 
       // test if shortest distance between edge and mouse lines is within
       // the size constraint of the edge
@@ -181,7 +182,7 @@ public class Edge extends GraphElement<Edge>  {
             // with overridden prefixLabel(), updateLabel() will work
             updateLabel();
         } else {
-            PApplet.println("ERROR:  triple\n  " + sub + "\n  " + pred + "\n  " + obj
+            Nodes.println("ERROR:  triple\n  " + sub + "\n  " + pred + "\n  " + obj
                     + "\ndoes not belong to edge\n  " + getName());
         }
     }

@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.ArrayList;
 
 import com.hp.hpl.jena.rdf.model.*;
-import controlP5.CallbackEvent;
-import controlP5.CallbackListener;
 
 import controlP5.ControlP5;
 import java.util.HashSet;
@@ -14,7 +12,6 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
-import processing.core.PApplet;
 import processing.core.PVector;
 
 /**
@@ -28,7 +25,7 @@ public class Graph implements Iterable<GraphElement> {
 
     UnProjector proj;
     ControlP5 cp5;
-    PApplet pApp;
+    Nodes pApp;
     
     Selection selection;
     
@@ -46,7 +43,7 @@ public class Graph implements Iterable<GraphElement> {
     HashMap<Node, ArrayList<Node>> adjacent;
     HashSet<Edge> edges;
 
-    Graph(UnProjector u, ControlP5 c, PApplet p) {
+    Graph(UnProjector u, ControlP5 c, Nodes p) {
         proj = u;
         cp5 = c;
         pApp = p;
@@ -83,7 +80,7 @@ public class Graph implements Iterable<GraphElement> {
                 diff.sub(nodePos);
                 float dist = diff.mag();
                 diff.normalize();
-                diff.mult(hooke * PApplet.sq(dist));
+                diff.mult(hooke * Nodes.sq(dist));
                 delta.add(diff);
             }
 
@@ -107,7 +104,7 @@ public class Graph implements Iterable<GraphElement> {
             //apply saturation damping to delta
             PVector delta = deltas.get(node);
             float mag = delta.mag();
-            delta.limit(PApplet.log(mag) / PApplet.log(2));
+            delta.limit(Nodes.log(mag) / Nodes.log(2));
 
             // apply delta to position
             PVector pos = node.getPosition();
@@ -149,7 +146,7 @@ public class Graph implements Iterable<GraphElement> {
             // begin rendering again
             cp5.setAutoDraw(true);
         } else {
-            PApplet.println("Empty query result - no triples to add.");
+            Nodes.println("Empty query result - no triples to add.");
         }
     }
     
@@ -245,9 +242,9 @@ public class Graph implements Iterable<GraphElement> {
 
             // set random initial position within reasonable boundary.
             // (cube root for volume)
-            float initBoundary = PApplet.pow((float) nodeCount, 0.333f)
+            float initBoundary = Nodes.pow((float) nodeCount, 0.333f)
                     * initPositionSparsity;
-            initBoundary = PApplet.min(initBoundary, 300);
+            initBoundary = Nodes.min(initBoundary, 300);
 
             n = new Node(this, id)
                     .setPosition(pApp.random(-initBoundary, initBoundary),
@@ -310,10 +307,10 @@ public class Graph implements Iterable<GraphElement> {
         Node n = (Node) cp5.getController(id);
 
         if (n == null) {
-            PApplet.println("ERROR: Cannot remove nonexistent node\n" + id);
+            Nodes.println("ERROR: Cannot remove nonexistent node\n" + id);
             return false;
         } else if (!adjacent.get(n).isEmpty()) {
-            //PApplet.println("ERROR: Cannot remove still-connected node\n" + id);
+            //Nodes.println("ERROR: Cannot remove still-connected node\n" + id);
             return false;
         } else {
             //node exists and has no neighbors
@@ -345,7 +342,7 @@ public class Graph implements Iterable<GraphElement> {
             printNullEdgeTargets(s, d, src, dst);
             return false;
         } else if (!adjacent.get(src).contains(dst)) {
-            PApplet.println("ERROR: Cannot remove nonexistent edge between:\n" + s + "\n" + d);
+            Nodes.println("ERROR: Cannot remove nonexistent edge between:\n" + s + "\n" + d);
             return false;
         } else {
             Edge e = getEdge(s, d);
@@ -377,7 +374,7 @@ public class Graph implements Iterable<GraphElement> {
         Node ret = (Node) cp5.getController(n);
         
         if (ret == null) {
-            PApplet.println("Node " + n + " not found.");
+            Nodes.println("Node " + n + " not found.");
         }
         
         return ret;
@@ -400,7 +397,7 @@ public class Graph implements Iterable<GraphElement> {
         }
 
         if (e == null) {
-            PApplet.println("Edge connecting\n" + s + "\nand\n" + d + "\nnot found.");
+            Nodes.println("Edge connecting\n" + s + "\nand\n" + d + "\nnot found.");
         }
         return e;
     }
@@ -409,10 +406,10 @@ public class Graph implements Iterable<GraphElement> {
      * prints error message for edge creation between nonexistent nodes
      */
     private void printNullEdgeTargets(String s, String d, Node src, Node dst) {
-        PApplet.println("ERROR: Edge cannot be created between /n"
+        Nodes.println("ERROR: Edge cannot be created between /n"
                 + s + " and /n" + d);
         String problem = (src == null) ? s : d;
-        PApplet.println("   " + problem + "/n  doesn't exist as Node.");
+        Nodes.println("   " + problem + "/n  doesn't exist as Node.");
     }
     
     /**
