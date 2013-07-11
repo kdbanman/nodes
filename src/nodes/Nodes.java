@@ -119,8 +119,8 @@ public class Nodes extends PApplet {
 
     @Override
     public void mousePressed() {
+        // called only when the mouse button is depressed, NOT while it is held
         if (mouseButton == LEFT) {
-            // called only when the mouse button is depressed, NOT while it is held
             lastPressedX = mouseX;
             lastPressedY = mouseY;
 

@@ -67,10 +67,10 @@ public class Selection implements Iterable<GraphElement> {
         return ret;
     }
     
-    private void add(Node n) {
+    public void add(Node n) {
         nodes.add(n);
     }
-    private void add(Edge e) {
+    public void add(Edge e) {
         edges.add(e);
     }
     public void add(GraphElement e) {
@@ -79,10 +79,10 @@ public class Selection implements Iterable<GraphElement> {
         else PApplet.println("ERROR: only Node or Edge may be added to Selection");
     }
     
-    private void remove(Node n) {
+    public void remove(Node n) {
         nodes.remove(n);
     }
-    private void remove(Edge e) {
+    public void remove(Edge e) {
         edges.remove(e);
     }
     public void remove(GraphElement e) {
