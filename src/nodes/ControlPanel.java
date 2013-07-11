@@ -596,20 +596,10 @@ public class ControlPanel extends PApplet {
                 center.z =  center.z / graph.selection.nodeCount();
                 
                 // get horizontal and vertical unit vectors w.r.t. screen
-                
-                //lower right corner
-                graph.proj.calculatePickPoints(graph.pApp.width, graph.pApp.height);
-                PVector horiz = graph.proj.ptStartPos.get();
+                PVector horiz = graph.proj.getScreenHoriz();
                 //upper left corner
                 graph.proj.calculatePickPoints(0, 0);
-                PVector vert = graph.proj.ptStartPos.get();
-                
-                //subtract lower left corner (origin) from both, and normalize
-                graph.proj.calculatePickPoints(0, graph.pApp.height);
-                horiz.sub(graph.proj.ptStartPos);
-                horiz.normalize();
-                vert.sub(graph.proj.ptStartPos);
-                vert.normalize();
+                PVector vert = graph.proj.getScreenVert();
                 
                 // angular separation of nodes is 2pi / number of nodes
                 float theta = 2 * PApplet.PI / (float) graph.selection.nodeCount();
