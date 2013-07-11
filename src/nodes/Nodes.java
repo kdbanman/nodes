@@ -40,6 +40,8 @@ public class Nodes extends PApplet {
     int lastPressedX;
     int lastPressedY;
     boolean leftDragging;
+    
+    DragBehaviour drag;
 
     @Override
     public void setup() {
@@ -67,6 +69,7 @@ public class Nodes extends PApplet {
         lastPressedX = 0;
         lastPressedY = 0;
         
+        drag = DragBehaviour.SELECT;
 
         // test data
         
@@ -95,7 +98,7 @@ public class Nodes extends PApplet {
         proj.calculatePickPoints(mouseX, mouseY);
         pointLight(255, 255, 255, proj.ptStartPos.x, proj.ptStartPos.y, proj.ptStartPos.z);
 
-        if (leftDragging) {
+        if (leftDragging && drag == DragBehaviour.SELECT) {
             // draw transparent rectangle over selection area
             int minX = min(mouseX, lastPressedX);
             int minY = min(mouseY, lastPressedY);
@@ -125,7 +128,7 @@ public class Nodes extends PApplet {
             lastPressedY = mouseY;
 
             // if shift is pressed, user is selectively adding graph elements (with the buffer
-            if (!(shiftPressed())) {
+            if (!shiftPressed() && drag == DragBehaviour.SELECT) {
                 graph.selection.clear();
             }
         }
@@ -144,17 +147,19 @@ public class Nodes extends PApplet {
             int maxX = max(mouseX, lastPressedX);
             int maxY = max(mouseY, lastPressedY);
 
-            graph.selection.clearBuffer();
-            for (GraphElement n : graph) {
-                PVector nPos = n.getPosition();
-                float nX = screenX(nPos.x, nPos.y, nPos.z);
-                float nY = screenY(nPos.x, nPos.y, nPos.z);
+            if (drag == DragBehaviour.SELECT) {
+                graph.selection.clearBuffer();
+                for (GraphElement n : graph) {
+                    PVector nPos = n.getPosition();
+                    float nX = screenX(nPos.x, nPos.y, nPos.z);
+                    float nY = screenY(nPos.x, nPos.y, nPos.z);
 
-                // test membership of graph element
-                if (nX <= maxX && nX >= minX && nY <= maxY && nY >= minY) {
-                    graph.selection.addToBuffer(n);
-                } else {
-                    graph.selection.removeFromBuffer(n);
+                    // test membership of graph element
+                    if (nX <= maxX && nX >= minX && nY <= maxY && nY >= minY) {
+                        graph.selection.addToBuffer(n);
+                    } else {
+                        graph.selection.removeFromBuffer(n);
+                    }
                 }
             }
         }
@@ -163,11 +168,27 @@ public class Nodes extends PApplet {
     @Override
     public void mouseReleased() {
         leftDragging = false;
-        graph.selection.commitBuffer();
+        if (drag == DragBehaviour.SELECT) graph.selection.commitBuffer();
+    }
+    
+    @Override
+    public void keyPressed() {
+        if (key == ' ' && !mousePressed) {
+            if (drag == DragBehaviour.SELECT) {
+                drag = DragBehaviour.DRAG;
+            } else if (drag == DragBehaviour.DRAG) {
+                drag = DragBehaviour.SELECT;
+            }
+        }
     }
 
     public boolean shiftPressed() {
         return keyPressed && key == CODED && keyCode == SHIFT;
+    }
+    
+    public PVector getCamPosition() {
+        float[] camPos = cam.getPosition();
+        return new PVector(camPos[0], camPos[1], camPos[2]);
     }
 
     /**
@@ -175,5 +196,9 @@ public class Nodes extends PApplet {
      */
     public static void main(String args[]) {
         PApplet.main(new String[]{nodes.Nodes.class.getName()});
+    }
+    
+    public enum DragBehaviour {
+        SELECT, DRAG;
     }
 }

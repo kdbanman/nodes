@@ -101,16 +101,34 @@ public class GraphElement<T> extends Controller<T> {
     @Override
     protected void onDrag() {
         Pointer pointer = getPointer();
-        float rawHoriz = (float) (pointer.x() - pointer.px());
-        float rawVert = (float) (pointer.y() - pointer.py());
+        float rawDistH = (float) (pointer.x() - pointer.px());
+        float rawDistV = (float) (pointer.y() - pointer.py());
         
         PVector horiz = proj.getScreenHoriz();
         PVector vert = proj.getScreenVert();
         
         // scale screen drag distances by ratio 
         //      (camera to cursor distance)/(camera to element distance)
+        proj.calculatePickPoints(pApp.mouseX, pApp.mouseY);
+        PVector camPos = pApp.getCamPosition();
+        float cursorDist = PVector.dist(proj.ptStartPos, camPos);
+        float elementDist = PVector.dist(getPosition(), camPos);
+        float scale = cursorDist / elementDist;
         
+        // calculate drag vectors
+        horiz.mult(scale * rawDistH);
+        vert.mult(scale * rawDistV);
         
+        // because shift may or may not be held at this point, this element may
+        // or may not be in the selection, so it should be moved separately from
+        // the selection if it is not selected
+        
+        unselectedMove(horiz, vert);
+        
+        for (Node n : selection.getNodes()) {
+            n.getPosition().add(horiz);
+            n.getPosition().add(vert);
+        }
     }
 
     @Override
@@ -120,7 +138,7 @@ public class GraphElement<T> extends Controller<T> {
     
     @Override
     protected void onRelease() {
-        selection.invert(this);
+        if (pApp.drag == Nodes.DragBehaviour.SELECT) selection.invert(this);
     }
 
     @Override
@@ -130,6 +148,17 @@ public class GraphElement<T> extends Controller<T> {
     
     public boolean selected() {
         return selection.contains(this);
+    }
+    
+    /**
+     * for drag and drop movement that is agnostic to selection status. called
+     * within onDrag, and is semantically different for Edges (hence the override)
+     */
+    protected void unselectedMove(PVector horiz, PVector vert) {
+        if (!selected()) {
+            getPosition().add(horiz);
+            getPosition().add(vert);
+        }
     }
     
     public void setDisplayLabel(boolean setVal) {

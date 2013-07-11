@@ -158,6 +158,18 @@ public class Edge extends GraphElement<Edge>  {
       return setPosition(midpoint);
     }
     
+    @Override
+    protected void unselectedMove(PVector horiz, PVector vert) {
+        if (!src.selected()) {
+            src.getPosition().add(horiz);
+            src.getPosition().add(vert);
+        }
+        if (!dst.selected()) {
+            dst.getPosition().add(horiz);
+            dst.getPosition().add(vert);
+        }
+    }
+    
     /**
      * prefixes and assembles each line of the labelText
      */
