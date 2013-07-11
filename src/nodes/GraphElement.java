@@ -95,67 +95,19 @@ public class GraphElement<T> extends Controller<T> {
 
     @Override
     protected void onEnter() {
-        //DEBUG
-        pApp.drag = Nodes.DragBehaviour.DRAG;
+        pApp.mouseContent = this;
         currentCol = hoverCol;
-    }
-    
-    @Override
-    protected void onDrag() {
-        // get distance between pixels on near frustum
-        proj.calculatePickPoints(0, 0);
-        PVector origin = proj.ptStartPos.get();
-        proj.calculatePickPoints(0, 1);
-        float pixelDist = PVector.dist(origin, proj.ptStartPos);
-        
-        // get distance traversed over drag
-        Pointer pointer = getPointer();
-        float rawDistH = pixelDist * ((float) (pointer.x() - pointer.px()));
-        float rawDistV = pixelDist * ((float) (pointer.y() - pointer.py()));
-        
-        // get near frustum unit vectors
-        PVector horiz = proj.getScreenHoriz();
-        PVector vert = proj.getScreenVert();
-        
-        // calculate scale to tranlate from cursor movement to element movement
-        //      (camera to element distance)/(camera to cursor distance)
-        proj.calculatePickPoints(pApp.mouseX, pApp.mouseY);
-        PVector camPos = pApp.getCamPosition();
-        float cursorDist = PVector.dist(proj.ptStartPos, camPos);
-        float elementDist = PVector.dist(getPosition(), camPos);
-        float scale = elementDist / cursorDist;
-        
-        // calculate drag vectors
-        horiz.mult(scale * rawDistH);
-        vert.mult(scale * rawDistV);
-        
-        // because shift may or may not be held at this point, this element may
-        // or may not be in the selection, so it should be moved separately from
-        // the selection if it is not selected.  single element movement is 
-        // semantically different between nodes and edges (edge position is
-        // derived), so the unselectedMove() is overriden in Edge
-        unselectedMove(horiz, vert);
-        
-        // now that element has been moved if unselected, move the selection
-        for (Node n : selection.getNodes()) {
-            n.getPosition().add(horiz);
-            n.getPosition().add(vert);
-        }
     }
 
     @Override
     protected void onLeave() {
-        pApp.drag = Nodes.DragBehaviour.SELECT;
+        pApp.mouseContent = null;
         currentCol = defaultCol;
     }
     
     @Override
-    protected void onRelease() {
-        if (!pApp.leftDragging) selection.invert(this);
-    }
-
-    @Override
-    protected void mouseReleasedOutside() {
+    protected void onReleaseOutside() {
+        pApp.mouseContent = null;
         currentCol = defaultCol;
     }
     
@@ -167,7 +119,7 @@ public class GraphElement<T> extends Controller<T> {
      * for drag and drop movement that is agnostic to selection status. called
      * within onDrag, and is semantically different for Edges (hence the override)
      */
-    protected void unselectedMove(PVector horiz, PVector vert) {
+    protected void moveIfNotSelected(PVector horiz, PVector vert) {
         if (!selected()) {
             getPosition().add(horiz);
             getPosition().add(vert);

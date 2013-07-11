@@ -1,15 +1,6 @@
 #MISC
 #####
-
-- refactor mouse interaction
-	- desired behaviour:
-		- single, undragged click clears selection unless shift is pressed
-			- subsequent release on an element adds it to selection
-		- drag from outside an element box-selects
-		- drag from within an element drag-moves
-	- proposal:
-		- rather than a drag behaviour enum in Nodes, keep a class that knows if the cursor is inside an element (and which element it is).  this would keep the selection and dragging logic out of the GraphElement class and inside the main application.
-			- if it still makes sense to have an overarching DRAG or SELECT behaviour enum, this class should handle that derivation.
+- fix onLeave() inconsistency.  it happens only (but not always) when leaving an element with a mouse button held.
 
 - finish radial layout.  add lexico
 
@@ -74,7 +65,18 @@
 ###########################
 COMPLETED        (:r !date)
 ###########################
+
 Thu 11 Jul 2013 13:02:27 MDT
+
+- refactor mouse interaction
+	- desired behaviour:
+		- single, undragged click clears selection unless shift is pressed
+			- subsequent release on an element adds it to selection
+		- drag from outside an element box-selects
+		- drag from within an element drag-moves
+	- proposal:
+		- rather than a drag behaviour enum in Nodes, keep a class that knows if the cursor is inside an element (and which element it is).  this would keep the selection and dragging logic out of the GraphElement class and inside the main application.
+			- if it still makes sense to have an overarching DRAG or SELECT behaviour enum, this class should handle that derivation.
 
 - add drag and drop movement
 	- click and drag within node.  move entire selection

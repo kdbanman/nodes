@@ -42,6 +42,10 @@ public class Nodes extends PApplet {
     boolean leftDragging;
     
     DragBehaviour drag;
+    
+    // mouseContent is null when the mouse is hovering over background,
+    // and is a reference to a GraphElement when the mouse hovering over one.
+    GraphElement mouseContent;
 
     @Override
     public void setup() {
@@ -70,6 +74,8 @@ public class Nodes extends PApplet {
         lastPressedY = 0;
         
         drag = DragBehaviour.SELECT;
+        
+        mouseContent = null;
 
         // test data
         
@@ -126,11 +132,6 @@ public class Nodes extends PApplet {
         if (mouseButton == LEFT) {
             lastPressedX = mouseX;
             lastPressedY = mouseY;
-
-            // if shift is pressed, user is selectively adding graph elements (with the buffer
-            if (!shiftPressed() && drag == DragBehaviour.SELECT) {
-                graph.selection.clear();
-            }
         }
     }
 
@@ -138,16 +139,28 @@ public class Nodes extends PApplet {
     public void mouseDragged() {
         // called only when the modispHolderuse is moved while a button is depressed
         if (mouseButton == LEFT) {
+            
+            if (!leftDragging) {
+                if (mouseContent == null) {
+                    drag = DragBehaviour.SELECT;
+                    if (!shiftPressed()) graph.selection.clear();
+                } else {
+                    drag = DragBehaviour.DRAG;
+                }
+            }
             leftDragging = true;
 
-            // determine nodes and edges within the drag box to selection
-            int minX = min(mouseX, lastPressedX);
-            int minY = min(mouseY, lastPressedY);
-
-            int maxX = max(mouseX, lastPressedX);
-            int maxY = max(mouseY, lastPressedY);
-
             if (drag == DragBehaviour.SELECT) {
+                // BOX SELEECT
+                //////////////
+                
+                // determine nodes and edges within the drag box to selection
+                int minX = min(mouseX, lastPressedX);
+                int minY = min(mouseY, lastPressedY);
+
+                int maxX = max(mouseX, lastPressedX);
+                int maxY = max(mouseY, lastPressedY);
+
                 graph.selection.clearBuffer();
                 for (GraphElement n : graph) {
                     PVector nPos = n.getPosition();
@@ -161,14 +174,68 @@ public class Nodes extends PApplet {
                         graph.selection.removeFromBuffer(n);
                     }
                 }
+            } else {
+                // DRAG MOVE
+                ////////////
+                
+                // get distance between pixels on near frustum
+                proj.calculatePickPoints(0, 0);
+                PVector origin = proj.ptStartPos.get();
+                proj.calculatePickPoints(0, 1);
+                float pixelDist = PVector.dist(origin, proj.ptStartPos);
+
+                // get distance traversed over drag
+                float rawDistH = pixelDist * ((float) (mouseX - pmouseX));
+                float rawDistV = pixelDist * ((float) (mouseY - pmouseY));
+
+                // get near frustum unit vectors
+                PVector horiz = proj.getScreenHoriz();
+                PVector vert = proj.getScreenVert();
+
+                // calculate scale to tranlate from cursor movement to element movement
+                //      (camera to element distance)/(camera to cursor distance)
+                proj.calculatePickPoints(mouseX, mouseY);
+                PVector camPos = getCamPosition();
+                float cursorDist = PVector.dist(proj.ptStartPos, camPos);
+                float elementDist = PVector.dist(mouseContent.getPosition(), camPos);
+                float scale = elementDist / cursorDist;
+
+                // calculate drag vectors
+                horiz.mult(scale * rawDistH);
+                vert.mult(scale * rawDistV);
+
+                // because shift may or may not be held at this point, mouseContent may
+                // or may not be in the selection, so it should be moved separately from
+                // the selection if it is not selected.  single element movement is 
+                // semantically different between nodes and edges (edge position is
+                // derived), so the moveIfNotSelected() is overriden in Edge
+                mouseContent.moveIfNotSelected(horiz, vert);
+
+                // now that element has been moved if unselected, move the selection
+                for (Node n : graph.selection.getNodes()) {
+                    n.getPosition().add(horiz);
+                    n.getPosition().add(vert);
+                }
             }
         }
     }
 
     @Override
     public void mouseReleased() {
-        leftDragging = false;
-        if (drag == DragBehaviour.SELECT) graph.selection.commitBuffer();
+        if (mouseButton == LEFT) {
+            if (drag == DragBehaviour.SELECT) {
+                if (!shiftPressed()) {
+                    graph.selection.clear();
+                } else {
+                    if (mouseContent != null) graph.selection.invert(mouseContent);
+                }
+                if (leftDragging) {
+                    graph.selection.commitBuffer();
+                }
+            }
+            leftDragging = false;
+            drag = DragBehaviour.SELECT;
+        }
     }
 
     public boolean shiftPressed() {

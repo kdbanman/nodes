@@ -53,7 +53,8 @@ public class Edge extends GraphElement<Edge>  {
             p.translate(0,0,edge.getPosition().z);
             
             if (isInside() || displayLabel) {
-                 displayLabel();
+                //DEBUG
+                //displayLabel();
             }
             
             // Rotate towards the destination node to orient the edge
@@ -159,7 +160,7 @@ public class Edge extends GraphElement<Edge>  {
     }
     
     @Override
-    protected void unselectedMove(PVector horiz, PVector vert) {
+    protected void moveIfNotSelected(PVector horiz, PVector vert) {
         if (!src.selected()) {
             src.getPosition().add(horiz);
             src.getPosition().add(vert);

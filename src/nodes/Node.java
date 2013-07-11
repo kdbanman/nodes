@@ -41,7 +41,8 @@ public class Node extends GraphElement<Node> {
             p.translate(0,0,node.getPosition().z);
             p.sphere(node.size);
             if (isInside() || displayLabel) {
-                 displayLabel();
+                //DEBUG
+                //displayLabel();
             }
             
             p.popMatrix();
