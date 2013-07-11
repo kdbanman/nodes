@@ -52,8 +52,6 @@ public class Graph implements Iterable<GraphElement> {
         pApp = p;
         
         selection = new Selection();
-        
-        cp5.addCallback(new SingleSelector());
 
         triples = ModelFactory.createDefaultModel();
 
@@ -449,15 +447,4 @@ public class Graph implements Iterable<GraphElement> {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
     }
-    
-    private class SingleSelector implements CallbackListener {
-    
-    @Override
-    public void controlEvent(CallbackEvent event) {
-        if(event.getAction() == ControlP5.ACTION_RELEASED
-                && event.getController() instanceof GraphElement) {
-            selection.invert((GraphElement) event.getController());
-        }
-    }
-}
 }

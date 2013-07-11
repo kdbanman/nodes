@@ -100,6 +100,11 @@ public class GraphElement<T> extends Controller<T> {
     protected void onLeave() {
         currentCol = defaultCol;
     }
+    
+    @Override
+    protected void onRelease() {
+        selection.invert(this);
+    }
 
     @Override
     protected void mouseReleasedOutside() {

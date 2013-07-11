@@ -47,8 +47,6 @@
 
 - use classloader in constructor of Modifiers when populating modifier list for use of plugins
 
-- move SingleSelector to inner class of Node
-
 #CONTROL LOGIC
 ##############
 
@@ -70,6 +68,8 @@
 COMPLETED        (:r !date)
 ###########################
 Wed Jul 10 17:38:53 MDT 2013
+
+- move SingleSelector to inner class of Node
 
 - finish neighbor selection modifier
 
