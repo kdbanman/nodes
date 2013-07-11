@@ -5,6 +5,9 @@
 
 - add drag and drop movement
 	- click and drag within node.  move entire selection
+	- this is partially implemented, it required a behaviour toggle, and the movement is triggered properly, but doesn't move correctly
+	- protect the onDrag() movement function with the DragBehaviour enum
+
 
 - implement exploration mode
 
