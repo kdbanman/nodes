@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.ArrayList;
 
 import com.hp.hpl.jena.rdf.model.*;
+import controlP5.CallbackEvent;
+import controlP5.CallbackListener;
 
 import controlP5.ControlP5;
 import java.util.HashSet;
@@ -51,7 +53,7 @@ public class Graph implements Iterable<GraphElement> {
         
         selection = new Selection();
         
-        cp5.addCallback(new SingleSelector(selection));
+        cp5.addCallback(new SingleSelector());
 
         triples = ModelFactory.createDefaultModel();
 
@@ -447,4 +449,15 @@ public class Graph implements Iterable<GraphElement> {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
     }
+    
+    private class SingleSelector implements CallbackListener {
+    
+    @Override
+    public void controlEvent(CallbackEvent event) {
+        if(event.getAction() == ControlP5.ACTION_RELEASED
+                && event.getController() instanceof GraphElement) {
+            selection.invert((GraphElement) event.getController());
+        }
+    }
+}
 }
