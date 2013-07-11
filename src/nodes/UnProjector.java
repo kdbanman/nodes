@@ -138,12 +138,12 @@ public class UnProjector
      * @return horizontal unit vector w.r.t. screen (near frustum plane, in particular)
      */
     public PVector getScreenHoriz() {
-        //lower right corner
-        calculatePickPoints(p.width, p.height);
+        //upper right corner
+        calculatePickPoints(p.width, 0);
         PVector horiz = ptStartPos.get();
         
-        //subtract lower left corner (origin) and normalize
-        calculatePickPoints(0, p.height);
+        //subtract upper left corner (origin) and normalize
+        calculatePickPoints(0, 0);
         horiz.sub(ptStartPos);
         horiz.normalize();
         
@@ -154,12 +154,12 @@ public class UnProjector
      * @return vertical unit vector w.r.t. screen (near frustum plane, in particular)
      */
     public PVector getScreenVert() {
-         //upper left corner
-        calculatePickPoints(0, 0);
+         //lower left corner
+        calculatePickPoints(0, p.height);
         PVector vert = ptStartPos.get();
         
-        //subtract lower left corner (origin) and normalize
-        calculatePickPoints(0, p.height);
+        //subtract upper left corner (origin) and normalize
+        calculatePickPoints(0, 0);
         vert.sub(ptStartPos);
         vert.normalize();
         

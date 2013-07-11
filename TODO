@@ -1,13 +1,17 @@
 #MISC
 #####
 
+- refactor mouse interaction
+	- desired behaviour:
+		- single, undragged click clears selection unless shift is pressed
+			- subsequent release on an element adds it to selection
+		- drag from outside an element box-selects
+		- drag from within an element drag-moves
+	- proposal:
+		- rather than a drag behaviour enum in Nodes, keep a class that knows if the cursor is inside an element (and which element it is).  this would keep the selection and dragging logic out of the GraphElement class and inside the main application.
+			- if it still makes sense to have an overarching DRAG or SELECT behaviour enum, this class should handle that derivation.
+
 - finish radial layout.  add lexico
-
-- add drag and drop movement
-	- click and drag within node.  move entire selection
-	- this is partially implemented, it required a behaviour toggle, and the movement is triggered properly, but doesn't move correctly
-	- protect the onDrag() movement function with the DragBehaviour enum
-
 
 - implement exploration mode
 
@@ -70,6 +74,13 @@
 ###########################
 COMPLETED        (:r !date)
 ###########################
+Thu 11 Jul 2013 13:02:27 MDT
+
+- add drag and drop movement
+	- click and drag within node.  move entire selection
+	- this is partially implemented, it required a behaviour toggle, and the movement is triggered properly, but doesn't move correctly
+	- protect the onDrag() movement function with the DragBehaviour enum
+
 Wed Jul 10 17:38:53 MDT 2013
 
 - move SingleSelector to inner class of Node

@@ -170,17 +170,6 @@ public class Nodes extends PApplet {
         leftDragging = false;
         if (drag == DragBehaviour.SELECT) graph.selection.commitBuffer();
     }
-    
-    @Override
-    public void keyPressed() {
-        if (key == ' ' && !mousePressed) {
-            if (drag == DragBehaviour.SELECT) {
-                drag = DragBehaviour.DRAG;
-            } else if (drag == DragBehaviour.DRAG) {
-                drag = DragBehaviour.SELECT;
-            }
-        }
-    }
 
     public boolean shiftPressed() {
         return keyPressed && key == CODED && keyCode == SHIFT;
