@@ -62,9 +62,14 @@ public class GraphElement<T> extends Controller<T> {
         constructedLabel = "";
         
         labelSize = 12;
-        labelFont = pApp.createFont("cour.ttf", labelSize);
-        charW = labelFont.getGlyph('A').width;
-        charH = labelFont.getGlyph('A').height;
+        try {
+            labelFont = pApp.createFont("labelFont.ttf", labelSize);
+            charW = labelFont.getGlyph('A').width;
+            charH = labelFont.getGlyph('A').height;
+        } catch (Exception e) {
+            System.out.println("ERROR: font not loaded.  ensure labelFont.tiff is in program directory.");
+            labelFont = graph.cp5.getFont().getFont();
+        }
         
         labelW = charW;
         labelH = charH;
