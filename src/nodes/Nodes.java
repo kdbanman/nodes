@@ -18,6 +18,8 @@ package nodes;
 import processing.core.*;
 
 import controlP5.ControlP5;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 //  this is the PeasyCam from https://github.com/jeffg2k/peasycam
 import peasy.PeasyCam;
@@ -41,11 +43,18 @@ public class Nodes extends PApplet {
     int lastPressedY;
     boolean leftDragging;
     
+    // enum for tracking what the mouse is currently doing.  for management of
+    // drag movement and selection, which all use left mouse button
     DragBehaviour drag;
     
     // mouseContent is null when the mouse is hovering over background,
     // and is a reference to a GraphElement when the mouse hovering over one.
     GraphElement mouseContent;
+    
+    // list for tracking which GraphElements have been hovered over, since
+    // ControlP5's native onLeave() calls are based on the assumption that only
+    // one controller will be hovered over at any given time
+    ArrayList<GraphElement> hovered;
 
     @Override
     public void setup() {
@@ -76,9 +85,11 @@ public class Nodes extends PApplet {
         drag = DragBehaviour.SELECT;
         
         mouseContent = null;
+        
+        hovered = new ArrayList<>();
 
         // test data
-        
+        /*
         graph.addTriple("John", "knows", "Bill");
         graph.addTriple("John", "worksAt", "Facecloud");
         graph.addTriple("John", "knows", "Amy");
@@ -88,7 +99,7 @@ public class Nodes extends PApplet {
         graph.addTriple("John", "drawsOn", "Amy");
         graph.addTriple("Amy", "hasPet", "John");
         graph.addTriple("Amy", "flies", "WOWOWOWOWWWOOOOOOOtdiuttditdtditidtdiOOOOOOO");
-        
+        */
         //graph.addTriples(Importer.getDescriptionFromWeb("Albert_Einstein.rdf"));
         
     }
@@ -252,6 +263,17 @@ public class Nodes extends PApplet {
      */
     public static void main(String args[]) {
         PApplet.main(new String[]{nodes.Nodes.class.getName()});
+    }
+    
+    public void cleanHovered() {
+        Iterator<GraphElement> it = hovered.iterator();
+        while (it.hasNext()) {
+            GraphElement e = it.next();
+            if (!e.isInside()) {
+                e.notHovered();
+                it.remove();
+            }
+        }
     }
     
     public enum DragBehaviour {

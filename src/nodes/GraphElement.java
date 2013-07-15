@@ -96,17 +96,23 @@ public class GraphElement<T> extends Controller<T> {
     @Override
     protected void onEnter() {
         pApp.mouseContent = this;
+        pApp.hovered.add(this);
         currentCol = hoverCol;
     }
 
     @Override
     protected void onLeave() {
-        pApp.mouseContent = null;
-        currentCol = defaultCol;
+        notHovered();
+        pApp.cleanHovered();
     }
     
     @Override
     protected void onReleaseOutside() {
+        notHovered();
+        pApp.cleanHovered();
+    }
+    
+    public void notHovered() {
         pApp.mouseContent = null;
         currentCol = defaultCol;
     }
