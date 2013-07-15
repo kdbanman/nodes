@@ -1,0 +1,7 @@
+#!/bin/bash -e
+
+read -p "Commit message: " desc
+git add src/* TODO
+git add -u
+git status
+git commit -m "$desc"
