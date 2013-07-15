@@ -1,6 +1,7 @@
 #MISC
 #####
 - fix onLeave() inconsistency.  it happens only (but not always) when leaving an element with a mouse button held.
+	- narrowed it down more:  when more than one element is hovered over at a time, then they are left with the mouse button held, only one of them will call onLeave().  the order of entrance in irrelevant, the one that doesn't have onLeave() called is constant for any particular group of elements.
 
 - finish radial layout.  add lexico
 
