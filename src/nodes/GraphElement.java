@@ -5,7 +5,6 @@
 package nodes;
 
 import controlP5.Controller;
-import controlP5.Pointer;
 import java.util.ArrayList;
 
 import processing.core.PFont;
@@ -206,14 +205,11 @@ public class GraphElement<T> extends Controller<T> {
         
         pApp.pushMatrix();
         pApp.translate(0,0,size);
-        pApp.rect(size - 3, -3, labelW + 6, labelH + 6, 2);
+        pApp.rect(-labelW / 2 - 3, -3, labelW + 6, labelH + 6, 2);
         pApp.popMatrix();
         
-        pApp.fill(0xFF999999);
-        
-        // translate() already called within display() function, so
-        // text position spaced relative to GraphElement for separation/alignment
-        pApp.text(constructedLabel, size, charH, size);
+        pApp.fill(0xFFCCCCCC);
+        pApp.text(constructedLabel, -labelW / 2, charH, size);
 
         pApp.popMatrix();
     }

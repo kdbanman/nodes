@@ -9,20 +9,13 @@
 	- maintenance over undo and redo operations have not been considered at all.	
 
 - implement exploration mode
+	- this wants a popup window pretty badly.  it may require swing to do this with little code
 
 - test multiple additions for prefix overwrite (rdf then rdfs documents replicates)
 
 - replicate and fix concurrent modification bug when adding triples.
 
-- fix label offset to be in the direction of the camera, rather than in <i,j,k> direction
-
-- render labels centered on element position
-
 - fix height/width of text background for labels.
-
-- bolder font with higher contrast color. (pastel orange on default blue)
-
-- brighten main background (scale to white)
 
 - update node and edge removal within Graph to maintain the model.
 
@@ -73,6 +66,12 @@
 COMPLETED        (:r !date)
 ###########################
 Mon 15 Jul 2013 14:42:52 MDT
+
+- bolder font with higher contrast color. (pastel orange on default blue)
+
+- brighten main background (scale to white)
+
+- render labels centered on element position
 
 - find out why initially displaying labels is very expensive.  even for one node or edge, a hover triggers a very noticeable lag time.  this scales to absolute unusability when only a few dozen labels are triggered for display at the same time (or even it too short an interval of time)
 	- resizing the nodes is similarly expensive

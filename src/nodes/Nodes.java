@@ -106,7 +106,7 @@ public class Nodes extends PApplet {
 
     @Override
     public void draw() {
-        background(0xFFE07924);
+        background(0xFFFFDCBF);
 
         // necessary for unprojection functionality
         proj.captureViewMatrix((PGraphics3D) this.g);
