@@ -115,7 +115,8 @@ public class ControlPanel extends PApplet {
         
         cp5 = new ControlP5(this)
                 .mapKeyFor(new PasteListener(), CONTROL, 'v')
-                .mapKeyFor(new CopyListener(), CONTROL, 'c');
+                .mapKeyFor(new CopyListener(), CONTROL, 'c')
+                .setMoveable(false);
         
         // Main tabs
         

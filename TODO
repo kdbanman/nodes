@@ -8,10 +8,6 @@
         frame.setResizable(true);
         setupFrameResizeListener();
 
-- set all controllers to immovable
-
-- nbrhood selection include old and edges
-
 - center camera option in layout
 
 - update transformation controllers with GraphElement selection
@@ -87,6 +83,10 @@
 COMPLETED        (:r !date)
 ###########################
 Mon 15 Jul 2013 14:42:52 MDT
+
+- set all controllers to immovable
+
+- nbrhood selection include old and edges
 
 - hide selection modifier menu header
 

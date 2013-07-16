@@ -401,6 +401,9 @@ public class Graph implements Iterable<GraphElement> {
         }
         return e;
     }
+    public Edge getEdge(Node s, Node d) {
+        return getEdge(s.getName(), d.getName());
+    }
 
     /**
      * prints error message for edge creation between nonexistent nodes

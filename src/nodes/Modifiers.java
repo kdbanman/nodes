@@ -138,7 +138,7 @@ public class Modifiers {
         
         @Override
         public String getTitle() {
-            return "Select all neighboring nodes";
+            return "Add neighborhood to selection";
         }
         
         @Override
@@ -149,12 +149,16 @@ public class Modifiers {
         @Override
         public void modify() {
             selection.clearBuffer();
+            for (Edge e : selection.getEdges()) {
+                selection.addToBuffer(e.dst);
+                selection.addToBuffer(e.src);
+            }
             for (Node n : selection.getNodes()) {
                 for (Node nbr : graph.getNbrs(n)) {
                     selection.addToBuffer(nbr);
+                    selection.addToBuffer(graph.getEdge(n, nbr));
                 }
             }
-            selection.clear();
             selection.commitBuffer();
         }
     }
