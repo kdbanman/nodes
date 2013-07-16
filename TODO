@@ -1,6 +1,7 @@
 #MISC
 #####
 - finish radial layout.  add lexico
+	- separate lexico and numerical ordering functions
 
 - implement exploration mode
 

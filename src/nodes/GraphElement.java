@@ -103,13 +103,11 @@ public class GraphElement<T> extends Controller<T> {
     @Override
     protected void onLeave() {
         notHovered();
-        pApp.cleanHovered();
     }
     
     @Override
     protected void onReleaseOutside() {
         notHovered();
-        pApp.cleanHovered();
     }
     
     public void notHovered() {

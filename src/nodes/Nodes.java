@@ -61,6 +61,7 @@ public class Nodes extends PApplet {
         int w = 800;
         int h = 600;
         size(w, h, P3D);
+        frameRate(30);
 
         cam = new PeasyCam(this, 0, 0, 0, 600);
         cam.setLeftDragHandler(null);
@@ -100,8 +101,7 @@ public class Nodes extends PApplet {
         graph.addTriple("Amy", "hasPet", "John");
         graph.addTriple("Amy", "flies", "WOWOWOWOWWWOOOOOOOtdiuttditdtditidtdiOOOOOOO");
         */
-        //graph.addTriples(Importer.getDescriptionFromWeb("Albert_Einstein.rdf"));
-        
+        //graph.addTriples(Importer.getDescriptionFromWeb("Albert_Einstein.rdf"));   
     }
 
     @Override
@@ -135,6 +135,8 @@ public class Nodes extends PApplet {
         if (panelFrame.controls.autoLayout.getState()) {
             graph.layout();
         }
+        
+        cleanHovered();
     }
 
     @Override

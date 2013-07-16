@@ -15,6 +15,7 @@ import controlP5.ControlFont;
 import controlP5.ControlKey;
 import controlP5.Group;
 import controlP5.ListBox;
+import controlP5.RadioButton;
 import controlP5.Slider;
 import controlP5.Tab;
 import controlP5.Textfield;
@@ -71,6 +72,8 @@ public class ControlPanel extends PApplet {
     
     ListBox modifierMenu;
     Modifiers modifiers;
+    
+    RadioButton sortOrder;
     
     Toggle autoLayout;
     
@@ -312,6 +315,13 @@ public class ControlPanel extends PApplet {
                 .setWidth(buttonWidth)
                 .moveTo(positionGroup)
                 .addCallback(new RadialLayoutListener());
+        sortOrder = cp5.addRadio("Sort Order")
+                .setPosition(2 * padding + buttonWidth, 3 * padding + 2 * buttonHeight)
+                .setItemHeight(buttonHeight / 2)
+                .moveTo(positionGroup)
+                .addItem("Numerical Order", 0)
+                .addItem("Lexicographical Order", 1)
+                .activate(0);
         
         autoLayout = cp5.addToggle("Auto-Layout")
                 .setPosition(padding, 4 * padding + 3 * buttonHeight)
@@ -604,7 +614,24 @@ public class ControlPanel extends PApplet {
                 // angular separation of nodes is 2pi / number of nodes
                 float theta = 2 * Nodes.PI / (float) graph.selection.nodeCount();
                 float currAngle = 0;
+                
+                // sort nodes according to choice
+                String[] names = new String[graph.selection.nodeCount()];
+                int i = 0;
                 for (Node n : graph.selection.getNodes()) {
+                    names[i] = n.getName();
+                    i++;
+                }
+                
+                if (sortOrder.getState("Numerical Order")) {
+                    quickSort(names, 0, names.length - 1, true);
+                } else {
+                    quickSort(names, 0, names.length - 1, false);
+                }
+                
+                for (String name : names) {
+                    Node n = graph.getNode(name);
+                    
                     PVector hComp = horiz.get();
                     hComp.mult(Nodes.cos(currAngle) * radius);
                     
@@ -617,6 +644,50 @@ public class ControlPanel extends PApplet {
                     currAngle += theta;
                 }
             }
+        }
+        
+        private void quickSort(String[] arr, int p, int r, boolean numerical) {
+            if (p < r) {
+                int pivot = partition(arr, p, r, numerical);
+                quickSort(arr, p, pivot - 1, numerical);
+                quickSort(arr, pivot + 1, r, numerical);
+            }
+        }
+        
+        private int partition(String[] arr, int p, int r, boolean numerical) {
+            String pivot = arr[r];
+            int swap = p - 1;
+            for (int j = p ; j < r ; j++) {
+                boolean greaterThanPivot;
+                if (numerical) greaterThanPivot = numLess(arr[j], pivot);
+                else greaterThanPivot = lexLess(arr[j], pivot);
+                
+                if (greaterThanPivot) {
+                    swap++;
+                    String tmp = arr[swap];
+                    arr[swap] = arr[j];
+                    arr[j] = tmp;
+                }
+            }
+            String tmp = arr[swap + 1];
+            arr[swap + 1] = arr[r];
+            arr[r] = tmp;
+            
+            return swap + 1;
+        }
+        
+        private boolean numLess(String left, String right) {
+            if (left.length() > right.length()) {
+                return false;
+            } else if (left.length() < right.length()) {
+                return true;
+            }
+            
+            return lexLess(left, right);
+        }
+        
+        private boolean lexLess(String left, String right) {
+            return left.compareToIgnoreCase(right) < 0;
         }
     }
     
