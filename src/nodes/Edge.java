@@ -53,8 +53,7 @@ public class Edge extends GraphElement<Edge>  {
             p.translate(0,0,edge.getPosition().z);
             
             if (isInside() || displayLabel) {
-                //DEBUG
-                //displayLabel();
+                displayLabel();
             }
             
             // Rotate towards the destination node to orient the edge

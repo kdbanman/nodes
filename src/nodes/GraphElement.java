@@ -26,7 +26,7 @@ public class GraphElement<T> extends Controller<T> {
     
     float size;
     
-    float labelSize;
+    int labelSize;
     PFont labelFont;
     ArrayList<String> labelText;
     String constructedLabel;
@@ -64,17 +64,7 @@ public class GraphElement<T> extends Controller<T> {
         constructedLabel = "";
         
         labelSize = 12;
-        try {
-            labelFont = pApp.createFont("labelFont.ttf", labelSize);
-            charW = labelFont.getGlyph('A').width;
-            charH = labelFont.getGlyph('A').height;
-        } catch (Exception e) {
-            System.out.println("ERROR: font not loaded.  ensure labelFont.tiff is in program directory.");
-            labelFont = graph.cp5.getFont().getFont();
-        }
-        
-        labelW = charW;
-        labelH = charH;
+        setLabelSize(labelSize);
         
         displayLabel = false;
     }
@@ -134,13 +124,24 @@ public class GraphElement<T> extends Controller<T> {
         displayLabel = setVal;
     }
     
-    public void setLabelSize(int s) {
+    public final void setLabelSize(int s) {
         labelSize = s;
-        labelFont = pApp.createFont("cour.ttf", labelSize);
+        
+        try {
+            labelFont = pApp.createFont("labelFont.ttf", labelSize);
+            charW = labelFont.getGlyph('A').width;
+            charH = labelFont.getGlyph('A').height;
+        } catch (Exception e) {
+            System.out.println("ERROR: font not loaded.  ensure labelFont.tiff is in program directory.");
+            labelFont = graph.cp5.getFont().getFont();
+        }
+        
         charW = labelFont.getGlyph('A').width;
         charH = labelFont.getGlyph('A').height;
         
         calculateLabelDim();
+        
+        pApp.textFont(labelFont);
     }
     
     public void calculateLabelDim() {
@@ -197,6 +198,7 @@ public class GraphElement<T> extends Controller<T> {
         PMatrix3D billboarded = new PMatrix3D();
         billboarded.set(tmp);
         
+        
         pApp.pushMatrix();
         pApp.setMatrix(billboarded);
         
@@ -206,11 +208,8 @@ public class GraphElement<T> extends Controller<T> {
         pApp.translate(0,0,size);
         pApp.rect(size - 3, -3, labelW + 6, labelH + 6, 2);
         pApp.popMatrix();
-
-        //DEBUG
-        //pApp.textSize(labelSize);
+        
         pApp.fill(0xFF999999);
-        pApp.textFont(labelFont);
         
         // translate() already called within display() function, so
         // text position spaced relative to GraphElement for separation/alignment

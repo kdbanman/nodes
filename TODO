@@ -1,7 +1,12 @@
 #MISC
 #####
-- finish radial layout.  add lexico
-	- separate lexico and numerical ordering functions
+
+- decide whether it is valuable to keep the model around.  it might be a powerful and necessary thing for advanced queries later on, but it is a source of complexity (time and space) to maintain.
+	pros:
+	- it will be easier to serialize the program state for load/save with it left there, but not by much.
+	- it keeps track of label prefixes, which is dandy.
+	cons:
+	- maintenance over undo and redo operations have not been considered at all.	
 
 - implement exploration mode
 
@@ -9,8 +14,7 @@
 
 - replicate and fix concurrent modification bug when adding triples.
 
-- find out why initially displaying labels is very expensive.  even for one node or edge, a hover triggers a very noticeable lag time.  this scales to absolute unusability when only a few dozen labels are triggered for display at the same time (or even it too short an interval of time)
-	- resizing the nodes is similarly expensive
+- fix label offset to be in the direction of the camera, rather than in <i,j,k> direction
 
 - render labels centered on element position
 
@@ -24,11 +28,10 @@
 
 - updtae node removal process to remove all attached edges and singlet nodes
 
+- add numerical size scale
+	- 1 pass to find min and max, then set scale for interpolation, then 1 more pass to modifiy scale.
+
 - implement main application arrow controls for camera strafe
-
-- (probably within main application loop) implement drag and drop movement of selected nodes.  keep in mind that the controller is currently prepared to prohibit the user from doing this unless the appropriate radio button is active.  this might be stupid.
-
-- add radial lexicographical sorting (sensitive to common subject?  sounds expensive.  maybe just let the user dumbass if they want))
 
 - find some way to swap state around to show color changes on selected nodes
 
@@ -47,12 +50,17 @@
 #CONTROL LOGIC
 ##############
 
-- disable certain sizing options based on selection nature
-
 #MODIFIERS
 ##########
 
+- select all triples with common predicate, predicate and object, subject, subj and obj, bla bla bla
+	- for edges that contain at least one triple in each direction, what do?  probably just populate selection list for each triple in edge for triple-dependent queries
+
 - select shortest path between 2 nodes
+
+- select most central node
+
+- select most central edge
 
 #OPTIONS
 ########
@@ -65,6 +73,12 @@
 COMPLETED        (:r !date)
 ###########################
 Mon 15 Jul 2013 14:42:52 MDT
+
+- find out why initially displaying labels is very expensive.  even for one node or edge, a hover triggers a very noticeable lag time.  this scales to absolute unusability when only a few dozen labels are triggered for display at the same time (or even it too short an interval of time)
+	- resizing the nodes is similarly expensive
+
+- finish radial layout.  add lexico
+	- separate lexico and numerical ordering functions
 
 - fix onLeave() inconsistency.  it happens only (but not always) when leaving an element with a mouse button held.
 	- narrowed it down more:  when more than one element is hovered over at a time, then they are left with the mouse button held, only one of them will call onLeave().  the order of entrance in irrelevant, the one that doesn't have onLeave() called is constant for any particular group of elements.
