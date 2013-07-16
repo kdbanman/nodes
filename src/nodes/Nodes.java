@@ -1,17 +1,5 @@
 /*
- * CONTROLLER INTERACTION
- * ======================
- * 
- * VIEW INTERACTION
- * ================
- * 
- * Click (and drag) starts selection.
- * Shift + Click (and drag) adds to selection.
- * 
- * Right Click and drag rotates the camera
- * Mouse wheel zooms camera
- * 
- * 
+ * main application logic for Nodes, not including controllers.
  */
 package nodes;
 
