@@ -119,7 +119,7 @@ public class ControlPanel extends PApplet {
         
         // Main tabs
         
-        Tab importTab = cp5.addTab("Get Triples")
+        Tab importTab = cp5.addTab("Load Triples")
                 .setWidth(w / 4)
                 .setHeight(tabHeight)
                 .setActive(true);
@@ -242,20 +242,21 @@ public class ControlPanel extends PApplet {
         int listItemIdx = 0;
         modifierMenu = cp5.addListBox("Selection Modifiers", 
                     padding, 
-                    2 * tabHeight + padding, 
+                    tabHeight + padding, 
                     w - 2 * padding, 
                     modifiersBoxHeight)
                 .setBarHeight(tabHeight)
                 .setItemHeight(elementHeight)
                 .setScrollbarWidth(elementHeight)
-                .moveTo(transformTab);
+                .moveTo(transformTab)
+                .hideBar();
         modifiers.populate(modifierMenu, graph.selection);
         
         int transformTabsVert = modifiersBoxHeight + 3 * tabHeight + padding;
         
         // Transform subtabs
         
-        positionGroup = new HackTab(cp5, "Position")
+        positionGroup = new HackTab(cp5, "Layout")
                 .setBarHeight(tabHeight)
                 .setPosition(0, transformTabsVert)
                 .setWidth(w / 4)
@@ -320,10 +321,10 @@ public class ControlPanel extends PApplet {
                 .setItemHeight(buttonHeight / 2)
                 .moveTo(positionGroup)
                 .addItem("Numerical Order", 0)
-                .addItem("Lexicographical Order", 1)
+                .addItem("Alphabetical Order", 1)
                 .activate(0);
         
-        autoLayout = cp5.addToggle("Auto-Layout")
+        autoLayout = cp5.addToggle("Auto-Layout Entire Graph")
                 .setPosition(padding, 4 * padding + 3 * buttonHeight)
                 .setHeight(elementHeight)
                 .setWidth(buttonWidth)

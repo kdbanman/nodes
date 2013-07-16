@@ -258,6 +258,11 @@ public class Nodes extends PApplet {
             drag = DragBehaviour.SELECT;
         }
     }
+    
+    @Override
+    public void keyTyped() {
+        if (key == CODED) System.out.println("tututu");
+    }
 
     public boolean shiftPressed() {
         return keyPressed && key == CODED && keyCode == SHIFT;
@@ -289,6 +294,7 @@ public class Nodes extends PApplet {
         if (selectColorRising) selectColor += 0x101010;
         else selectColor -= 0x30303;
     }
+    
     /**
      * @param args the command line arguments
      */

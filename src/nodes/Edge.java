@@ -59,11 +59,11 @@ public class Edge extends GraphElement<Edge>  {
             // Rotate towards the destination node to orient the edge
             PVector  target = between.get();
 
-            PVector up = new PVector(0,0,1);
+            PVector up = new PVector(0,1,0);
             PVector axis = target.cross(up);
             float angle = PVector.angleBetween(target, up);
 
-            p.rotate(-1*angle, axis.x, axis.y, axis.z);
+            p.rotate(-angle, axis.x, axis.y, axis.z);
 
             float len = between.mag() - edge.src.size - edge.dst.size;
             
@@ -73,7 +73,7 @@ public class Edge extends GraphElement<Edge>  {
                 p.fill(currentCol);
             }
             
-            p.box(edge.size, edge.size, edge.lengthScale*len); 
+            p.box(edge.size, edge.lengthScale*len, edge.size); 
             
             p.popMatrix();
           }

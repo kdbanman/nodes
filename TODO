@@ -17,17 +17,9 @@
 - update transformation controllers with GraphElement selection
 	- indicate somehow when >1 selected
 
-- disable peasycam reset on double click
-
-- load triples, not get triples in tab name
-
 - ctrl-click as shortcut to explore
 
 - reimplement expand/contract as radios on a scale button
-
-- hide selection modifier menu header
-
-- rename "lexicographical" to "alphabetical"
 
 - decide whether it is valuable to keep the model around.  it might be a powerful and necessary thing for advanced queries later on, but it is a source of complexity (time and space) to maintain.
 	pros:
@@ -56,13 +48,14 @@
 
 - find some way to swap state around to show color changes on selected nodes
 
-- try stable processing 2 release
+- make color picker better looking
 	
 #CLASSES AND INTERFACES
 #######################
 
 - implement basic graph stack
 	- ensure deep copying (may have to keep within Graph so that references to it elsewhere don't get screwed up)
+	- this is probably too slow.  it probably needs to store a subset of the structure and know how to restore each part.
 
 - implement error/notification popup window system
 
@@ -94,6 +87,17 @@
 COMPLETED        (:r !date)
 ###########################
 Mon 15 Jul 2013 14:42:52 MDT
+
+- hide selection modifier menu header
+
+- load triples, not get triples in tab name
+
+- rename "lexicographical" to "alphabetical"
+
+- try stable processing 2 release
+	- NOTE: within Edge, p.box() needed different parameter order
+
+- disable peasycam reset on double click
 
 - get selection pulsation to work nicely
 
