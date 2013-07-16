@@ -33,6 +33,12 @@ public class Node extends GraphElement<Node> {
             
             if (selected()) {
                 p.fill(selectCol);
+                // TODO pulse nicely
+                if (selectCol < 0xFFFF0000) {
+                    selectCol += 10;
+                } else {
+                    selectCol -= 10;
+                }
             } else {
                 p.fill(currentCol);
             }
