@@ -260,13 +260,6 @@ public class Nodes extends PApplet {
         return new PVector(camPos[0], camPos[1], camPos[2]);
     }
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        PApplet.main(new String[]{nodes.Nodes.class.getName()});
-    }
-    
     public void cleanHovered() {
         Iterator<GraphElement> it = hovered.iterator();
         while (it.hasNext()) {
@@ -276,6 +269,12 @@ public class Nodes extends PApplet {
                 it.remove();
             }
         }
+    }
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        PApplet.main(new String[]{nodes.Nodes.class.getName()});
     }
     
     public enum DragBehaviour {
