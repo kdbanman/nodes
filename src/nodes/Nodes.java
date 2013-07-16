@@ -68,6 +68,7 @@ public class Nodes extends PApplet {
         cam.setRightDragHandler(cam.getRotateDragHandler());
         cam.setCenterDragHandler(cam.getZoomDragHandler());
         cam.setWheelHandler(cam.getZoomWheelHandler());
+        cam.setResetOnDoubleClick(false);
         
         cam.setSpeedLock(false);
         cam.setDamping(.4, .4, .4);
@@ -239,11 +240,11 @@ public class Nodes extends PApplet {
             if (drag == DragBehaviour.SELECT) {
                 if (!shiftPressed()) {
                     graph.selection.clear();
-                } else {
-                    if (mouseContent != null) graph.selection.invert(mouseContent);
                 }
                 if (leftDragging) {
                     graph.selection.commitBuffer();
+                } else if (mouseContent != null) {
+                    graph.selection.invert(mouseContent);
                 }
             }
             leftDragging = false;
