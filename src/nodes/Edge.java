@@ -67,17 +67,12 @@ public class Edge extends GraphElement<Edge>  {
 
             float len = between.mag() - edge.src.size - edge.dst.size;
             
-            if (selected()) {
-                p.fill(selectCol);
-                //TODO pulse nicely
-                if (selectCol < 0xFFFF0000) {
-                    selectCol += 10;
-                } else {
-                    selectCol -= 10;
-                }
+            if (selected() && !inside()) {
+                p.fill(pApp.selectColor);
             } else {
                 p.fill(currentCol);
             }
+            
             p.box(edge.size, edge.size, edge.lengthScale*len); 
             
             p.popMatrix();

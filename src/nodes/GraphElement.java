@@ -51,7 +51,6 @@ public class GraphElement<T> extends Controller<T> {
         selection = parentGraph.selection;
         
         hoverCol = 0xFF5FEA6D;
-        selectCol = 0xFFEA5F84;
     
         defaultCol = 0xFF1A4969;
     

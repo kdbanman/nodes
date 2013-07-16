@@ -31,14 +31,8 @@ public class Node extends GraphElement<Node> {
             // render in 3D
             p.pushMatrix();
             
-            if (selected()) {
-                p.fill(selectCol);
-                // TODO pulse nicely
-                if (selectCol < 0xFFFF0000) {
-                    selectCol += 10;
-                } else {
-                    selectCol -= 10;
-                }
+            if (selected() && !inside()) {
+                p.fill(pApp.selectColor);
             } else {
                 p.fill(currentCol);
             }

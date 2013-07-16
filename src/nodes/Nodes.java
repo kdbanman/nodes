@@ -43,6 +43,9 @@ public class Nodes extends PApplet {
     int lastPressedY;
     boolean leftDragging;
     
+    int selectColor;
+    boolean selectColorRising;
+    
     // enum for tracking what the mouse is currently doing.  for management of
     // drag movement and selection, which all use left mouse button
     DragBehaviour drag;
@@ -83,6 +86,9 @@ public class Nodes extends PApplet {
         
         lastPressedX = 0;
         lastPressedY = 0;
+        
+        selectColor = 0xFF5C5C5C;
+        selectColorRising = true;
         
         drag = DragBehaviour.SELECT;
         
@@ -138,6 +144,7 @@ public class Nodes extends PApplet {
         }
         
         cleanHovered();
+        updateSelectColor();
     }
 
     @Override
@@ -270,6 +277,17 @@ public class Nodes extends PApplet {
                 it.remove();
             }
         }
+    }
+    
+    public void updateSelectColor() {
+        if (selectColor >= 0xFFBABABA) {
+            selectColorRising = false;
+        } else if (selectColor <= 0xFF5C5C5C) {
+            selectColorRising = true;
+        }
+        
+        if (selectColorRising) selectColor += 0x101010;
+        else selectColor -= 0x30303;
     }
     /**
      * @param args the command line arguments

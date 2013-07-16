@@ -1,6 +1,34 @@
 #MISC
 #####
 
+- fix copy-paste (only be problematic on mac)
+
+- set main window to resizeable
+	- below lines in setup work, but ugly rendering bugs happen during and immediately after a resize, and drag select *box* gets translated and scaled.
+        frame.setResizable(true);
+        setupFrameResizeListener();
+
+- set all controllers to immovable
+
+- nbrhood selection include old and edges
+
+- center camera option in layout
+
+- update transformation controllers with GraphElement selection
+	- indicate somehow when >1 selected
+
+- disable peasycam reset on double click
+
+- load triples, not get triples in tab name
+
+- ctrl-click as shortcut to explore
+
+- reimplement expand/contract as radios on a scale button
+
+- hide selection modifier menu header
+
+- rename "lexicographical" to "alphabetical"
+
 - decide whether it is valuable to keep the model around.  it might be a powerful and necessary thing for advanced queries later on, but it is a source of complexity (time and space) to maintain.
 	pros:
 	- it will be easier to serialize the program state for load/save with it left there, but not by much.
@@ -66,6 +94,8 @@
 COMPLETED        (:r !date)
 ###########################
 Mon 15 Jul 2013 14:42:52 MDT
+
+- get selection pulsation to work nicely
 
 - bolder font with higher contrast color. (pastel orange on default blue)
 
