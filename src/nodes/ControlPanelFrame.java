@@ -26,9 +26,10 @@ public class ControlPanelFrame extends Frame {
         setLayout(new BorderLayout());
 
         setSize(w, h);
-        setLocation(0, 0);
+        setLocation(30, 30);
         setResizable(false);
         setVisible(true);
+        
         controls = new ControlPanel(w, h, graph);
         
         add(controls, BorderLayout.CENTER);

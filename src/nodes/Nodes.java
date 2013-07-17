@@ -83,7 +83,7 @@ public class Nodes extends PApplet {
         mouseContent = null;
         
         hovered = new ArrayList<>();
-
+        
         // test data
         /*
         graph.addTriple("John", "knows", "Bill");

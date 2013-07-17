@@ -1,6 +1,8 @@
 #MISC
 #####
 
+- duplicate triples are added to edges. problem.
+
 - fix copy-paste (only be problematic on mac)
 
 - set main window to resizeable

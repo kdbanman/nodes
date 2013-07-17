@@ -5,14 +5,13 @@
 package nodes;
 
 import com.hp.hpl.jena.rdf.model.Model;
+import controlP5.Button;
 
 import controlP5.CallbackEvent;
 import controlP5.CallbackListener;
 import controlP5.ColorPicker;
 import controlP5.ControlEvent;
 import controlP5.ControlP5;
-import controlP5.ControlFont;
-import controlP5.ControlKey;
 import controlP5.Group;
 import controlP5.ListBox;
 import controlP5.RadioButton;
@@ -45,10 +44,13 @@ public class ControlPanel extends PApplet {
     ControlP5 cp5;
     Graph graph;
     
-    // TODO:  use these fonts.
-    ControlFont tabFont;
-    ControlFont button;
+    // for copy/paste by keyboard
+    Button copyButton;
+    Button pasteButton;
+    CopyPasteMenuListener copyPaste;
+    Clipboard clipboard;
     
+    // control element size parameters
     int tabHeight;
     int padding;
     int elementHeight;
@@ -58,7 +60,6 @@ public class ControlPanel extends PApplet {
     int modifiersBoxHeight;
     
     // Control elements that need to be accessed outside of setup
-    
     Tab transformTab;
     Group positionGroup;
     
@@ -87,6 +88,10 @@ public class ControlPanel extends PApplet {
         graph = parentGraph;
         modifiers = new Modifiers(graph);
         
+        // for copy/paste
+        clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        copyPaste = new CopyPasteMenuListener();
+        
         // element size parameters
         padding = 10;
         
@@ -114,9 +119,17 @@ public class ControlPanel extends PApplet {
         size(w, h);
         
         cp5 = new ControlP5(this)
-                .mapKeyFor(new PasteListener(), CONTROL, 'v')
-                .mapKeyFor(new CopyListener(), CONTROL, 'c')
                 .setMoveable(false);
+        
+        // copy/paste 'menu'
+        copyButton = cp5.addButton("Copy to Clipboard")
+                .setWidth(buttonWidth)
+                .setHeight(elementHeight)
+                .hide();
+        pasteButton = cp5.addButton("Paste from Clipboard")
+                .setWidth(buttonWidth)
+                .setHeight(elementHeight)
+                .hide();
         
         // Main tabs
         
@@ -180,7 +193,8 @@ public class ControlPanel extends PApplet {
                 elementHeight)
                 .setAutoClear(false)
                 .moveTo(webGroup)
-                .setText("http://www.w3.org/1999/02/22-rdf-syntax-ns");
+                .setText("http://www.w3.org/1999/02/22-rdf-syntax-ns")
+                .addCallback(copyPaste);
         cp5.addButton("Query Web")
                 .setSize(buttonWidth, buttonHeight)
                 .setPosition(w - buttonWidth - padding, 
@@ -196,6 +210,7 @@ public class ControlPanel extends PApplet {
                     w - 2 * padding, 
                     elementHeight)
                 .setAutoClear(false)
+                .addCallback(copyPaste)
                 .moveTo(virtuosoGroup);
         cp5.addTextfield("Username", 
                     padding - w / 4, 
@@ -203,6 +218,7 @@ public class ControlPanel extends PApplet {
                     w - 2 * padding, 
                     elementHeight)
                 .setAutoClear(false)
+                .addCallback(copyPaste)
                 .moveTo(virtuosoGroup);
         cp5.addTextfield("Password", 
                     padding - w / 4, 
@@ -211,6 +227,7 @@ public class ControlPanel extends PApplet {
                     elementHeight)
                 .setAutoClear(false)
                 .setPasswordMode(true)
+                .addCallback(copyPaste)
                 .moveTo(virtuosoGroup);
         cp5.addTextfield("Query", 
                     padding - w / 4, 
@@ -218,13 +235,16 @@ public class ControlPanel extends PApplet {
                     w - 2 * padding, 
                     elementHeight)
                 .setAutoClear(false)
+                .addCallback(copyPaste)
                 .moveTo(virtuosoGroup);
         
         cp5.addButton("Query Virtuoso")
                 .setSize(buttonWidth, buttonHeight)
                 .setPosition(w - buttonWidth - padding - w / 4, 
                     4 * labelledElementHeight + padding)
-                .moveTo(virtuosoGroup);
+                .moveTo(virtuosoGroup)
+                //DEBUG
+                .addCallback(copyPaste);
         
         // Explore tab elements
         
@@ -429,7 +449,38 @@ public class ControlPanel extends PApplet {
         } else if (event.isFrom(modifierMenu)) {
             modifiers.run((int) event.getValue());
         }
-        
+    }
+    
+    private void pasteIntoActiveTextField() {
+        for (Textfield c : cp5.getAll(Textfield.class)) {
+            if (c.isActive()) {
+                int idx = c.getIndex();
+                String before = c.getText().substring(0, idx);
+                String after = "";
+                if (c.getIndex() != c.getText().length()) {
+                    after = c.getText().substring(idx, c.getText().length());
+                }
+
+                Transferable clipData = clipboard.getContents(this);
+                String s = "";
+                try {
+                  s = (String) (clipData.getTransferData(DataFlavor.stringFlavor));
+                } catch (UnsupportedFlavorException | IOException ee) {
+                    System.out.println("Cannot paste clipboard contents.");
+                }
+                c.setText(s);
+            }
+        }
+    }
+    
+    private void copyFromActiveTextField() {
+        for (Textfield c : cp5.getAll(Textfield.class)) {
+            if (c.isActive()) {
+                String fieldContents = c.getText();
+                StringSelection data = new StringSelection(fieldContents);
+                clipboard.setContents(data, data);
+            }
+        }
     }
     
     private class HackTab extends Group {
@@ -465,52 +516,20 @@ public class ControlPanel extends PApplet {
      *************/
     
     /*
-     * attach to main cp5 for paste functionality
+     * attach to each Textfield for copy/paste functionality
      */
-    private class PasteListener implements ControlKey {
-        Clipboard cb;
-        
+    private class CopyPasteMenuListener implements CallbackListener {
         @Override
-        public void keyEvent() {
-            for (Textfield c : cp5.getAll(Textfield.class)) {
-                if (cb == null) cb = Toolkit.getDefaultToolkit().getSystemClipboard();
-                
-                if (c.isActive()) {
-                    int idx = c.getIndex();
-                    String before = c.getText().substring(0, idx);
-                    String after = "";
-                    if (c.getIndex() != c.getText().length()) {
-                        after = c.getText().substring(idx, c.getText().length());
-                    }
-                    
-                    Transferable clipData = cb.getContents(this);
-                    String s = "";
-                    try {
-                      s = (String) (clipData.getTransferData(DataFlavor.stringFlavor));
-                    } catch (UnsupportedFlavorException | IOException ee) {
-                        System.out.println("Cannot paste clipboard contents.");
-                    }
-                    c.setText(before + s + after);
-                }
-            }
-        }
-    }
-    
-    /*
-     * attach to main cp5 for copy functionality
-     */
-    private class CopyListener implements ControlKey {
-        Clipboard cb;
-        
-        @Override
-        public void keyEvent() {
-            for (Textfield c : cp5.getAll(Textfield.class)) {
-                if (cb == null) cb = Toolkit.getDefaultToolkit().getSystemClipboard();
-                
-                if (c.isActive()) {
-                    StringSelection data = new StringSelection(c.getText());
-                    cb.setContents(data, data);
-                }
+        public void controlEvent(CallbackEvent event) {
+            if (event.getAction() == ControlP5.ACTION_PRESSED) {
+                copyButton.setPosition(mouseX, mouseY)
+                        .show()
+                        .bringToFront();
+                pasteButton.setPosition(mouseX, mouseY + elementHeight)
+                        .show()
+                        .bringToFront();
+                //DEBUG
+                System.out.println("tetsoestnaoehsoe");
             }
         }
     }
