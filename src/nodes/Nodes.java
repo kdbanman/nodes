@@ -246,6 +246,12 @@ public class Nodes extends PApplet {
             drag = DragBehaviour.SELECT;
         }
     }
+    
+    //DEBUG
+    @Override
+    public void keyPressed() {
+        System.out.println(key);
+    }
 
     public boolean shiftPressed() {
         return keyPressed && key == CODED && keyCode == SHIFT;

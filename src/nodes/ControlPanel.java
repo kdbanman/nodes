@@ -420,18 +420,18 @@ public class ControlPanel extends PApplet {
     @Override
     public void draw() {
         
-        // make hackTabs perform as tabs instead of Groups
-        for (Group hackTab : transformSubTabs) {
-          if (hackTab.isOpen() && hackTab != openTransformSubTab) {
+        // make subTabs perform as tabs instead of Groups
+        for (Group subTab : transformSubTabs) {
+          if (subTab.isOpen() && subTab != openTransformSubTab) {
             openTransformSubTab.setOpen(false);
-            openTransformSubTab = hackTab;
+            openTransformSubTab = subTab;
           }
         }
         
-        for (Group hackTab : importSubTabs) {
-            if (hackTab.isOpen() && hackTab != openImportSubTab) {
+        for (Group subTab : importSubTabs) {
+            if (subTab.isOpen() && subTab != openImportSubTab) {
                 openImportSubTab.setOpen(false);
-                openImportSubTab = hackTab;
+                openImportSubTab = subTab;
             }
         }
         

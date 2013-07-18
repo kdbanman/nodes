@@ -1,9 +1,10 @@
 #MISC
 #####
 
-- duplicate triples are added to edges. problem.
+- fix keyboard routing problem.  keystrokes are not being sent to control panel PApplet, regardless of window focus.
+	- try reverting to java 6, if that fails then reduce the problem to a minimal example to debug / post to forum
 
-- fix copy-paste (only be problematic on mac)
+- duplicate triples are added to edges. problem.
 
 - set main window to resizeable
 	- below lines in setup work, but ugly rendering bugs happen during and immediately after a resize, and drag select *box* gets translated and scaled.
@@ -84,6 +85,11 @@
 ###########################
 COMPLETED        (:r !date)
 ###########################
+Wed Jul 17 18:33:09 MDT 2013
+
+- fix copy-paste (only be problematic on mac)
+
+
 Mon 15 Jul 2013 14:42:52 MDT
 
 - set all controllers to immovable
