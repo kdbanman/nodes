@@ -28,6 +28,56 @@ public class Selection implements Iterable<GraphElement> {
         edgeBuffer = Collections.synchronizedSet(new HashSet<Edge>());
     }
     
+    public int getColor() {
+        int color;
+        SelectionIterator it = this.iterator();
+        
+        // get color of first element, return black if empty
+        if (it.hasNext()) color = it.next().getCol();
+        else return 0;
+        
+        // verify that all other selected elements are the same color, return
+        // black otherwise
+        while (it.hasNext()) {
+            int nextCol = it.next().getCol();
+            if (nextCol != color) return 0;
+        }
+        
+        return color;
+    }
+    
+    public float getSize() {
+        // same pattern as getColor, but for size
+        float size;
+        SelectionIterator it = this.iterator();
+        
+        if (it.hasNext()) size = it.next().getSize();
+        else return 0;
+        
+        while (it.hasNext()) {
+            float nextSize = it.next().getSize();
+            if (nextSize != size) return 0;
+        }
+        
+        return size;
+    }
+    
+    public int getLabelSize() {
+        // same pattern as getColor, but for size
+        int size;
+        SelectionIterator it = this.iterator();
+        
+        if (it.hasNext()) size = it.next().getLabelSize();
+        else return 0;
+        
+        while (it.hasNext()) {
+            int nextSize = it.next().getLabelSize();
+            if (nextSize != size) return 0;
+        }
+        
+        return size; 
+    }
+    
     public Set<Node> getNodes() {
         return nodes;
     }
@@ -75,7 +125,6 @@ public class Selection implements Iterable<GraphElement> {
     public void add(GraphElement e) {
         if (e instanceof Edge) add((Edge ) e);
         else if (e instanceof Node) add((Node) e);
-        else Nodes.println("ERROR: only Node or Edge may be added to Selection");
     }
     
     public void remove(Node n) {
@@ -87,7 +136,6 @@ public class Selection implements Iterable<GraphElement> {
     public void remove(GraphElement e) {
         if (e instanceof Edge) remove((Edge) e);
         else if (e instanceof Node) remove((Node) e);
-        else Nodes.println("ERROR: only Node or Edge may be removed from Selection");
     }
     
     public void invert(GraphElement e) {
@@ -109,14 +157,6 @@ public class Selection implements Iterable<GraphElement> {
             edges.clear();
         }
     }
-     
-    /**
-     * merge ignores buffer
-     */
-    public void merge(Selection toAdd) {
-        nodes.addAll(toAdd.getNodes());
-        edges.addAll(toAdd.getEdges());
-    }
     
     /*
      * Buffer operations
@@ -135,7 +175,6 @@ public class Selection implements Iterable<GraphElement> {
     public void addToBuffer(GraphElement e) {
         if (e instanceof Edge) addToBuffer((Edge ) e);
         else if (e instanceof Node) addToBuffer((Node) e);
-        else Nodes.println("ERROR: only Node or Edge may be added to Selection");
     }
     
     public void removeFromBuffer(Node n) {
@@ -147,7 +186,6 @@ public class Selection implements Iterable<GraphElement> {
     public void removeFromBuffer(GraphElement e) {
         if (e instanceof Edge) removeFromBuffer((Edge) e);
         else if (e instanceof Node) removeFromBuffer((Node) e);
-        else Nodes.println("ERROR: only Node or Edge may be removed from Selection");
     }
     
     public void commitBuffer() {

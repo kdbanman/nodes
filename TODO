@@ -3,9 +3,8 @@
 
 - fix keyboard routing problem.  keystrokes are not being sent to control panel PApplet, regardless of window focus.
 	- keypresses are sent to control panel just fine with my mac.  try work linux machine tomorrow.
-	- try reverting to java 6, if that fails then reduce the problem to a minimal example to debug / post to forum
-
-- duplicate triples are added to edges. problem.
+	- upgrading all processing core libraries to 2.01 stable release did not fix problem
+	- last ditch.  try reverting to java 6, if that fails then reduce the problem to a minimal example to debug / post to forum
 
 - set main window to resizeable
 	- below lines in setup work, but ugly rendering bugs happen during and immediately after a resize, and drag select *box* gets translated and scaled.
@@ -15,6 +14,7 @@
 - center camera option in layout
 
 - update transformation controllers with GraphElement selection
+	- implemented, needs testing/debugging.
 	- indicate somehow when >1 selected
 
 - ctrl-click as shortcut to explore
@@ -86,9 +86,15 @@
 ###########################
 COMPLETED        (:r !date)
 ###########################
+Thu Jul 18 15:51:57 MDT 2013
+
+- duplicate triples are added to edges. problem.
+
+
 Wed Jul 17 18:33:09 MDT 2013
 
-- fix copy-paste (only be problematic on mac)
+- fix copy-paste (only problematic on mac)
+	NOTE: this was surprisingly awful.
 
 
 Mon 15 Jul 2013 14:42:52 MDT

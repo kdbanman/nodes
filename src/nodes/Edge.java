@@ -6,6 +6,7 @@ package nodes;
 
 import controlP5.ControllerView;
 import java.util.HashSet;
+import java.util.Objects;
 
 import processing.core.PApplet;
 import processing.core.PVector;
@@ -190,7 +191,8 @@ public class Edge extends GraphElement<Edge>  {
         if (src.getName().equals(sub) && dst.getName().equals(obj) 
                 || src.getName().equals(obj) && dst.getName().equals(sub)) {
             
-            triples.add(new Triple(sub, pred, obj));
+            Triple toAdd = new Triple(sub, pred, obj);
+            if (!triples.contains(toAdd)) triples.add(toAdd);
             
             // with overridden prefixLabel(), updateLabel() will work
             updateLabel();
@@ -219,6 +221,26 @@ public class Edge extends GraphElement<Edge>  {
         }
         public String getObject() {
             return obj;
+        }
+        
+        @Override
+        public boolean equals(Object o) {
+            if (o instanceof Triple) {
+                Triple toCompare = (Triple) o;
+                return sub.equals(toCompare.sub)
+                        && pred.equals(toCompare.pred)
+                        && obj.equals(toCompare.obj);
+            }
+            return false;
+        }
+
+        @Override
+        public int hashCode() {
+            int hash = 7;
+            hash = 37 * hash + Objects.hashCode(this.sub);
+            hash = 37 * hash + Objects.hashCode(this.pred);
+            hash = 37 * hash + Objects.hashCode(this.obj);
+            return hash;
         }
     }
 }

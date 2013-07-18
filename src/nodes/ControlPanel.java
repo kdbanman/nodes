@@ -92,6 +92,10 @@ public class ControlPanel extends PApplet {
     ColorPicker colorPicker;
     int colorPickerDefault;
     
+    Slider sizeSlider;
+    
+    Slider labelSizeSlider;
+    
     public ControlPanel(int frameWidth, int frameHeight, Graph parentGraph) {
         w = frameWidth;
         h = frameHeight;
@@ -380,7 +384,7 @@ public class ControlPanel extends PApplet {
                 .setColorValue(colorPickerDefault)
                 .moveTo(colorSizeGroup);
         
-        cp5.addSlider("Size")
+        sizeSlider = cp5.addSlider("Size")
                 .setPosition(-(w / 4) + padding, 2 * padding + 80)
                 .setHeight(elementHeight)
                 .setWidth(w - 80)
@@ -405,7 +409,7 @@ public class ControlPanel extends PApplet {
                 .moveTo(labelGroup)
                 .addCallback(new HideLabelListener());
         
-        cp5.addSlider("Label Size")
+        labelSizeSlider = cp5.addSlider("Label Size")
                 .setPosition(padding - w / 2, padding * 3 + 2 * buttonHeight)
                 .setWidth(w - 80)
                 .setHeight(elementHeight)

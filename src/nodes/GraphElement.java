@@ -80,6 +80,14 @@ public class GraphElement<T> extends Controller<T> {
     public float getSize() {
         return size;
     }
+    
+    public int getLabelSize() {
+        return labelSize;
+    }
+    
+    public int getCol() {
+        return defaultCol;
+    }
 
     @Override
     protected void onEnter() {

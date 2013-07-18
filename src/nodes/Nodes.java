@@ -3,6 +3,7 @@
  */
 package nodes;
 
+import controlP5.ControlEvent;
 import processing.core.*;
 
 import controlP5.ControlP5;
@@ -59,8 +60,8 @@ public class Nodes extends PApplet {
     @Override
     public void setup() {
         // configure parent PApplet
-        int w = 800;
-        int h = 600;
+        int w = 400;
+        int h = 300;
         size(w, h, P3D);
         frameRate(30);
 
@@ -102,7 +103,7 @@ public class Nodes extends PApplet {
         hovered = new ArrayList<>();
         
         // test data
-        /*
+        
         graph.addTriple("John", "knows", "Bill");
         graph.addTriple("John", "worksAt", "Facecloud");
         graph.addTriple("John", "knows", "Amy");
@@ -112,7 +113,7 @@ public class Nodes extends PApplet {
         graph.addTriple("John", "drawsOn", "Amy");
         graph.addTriple("Amy", "hasPet", "John");
         graph.addTriple("Amy", "flies", "WOWOWOWOWWWOOOOOOOtdiuttditdtditidtdiOOOOOOO");
-        */
+        
         //graph.addTriples(Importer.getDescriptionFromWeb("Albert_Einstein.rdf"));   
     }
 
@@ -156,6 +157,20 @@ public class Nodes extends PApplet {
         
         // iterate selection color pulsation
         updateSelectColor();
+    }
+    
+    // called by controlP5 for each event
+    public void controlEvent(ControlEvent event) {
+        // update transformation controls with properties of selected element(s)
+        panelFrame.controls.colorPicker.setColorValue(graph.selection.getColor());
+        panelFrame.controls.sizeSlider.setValue(graph.selection.getSize());
+        panelFrame.controls.labelSizeSlider.setValue(graph.selection.getLabelSize());
+        
+        //DEBUG
+        System.out.println("here");
+        System.out.println(graph.selection.getColor());
+        System.out.println(graph.selection.getSize());
+        System.out.println(graph.selection.getLabelSize());
     }
 
     
