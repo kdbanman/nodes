@@ -45,9 +45,6 @@ public class ControlPanel extends PApplet {
     Graph graph;
     
     // for copy/paste by keyboard
-    Button copyButton;
-    Button pasteButton;
-    Button clearButton;
     Clipboard clipboard;
     
     // control element size parameters
@@ -60,24 +57,38 @@ public class ControlPanel extends PApplet {
     int modifiersBoxHeight;
     
     // Control elements that need to be accessed outside of setup
+    
+    // copy/paste menu
+    Button copyButton;
+    Button pasteButton;
+    Button clearButton;
+    
+    // tab and subtab containing autolayout so that it can be stopped if the
+    // user leaves either of those tabs
     Tab transformTab;
     Group positionGroup;
     
+    // subtab lists and open tab reference to be manipulated in draw() so that
+    // they behave as tabs
     ArrayList<Group> importSubTabs;
     Group openImportSubTab;
-    
     ArrayList<Group> transformSubTabs;
     Group openTransformSubTab;
     
+    // text field for user-input URIs for description retrieval from the web
     Textfield importWebURI;
     
+    // selection modifier menu and populator
     ListBox modifierMenu;
-    Modifiers modifiers;
+    ModifierPopulator modifierPopulator;
     
+    // radio for radial layout sorting order (lexico or numerical)
     RadioButton sortOrder;
     
+    // toggle button for laying out the entire graph (force-directed algorithm)
     Toggle autoLayout;
     
+    // controller group for colorizing selected nodes and edges
     ColorPicker colorPicker;
     int colorPickerDefault;
     
@@ -86,27 +97,23 @@ public class ControlPanel extends PApplet {
         h = frameHeight;
         
         graph = parentGraph;
-        modifiers = new Modifiers(graph);
         
         // for copy/paste
         clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         
         // element size parameters
         padding = 10;
-        
         tabHeight = 30;
-        
         elementHeight = 20;
-        
         labelledElementHeight = 40;
-        
         buttonWidth = 100;
         buttonHeight = 30;
-        
         modifiersBoxHeight = 200;
         
-        // control element miscellany
+        // selection modifier menu populator
+        modifierPopulator = new ModifierPopulator(graph);
         
+        // sub tab lists to manipulate in draw() for tab behaviour
         importSubTabs = new ArrayList<>();
         transformSubTabs = new ArrayList<>();
         
@@ -119,6 +126,25 @@ public class ControlPanel extends PApplet {
         
         cp5 = new ControlP5(this)
                 .setMoveable(false);
+        
+        // define main controller tabs
+        
+        Tab importTab = cp5.addTab("Load Triples")
+                .setWidth(w / 4)
+                .setHeight(tabHeight)
+                .setActive(true);
+        // transformTab is defined externally so that autolayout can be stopped
+        // if the tab is left by the user
+        transformTab = cp5.addTab("Transform")
+                .setWidth(w / 4)
+                .setHeight(tabHeight);
+        Tab optionTab = cp5.addTab("Options")
+                .setWidth(w / 4)
+                .setHeight(tabHeight);
+        Tab saveTab = cp5.addTab("Save")
+                .setWidth(w / 4)
+                .setHeight(tabHeight);
+        cp5.getDefaultTab().remove();
         
         // copy/paste 'menu'
         copyButton = cp5.addButton("Copy to Clipboard")
@@ -137,28 +163,12 @@ public class ControlPanel extends PApplet {
                 .setVisible(false)
                 .addCallback(new ClearListener());
         
-        // Main tabs
+        //===========
+        // Import tab
+        //===========
         
-        Tab importTab = cp5.addTab("Load Triples")
-                .setWidth(w / 4)
-                .setHeight(tabHeight)
-                .setActive(true);
-        transformTab = cp5.addTab("Transform")
-                .setWidth(w / 4)
-                .setHeight(tabHeight);
-        Tab optionTab = cp5.addTab("Options")
-                .setWidth(w / 4)
-                .setHeight(tabHeight);
-        Tab saveTab = cp5.addTab("Save")
-                .setWidth(w / 4)
-                .setHeight(tabHeight);
-        cp5.getDefaultTab().remove();
-        
-        //====================
-        // Import tab elements
-        //====================
-        
-        // import subtabs
+        // triple import subtabs
+        ////////////////////////
         
         int importTabsVert = 2 * tabHeight + padding;
         
@@ -183,11 +193,11 @@ public class ControlPanel extends PApplet {
                 .hideArrow()
                 .setOpen(false)
                 .moveTo(importTab);
-        
+        // register triple import subtabs so that they may be manipulated in
+        // draw() to behave as tabs
         importSubTabs.add(webGroup);
         importSubTabs.add(virtuosoGroup);
         importSubTabs.add(exploreGroup);
-        
         openImportSubTab = webGroup;
         
         // Web import elements
@@ -261,9 +271,11 @@ public class ControlPanel extends PApplet {
                 .activate(0)
                 .moveTo(exploreGroup);
         
-        //=======================
-        // Transform tab elements
-        //=======================
+        //==============
+        // Transform tab
+        //==============
+        
+        // selection modifier menu
         modifierMenu = cp5.addListBox("Selection Modifiers", 
                     padding, 
                     tabHeight + padding, 
@@ -274,12 +286,17 @@ public class ControlPanel extends PApplet {
                 .setScrollbarWidth(elementHeight)
                 .moveTo(transformTab)
                 .hideBar();
-        modifiers.populate(modifierMenu, graph.selection);
+        // populate menu according to selection
+        modifierPopulator.populate(modifierMenu, graph.selection);
         
+        // Transformation subtabs
+        /////////////////////////
+        
+        // vertical positiion of transformation subtabs
         int transformTabsVert = modifiersBoxHeight + 3 * tabHeight + padding;
         
-        // Transform subtabs
-        
+        // positionGroup is defined externally so that autolayout can be stopped
+        // if the tab is left by the user
         positionGroup = new SubTab(cp5, "Layout")
                 .setBarHeight(tabHeight)
                 .setPosition(0, transformTabsVert)
@@ -309,16 +326,15 @@ public class ControlPanel extends PApplet {
                 .setOpen(false)
                 .moveTo(transformTab);
         
+        // register transformation subtabs so that they may be manipulated in
+        // draw() to behave as tabs
         transformSubTabs.add(positionGroup);
         transformSubTabs.add(colorSizeGroup);
         transformSubTabs.add(labelGroup);
         transformSubTabs.add(hideGroup);
-        
         openTransformSubTab = positionGroup;
         
-        /*******************
-        * Layout controllers
-        ********************/
+        // Layout controllers
         
         cp5.addButton("Expand")
                 .setPosition(padding, padding)
@@ -400,18 +416,18 @@ public class ControlPanel extends PApplet {
         
         // visibility controllers
         
-        cp5.addButton("Hide Nodes")
+        cp5.addButton("Delete Selection")
                 .setPosition(padding - 3 * (w / 4), padding)
                 .setSize(buttonWidth, buttonHeight)
                 .moveTo(hideGroup);
         
-        //=====================
-        // Options tab elements
-        //=====================
+        //============
+        // Options tab
+        //============
         
-        //==================
-        // Save tab elements
-        //==================
+        //=========
+        // Save tab
+        //=========
     }
     
     // all controlP5 controllers are drawn after draw(), so herein lies any
@@ -421,13 +437,13 @@ public class ControlPanel extends PApplet {
     public void draw() {
         
         // make subTabs perform as tabs instead of Groups
+        
         for (Group subTab : transformSubTabs) {
           if (subTab.isOpen() && subTab != openTransformSubTab) {
             openTransformSubTab.setOpen(false);
             openTransformSubTab = subTab;
           }
         }
-        
         for (Group subTab : importSubTabs) {
             if (subTab.isOpen() && subTab != openImportSubTab) {
                 openImportSubTab.setOpen(false);
@@ -441,7 +457,7 @@ public class ControlPanel extends PApplet {
         }
         
         // populate the dynamic, selection-dependent selection modifier menu
-        modifiers.populate(modifierMenu, graph.selection);
+        modifierPopulator.populate(modifierMenu, graph.selection);
         
         background(0);
     }
@@ -456,34 +472,43 @@ public class ControlPanel extends PApplet {
                 e.setColor(newColor);
             }
         } else if (event.isFrom(modifierMenu)) {
-            modifiers.run((int) event.getValue());
+            modifierPopulator.run((int) event.getValue());
         }
     }
     
+    // called whenever the mouse is released within the control panel
     @Override
     public void mouseReleased() {
+        //clear the copy paste menu if the left mouse button is clicked outside
+        // of any part of the menu
         if (!(copyButton.isInside()
                 || pasteButton.isInside()
                 || clearButton.isInside())
                 && mouseButton == LEFT) {
-            closeCopyPasteMenu();
+            copyButton.setVisible(false);
+            pasteButton.setVisible(false);
+            clearButton.setVisible(false);
         }
     }
     
-    private void closeCopyPasteMenu() {
-        copyButton.setVisible(false);
-        pasteButton.setVisible(false);
-        clearButton.setVisible(false);
-    }
-    
+    /*
+     * ControlP5 does not support nesting tabs within other tabs, so this is an
+     * extension of controller Groups to behave as nested tabs.  NOTE:  the
+     * tab-behaviour control logic is maintained for each group of tabs
+     * by a list of each member of the group and a reference to whichever tab is
+     * currently open in the group.  these are defined as fields in ControlPanel
+     * and are manipulated within draw().
+     */
     private class SubTab extends Group {
       
         SubTab(ControlP5 theControlP5, String theName) {
-          super(theControlP5, theName);
+            // call Group constructor
+            super(theControlP5, theName);
         }
       
         @Override
         protected void postDraw(PApplet theApplet) {
+            // draw the group with the color behaviour of a Tab instead of a Group
             if (isBarVisible) {
                 theApplet.fill(isOpen ? color.getActive() : 
                         (isInside ? color.getForeground() : color.getBackground()));
@@ -504,12 +529,12 @@ public class ControlPanel extends PApplet {
         }
     }
     
-    /*************
-     * Import listeners
-     *************/
+    /*****************************
+     * Import controller listeners
+     ****************************/
     
     /*
-     * attach Textfield for copy/paste functionality.
+     * attach to a Textfield for copy/paste dropdown menu on right click.
      * each textfield needs its own unique instance (one controller per listener
      * is a controlP5 thing (and maybe even a general thing).  technically this
      * risks concurrent modification of the copy and paste buttons, but the odds
@@ -520,8 +545,11 @@ public class ControlPanel extends PApplet {
         public void controlEvent(CallbackEvent event) {
             if (event.getAction() == ControlP5.ACTION_PRESSED 
                     && mouseButton == RIGHT) {
+                // textfields occur in multiple tabs, so the menu must be moved
+                // to the corret tab
                 Tab activeTab = event.getController().getTab();
                 
+                // move each button sequentially below the cursor
                 copyButton.setPosition(mouseX, mouseY)
                         .setVisible(true)
                         .moveTo(activeTab)
@@ -545,10 +573,14 @@ public class ControlPanel extends PApplet {
         @Override
         public void controlEvent(CallbackEvent event) {
             if (event.getAction() == ControlP5.ACTION_RELEASED) {
+                // get active text field
                 for (Textfield c : cp5.getAll(Textfield.class)) {
                     if (c.isActive()) {
+                        // get text field contents and copy to clipboard
                         String fieldContents = c.getText();
                         StringSelection data = new StringSelection(fieldContents);
+                        // data is passed as both parameters because of an
+                        // unimplemented feature in AWT
                         clipboard.setContents(data, data);
                     }
                 }
@@ -563,8 +595,10 @@ public class ControlPanel extends PApplet {
         @Override
         public void controlEvent(CallbackEvent event) {
             if (event.getAction() == ControlP5.ACTION_RELEASED) {
+                // get active text field
                 for (Textfield c : cp5.getAll(Textfield.class)) {
                     if (c.isActive()) {
+                        // separate current textfield contents about cursor position
                         int idx = c.getIndex();
                         String before = c.getText().substring(0, idx);
                         String after = "";
@@ -572,6 +606,7 @@ public class ControlPanel extends PApplet {
                             after = c.getText().substring(idx, c.getText().length());
                         }
 
+                        // get (valid) clipboard contents and insert at cursor position
                         Transferable clipData = clipboard.getContents(this);
                         String s = "";
                         try {
@@ -587,12 +622,13 @@ public class ControlPanel extends PApplet {
     }
     
     /*
-     * attach to button to clear active text field
+     * attach to button for clearing active text field
      */
     private class ClearListener implements CallbackListener {
         @Override
         public void controlEvent(CallbackEvent event) {
             if (event.getAction() == ControlP5.ACTION_RELEASED) {
+                // get active text field
                 for (Textfield c : cp5.getAll(Textfield.class)) {
                     if (c.isActive()) {
                         c.clear();
@@ -603,25 +639,31 @@ public class ControlPanel extends PApplet {
     }
     
     /*
-     * attach to web query button in import tab
+     * attach to web query button in import tab to enable retrieval of rdf
+     * descriptions as published at resources' uris.
      */
     private class QueryWebListener implements CallbackListener {
         @Override
         public void controlEvent(CallbackEvent event) {
             if (event.getAction() == ControlP5.ACTION_RELEASED) {
+                // get uri from text field
                 String uri = importWebURI.getText();
+                // retrieve description as a jena model
                 Model toAdd = Importer.getDescriptionFromWeb(uri);
+                // add the retriveed model to the graph (toAdd is empty if 
+                // an error was encountered)
                 graph.addTriples(toAdd);
             }
         }
     }
     
-    /*************
-     * Transformation listeners
-     *************/
+    /*************************************
+     * Transformation controller listeners
+     ************************************/
     
     /*
-     * attach to layout expansion button
+     * attach to layout expansion button to enable expansion of the positions
+     * of each node in the selection about their average center.
      */
     private class ExpandLayoutListener implements CallbackListener {
 
@@ -646,7 +688,8 @@ public class ControlPanel extends PApplet {
     }
     
     /*
-     * attach to layout contraction button
+     * attach to layout contraction button to enable contraction of the
+     * positions of each node in the selection about their average center.
      */
     private class ContractLayoutListener implements CallbackListener {
 
@@ -671,13 +714,34 @@ public class ControlPanel extends PApplet {
     }
     
     /*
-     * attach to radial lexicographical sort button
+     * attach to radial sort button.  selected nodes are laid out in a circle
+     * whose axis is perpendicular to the screen and whose radius is chosen to
+     * accomodate all the nodes with a bit of room to spare.  the nodes will 
+     * be ordered along the circumference lexicographically or numerically, 
+     * depending on the state of a separate radio button called sortOrder.
      */
     private class RadialLayoutListener implements CallbackListener {
 
         @Override
         public void controlEvent(CallbackEvent event) {
             if (event.getAction() == ControlP5.ACTION_RELEASED) {
+                // get array of names of selected nodes (graph.selection stores
+                // things as HashSets, which are not sortable)
+                String[] names = new String[graph.selection.nodeCount()];
+                int i = 0;
+                for (Node n : graph.selection.getNodes()) {
+                    names[i] = n.getName();
+                    i++;
+                }
+                
+                // sort the array of names according to the user choice
+                if (sortOrder.getState("Numerical Order")) {
+                    quickSort(names, 0, names.length - 1, true);
+                } else {
+                    // lexicographical sort implicit
+                    quickSort(names, 0, names.length - 1, false);
+                }
+                
                 // calculate radius of circle from number and size of nodes
                 // along with the midpoint of the nodes
                 PVector center = new PVector();
@@ -704,20 +768,8 @@ public class ControlPanel extends PApplet {
                 float theta = 2 * Nodes.PI / (float) graph.selection.nodeCount();
                 float currAngle = 0;
                 
-                // sort nodes according to choice
-                String[] names = new String[graph.selection.nodeCount()];
-                int i = 0;
-                for (Node n : graph.selection.getNodes()) {
-                    names[i] = n.getName();
-                    i++;
-                }
-                
-                if (sortOrder.getState("Numerical Order")) {
-                    quickSort(names, 0, names.length - 1, true);
-                } else {
-                    quickSort(names, 0, names.length - 1, false);
-                }
-                
+                // lay out the selected nodes in the new order in a circle
+                // whose axis is orthogonal to the screen
                 for (String name : names) {
                     Node n = graph.getNode(name);
                     
@@ -735,6 +787,8 @@ public class ControlPanel extends PApplet {
             }
         }
         
+        // standard quicksort implementation with a boolean parameter to 
+        // indicate numerical or lexicographical ordering of the strings
         private void quickSort(String[] arr, int p, int r, boolean numerical) {
             if (p < r) {
                 int pivot = partition(arr, p, r, numerical);
@@ -743,6 +797,7 @@ public class ControlPanel extends PApplet {
             }
         }
         
+        // quicksort partition function with choice of sort order
         private int partition(String[] arr, int p, int r, boolean numerical) {
             String pivot = arr[r];
             int swap = p - 1;
@@ -765,6 +820,7 @@ public class ControlPanel extends PApplet {
             return swap + 1;
         }
         
+        // numerical string comparison
         private boolean numLess(String left, String right) {
             if (left.length() > right.length()) {
                 return false;
@@ -775,13 +831,14 @@ public class ControlPanel extends PApplet {
             return lexLess(left, right);
         }
         
+        // lexicographical string comparison
         private boolean lexLess(String left, String right) {
             return left.compareToIgnoreCase(right) < 0;
         }
     }
     
     /*
-     * attach to element size slider
+     * attach to element size slider to enable node/edge size manipulation
      */
     private class ElementSizeListener implements CallbackListener {
 
@@ -789,12 +846,15 @@ public class ControlPanel extends PApplet {
         public void controlEvent(CallbackEvent event) {
             if (event.getAction() == ControlP5.ACTION_RELEASED
                     || event.getAction() == ControlP5.ACTION_RELEASEDOUTSIDE) {
+                // get the size from the slider control
                 int newSize = 10;
                 try {
                     newSize = (int) ((Slider) event.getController()).getValue();
                 } catch (Exception e) {
                     System.out.println("ERROR:  ElementSizeListener not hooked up to a Slider.");
                 }
+                
+                // apply the new size to each element in the selection
                 for (GraphElement e : graph.selection) {
                     e.setSize(newSize);
                 }
@@ -803,13 +863,14 @@ public class ControlPanel extends PApplet {
     }
     
     /*
-     * attach to hide label button
+     * attach to hide label button to enable label-showing control
      */
     private class HideLabelListener implements CallbackListener {
 
         @Override
         public void controlEvent(CallbackEvent event) {
             if (event.getAction() == ControlP5.ACTION_RELEASED) {
+                // hide label for each element in the selection
                 for (GraphElement e : graph.selection) {
                     e.setDisplayLabel(false);
                 }
@@ -818,13 +879,14 @@ public class ControlPanel extends PApplet {
     }
     
     /*
-     * attach to show label button
+     * attach to show label button to enable label-hiding control
      */
     private class ShowLabelListener implements CallbackListener {
 
         @Override
         public void controlEvent(CallbackEvent event) {
             if (event.getAction() == ControlP5.ACTION_RELEASED) {
+                // show each label for each element in the selection
                 for (GraphElement e : graph.selection) {
                     e.setDisplayLabel(true);
                 }
@@ -833,7 +895,7 @@ public class ControlPanel extends PApplet {
     }
     
     /*
-     * attach to label size slider
+     * attach to label size slider to enable label size control
      */
     private class LabelSizeListener implements CallbackListener {
 
@@ -842,11 +904,14 @@ public class ControlPanel extends PApplet {
             if (event.getAction() == ControlP5.ACTION_RELEASED
                     || event.getAction() == ControlP5.ACTION_RELEASEDOUTSIDE) {
                 int newSize = 10;
+                // get the new size from the slider control
                 try {
                     newSize = (int) ((Slider) event.getController()).getValue();
                 } catch (Exception e) {
                     System.out.println("ERROR:  LabelSizeListener not hooked up to a Slider.");
                 }
+                
+                // apply the new label size to each element in the selection
                 for (GraphElement e : graph.selection) {
                     e.setLabelSize(newSize);
                 }

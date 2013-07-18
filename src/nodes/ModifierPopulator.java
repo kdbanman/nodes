@@ -12,7 +12,7 @@ import java.util.HashMap;
  *
  * @author kdbanman
  */
-public class Modifiers {
+public class ModifierPopulator {
     
     private Graph graph;
     private Model model;
@@ -24,7 +24,7 @@ public class Modifiers {
     
     private int menuIndex;
     
-    public Modifiers(Graph g) {
+    public ModifierPopulator(Graph g) {
         graph = g;
         model = graph.triples;
         selection = graph.selection;

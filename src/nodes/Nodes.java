@@ -20,18 +20,26 @@ import processing.opengl.PGraphics3D;
  */
 public class Nodes extends PApplet {
 
-    ControlPanelFrame panelFrame;
+    // 3D graph-viewing camera
     PeasyCam cam;
+    // 3D graph controlP5 instance
     ControlP5 cp5;
+    // matrix and vector module for interaction in 3D
     UnProjector proj;
+    // graph module for RDF visualization
     Graph graph;
+    
+    // control panel window (contains its own controlP5 instance)
+    ControlPanelFrame panelFrame;
     
     // mouse information for click and drag selection
     int lastPressedX;
     int lastPressedY;
-    boolean leftDragging;
+    boolean leftButtonDragging;
     
+    // current color for selected nodes and edges (for color pulsation)
     int selectColor;
+    // current direction of selection color change (for color pulsation)
     boolean selectColorRising;
     
     // enum for tracking what the mouse is currently doing.  for management of
@@ -44,23 +52,29 @@ public class Nodes extends PApplet {
     
     // list for tracking which GraphElements have been hovered over, since
     // ControlP5's native onLeave() calls are based on the assumption that only
-    // one controller will be hovered over at any given time
+    // one controller will be hovered over at any given time.
+    // list is populated by calls within GraphElement.
     ArrayList<GraphElement> hovered;
 
     @Override
     public void setup() {
+        // configure parent PApplet
         int w = 800;
         int h = 600;
         size(w, h, P3D);
         frameRate(30);
 
+        // initialize camera
         cam = new PeasyCam(this, 0, 0, 0, 600);
+        
+        // configure camera controls
         cam.setLeftDragHandler(null);
         cam.setRightDragHandler(cam.getRotateDragHandler());
         cam.setCenterDragHandler(cam.getZoomDragHandler());
         cam.setWheelHandler(cam.getZoomWheelHandler());
         cam.setResetOnDoubleClick(false);
         
+        // set camera movement behaviour
         cam.setSpeedLock(false);
         cam.setDamping(.4, .4, .4);
 
@@ -70,8 +84,11 @@ public class Nodes extends PApplet {
         proj = new UnProjector(this);
         graph = new Graph(proj, cp5, this);
 
+        // initialize control panel
         panelFrame = new ControlPanelFrame(graph);
         
+        // set program startup default values (see comments in field declaration
+        // for more information)
         lastPressedX = 0;
         lastPressedY = 0;
         
@@ -101,6 +118,7 @@ public class Nodes extends PApplet {
 
     @Override
     public void draw() {
+        // light orange pastel background color
         background(0xFFFFDCBF);
 
         // necessary for unprojection functionality
@@ -110,7 +128,8 @@ public class Nodes extends PApplet {
         proj.calculatePickPoints(mouseX, mouseY);
         pointLight(255, 255, 255, proj.ptStartPos.x, proj.ptStartPos.y, proj.ptStartPos.z);
 
-        if (leftDragging && drag == DragBehaviour.SELECT) {
+        // determine if the user is currently selecting graph elements
+        if (leftButtonDragging && drag == DragBehaviour.SELECT) {
             // draw transparent rectangle over selection area
             int minX = min(mouseX, lastPressedX);
             int minY = min(mouseY, lastPressedY);
@@ -118,6 +137,7 @@ public class Nodes extends PApplet {
             int maxX = max(mouseX, lastPressedX);
             int maxY = max(mouseY, lastPressedY);
 
+            // HUD calls allow drawing on screen instead of 3D space
             cam.beginHUD();
             fill(0x33333333);
             noStroke();
@@ -131,36 +151,49 @@ public class Nodes extends PApplet {
             graph.layout();
         }
         
+        // ensure no graph elements are mistakenly mouse-hovered
         cleanHovered();
+        
+        // iterate selection color pulsation
         updateSelectColor();
     }
 
+    
+    // called only when the mouse button is initially depressed, NOT while it is held
     @Override
     public void mousePressed() {
-        // called only when the mouse button is depressed, NOT while it is held
+        // store initial mouse click location for rectangular selection box
         if (mouseButton == LEFT) {
             lastPressedX = mouseX;
             lastPressedY = mouseY;
         }
     }
 
+    // called only when the mouse is moved while a button is depressed
     @Override
     public void mouseDragged() {
-        // called only when the modispHolderuse is moved while a button is depressed
         if (mouseButton == LEFT) {
-            
-            if (!leftDragging) {
+            // if this is the first mouse drag since the left button has been
+            // depressed, determine if the user is selecting elements or
+            // dragging them around to move them
+            if (!leftButtonDragging) {
                 if (mouseContent == null) {
+                    // if the user is not dragging a graph element, enable selection
                     drag = DragBehaviour.SELECT;
+                    // add to selection if shift button is held
                     if (!shiftPressed()) graph.selection.clear();
                 } else {
+                    // if the user is dragging a graph element, enable movement
                     drag = DragBehaviour.DRAG;
                 }
             }
-            leftDragging = true;
+            leftButtonDragging = true;
 
             if (drag == DragBehaviour.SELECT) {
                 // BOX SELEECT
+                //   elements within the rectangle of selection are added to the
+                //   selection buffer, which is committed to the selection upon
+                //   mouse release.
                 //////////////
                 
                 // determine nodes and edges within the drag box to selection
@@ -170,21 +203,26 @@ public class Nodes extends PApplet {
                 int maxX = max(mouseX, lastPressedX);
                 int maxY = max(mouseY, lastPressedY);
 
+                // every time the selection box is changed, clear the selection
+                // and recompute the box membership of each graph element
                 graph.selection.clearBuffer();
                 for (GraphElement n : graph) {
+                    // get screen coordinates of graph element
                     PVector nPos = n.getPosition();
                     float nX = screenX(nPos.x, nPos.y, nPos.z);
                     float nY = screenY(nPos.x, nPos.y, nPos.z);
 
-                    // test membership of graph element
+                    // test membership graph element
                     if (nX <= maxX && nX >= minX && nY <= maxY && nY >= minY) {
                         graph.selection.addToBuffer(n);
-                    } else {
-                        graph.selection.removeFromBuffer(n);
                     }
                 }
             } else {
                 // DRAG MOVE
+                //    element being dragged, and any other elements currently
+                //    selected, are dragged orthogonally to the srceen frustum
+                //    plane.  the element being dragged is used as the reference,
+                //    meaning that it stays underneath the mouse cursor.
                 ////////////
                 
                 // get distance between pixels on near frustum
@@ -229,20 +267,28 @@ public class Nodes extends PApplet {
         }
     }
 
+    // called whenever the mouse button is released
     @Override
     public void mouseReleased() {
         if (mouseButton == LEFT) {
             if (drag == DragBehaviour.SELECT) {
-                if (!shiftPressed()) {
-                    graph.selection.clear();
-                }
-                if (leftDragging) {
+                // clear the selection if shift is not held
+                if (!shiftPressed()) graph.selection.clear();
+                
+                if (leftButtonDragging) {
+                    // if left button was being dragged during selection,
+                    // add the contents of the selection buffer to the selection
                     graph.selection.commitBuffer();
                 } else if (mouseContent != null) {
+                    // if the user was not dragging, then just a single click
+                    // occurred.  if the user clicked on an element, then invert
+                    // its selection status
                     graph.selection.invert(mouseContent);
                 }
             }
-            leftDragging = false;
+            // left button is no longer being dragged
+            leftButtonDragging = false;
+            // if user was dragging to move, that is done now.
             drag = DragBehaviour.SELECT;
         }
     }
@@ -253,26 +299,38 @@ public class Nodes extends PApplet {
         System.out.println(key);
     }
 
+    // determine if the shift key is currently depressed
     public boolean shiftPressed() {
         return keyPressed && key == CODED && keyCode == SHIFT;
     }
     
+    // get current camera position in PVector form
     public PVector getCamPosition() {
         float[] camPos = cam.getPosition();
         return new PVector(camPos[0], camPos[1], camPos[2]);
     }
 
+    // make sure that no GraphElement erroneously keeps mouseover state:
+    // ControlP5's native onLeave() calls are based on the assumption that only
+    // one controller will be hovered over at any given time
     public void cleanHovered() {
+        // every time the mouse hovers over a GraphElement, that element 
+        // references itself in the hovered list.
+        // iterate over each element in hovered.
         Iterator<GraphElement> it = hovered.iterator();
         while (it.hasNext()) {
             GraphElement e = it.next();
             if (!e.isInside()) {
+                // if the element is not hovered over any more, call set its 
+                // state accordingly and remove it from the list.
                 e.notHovered();
                 it.remove();
             }
         }
     }
     
+    // mechanism for making selection color pulsate in grayscale with a
+    // breathing rhythm
     public void updateSelectColor() {
         if (selectColor >= 0xFFBABABA) {
             selectColorRising = false;
@@ -291,6 +349,7 @@ public class Nodes extends PApplet {
         PApplet.main(new String[]{nodes.Nodes.class.getName()});
     }
     
+    // enum for tracking user's current mouse dragging intent
     public enum DragBehaviour {
         SELECT, DRAG;
     }
