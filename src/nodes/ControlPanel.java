@@ -47,7 +47,7 @@ public class ControlPanel extends PApplet {
     // for copy/paste by keyboard
     Button copyButton;
     Button pasteButton;
-    CopyPasteMenuListener copyPaste;
+    Button clearButton;
     Clipboard clipboard;
     
     // control element size parameters
@@ -63,11 +63,11 @@ public class ControlPanel extends PApplet {
     Tab transformTab;
     Group positionGroup;
     
-    ArrayList<Group> importHackTabs;
-    Group openImportHackTab;
+    ArrayList<Group> importSubTabs;
+    Group openImportSubTab;
     
-    ArrayList<Group> transformHackTabs;
-    Group openTransformHackTab;
+    ArrayList<Group> transformSubTabs;
+    Group openTransformSubTab;
     
     Textfield importWebURI;
     
@@ -90,7 +90,6 @@ public class ControlPanel extends PApplet {
         
         // for copy/paste
         clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-        copyPaste = new CopyPasteMenuListener();
         
         // element size parameters
         padding = 10;
@@ -108,8 +107,8 @@ public class ControlPanel extends PApplet {
         
         // control element miscellany
         
-        importHackTabs = new ArrayList<>();
-        transformHackTabs = new ArrayList<>();
+        importSubTabs = new ArrayList<>();
+        transformSubTabs = new ArrayList<>();
         
         colorPickerDefault = 0xFF1A4969;
     }
@@ -125,11 +124,18 @@ public class ControlPanel extends PApplet {
         copyButton = cp5.addButton("Copy to Clipboard")
                 .setWidth(buttonWidth)
                 .setHeight(elementHeight)
-                .hide();
+                .setVisible(false)
+                .addCallback(new CopyListener());
         pasteButton = cp5.addButton("Paste from Clipboard")
                 .setWidth(buttonWidth)
                 .setHeight(elementHeight)
-                .hide();
+                .setVisible(false)
+                .addCallback(new PasteListener());
+        clearButton = cp5.addButton("Clear Field")
+                .setWidth(buttonWidth)
+                .setHeight(elementHeight)
+                .setVisible(false)
+                .addCallback(new ClearListener());
         
         // Main tabs
         
@@ -156,21 +162,21 @@ public class ControlPanel extends PApplet {
         
         int importTabsVert = 2 * tabHeight + padding;
         
-        Group webGroup = new HackTab(cp5, "Web")
+        Group webGroup = new SubTab(cp5, "Web")
                 .setBarHeight(tabHeight)
                 .setPosition(0, importTabsVert)
                 .setWidth(w / 4)
                 .hideArrow()
                 .setOpen(true)
                 .moveTo(importTab);
-        Group virtuosoGroup = new HackTab(cp5, "Virtuoso")
+        Group virtuosoGroup = new SubTab(cp5, "Virtuoso")
                 .setBarHeight(tabHeight)
                 .setPosition(w / 4, importTabsVert)
                 .setWidth(w / 4)
                 .hideArrow()
                 .setOpen(false)
                 .moveTo(importTab);
-        Group exploreGroup = new HackTab(cp5, "Explore")
+        Group exploreGroup = new SubTab(cp5, "Explore")
                 .setBarHeight(tabHeight)
                 .setPosition(w / 2, importTabsVert)
                 .setWidth(w / 4)
@@ -178,11 +184,11 @@ public class ControlPanel extends PApplet {
                 .setOpen(false)
                 .moveTo(importTab);
         
-        importHackTabs.add(webGroup);
-        importHackTabs.add(virtuosoGroup);
-        importHackTabs.add(exploreGroup);
+        importSubTabs.add(webGroup);
+        importSubTabs.add(virtuosoGroup);
+        importSubTabs.add(exploreGroup);
         
-        openImportHackTab = webGroup;
+        openImportSubTab = webGroup;
         
         // Web import elements
         
@@ -194,7 +200,7 @@ public class ControlPanel extends PApplet {
                 .setAutoClear(false)
                 .moveTo(webGroup)
                 .setText("http://www.w3.org/1999/02/22-rdf-syntax-ns")
-                .addCallback(copyPaste);
+                .addCallback(new CopyPasteMenuListener());
         cp5.addButton("Query Web")
                 .setSize(buttonWidth, buttonHeight)
                 .setPosition(w - buttonWidth - padding, 
@@ -210,7 +216,7 @@ public class ControlPanel extends PApplet {
                     w - 2 * padding, 
                     elementHeight)
                 .setAutoClear(false)
-                .addCallback(copyPaste)
+                .addCallback(new CopyPasteMenuListener())
                 .moveTo(virtuosoGroup);
         cp5.addTextfield("Username", 
                     padding - w / 4, 
@@ -218,7 +224,7 @@ public class ControlPanel extends PApplet {
                     w - 2 * padding, 
                     elementHeight)
                 .setAutoClear(false)
-                .addCallback(copyPaste)
+                .addCallback(new CopyPasteMenuListener())
                 .moveTo(virtuosoGroup);
         cp5.addTextfield("Password", 
                     padding - w / 4, 
@@ -227,7 +233,7 @@ public class ControlPanel extends PApplet {
                     elementHeight)
                 .setAutoClear(false)
                 .setPasswordMode(true)
-                .addCallback(copyPaste)
+                .addCallback(new CopyPasteMenuListener())
                 .moveTo(virtuosoGroup);
         cp5.addTextfield("Query", 
                     padding - w / 4, 
@@ -235,16 +241,14 @@ public class ControlPanel extends PApplet {
                     w - 2 * padding, 
                     elementHeight)
                 .setAutoClear(false)
-                .addCallback(copyPaste)
+                .addCallback(new CopyPasteMenuListener())
                 .moveTo(virtuosoGroup);
         
         cp5.addButton("Query Virtuoso")
                 .setSize(buttonWidth, buttonHeight)
                 .setPosition(w - buttonWidth - padding - w / 4, 
                     4 * labelledElementHeight + padding)
-                .moveTo(virtuosoGroup)
-                //DEBUG
-                .addCallback(copyPaste);
+                .moveTo(virtuosoGroup);
         
         // Explore tab elements
         
@@ -260,7 +264,6 @@ public class ControlPanel extends PApplet {
         //=======================
         // Transform tab elements
         //=======================
-        int listItemIdx = 0;
         modifierMenu = cp5.addListBox("Selection Modifiers", 
                     padding, 
                     tabHeight + padding, 
@@ -277,28 +280,28 @@ public class ControlPanel extends PApplet {
         
         // Transform subtabs
         
-        positionGroup = new HackTab(cp5, "Layout")
+        positionGroup = new SubTab(cp5, "Layout")
                 .setBarHeight(tabHeight)
                 .setPosition(0, transformTabsVert)
                 .setWidth(w / 4)
                 .hideArrow()
                 .setOpen(true)
                 .moveTo(transformTab);
-        Group colorSizeGroup = new HackTab(cp5, "Color and Size")
+        Group colorSizeGroup = new SubTab(cp5, "Color and Size")
                 .setBarHeight(tabHeight)
                 .setPosition(w / 4, transformTabsVert)
                 .setWidth(w / 4)
                 .hideArrow()
                 .setOpen(false)
                 .moveTo(transformTab);
-        Group labelGroup = new HackTab(cp5, "Label")
+        Group labelGroup = new SubTab(cp5, "Label")
                 .setBarHeight(tabHeight)
                 .setPosition(w / 2, transformTabsVert)
                 .setWidth(w / 4)
                 .hideArrow()
                 .setOpen(false)
                 .moveTo(transformTab);
-        Group hideGroup = new HackTab(cp5, "Hide")
+        Group hideGroup = new SubTab(cp5, "Hide")
                 .setBarHeight(tabHeight)
                 .setPosition(3 * (w / 4), transformTabsVert)
                 .setWidth(w / 4)
@@ -306,12 +309,12 @@ public class ControlPanel extends PApplet {
                 .setOpen(false)
                 .moveTo(transformTab);
         
-        transformHackTabs.add(positionGroup);
-        transformHackTabs.add(colorSizeGroup);
-        transformHackTabs.add(labelGroup);
-        transformHackTabs.add(hideGroup);
+        transformSubTabs.add(positionGroup);
+        transformSubTabs.add(colorSizeGroup);
+        transformSubTabs.add(labelGroup);
+        transformSubTabs.add(hideGroup);
         
-        openTransformHackTab = positionGroup;
+        openTransformSubTab = positionGroup;
         
         /*******************
         * Layout controllers
@@ -411,21 +414,24 @@ public class ControlPanel extends PApplet {
         //==================
     }
     
+    // all controlP5 controllers are drawn after draw(), so herein lies any
+    // arbiter-style controller logic, as well as miscellaneous actions that 
+    // must occur every frame.
     @Override
     public void draw() {
         
         // make hackTabs perform as tabs instead of Groups
-        for (Group hackTab : transformHackTabs) {
-          if (hackTab.isOpen() && hackTab != openTransformHackTab) {
-            openTransformHackTab.setOpen(false);
-            openTransformHackTab = hackTab;
+        for (Group hackTab : transformSubTabs) {
+          if (hackTab.isOpen() && hackTab != openTransformSubTab) {
+            openTransformSubTab.setOpen(false);
+            openTransformSubTab = hackTab;
           }
         }
         
-        for (Group hackTab : importHackTabs) {
-            if (hackTab.isOpen() && hackTab != openImportHackTab) {
-                openImportHackTab.setOpen(false);
-                openImportHackTab = hackTab;
+        for (Group hackTab : importSubTabs) {
+            if (hackTab.isOpen() && hackTab != openImportSubTab) {
+                openImportSubTab.setOpen(false);
+                openImportSubTab = hackTab;
             }
         }
         
@@ -434,11 +440,14 @@ public class ControlPanel extends PApplet {
             autoLayout.setState(false);
         }
         
+        // populate the dynamic, selection-dependent selection modifier menu
         modifiers.populate(modifierMenu, graph.selection);
         
         background(0);
     }
     
+    // called every time cp5 broadcasts an event.  since ControlGroups cannot
+    // have specific listeners, their actions must be dealt with here.
     public void controlEvent(ControlEvent event) {
         // adjust color of selected elements
         if (event.isFrom(colorPicker)) {
@@ -451,41 +460,25 @@ public class ControlPanel extends PApplet {
         }
     }
     
-    private void pasteIntoActiveTextField() {
-        for (Textfield c : cp5.getAll(Textfield.class)) {
-            if (c.isActive()) {
-                int idx = c.getIndex();
-                String before = c.getText().substring(0, idx);
-                String after = "";
-                if (c.getIndex() != c.getText().length()) {
-                    after = c.getText().substring(idx, c.getText().length());
-                }
-
-                Transferable clipData = clipboard.getContents(this);
-                String s = "";
-                try {
-                  s = (String) (clipData.getTransferData(DataFlavor.stringFlavor));
-                } catch (UnsupportedFlavorException | IOException ee) {
-                    System.out.println("Cannot paste clipboard contents.");
-                }
-                c.setText(s);
-            }
+    @Override
+    public void mouseReleased() {
+        if (!(copyButton.isInside()
+                || pasteButton.isInside()
+                || clearButton.isInside())
+                && mouseButton == LEFT) {
+            closeCopyPasteMenu();
         }
     }
     
-    private void copyFromActiveTextField() {
-        for (Textfield c : cp5.getAll(Textfield.class)) {
-            if (c.isActive()) {
-                String fieldContents = c.getText();
-                StringSelection data = new StringSelection(fieldContents);
-                clipboard.setContents(data, data);
-            }
-        }
+    private void closeCopyPasteMenu() {
+        copyButton.setVisible(false);
+        pasteButton.setVisible(false);
+        clearButton.setVisible(false);
     }
     
-    private class HackTab extends Group {
+    private class SubTab extends Group {
       
-        HackTab(ControlP5 theControlP5, String theName) {
+        SubTab(ControlP5 theControlP5, String theName) {
           super(theControlP5, theName);
         }
       
@@ -516,20 +509,95 @@ public class ControlPanel extends PApplet {
      *************/
     
     /*
-     * attach to each Textfield for copy/paste functionality
+     * attach Textfield for copy/paste functionality.
+     * each textfield needs its own unique instance (one controller per listener
+     * is a controlP5 thing (and maybe even a general thing).  technically this
+     * risks concurrent modification of the copy and paste buttons, but the odds
+     * of near-simultaneous right-clicks on textfields is low.
      */
     private class CopyPasteMenuListener implements CallbackListener {
         @Override
         public void controlEvent(CallbackEvent event) {
-            if (event.getAction() == ControlP5.ACTION_PRESSED) {
+            if (event.getAction() == ControlP5.ACTION_PRESSED 
+                    && mouseButton == RIGHT) {
+                Tab activeTab = event.getController().getTab();
+                
                 copyButton.setPosition(mouseX, mouseY)
-                        .show()
+                        .setVisible(true)
+                        .moveTo(activeTab)
                         .bringToFront();
                 pasteButton.setPosition(mouseX, mouseY + elementHeight)
-                        .show()
+                        .setVisible(true)
+                        .moveTo(activeTab)
                         .bringToFront();
-                //DEBUG
-                System.out.println("tetsoestnaoehsoe");
+                clearButton.setPosition(mouseX, mouseY + 2 * elementHeight)
+                        .setVisible(true)
+                        .moveTo(activeTab)
+                        .bringToFront();
+            }
+        }
+    }
+    
+    /*
+     * attach to button for copying from active textfield
+     */
+    private class CopyListener implements CallbackListener {
+        @Override
+        public void controlEvent(CallbackEvent event) {
+            if (event.getAction() == ControlP5.ACTION_RELEASED) {
+                for (Textfield c : cp5.getAll(Textfield.class)) {
+                    if (c.isActive()) {
+                        String fieldContents = c.getText();
+                        StringSelection data = new StringSelection(fieldContents);
+                        clipboard.setContents(data, data);
+                    }
+                }
+            }
+        }
+    }
+    
+    /*
+     * attach to button for pasting to active textfield
+     */
+    private class PasteListener implements CallbackListener {
+        @Override
+        public void controlEvent(CallbackEvent event) {
+            if (event.getAction() == ControlP5.ACTION_RELEASED) {
+                for (Textfield c : cp5.getAll(Textfield.class)) {
+                    if (c.isActive()) {
+                        int idx = c.getIndex();
+                        String before = c.getText().substring(0, idx);
+                        String after = "";
+                        if (c.getIndex() != c.getText().length()) {
+                            after = c.getText().substring(idx, c.getText().length());
+                        }
+
+                        Transferable clipData = clipboard.getContents(this);
+                        String s = "";
+                        try {
+                          s = (String) (clipData.getTransferData(DataFlavor.stringFlavor));
+                        } catch (UnsupportedFlavorException | IOException ee) {
+                            System.out.println("Cannot paste clipboard contents.");
+                        }
+                        c.setText(before + s + after);
+                    }
+                }
+            }
+        }
+    }
+    
+    /*
+     * attach to button to clear active text field
+     */
+    private class ClearListener implements CallbackListener {
+        @Override
+        public void controlEvent(CallbackEvent event) {
+            if (event.getAction() == ControlP5.ACTION_RELEASED) {
+                for (Textfield c : cp5.getAll(Textfield.class)) {
+                    if (c.isActive()) {
+                        c.clear();
+                    }
+                }
             }
         }
     }
