@@ -2,6 +2,7 @@
 #####
 
 - fix keyboard routing problem.  keystrokes are not being sent to control panel PApplet, regardless of window focus.
+	- keypresses are sent to control panel just fine with my mac.  try work linux machine tomorrow.
 	- try reverting to java 6, if that fails then reduce the problem to a minimal example to debug / post to forum
 
 - duplicate triples are added to edges. problem.
