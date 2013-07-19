@@ -3,7 +3,6 @@
  */
 package nodes;
 
-import controlP5.ControlEvent;
 import processing.core.*;
 
 import controlP5.ControlP5;
@@ -60,8 +59,8 @@ public class Nodes extends PApplet {
     @Override
     public void setup() {
         // configure parent PApplet
-        int w = 400;
-        int h = 300;
+        int w = 800;
+        int h = 600;
         size(w, h, P3D);
         frameRate(30);
 
@@ -158,21 +157,6 @@ public class Nodes extends PApplet {
         // iterate selection color pulsation
         updateSelectColor();
     }
-    
-    // called by controlP5 for each event
-    public void controlEvent(ControlEvent event) {
-        // update transformation controls with properties of selected element(s)
-        panelFrame.controls.colorPicker.setColorValue(graph.selection.getColor());
-        panelFrame.controls.sizeSlider.setValue(graph.selection.getSize());
-        panelFrame.controls.labelSizeSlider.setValue(graph.selection.getLabelSize());
-        
-        //DEBUG
-        System.out.println("here");
-        System.out.println(graph.selection.getColor());
-        System.out.println(graph.selection.getSize());
-        System.out.println(graph.selection.getLabelSize());
-    }
-
     
     // called only when the mouse button is initially depressed, NOT while it is held
     @Override
@@ -307,12 +291,6 @@ public class Nodes extends PApplet {
             drag = DragBehaviour.SELECT;
         }
     }
-    
-    //DEBUG
-    @Override
-    public void keyPressed() {
-        System.out.println(key);
-    }
 
     // determine if the shift key is currently depressed
     public boolean shiftPressed() {
@@ -354,7 +332,7 @@ public class Nodes extends PApplet {
         }
         
         if (selectColorRising) selectColor += 0x101010;
-        else selectColor -= 0x30303;
+        else selectColor -= 0x50505;
     }
     
     /**

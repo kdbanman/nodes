@@ -143,7 +143,7 @@ public class ModifierPopulator {
         
         @Override
         public boolean isCompatible() {
-            return selection.nodeCount() > 0;
+            return selection.nodeCount() > 0 || selection.edgeCount() > 0;
         }
         
         @Override

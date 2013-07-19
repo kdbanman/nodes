@@ -32,17 +32,22 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 
 /**
  *
  * @author kdbanman
  */
-public class ControlPanel extends PApplet {
+public class ControlPanel extends PApplet implements Selection.SelectionListener {
     int w, h;
     
     ControlP5 cp5;
     Graph graph;
+    
+    // update flag raised if the controllers have not responded to a change in
+    // selection.  see selectionChanged() and draw().
+    AtomicBoolean selectionUpdateRequired;
     
     // for copy/paste by keyboard
     Clipboard clipboard;
@@ -85,12 +90,14 @@ public class ControlPanel extends PApplet {
     // radio for radial layout sorting order (lexico or numerical)
     RadioButton sortOrder;
     
+    // radio for position scaling direction (expansion or contraction)
+    RadioButton scaleDirection;
+    
     // toggle button for laying out the entire graph (force-directed algorithm)
     Toggle autoLayout;
     
     // controller group for colorizing selected nodes and edges
     ColorPicker colorPicker;
-    int colorPickerDefault;
     
     Slider sizeSlider;
     
@@ -100,7 +107,10 @@ public class ControlPanel extends PApplet {
         w = frameWidth;
         h = frameHeight;
         
+        // initialize graph
         graph = parentGraph;
+        
+        selectionUpdateRequired = new AtomicBoolean();
         
         // for copy/paste
         clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
@@ -120,12 +130,13 @@ public class ControlPanel extends PApplet {
         // sub tab lists to manipulate in draw() for tab behaviour
         importSubTabs = new ArrayList<>();
         transformSubTabs = new ArrayList<>();
-        
-        colorPickerDefault = 0xFF1A4969;
     }
     
     @Override
     public void setup() {
+        // subscribe to changes in selection.  see overridden selectionChanged()
+        graph.selection.addListener(this);
+        
         size(w, h);
         
         cp5 = new ControlP5(this)
@@ -340,28 +351,28 @@ public class ControlPanel extends PApplet {
         
         // Layout controllers
         
-        cp5.addButton("Expand")
+        cp5.addButton("Scale Positions")
                 .setPosition(padding, padding)
                 .setHeight(buttonHeight)
                 .setWidth(buttonWidth)
                 .moveTo(positionGroup)
-                .addCallback(new ExpandLayoutListener());
-        
-        cp5.addButton("Contract")
-                .setPosition(padding, 2 * padding + buttonHeight)
-                .setHeight(buttonHeight)
-                .setWidth(buttonWidth)
+                .addCallback(new ScaleLayoutListener());
+        scaleDirection = cp5.addRadio("Scale Direction")
+                .setPosition(2 * padding + buttonWidth, padding)
+                .setItemHeight(buttonHeight / 2)
                 .moveTo(positionGroup)
-                .addCallback(new ContractLayoutListener());
+                .addItem("Expand from center", 0)
+                .addItem("Contract from center", 1)
+                .activate(0);
         
         cp5.addButton("Radial Sort")
-                .setPosition(padding, 3 * padding + 2 * buttonHeight)
+                .setPosition(padding, 2 * padding + buttonHeight)
                 .setHeight(buttonHeight)
                 .setWidth(buttonWidth)
                 .moveTo(positionGroup)
                 .addCallback(new RadialLayoutListener());
         sortOrder = cp5.addRadio("Sort Order")
-                .setPosition(2 * padding + buttonWidth, 3 * padding + 2 * buttonHeight)
+                .setPosition(2 * padding + buttonWidth, 2 * padding + buttonHeight)
                 .setItemHeight(buttonHeight / 2)
                 .moveTo(positionGroup)
                 .addItem("Numerical Order", 0)
@@ -381,7 +392,6 @@ public class ControlPanel extends PApplet {
         //       controlEvent() function of the ControlPanel Nodes
         colorPicker = cp5.addColorPicker("Color")
                 .setPosition(-(w / 4) + padding, padding)
-                .setColorValue(colorPickerDefault)
                 .moveTo(colorSizeGroup);
         
         sizeSlider = cp5.addSlider("Size")
@@ -425,6 +435,9 @@ public class ControlPanel extends PApplet {
                 .setSize(buttonWidth, buttonHeight)
                 .moveTo(hideGroup);
         
+        // change color picker, size slider, and label size slider to reflect selection
+        updateControllersToSelection();
+        
         //============
         // Options tab
         //============
@@ -460,10 +473,24 @@ public class ControlPanel extends PApplet {
             autoLayout.setState(false);
         }
         
-        // populate the dynamic, selection-dependent selection modifier menu
-        modifierPopulator.populate(modifierMenu, graph.selection);
+        // update controllers to selection if selection has changed since
+        // last draw() call
+        if (selectionUpdateRequired.getAndSet(false)) {
+            // populate the dynamic, selection-dependent selection modifier menu
+            modifierPopulator.populate(modifierMenu, graph.selection);
+
+            // change color picker, size slider, and label size slider to reflect selection
+            updateControllersToSelection();
+        }
         
-        background(0);
+         background(0);
+    }
+    
+    // every time selection is changed, this is called
+    @Override
+    public void selectionChanged() {
+        // queue controller selection update if one is not already queued
+        selectionUpdateRequired.compareAndSet(false, true);
     }
     
     // called every time cp5 broadcasts an event.  since ControlGroups cannot
@@ -493,6 +520,12 @@ public class ControlPanel extends PApplet {
             pasteButton.setVisible(false);
             clearButton.setVisible(false);
         }
+    }
+    
+    public void updateControllersToSelection() {
+        colorPicker.setColorValue(graph.selection.getColor());
+        sizeSlider.setValue(graph.selection.getSize());
+        labelSizeSlider.setValue(graph.selection.getLabelSize());
     }
     
     /*
@@ -666,10 +699,10 @@ public class ControlPanel extends PApplet {
      ************************************/
     
     /*
-     * attach to layout expansion button to enable expansion of the positions
+     * attach to layout scale button to enable expansion/contraction of the positions
      * of each node in the selection about their average center.
      */
-    private class ExpandLayoutListener implements CallbackListener {
+    private class ScaleLayoutListener implements CallbackListener {
 
         @Override
         public void controlEvent(CallbackEvent event) {
@@ -683,35 +716,15 @@ public class ControlPanel extends PApplet {
                 center.y =  center.y / graph.selection.nodeCount();
                 center.z =  center.z / graph.selection.nodeCount();
                 
-                // extrapolate all node positions 20% outward from center
-                for (Node n : graph.selection.getNodes()) {
-                    n.getPosition().lerp(center, -0.2f);
-                }
-            }
-        }
-    }
-    
-    /*
-     * attach to layout contraction button to enable contraction of the
-     * positions of each node in the selection about their average center.
-     */
-    private class ContractLayoutListener implements CallbackListener {
-
-        @Override
-        public void controlEvent(CallbackEvent event) {
-            if (event.getAction() == ControlP5.ACTION_RELEASED) {
-                // calculate center of current selection of nodes
-                PVector center = new PVector();
-                for (Node n : graph.selection.getNodes()) {
-                    center.add(n.getPosition());
-                }
-                center.x =  center.x / graph.selection.nodeCount();
-                center.y =  center.y / graph.selection.nodeCount();
-                center.z =  center.z / graph.selection.nodeCount();
+                // set scale based on user selection.
+                // index 0 == expand, 1 == contract
+                float scale;
+                if (scaleDirection.getState(0)) scale = -0.2f;
+                else scale = 0.2f;
                 
-                // extrapolate all node positions 20% outward from center
+                // scale each node position outward or inward from center
                 for (Node n : graph.selection.getNodes()) {
-                    n.getPosition().lerp(center, 0.2f);
+                    n.getPosition().lerp(center, scale);
                 }
             }
         }
@@ -739,7 +752,8 @@ public class ControlPanel extends PApplet {
                 }
                 
                 // sort the array of names according to the user choice
-                if (sortOrder.getState("Numerical Order")) {
+                // index 0 == numerical, 1 == lexicographical
+                if (sortOrder.getState(0)) {
                     quickSort(names, 0, names.length - 1, true);
                 } else {
                     // lexicographical sort implicit
