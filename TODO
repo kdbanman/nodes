@@ -13,13 +13,7 @@
 
 - center camera option in layout
 
-- update transformation controllers with GraphElement selection
-	- implemented, needs testing/debugging.
-	- indicate somehow when >1 selected
-
 - ctrl-click as shortcut to explore
-
-- reimplement expand/contract as radios on a scale button
 
 - decide whether it is valuable to keep the model around.  it might be a powerful and necessary thing for advanced queries later on, but it is a source of complexity (time and space) to maintain.
 	pros:
@@ -85,7 +79,19 @@
 
 ###########################
 COMPLETED        (:r !date)
+
+not a comprehensive change
+log - see git log for that
 ###########################
+Fri 19 Jul 2013 14:38:42 MDT
+
+- reimplement expand/contract as radios on a scale button
+
+- update transformation controllers with GraphElement selection
+	- implemented, needs testing/debugging.
+	- indicate somehow when >1 selected
+
+
 Thu Jul 18 15:51:57 MDT 2013
 
 - duplicate triples are added to edges. problem.
