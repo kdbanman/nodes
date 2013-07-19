@@ -195,6 +195,14 @@ public class Graph implements Iterable<GraphElement> {
         return edges;
     }
     
+    public int nodeCount() {
+        return nodeCount;
+    }
+    
+    public int edgeCount() {
+        return edgeCount;
+    }
+    
     @Override
     public GraphIterator iterator() {
         return new GraphIterator();
@@ -299,30 +307,24 @@ public class Graph implements Iterable<GraphElement> {
     }
 
     /**
-     * returns true if successful, false otherwise. succeeds iff node exists and
-     * is not connected
+     * returns true if successful, false otherwise. removes all connected edges.
      */
     private boolean removeNode(String id) {
 
         Node n = (Node) cp5.getController(id);
 
         if (n == null) {
-            Nodes.println("ERROR: Cannot remove nonexistent node\n" + id);
+            System.out.println("ERROR: Cannot remove nonexistent node\n" + id);
             return false;
-        } else if (!adjacent.get(n).isEmpty()) {
-            //Nodes.println("ERROR: Cannot remove still-connected node\n" + id);
-            return false;
-        } else {
-            //node exists and has no neighbors
-
-            adjacent.remove(n);
-            nodeCount -= 1;
-
-            n.remove();
-
-            return true;
         }
         
+        // removing all connected edges will leave this node as a singleton,
+        // so removeEdge will remove the node on its last call
+        boolean success = false;
+        for (Node nbr : adjacent.get(n)) {
+            success = removeEdge(n, nbr);
+        }
+        return success;
     }
 
     private boolean removeNode(Node n) {
@@ -346,17 +348,23 @@ public class Graph implements Iterable<GraphElement> {
             return false;
         } else {
             Edge e = getEdge(s, d);
-            // TODO: remove triples from model
             
-            
+            // remove edge from selection
+            selection.remove(e);
             // remove controller
             e.remove();
+            // remove triples from the model
+            triples.createResource(s);
+            //TODO: query triples with listStatements, compare length with edge.triples, throw error if problem
+            // remove otherwise
 
             // adjust adjacency list and size
             adjacent.get(src).remove(dst);
             adjacent.get(dst).remove(src);
 
             edgeCount -= 1;
+            
+            // test if src or dst are singleton, remove if so
             
             return true;
         }

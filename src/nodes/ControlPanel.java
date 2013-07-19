@@ -33,6 +33,7 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
+import nodes.Graph.GraphIterator;
 
 
 /**
@@ -379,11 +380,18 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                 .addItem("Alphabetical Order", 1)
                 .activate(0);
         
-        autoLayout = cp5.addToggle("Auto-Layout Entire Graph")
+        autoLayout = cp5.addToggle("Autolayout Entire Graph")
                 .setPosition(padding, 4 * padding + 3 * buttonHeight)
                 .setHeight(elementHeight)
                 .setWidth(buttonWidth)
                 .moveTo(positionGroup);
+        
+        cp5.addButton("Center Camera")
+                .setPosition(width - buttonWidth - padding, 4 * padding + 3 * buttonHeight)
+                .setHeight(buttonHeight)
+                .setWidth(buttonWidth)
+                .moveTo(positionGroup)
+                .addCallback(new CenterCameraListener());
         
         // color and size controllers
         
@@ -725,6 +733,52 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                 // scale each node position outward or inward from center
                 for (Node n : graph.selection.getNodes()) {
                     n.getPosition().lerp(center, scale);
+                }
+            }
+        }
+    }
+    
+    /*
+     * attach to button that centers PApplet camera on center of graph at a 
+     * heuristically calculated distance to contain most of the graph
+     */
+    private class CenterCameraListener implements CallbackListener {
+        @Override
+        public void controlEvent(CallbackEvent event) {
+            if (event.getAction() == ControlP5.ACTION_RELEASED) {
+                
+                GraphIterator it = graph.iterator();
+                if (it.hasNext()) {
+                    GraphElement first = it.next();
+                    // calculate center of graph
+                    PVector center = first.getPosition().get();
+                    float minX = center.x;
+                    float maxX = center.x;
+                    float minY = center.y;
+                    float maxY = center.y;
+                    float minZ = center.z;
+                    float maxZ = center.z;
+
+                    for (Node n : graph.getNodes()) {
+                        PVector nPos = n.getPosition();
+
+                        center.add(n.getPosition());
+                        
+                        minX = Nodes.min(minX, nPos.x);
+                        maxX = Nodes.max(maxX, nPos.x);
+                        minY = Nodes.min(minY, nPos.y);
+                        maxY = Nodes.max(maxY, nPos.y);
+                        minZ = Nodes.min(minZ, nPos.z);
+                        maxZ = Nodes.max(maxZ, nPos.z);
+                    }
+                    center.x =  center.x / graph.nodeCount();
+                    center.y =  center.y / graph.nodeCount();
+                    center.z =  center.z / graph.nodeCount();
+
+                    float avgDist = (maxX - minX + maxY - minY + maxZ - minZ) / 3;
+                    // set camera
+                    graph.pApp.cam.lookAt(center.x, center.y, center.z);
+                    graph.pApp.cam.setDistance(avgDist);
                 }
             }
         }

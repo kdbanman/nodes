@@ -11,8 +11,6 @@
         frame.setResizable(true);
         setupFrameResizeListener();
 
-- center camera option in layout
-
 - ctrl-click as shortcut to explore
 
 - decide whether it is valuable to keep the model around.  it might be a powerful and necessary thing for advanced queries later on, but it is a source of complexity (time and space) to maintain.
@@ -86,6 +84,8 @@ log - see git log for that
 Fri 19 Jul 2013 14:38:42 MDT
 
 - reimplement expand/contract as radios on a scale button
+
+- center camera option in layout
 
 - update transformation controllers with GraphElement selection
 	- implemented, needs testing/debugging.
