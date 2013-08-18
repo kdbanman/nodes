@@ -48,7 +48,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
     
     // update flag raised if the controllers have not responded to a change in
     // selection.  see selectionChanged() and draw().
-    AtomicBoolean selectionUpdateRequired;
+    AtomicBoolean selectionUpdated;
     
     // for copy/paste by keyboard
     Clipboard clipboard;
@@ -111,7 +111,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
         // initialize graph
         graph = parentGraph;
         
-        selectionUpdateRequired = new AtomicBoolean();
+        selectionUpdated = new AtomicBoolean();
         
         // for copy/paste
         clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
@@ -483,7 +483,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
         
         // update controllers to selection if selection has changed since
         // last draw() call
-        if (selectionUpdateRequired.getAndSet(false)) {
+        if (selectionUpdated.getAndSet(false)) {
             // populate the dynamic, selection-dependent selection modifier menu
             modifierPopulator.populate(modifierMenu, graph.selection);
 
@@ -498,7 +498,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
     @Override
     public void selectionChanged() {
         // queue controller selection update if one is not already queued
-        selectionUpdateRequired.compareAndSet(false, true);
+        selectionUpdated.compareAndSet(false, true);
     }
     
     // called every time cp5 broadcasts an event.  since ControlGroups cannot
