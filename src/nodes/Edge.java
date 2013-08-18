@@ -9,7 +9,6 @@ import com.hp.hpl.jena.rdf.model.Statement;
 import controlP5.ControllerView;
 
 import java.util.HashSet;
-import java.util.Objects;
 
 import processing.core.PApplet;
 import processing.core.PVector;

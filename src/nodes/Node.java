@@ -5,6 +5,7 @@
 package nodes;
 
 import controlP5.ControllerView;
+import java.util.Iterator;
 
 import processing.core.PApplet;
 import processing.core.PVector;
@@ -49,7 +50,7 @@ public class Node extends GraphElement<Node> {
         }
       );
     }
-
+    
     @Override
     public boolean inside() {
         try {

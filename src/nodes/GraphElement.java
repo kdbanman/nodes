@@ -173,9 +173,11 @@ public class GraphElement<T> extends Controller<T> {
      * attempts to convert each line in labelText to a prefixed uri.
      * AFFECTS STATE: strings within Set labelText
      */
-    public void prefixLabel() {
+    public void prefixLabel()  {
+        int idx = 0;
         for (String line : labelText) {
-            line = graph.prefixed(line);
+            labelText.set(idx, graph.prefixed(line));
+            idx++;
         }
     }
     
