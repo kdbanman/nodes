@@ -157,7 +157,10 @@ public class Graph implements Iterable<GraphElement> {
         return triples.expandPrefix(prefixed);
     }
 
-    public Edge addTriple(String sub, String pred, String obj) {
+    public Edge addTriple(Statement triple) {
+        String sub = triple.getSubject().toString();
+        String obj = triple.getObject().toString();
+
         Edge e;
         
         // addNode just returns the existing Node if a new one need not be created
@@ -167,24 +170,8 @@ public class Graph implements Iterable<GraphElement> {
         // addEdge returns the existing edge if one already exists between the two nodes
         //      note:  node order does not matter.
         e = addEdge(sub, obj);
-        e.addTriple(sub, pred, obj);
+        e.addTriple(triple);
         return e;
-    }
-
-    public Edge addTriple(Statement triple) {
-        String sub = triple.getSubject().toString();
-        String pred = triple.getPredicate().toString();
-        String obj = triple.getObject().toString();
-
-        return addTriple(sub, pred, obj);
-    }
-
-    public Edge addTriple(Triple triple) {
-        String sub = triple.getSubject().toString();
-        String pred = triple.getPredicate().toString();
-        String obj = triple.getObject().toString();
-
-        return addTriple(sub, pred, obj);
     }
 
     public Set<Node> getNodes() {
