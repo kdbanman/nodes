@@ -10,6 +10,7 @@
 package nodes;
 
 import controlP5.ControlP5;
+import controlP5.Textarea;
 import java.util.concurrent.atomic.AtomicBoolean;
 import processing.core.PApplet;
 
@@ -27,6 +28,9 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
     // selection.  see selectionChanged() and draw().
     AtomicBoolean selectionUpdated;
     
+    // scrollable text area to render triples readable
+    Textarea infoBox;
+    
     public InfoPanel(int frameWidth, int frameHeight, Graph parentGraph) {
         w = frameWidth;
         h = frameHeight;
@@ -36,7 +40,9 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
         
         selectionUpdated = new AtomicBoolean();
         
-        // scrollable text field to render triples readable
+        // scrollable text area to render triples readable
+        infoBox = cp5.addTextarea("Data Window");
+                //TODO
         
         // exploration button to query the web or the database
     }
