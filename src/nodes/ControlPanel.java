@@ -909,6 +909,8 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
         }
     }
     
+    
+    
     /*
      * attach to element size slider to enable node/edge size manipulation
      */

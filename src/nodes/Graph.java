@@ -338,13 +338,15 @@ public class Graph implements Iterable<GraphElement> {
             
             // remove edge from selection
             selection.remove(e);
-            // remove controller
-            e.remove();
             // remove triples from the model
-            triples.createResource(s);
-            //TODO: query triples with listStatements, compare length with edge.triples, throw error if problem
-            // remove otherwise
+            for (Statement stmt : e.triples) {
+                triples.remove(stmt);
+            }
 
+            // remove controller
+            edges.remove(e);
+            e.remove();
+            
             // adjust adjacency list and size
             adjacent.get(src).remove(dst);
             adjacent.get(dst).remove(src);
@@ -352,6 +354,18 @@ public class Graph implements Iterable<GraphElement> {
             edgeCount -= 1;
             
             // test if src or dst are singleton, remove if so
+            if (adjacent.get(src).isEmpty()) {
+                adjacent.remove(src);
+                selection.remove(src);
+                selection.removeFromBuffer(src);
+                src.remove();
+            }
+            if (adjacent.get(dst).isEmpty()) {
+                adjacent.remove(dst);
+                selection.remove(dst);
+                selection.removeFromBuffer(dst);
+                dst.remove();
+            }
             
             return true;
         }
