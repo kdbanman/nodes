@@ -334,7 +334,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                 .hideArrow()
                 .setOpen(false)
                 .moveTo(transformTab);
-        Group hideGroup = new SubTab(cp5, "Hide")
+        Group hideGroup = new SubTab(cp5, "Delete")
                 .setBarHeight(tabHeight)
                 .setPosition(3 * (w / 4), transformTabsVert)
                 .setWidth(w / 4)
@@ -441,7 +441,8 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
         cp5.addButton("Delete Selection")
                 .setPosition(padding - 3 * (w / 4), padding)
                 .setSize(buttonWidth, buttonHeight)
-                .moveTo(hideGroup);
+                .moveTo(hideGroup)
+                .addCallback(new ElementRemovalListener());
         
         // change color picker, size slider, and label size slider to reflect selection
         updateControllersToSelection();
@@ -909,7 +910,27 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
         }
     }
     
-    
+    /*
+     * attach to element removal button to enable removal of any subset of
+     * the graph's nodes or edges
+     */
+    private class ElementRemovalListener implements CallbackListener {
+        
+        @Override
+        public void controlEvent(CallbackEvent event) {
+            if (event.getAction() == ControlP5.ACTION_RELEASED) {
+                // remove all nodes in the selection (this will remove all
+                // connected edges
+                for (Node n : graph.selection.getNodes()) {
+                    graph.removeNode(n);
+                }
+                // remove all remaining edges in the selection
+                for (Edge e : graph.selection.getEdges()) {
+                    graph.removeEdge(e);
+                }
+            }
+        }
+    }
     
     /*
      * attach to element size slider to enable node/edge size manipulation

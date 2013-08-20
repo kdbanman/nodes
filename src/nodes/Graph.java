@@ -296,7 +296,7 @@ public class Graph implements Iterable<GraphElement> {
     /**
      * returns true if successful, false otherwise. removes all connected edges.
      */
-    private boolean removeNode(String id) {
+    public boolean removeNode(String id) {
 
         Node n = (Node) cp5.getController(id);
 
@@ -314,7 +314,7 @@ public class Graph implements Iterable<GraphElement> {
         return success;
     }
 
-    private boolean removeNode(Node n) {
+    public boolean removeNode(Node n) {
         return removeNode(n.getName());
     }
 
@@ -322,7 +322,7 @@ public class Graph implements Iterable<GraphElement> {
      * returns true if successful, false otherwise. succeeds iff given src and
      * dst nodes exist and edge exists between them.
      */
-    private boolean removeEdge(String s, String d) {
+    public boolean removeEdge(String s, String d) {
 
         Node src = (Node) cp5.getController(s);
         Node dst = (Node) cp5.getController(d);
@@ -371,11 +371,11 @@ public class Graph implements Iterable<GraphElement> {
         }
     }
 
-    private boolean removeEdge(Node s, Node d) {
+    public boolean removeEdge(Node s, Node d) {
         return removeEdge(s.getName(), d.getName());
     }
 
-    private boolean removeEdge(Edge e) {
+    public boolean removeEdge(Edge e) {
         return removeEdge(e.src, e.dst);
     }
     
