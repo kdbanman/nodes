@@ -1,6 +1,5 @@
 package nodes;
 
-import com.hp.hpl.jena.graph.Triple;
 import java.util.HashMap;
 import java.util.ArrayList;
 
@@ -348,6 +347,8 @@ public class Graph implements Iterable<GraphElement> {
             e.remove();
             
             // adjust adjacency list and size
+            // TODO: BUG!  this modifies adjacent while iterating through it 
+            //       when this method is called by removeNode()
             adjacent.get(src).remove(dst);
             adjacent.get(dst).remove(src);
 
