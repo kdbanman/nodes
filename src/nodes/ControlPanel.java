@@ -11,6 +11,7 @@ import controlP5.CallbackEvent;
 import controlP5.CallbackListener;
 import controlP5.ColorPicker;
 import controlP5.ControlEvent;
+import controlP5.ControlListener;
 import controlP5.ControlP5;
 import controlP5.Group;
 import controlP5.ListBox;
@@ -99,6 +100,11 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
     
     // controller group for colorizing selected nodes and edges
     ColorPicker colorPicker;
+    // since colorpicker is a controlgroup, and its events can't be handled with
+    // the listener architecture like *everything* else, this flag is necessary
+    // so that changes in colorpicker as it reacts to selection changes do not
+    // propagate to element color changes.
+    boolean changeElementColor;
     
     Slider sizeSlider;
     
@@ -397,10 +403,11 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
         
         //NOTE:  ColorPicker is a ControlGroup, not a Controller, so I can't 
         //       attach a callback to it.  It's functionality is in the 
-        //       controlEvent() function of the ControlPanel Nodes
+        //       controlEvent() function of the ControlPanel
         colorPicker = cp5.addColorPicker("Color")
                 .setPosition(-(w / 4) + padding, padding)
                 .moveTo(colorSizeGroup);
+        changeElementColor = true;
         
         sizeSlider = cp5.addSlider("Size")
                 .setPosition(-(w / 4) + padding, 2 * padding + 80)
@@ -505,8 +512,8 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
     // called every time cp5 broadcasts an event.  since ControlGroups cannot
     // have specific listeners, their actions must be dealt with here.
     public void controlEvent(ControlEvent event) {
-        // adjust color of selected elements
-        if (event.isFrom(colorPicker)) {
+        // adjust color of selected elements (if event is not from selection update)
+        if (changeElementColor && event.isFrom(colorPicker)) {
             int newColor = colorPicker.getColorValue();
             for (GraphElement e : graph.selection) {
                 e.setColor(newColor);
@@ -532,7 +539,11 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
     }
     
     public void updateControllersToSelection() {
+        // do not change element colors with the resulting ControlEvent here
+        changeElementColor = false;
         colorPicker.setColorValue(graph.selection.getColor());
+        changeElementColor = true;
+        
         sizeSlider.setValue(graph.selection.getSize());
         labelSizeSlider.setValue(graph.selection.getLabelSize());
     }
@@ -911,28 +922,6 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
     }
     
     /*
-     * attach to element removal button to enable removal of any subset of
-     * the graph's nodes or edges
-     */
-    private class ElementRemovalListener implements CallbackListener {
-        
-        @Override
-        public void controlEvent(CallbackEvent event) {
-            if (event.getAction() == ControlP5.ACTION_RELEASED) {
-                // remove all nodes in the selection (this will remove all
-                // connected edges
-                for (Node n : graph.selection.getNodes()) {
-                    graph.removeNode(n);
-                }
-                // remove all remaining edges in the selection
-                for (Edge e : graph.selection.getEdges()) {
-                    graph.removeEdge(e);
-                }
-            }
-        }
-    }
-    
-    /*
      * attach to element size slider to enable node/edge size manipulation
      */
     private class ElementSizeListener implements CallbackListener {
@@ -1009,6 +998,28 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                 // apply the new label size to each element in the selection
                 for (GraphElement e : graph.selection) {
                     e.setLabelSize(newSize);
+                }
+            }
+        }
+    }
+    
+    /*
+     * attach to element removal button to enable removal of any subset of
+     * the graph's nodes or edges
+     */
+    private class ElementRemovalListener implements CallbackListener {
+        
+        @Override
+        public void controlEvent(CallbackEvent event) {
+            if (event.getAction() == ControlP5.ACTION_RELEASED) {
+                // remove all nodes in the selection (this will remove all
+                // connected edges
+                for (Node n : graph.selection.getNodes()) {
+                    graph.removeNode(n);
+                }
+                // remove all remaining edges in the selection
+                for (Edge e : graph.selection.getEdges()) {
+                    graph.removeEdge(e);
                 }
             }
         }

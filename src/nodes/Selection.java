@@ -43,17 +43,19 @@ public class Selection implements Iterable<GraphElement> {
      */
     public int getColor() {
         int color;
+        int black = 0xFF000000;
+        
         SelectionIterator it = this.iterator();
         
         // get color of first element, return black if empty
         if (it.hasNext()) color = it.next().getCol();
-        else return 0;
+        else return black;
         
         // verify that all other selected elements are the same color, return
         // black otherwise
         while (it.hasNext()) {
             int nextCol = it.next().getCol();
-            if (nextCol != color) return 0;
+            if (nextCol != color) return black;
         }
         
         return color;
