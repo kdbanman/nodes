@@ -1012,22 +1012,34 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
         @Override
         public void controlEvent(CallbackEvent event) {
             if (event.getAction() == ControlP5.ACTION_RELEASED) {
+                // hold graph drawing while controllers are removed
+                graph.pApp.waitForNewFrame(this);
+                
                 // for both removal loops below, deep copies of the selected
                 // nodes and edges are created.  the removal calls still work
                 // because the Graph.remove*(GraphElement) methods are wrappers
                 // for Graph.remove*(String) methods (only names matter)
+                
                 HashSet<Node> nodesCopy = new HashSet<>(graph.selection.getNodes());
-                HashSet<Edge> edgesCopy = new HashSet<>(graph.selection.getEdges());
-                
-                
                 // remove all nodes in the selection (this will remove all
                 // connected edges
                 for (Node n : nodesCopy) {
-                    graph.removeNode(n);
+                    // nodes may have been removed between iterations, so check
+                    // membership before removal.
+                    if (graph.selection.contains(n)) graph.removeNode(n);
                 }
+                
+                HashSet<Edge> edgesCopy = new HashSet<>(graph.selection.getEdges());
                 // remove all remaining edges in the selection
                 for (Edge e : edgesCopy) {
-                    graph.removeEdge(e);
+                    // edges may have been removed between iterations, so check
+                    // membership before removal.
+                    if (graph.selection.contains(e)) graph.removeEdge(e);
+                }
+
+                // restart graph drawing now that removal is done
+                synchronized (graph.pApp) {
+                    graph.pApp.notify();
                 }
             }
         }

@@ -57,6 +57,10 @@ public class Nodes extends PApplet {
     // one controller will be hovered over at any given time.
     // list is populated by calls within GraphElement.
     ArrayList<GraphElement> hovered;
+    
+    // object container for GraphElement concurrency between rendering and 
+    // external modification
+    Object waitingOnNewFrame;
 
     @Override
     public void setup() {
@@ -104,12 +108,28 @@ public class Nodes extends PApplet {
         
         hovered = new ArrayList<>();
         
+        waitingOnNewFrame = null;
+        
         // local test data
         // graph.addTriples(Importer.getDescriptionFromWeb("Albert_Einstein.rdf"));   
     }
 
     @Override
     public void draw() {
+        
+        if (waitingOnNewFrame != null) {
+            synchronized (waitingOnNewFrame) {
+                waitingOnNewFrame.notify();
+            }
+            try {
+                synchronized(this) {
+                    wait();
+                }
+            } catch (InterruptedException e) {
+                System.out.println("ERROR: view window wait() interrupted");
+            }
+            waitingOnNewFrame = null;
+        }
         // light orange pastel background color
         background(0xFFFFDCBF);
 
@@ -148,6 +168,18 @@ public class Nodes extends PApplet {
         
         // iterate selection color pulsation
         updateSelectColor();
+    }
+    
+    public void waitForNewFrame(Object o) {
+        try {
+            waitingOnNewFrame = o;
+            synchronized(o) {
+                o.wait();
+            }
+        } catch (InterruptedException e) {
+            System.out.println("ERROR: object " + o.toString() + " wait() was interrupted.");
+            waitingOnNewFrame = null;
+        }
     }
     
     // called only when the mouse button is initially depressed, NOT while it is held

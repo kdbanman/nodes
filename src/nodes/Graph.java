@@ -354,8 +354,6 @@ public class Graph implements Iterable<GraphElement> {
             e.remove();
             
             // adjust adjacency list and size
-            // TODO: BUG!  this modifies adjacent while iterating through it 
-            //       when this method is called by removeNode()
             adjacent.get(src).remove(dst);
             adjacent.get(dst).remove(src);
 
@@ -426,10 +424,10 @@ public class Graph implements Iterable<GraphElement> {
      * prints error message for edge creation between nonexistent nodes
      */
     private void printNullEdgeTargets(String s, String d, Node src, Node dst) {
-        Nodes.println("ERROR: Edge cannot be created between /n"
-                + s + " and /n" + d);
+        Nodes.println("ERROR: Edge cannot be retrieved between \n\t"
+                + s + "\nand \nt" + d);
         String problem = (src == null) ? s : d;
-        Nodes.println("   " + problem + "/n  doesn't exist as Node.");
+        Nodes.println("\n" + problem + "\n  doesn't exist as Node.");
     }
     
     /**
