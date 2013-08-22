@@ -1037,10 +1037,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                     if (graph.selection.contains(e)) graph.removeEdge(e);
                 }
 
-                // restart graph drawing now that removal is done
-                synchronized (graph.pApp) {
-                    graph.pApp.notify();
-                }
+                graph.pApp.restartRendering(this);
             }
         }
     }

@@ -128,7 +128,6 @@ public class Nodes extends PApplet {
             } catch (InterruptedException e) {
                 System.out.println("ERROR: view window wait() interrupted");
             }
-            waitingOnNewFrame = null;
         }
         // light orange pastel background color
         background(0xFFFFDCBF);
@@ -170,6 +169,13 @@ public class Nodes extends PApplet {
         updateSelectColor();
     }
     
+    /*
+     * synchronize another process between rendering frames of Nodes
+     * to begin waiting for new frame:
+     *   graph.pApp.waitForNewFrame(this);
+     * be sure to restart nodes after the process is done messing with Nodes' state:
+     *   
+     */
     public void waitForNewFrame(Object o) {
         try {
             waitingOnNewFrame = o;
@@ -178,6 +184,18 @@ public class Nodes extends PApplet {
             }
         } catch (InterruptedException e) {
             System.out.println("ERROR: object " + o.toString() + " wait() was interrupted.");
+            waitingOnNewFrame = null;
+        }
+    }
+    public void restartRendering(Object o) {
+        if (waitingOnNewFrame != o) {
+            System.out.println("ERROR: " + waitingOnNewFrame.toString() 
+                    + " currently processing, but " + o.toString() + 
+                    "attempted to restart thread.");
+        } else {
+            synchronized (this) {
+                this.notify();
+            }
             waitingOnNewFrame = null;
         }
     }
