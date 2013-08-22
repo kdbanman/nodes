@@ -707,9 +707,15 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                 String uri = importWebURI.getText();
                 // retrieve description as a jena model
                 Model toAdd = Importer.getDescriptionFromWeb(uri);
+                
+                // protect from concurrency issues during import
+                graph.pApp.waitForNewFrame(this);
+                
                 // add the retriveed model to the graph (toAdd is empty if 
                 // an error was encountered)
                 graph.addTriples(toAdd);
+                
+                graph.pApp.restartRendering(this);
             }
         }
     }
