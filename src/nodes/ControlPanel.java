@@ -11,7 +11,6 @@ import controlP5.CallbackEvent;
 import controlP5.CallbackListener;
 import controlP5.ColorPicker;
 import controlP5.ControlEvent;
-import controlP5.ControlListener;
 import controlP5.ControlP5;
 import controlP5.Group;
 import controlP5.ListBox;
@@ -33,6 +32,7 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.concurrent.atomic.AtomicBoolean;
 import nodes.Graph.GraphIterator;
 
@@ -1012,13 +1012,21 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
         @Override
         public void controlEvent(CallbackEvent event) {
             if (event.getAction() == ControlP5.ACTION_RELEASED) {
+                // for both removal loops below, deep copies of the selected
+                // nodes and edges are created.  the removal calls still work
+                // because the Graph.remove*(GraphElement) methods are wrappers
+                // for Graph.remove*(String) methods (only names matter)
+                HashSet<Node> nodesCopy = new HashSet<>(graph.selection.getNodes());
+                HashSet<Edge> edgesCopy = new HashSet<>(graph.selection.getEdges());
+                
+                
                 // remove all nodes in the selection (this will remove all
                 // connected edges
-                for (Node n : graph.selection.getNodes()) {
+                for (Node n : nodesCopy) {
                     graph.removeNode(n);
                 }
                 // remove all remaining edges in the selection
-                for (Edge e : graph.selection.getEdges()) {
+                for (Edge e : edgesCopy) {
                     graph.removeEdge(e);
                 }
             }

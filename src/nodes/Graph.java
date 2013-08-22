@@ -305,9 +305,16 @@ public class Graph implements Iterable<GraphElement> {
         }
         
         // removing all connected edges will leave this node as a singleton,
-        // so removeEdge will remove the node on its last call
+        // so removeEdge will remove the node on its last call.
+        // a copy of the adjacency list is iterated through so that the original
+        // may be modified during iteration (within removeEdge() call).
+        // NOTE:  the nbr Nodes are copied, then the copies are used to call the 
+        //        removal method.  this only works because the removeEdge(Node, Node)
+        //        method is just a wrapper for removeEdge(String, String), which
+        //        uses String names, not object references.
         boolean success = false;
-        for (Node nbr : adjacent.get(n)) {
+        ArrayList<Node> adjCopy = new ArrayList<>(getNbrs(n));
+        for (Node nbr : adjCopy) {
             success = removeEdge(n, nbr);
         }
         return success;
