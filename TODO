@@ -1,7 +1,6 @@
-- fix keyboard routing problem.  keystrokes are not being sent to control panel PApplet, regardless of window focus.
-	- keypresses are sent to control panel just fine with my mac.  try work linux machine tomorrow.
-	- upgrading all processing core libraries to 2.01 stable release did not fix problem
-	- last ditch.  try reverting to java 6, if that fails then reduce the problem to a minimal example to debug / post to forum
+- rename virtuoso to SPARQL and implement database connection
+
+- set up state management for hover/select response in infopanel
 
 - implement main application arrow controls for camera strafe
 
@@ -10,13 +9,9 @@
 
 - test multiple additions for prefix overwrite (rdf then rdfs documents replicates)
 
-- replicate and fix concurrent modification bug when adding triples.
+- make infopanel resizeable
 
 - fix height/width of text background for labels.
-
-- update node and edge removal within Graph to maintain the model.
-
-- updtae node removal process to remove all attached edges and singlet nodes
 
 - add numerical size scale
 	- 1 pass to find min and max, then set scale for interpolation, then 1 more pass to modifiy scale.
@@ -35,19 +30,16 @@
 #CLASSES AND INTERFACES
 #######################
 
-- implement basic graph stack
-	- ensure deep copying (may have to keep within Graph so that references to it elsewhere don't get screwed up)
-	- this is probably too slow.  it probably needs to store a subset of the structure and know how to restore each part.
+- use classloader in constructor of Modifiers when populating modifier list for use of plugins
 
 - implement error/notification popup window system
 
-- use classloader in constructor of Modifiers when populating modifier list for use of plugins
-
-#CONTROL LOGIC
-##############
-
 #MODIFIERS
 ##########
+
+- select node corresponding to edge predicate (> 1 triple per edge => >1 entry in modifier menu
+
+- select all nodes of same rdf:Type
 
 - select all triples with common predicate, predicate and object, subject, subj and obj, bla bla bla
 	- for edges that contain at least one triple in each direction, what do?  probably just populate selection list for each triple in edge for triple-dependent queries
@@ -62,8 +54,7 @@
 ########
 
 - exploration: colorize based on database or web retrieval
-- exploration: get from web, database, or both
-
+- hover response for info window
 
 ###########################
 COMPLETED        (:r !date)
@@ -71,6 +62,23 @@ COMPLETED        (:r !date)
 not a comprehensive change
 log - see git log for that
 ###########################
+Fri Aug 23 15:08:00 MDT 2013
+- UNDO NOT IMPORTANT FOR PROTOTYPE:
+	- implement basic graph stack
+		- ensure deep copying (may have to keep within Graph so that references to it elsewhere don't get screwed up)
+		- this is probably too slow.  it probably needs to store a subset of the structure and know how to restore each part.
+
+- update node and edge removal within Graph to maintain the model.
+
+- updtae node removal process to remove all attached edges and singlet nodes
+
+- replicate and fix concurrent modification bug when adding triples.
+
+- fix keyboard routing problem.  keystrokes are not being sent to control panel PApplet, regardless of window focus.
+	- keypresses are sent to control panel just fine with my mac.  try work linux machine tomorrow.
+	- upgrading all processing core libraries to 2.01 stable release did not fix problem
+	- last ditch.  try reverting to java 6, if that fails then reduce the problem to a minimal example to debug / post to forum
+
 Sun 18 Aug 2013 17:30:20 MDT
 
 - decide whether it is valuable to keep the model around.  it might be a powerful and necessary thing for advanced queries later on, but it is a source of complexity (time and space) to maintain.

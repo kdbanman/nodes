@@ -13,14 +13,14 @@ import java.awt.Frame;
  */
 public class InfoPanelFrame extends Frame {
     int w, h;
-    String name;
+    
     InfoPanel info;
     
-    public InfoPanelFrame(Graph graph) {
+    public InfoPanelFrame() {
         super("Information Panel");
         
         // window parameters
-        w = 600;
+        w = 800;
         h = 400;
         
         setLayout(new BorderLayout());
@@ -29,11 +29,15 @@ public class InfoPanelFrame extends Frame {
         setLocation(30, 530);
         setResizable(true);
         setVisible(true);
-        
+    }
+    
+    public void initialize(Graph graph) {
         info = new InfoPanel(w, h, graph);
         
         add(info, BorderLayout.CENTER);
         validate();
         info.init();  
     }
+    
+    //TODO: pass resize(w, h) to infopanel so it can setSize and setPosition (clamped)
 }

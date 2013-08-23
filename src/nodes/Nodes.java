@@ -32,7 +32,8 @@ public class Nodes extends PApplet {
     // control panel window (contains its own controlP5 instance)
     // static so that it can be initialized in main() as a workaround for the
     // bug that doesn't allow focus to change to panelFrame in linux
-    static ControlPanelFrame panelFrame;
+    static ControlPanelFrame controlPanelFrame;
+    static InfoPanelFrame infoPanelFrame;
     
     // mouse information for click and drag selection
     int lastPressedX;
@@ -92,7 +93,8 @@ public class Nodes extends PApplet {
         
         // horrible hack means that static panelFrame has already been constructed
         // within main()
-        panelFrame.initialize(graph);
+        controlPanelFrame.initialize(graph);
+        infoPanelFrame.initialize(graph);
         
         // set program startup default values (see comments in field declaration
         // for more information)
@@ -158,7 +160,7 @@ public class Nodes extends PApplet {
         
         // perform a step of the force-directed layout if the corresponding control
         // is selected
-        if (panelFrame.controls.autoLayout.getState()) {
+        if (controlPanelFrame.controls.autoLayout.getState()) {
             graph.layout();
         }
         
@@ -382,7 +384,8 @@ public class Nodes extends PApplet {
      */
     public static void main(String args[]) {
         
-        panelFrame = new ControlPanelFrame();
+        controlPanelFrame = new ControlPanelFrame();
+        infoPanelFrame = new InfoPanelFrame();
         
         PApplet.main(new String[]{nodes.Nodes.class.getName()});
     }
