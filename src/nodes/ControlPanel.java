@@ -201,25 +201,18 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                 .hideArrow()
                 .setOpen(true)
                 .moveTo(importTab);
-        Group virtuosoGroup = new SubTab(cp5, "Virtuoso")
+        Group sparqlGroup = new SubTab(cp5, "SPARQL")
                 .setBarHeight(tabHeight)
                 .setPosition(w / 4, importTabsVert)
                 .setWidth(w / 4)
                 .hideArrow()
                 .setOpen(false)
                 .moveTo(importTab);
-        Group exploreGroup = new SubTab(cp5, "Explore")
-                .setBarHeight(tabHeight)
-                .setPosition(w / 2, importTabsVert)
-                .setWidth(w / 4)
-                .hideArrow()
-                .setOpen(false)
-                .moveTo(importTab);
+        
         // register triple import subtabs so that they may be manipulated in
         // draw() to behave as tabs
         importSubTabs.add(webGroup);
-        importSubTabs.add(virtuosoGroup);
-        importSubTabs.add(exploreGroup);
+        importSubTabs.add(sparqlGroup);
         openImportSubTab = webGroup;
         
         // Web import elements
@@ -240,7 +233,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                 .moveTo(webGroup)
                 .addCallback(new QueryWebListener());
         
-        // Virtuoso import elements
+        // SPARQL import elements
         
         cp5.addTextfield("IP:Port", 
                     padding - w / 4, 
@@ -249,7 +242,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                     elementHeight)
                 .setAutoClear(false)
                 .addCallback(new CopyPasteMenuListener())
-                .moveTo(virtuosoGroup);
+                .moveTo(sparqlGroup);
         cp5.addTextfield("Username", 
                     padding - w / 4, 
                     labelledElementHeight + padding, 
@@ -257,7 +250,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                     elementHeight)
                 .setAutoClear(false)
                 .addCallback(new CopyPasteMenuListener())
-                .moveTo(virtuosoGroup);
+                .moveTo(sparqlGroup);
         cp5.addTextfield("Password", 
                     padding - w / 4, 
                     2 * labelledElementHeight + padding, 
@@ -266,7 +259,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                 .setAutoClear(false)
                 .setPasswordMode(true)
                 .addCallback(new CopyPasteMenuListener())
-                .moveTo(virtuosoGroup);
+                .moveTo(sparqlGroup);
         cp5.addTextfield("Query", 
                     padding - w / 4, 
                     3 * labelledElementHeight + padding, 
@@ -274,24 +267,13 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                     elementHeight)
                 .setAutoClear(false)
                 .addCallback(new CopyPasteMenuListener())
-                .moveTo(virtuosoGroup);
+                .moveTo(sparqlGroup);
         
-        cp5.addButton("Query Virtuoso")
+        cp5.addButton("Query Server")
                 .setSize(buttonWidth, buttonHeight)
                 .setPosition(w - buttonWidth - padding - w / 4, 
                     4 * labelledElementHeight + padding)
-                .moveTo(virtuosoGroup);
-        
-        // Explore tab elements
-        
-        cp5.addRadioButton("Source Choice")
-                .setPosition(padding - w / 2, padding)
-                .setItemHeight(elementHeight)
-                .setItemWidth(elementHeight)
-                .addItem("Query linked data web", 0)
-                .addItem("Query virtuoso server", 1)
-                .activate(0)
-                .moveTo(exploreGroup);
+                .moveTo(sparqlGroup);
         
         //==============
         // Transform tab
@@ -716,6 +698,18 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                 graph.addTriples(toAdd);
                 
                 graph.pApp.restartRendering(this);
+            }
+        }
+    }
+    
+    /*
+     * attach to sparql query button for sparql query functionality
+     */
+    private class QuerySparqlListener implements CallbackListener {
+        @Override
+        public void controlEvent(CallbackEvent event) {
+            if (event.getAction() == ControlP5.ACTION_RELEASED) {
+                //
             }
         }
     }

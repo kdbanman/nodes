@@ -35,11 +35,16 @@
  */
 package nodes;
 
+import com.hp.hpl.jena.rdf.model.RDFNode;
+import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
+import com.hp.hpl.jena.rdf.model.StmtIterator;
+
 import controlP5.Button;
 import controlP5.ControlP5;
 import controlP5.RadioButton;
 import controlP5.Textarea;
+import java.util.NoSuchElementException;
 
 import processing.core.PApplet;
 import processing.core.PFont;
@@ -142,16 +147,22 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
         background(0);
         
         if (selectionUpdated.getAndSet(false)) {
-            String name = infoDefault;
+            String toDisplay = infoDefault;
             
             if (graph.selection.nodeCount() + graph.selection.edgeCount() == 1) {
-                if (graph.selection.nodeCount() == 1) {
-                    name = graph.selection.getNodes().iterator().next().getName();
-                } else {
-                    name = graph.selection.getEdges().iterator().next().getName();
+                try {
+                    if (graph.selection.nodeCount() == 1) {
+                        toDisplay = renderedNodeString(graph.selection.getNodes().iterator().next());
+                    } else {
+                        toDisplay = renderedEdgeString(graph.selection.getEdges().iterator().next());
+                    }
+                } catch (NoSuchElementException e) {
+                    // when the user is changing the selection rapidly, the iterator may fail here.
+                    // this is not an issue, since the next infopanel frame will
+                    // react to the change, so this exception is silently swallowed.
                 }
             }
-            infoBox.setText(name);
+            infoBox.setText(toDisplay);
         }
     }
     
@@ -163,25 +174,47 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
     }
     
     /*
-     * TODO
+     * returns a well formatted description of the entity the passed Node
+     * represents based on the existing (imported) data.  do not pass null
+     * values.
      */
-    public String renderNodeString(Node n) {
-        return "";
+    public String renderedNodeString(Node n) {
+        String rendered = "Data Neigborhood for:  " + graph.prefixed(n.getName()) + "\n\n";
+        
+        StmtIterator outbound = graph.triples.listStatements(graph.getResource(n.getName()), null, (RDFNode) null);
+        while (outbound.hasNext()) {
+            Statement s = outbound.next();
+            rendered += "  " + graph.prefixed(s.getPredicate().toString()) + "  "
+                    + graph.prefixed(s.getObject().toString()) + "\n";
+        }
+        rendered += "\n";
+        
+        StmtIterator inbound = graph.triples.listStatements(null, null, (RDFNode) graph.getResource(n.getName()));
+        if (!inbound.hasNext()) {
+            inbound = graph.triples.listStatements(null, null, n.getName());
+        }
+        while (inbound.hasNext()) {
+            Statement s = inbound.next();
+            rendered += "  is  " + graph.prefixed(s.getPredicate().toString()) + "  of  "
+                    + graph.prefixed(s.getSubject().toString()) + "\n";
+        }
+        return rendered;
     }
     
     /*
      * TODO
      */
-    public String renderEdgeString(Edge e) {
+    public String renderedEdgeString(Edge e) {
         String rendered = "";
         for (Statement s : e.triples) {
-            //TODO
-            String predicateDisplayString = renderNodeString(graph.getNode(s.getPredicate().toString()));
-            if (predicateDisplayString != null) {
-                rendered += predicateDisplayString;
+            Node predicateNode = graph.getNode(s.getPredicate().toString());
+            if (predicateNode != null) {
+                rendered += renderedNodeString(predicateNode);
             } else {
-                rendered += "(no data yet retrieved about " + s.getPredicate().toString() + ")";
+                rendered += "No data yet retrieved about predicate\n  " + s.getPredicate().toString()
+                        + "\n\nTry querying the web or a SPARQL instance with the button to the right.";
             }
+            rendered += "\n";
         }
         
         return rendered;

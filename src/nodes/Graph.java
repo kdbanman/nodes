@@ -149,11 +149,21 @@ public class Graph implements Iterable<GraphElement> {
         }
     }
     
+    public Resource getResource(String uri) {
+        return triples.getResource(uri);
+    }
+    
     public String prefixed(String uri) {
         return triples.shortForm(uri);
     }
     public String expanded(String prefixed) {
         return triples.expandPrefix(prefixed);
+    }
+    public String prefix(String uri) {
+        return triples.getNsURIPrefix(uri);
+    }
+    public String prefixURI(String uri) {
+        return triples.getNsPrefixURI(uri);
     }
 
     public Edge addTriple(Statement triple) {
