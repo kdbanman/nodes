@@ -235,7 +235,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
         
         // SPARQL import elements
         
-        cp5.addTextfield("IP:Port", 
+        cp5.addTextfield("IP:Port or URL", 
                     padding - w / 4, 
                     padding, 
                     w - 2 * padding, 
@@ -709,7 +709,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
         @Override
         public void controlEvent(CallbackEvent event) {
             if (event.getAction() == ControlP5.ACTION_RELEASED) {
-                //
+                //TODO
             }
         }
     }

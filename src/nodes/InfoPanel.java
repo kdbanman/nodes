@@ -35,12 +35,14 @@
  */
 package nodes;
 
+import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.RDFNode;
-import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
 
 import controlP5.Button;
+import controlP5.CallbackEvent;
+import controlP5.CallbackListener;
 import controlP5.ControlP5;
 import controlP5.RadioButton;
 import controlP5.Textarea;
@@ -123,14 +125,15 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
         // scrollable text area to render triples readable
         infoBox = cp5.addTextarea("Data Window")
                 .setPosition(padding, padding)
-                .setSize(w - 3 * padding - buttonWidth, h - 2 * padding)
+                .setSize(w - 3 * padding - buttonWidth, h - 2 * padding - 50)
                 .setText(infoDefault)
                 .setFont(infoFont);
         
         // exploration button to query the web or the database
         explore = cp5.addButton("Explore")
                 .setPosition(w - padding - buttonWidth, padding)
-                .setSize(buttonWidth, buttonHeight);
+                .setSize(buttonWidth, buttonHeight)
+                .addCallback(new ExplorationListener());
         
         // radio to choose exploration behaviour;
         dataSource = cp5.addRadioButton("Source")
@@ -148,6 +151,7 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
         
         if (selectionUpdated.getAndSet(false)) {
             String toDisplay = infoDefault;
+            explore.lock();
             
             if (graph.selection.nodeCount() + graph.selection.edgeCount() == 1) {
                 try {
@@ -156,6 +160,7 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
                     } else {
                         toDisplay = renderedEdgeString(graph.selection.getEdges().iterator().next());
                     }
+                    explore.unlock();
                 } catch (NoSuchElementException e) {
                     // when the user is changing the selection rapidly, the iterator may fail here.
                     // this is not an issue, since the next infopanel frame will
@@ -193,6 +198,10 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
         if (!inbound.hasNext()) {
             inbound = graph.triples.listStatements(null, null, n.getName());
         }
+        if (!inbound.hasNext()) {
+            //TODO: figure out a way to get literal statuments working.  they don't
+            // show up in the infopanel as "is <pred> of <uri resource>
+        }
         while (inbound.hasNext()) {
             Statement s = inbound.next();
             rendered += "  is  " + graph.prefixed(s.getPredicate().toString()) + "  of  "
@@ -202,19 +211,23 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
     }
     
     /*
-     * TODO
+     * returns a well-formatted description of the predicates that the passed
+     * edge represents based on the existing data.
      */
     public String renderedEdgeString(Edge e) {
         String rendered = "";
         for (Statement s : e.triples) {
+            rendered += graph.prefixed(s.getSubject().toString()) + "  " +
+                    graph.prefixed(s.getPredicate().toString()) + "  " +
+                    graph.prefixed(s.getObject().toString());
             Node predicateNode = graph.getNode(s.getPredicate().toString());
             if (predicateNode != null) {
                 rendered += renderedNodeString(predicateNode);
             } else {
-                rendered += "No data yet retrieved about predicate\n  " + s.getPredicate().toString()
+                rendered += "\n\nNo data yet retrieved about predicate\n  " + s.getPredicate().toString()
                         + "\n\nTry querying the web or a SPARQL instance with the button to the right.";
             }
-            rendered += "\n";
+            rendered += "\n\n\n\n";
         }
         
         return rendered;
@@ -224,5 +237,58 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
      * exploration button callback listeners
      ***************************************/
     
-    //TODO
+    /*
+     * attach to web query button in import tab to enable retrieval of rdf
+     * descriptions as published at resources' uris.
+     */
+    private class ExplorationListener implements CallbackListener {
+        @Override
+        public void controlEvent(CallbackEvent event) {
+            if (event.getAction() == ControlP5.ACTION_RELEASED) {
+                // get uri from selected node 
+                String uri;
+                // explore button is only unlocked when exactly one element is 
+                // selected (see draw())
+                if (graph.selection.nodeCount() == 1) {
+                    uri = graph.selection.getNodes().iterator().next().getName();
+                } else {
+                    Edge edge = (Edge) graph.selection.getEdges().iterator().next();
+                    
+                    if (edge.triples.size() > 1) {
+                        // user needs to choose which triple to explore
+                        TripleChooserFrame chooser = new TripleChooserFrame(this, edge, graph.triples);
+
+                        // this thread will be started again upon closure of TripleChooserFrame
+                        try {
+                            synchronized(this) {
+                                this.wait();
+                            }
+                        } catch (InterruptedException e) {
+                            System.out.println("ExplorationListener was not able to wait for TripleChooserFrame");
+                        }
+                        // triple chooser's thread will be sleeping, waiting for this
+                        // to retrieve the chosen triple (Statement)
+                        uri = chooser.choice().getPredicate().getURI();
+                        chooser.close();
+                    } else {
+                        uri = edge.triples.iterator().next().getPredicate().getURI();
+                    }
+                }
+                // retrieve description as a jena model
+                Model toAdd = Importer.getDescriptionFromWeb(uri);
+                
+                // protect from concurrency issues during import
+                graph.pApp.waitForNewFrame(this);
+                
+                // add the retriveed model to the graph (toAdd is empty if 
+                // an error was encountered)
+                graph.addTriples(toAdd);
+                
+                graph.pApp.restartRendering(this);
+                
+                // queue controller selection update if one is not already queued
+                selectionUpdated.compareAndSet(false, true);
+            }
+        }
+    }
 }
