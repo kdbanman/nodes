@@ -66,8 +66,8 @@ public class Nodes extends PApplet {
     @Override
     public void setup() {
         // configure parent PApplet
-        int w = 800;
-        int h = 600;
+        int w = 1024;
+        int h = 768;
         size(w, h, P3D);
         frameRate(30);
 

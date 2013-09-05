@@ -4,30 +4,7 @@
  * otherwise displays:
  * 
  * - namespace prefix legend in displayed information
- * - a button to query for more triples (if the node is a URI resource)
- * 
- * Node:
- * - alphabetically sorted (by pred then obj) list of triples leading from the node
- * - alphabetically sorted (by pred then obj) list of triples leading to the node
- * - formatted:
- *      Data Neigborhood:
- * 
- *      pfx:Name
- *          pfx:Pred pfx:Obj
- *          pfx:Pred pfx:Obj
- *          pfx:Pred pfx:Obj
- * 
- * 
- *      pfx:Sub pfx:Pred pfx:Name
- *      pfx:Sub pfx:Pred pfx:Name
- * 
- * 
- * Edge (for each triple contained within):
- * - formatted:
- *      pfx:Sub pfx:Pred pfx:Obj
- * 
- *      {Node rendering for pfx:Pred}
- * 
+ * - buttons to query for more triples (if the node is a URI resource)
  * 
  * Displayed information changes with mouse hover until a single element is
  * selected, then the information freezes.  (performance requirements may 
@@ -44,7 +21,6 @@ import controlP5.Button;
 import controlP5.CallbackEvent;
 import controlP5.CallbackListener;
 import controlP5.ControlP5;
-import controlP5.RadioButton;
 import controlP5.Textarea;
 import java.util.NoSuchElementException;
 
@@ -66,6 +42,7 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
     int buttonHeight;
     
     PFont infoFont;
+    PFont eventFont;
     
     ControlP5 cp5;
     Graph graph;
@@ -77,30 +54,42 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
     // default string for infobox when single GraphElement is not selected
     String infoDefault;
     
-    // scrollable text area to render triples readable
+    // string to add events to
+    String eventLogString;
+    
+    // scrollable text area to render triples readable according to selection
+    // or to provide application instructions
     Textarea infoBox;
     
-    // exploration button to query web/SPARQL for information about selection
-    Button explore;
+    // scrollable text area to log events/feedback to the user
+    Textarea eventLog;
     
-    // radio button to choose between querying the web and querying the SPARQL
-    // endpoint described in the controller window
-    RadioButton dataSource;
+    // exploration buttons to query web/SPARQL for information about selection
+    Button exploreWeb;
+    Button exploreSparql;
+    Button exploreSdb;
     
     public InfoPanel(int frameWidth, int frameHeight, Graph parentGraph) {
         w = frameWidth;
         h = frameHeight;
         
         try {
-            infoFont = createFont("labelFont.ttf", 12);
+            infoFont = createFont("labelFont.ttf", 12, true);
         } catch (Exception e) {
             System.out.println("ERROR: font not loaded.  ensure labelFont.tiff is in program directory.");
             infoFont = cp5.getFont().getFont();
         }
         
+        try {
+            eventFont = createFont("labelFont.ttf", 11, false);
+        } catch (Exception e) {
+            System.out.println("ERROR: font not loaded.  ensure labelFont.tiff is in program directory.");
+            eventFont = cp5.getFont().getFont();
+        }
+        
         padding = 10;
         elementHeight = 20;
-        buttonWidth = 100;
+        buttonWidth = 200;
         buttonHeight = 30;
         
         // initialize graph
@@ -108,7 +97,10 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
         
         selectionUpdated = new AtomicBoolean();
         
+        //TODO: change this to a more comprehensive set of instructions
         infoDefault = "Select a single node or edge for information.";
+        
+        eventLogString = "";
     }
     
     @Override
@@ -129,20 +121,24 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
                 .setText(infoDefault)
                 .setFont(infoFont);
         
-        // exploration button to query the web or the database
-        explore = cp5.addButton("Explore")
+        eventLog = cp5.addTextarea("Event Log")
+                .setPosition(w - padding - buttonWidth, 4 * padding + 3 * buttonHeight)
+                .setSize(buttonWidth, h - 5 * padding - 3 * buttonHeight - 25)
+                .setText(eventLogString)
+                .setFont(eventFont)
+                .setColor(0xFFFF5555);
+        
+        // exploration buttons to query the web or the database
+        exploreWeb = cp5.addButton("Explore Web")
                 .setPosition(w - padding - buttonWidth, padding)
                 .setSize(buttonWidth, buttonHeight)
-                .addCallback(new ExplorationListener());
-        
-        // radio to choose exploration behaviour;
-        dataSource = cp5.addRadioButton("Source")
+                .addCallback(new WebExplorationListener());
+        exploreSparql = cp5.addButton("Explore SPARQL endpoint")
                 .setPosition(w - padding - buttonWidth, 2 * padding + buttonHeight)
-                .setItemHeight(elementHeight)
-                .setItemWidth(elementHeight)
-                .addItem("Query web", 0)
-                .addItem("Query SPARQL", 1)
-                .activate(0);
+                .setSize(buttonWidth, buttonHeight);
+        exploreSdb = cp5.addButton("Explore SDB instance")
+                .setPosition(w - padding - buttonWidth, 3 * padding + 2 * buttonHeight)
+                .setSize(buttonWidth, buttonHeight);
     }
     
     @Override
@@ -151,7 +147,6 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
         
         if (selectionUpdated.getAndSet(false)) {
             String toDisplay = infoDefault;
-            explore.lock();
             
             if (graph.selection.nodeCount() + graph.selection.edgeCount() == 1) {
                 try {
@@ -160,7 +155,6 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
                     } else {
                         toDisplay = renderedEdgeString(graph.selection.getEdges().iterator().next());
                     }
-                    explore.unlock();
                 } catch (NoSuchElementException e) {
                     // when the user is changing the selection rapidly, the iterator may fail here.
                     // this is not an issue, since the next infopanel frame will
@@ -176,6 +170,11 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
     public void selectionChanged() {
         // queue controller selection update if one is not already queued
         selectionUpdated.compareAndSet(false, true);
+    }
+    
+    public void logEvent(String s) {
+        eventLogString = s + "\n\n" + eventLogString;
+        eventLog.setText(eventLogString);
     }
     
     /*
@@ -241,7 +240,7 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
      * attach to web query button in import tab to enable retrieval of rdf
      * descriptions as published at resources' uris.
      */
-    private class ExplorationListener implements CallbackListener {
+    private class WebExplorationListener implements CallbackListener {
         @Override
         public void controlEvent(CallbackEvent event) {
             if (event.getAction() == ControlP5.ACTION_RELEASED) {
@@ -251,7 +250,7 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
                 // selected (see draw())
                 if (graph.selection.nodeCount() == 1) {
                     uri = graph.selection.getNodes().iterator().next().getName();
-                } else {
+                } else if (graph.selection.edgeCount() == 1) {
                     Edge edge = (Edge) graph.selection.getEdges().iterator().next();
                     
                     if (edge.triples.size() > 1) {
@@ -273,6 +272,9 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
                     } else {
                         uri = edge.triples.iterator().next().getPredicate().getURI();
                     }
+                } else {
+                    InfoPanel.this.logEvent("Select a single node or edge to retrieve its data.");
+                    return;
                 }
                 // retrieve description as a jena model
                 Model toAdd = Importer.getDescriptionFromWeb(uri);

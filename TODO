@@ -1,11 +1,12 @@
-- rename virtuoso to SPARQL and implement database connection
+- rename virtuoso to SDB and implement database connection
+
+- add SPARQL web retrieval
+
+- add SDB retrieval from infopanel
 
 - set up state management for hover/select response in infopanel
 
 - implement main application arrow controls for camera strafe
-
-- implement exploration mode
-	- this wants a popup window pretty badly.  it may require swing to do this with little code
 
 - test multiple additions for prefix overwrite (rdf then rdfs documents replicates)
 
@@ -16,17 +17,10 @@
 - add numerical size scale
 	- 1 pass to find min and max, then set scale for interpolation, then 1 more pass to modifiy scale.
 
-- ctrl-click as shortcut to explore
-
 - find some way to swap state around to show color changes on selected nodes
 
 - make color picker better looking
 
-- set main window to resizeable
-	- below lines in setup work, but ugly rendering bugs happen during and immediately after a resize, and drag select *box* gets translated and scaled.
-        frame.setResizable(true);
-        setupFrameResizeListener();
-	
 #CLASSES AND INTERFACES
 #######################
 
@@ -62,6 +56,20 @@ COMPLETED        (:r !date)
 not a comprehensive change
 log - see git log for that
 ###########################
+
+
+Thu Sep  5 16:12:16 MDT 2013
+- implement exploration mode
+	- this wants a popup window pretty badly.  it may require swing to do this with little code
+	NOTE: no swing, just in infopanel
+
+- set main window to resizeable
+	- below lines in setup almost work, but ugly rendering bugs happen during and immediately after a resize, and (more critically) drag select *box* gets translated and scaled.  also it will crash after enough dragging.
+        frame.setResizable(true);
+        setupFrameResizeListener();
+	NOTE:  the main window is just big now.  good enough.
+
+
 Fri Aug 23 15:08:00 MDT 2013
 - UNDO NOT IMPORTANT FOR PROTOTYPE:
 	- implement basic graph stack
