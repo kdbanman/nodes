@@ -709,9 +709,23 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                 // protect from concurrency issues during import
                 graph.pApp.waitForNewFrame(this);
                 
+                int retrievedSize = (int) toAdd.size();
+                int beforeSize = graph.tripleCount();
+                
                 // add the retriveed model to the graph (toAdd is empty if 
                 // an error was encountered)
                 graph.addTriples(toAdd);
+                
+                int afterSize = graph.tripleCount();
+                
+                int addedSize = afterSize - beforeSize;
+                int overlapSize = retrievedSize - addedSize;
+                
+                // log number of triples added to user
+                logEvent("From uri:\n" + uri + "\n  " + 
+                         retrievedSize + " triples retrieved\n  " +
+                         addedSize + " triples added\n  " +
+                         overlapSize + " triples already existed");
                 
                 graph.pApp.restartRendering(this);
             }

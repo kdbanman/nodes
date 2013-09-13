@@ -199,6 +199,16 @@ public class Graph implements Iterable<GraphElement> {
         return edgeCount;
     }
     
+    public int tripleCount() {
+        long size = triples.size();
+        
+        
+        //DEBUG
+        System.out.println(size + "\n" + (int) size);
+        
+        return (int) size;
+    }
+    
     @Override
     public GraphIterator iterator() {
         return new GraphIterator();
