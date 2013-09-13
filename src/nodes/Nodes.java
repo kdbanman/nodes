@@ -379,6 +379,11 @@ public class Nodes extends PApplet {
         else selectColor -= 0x50505;
     }
     
+    // log event to user in infopanel event box
+    public void logEvent(String s) {
+        infoPanelFrame.info.logEvent(s);
+    }
+    
     /**
      * @param args the command line arguments
      */
