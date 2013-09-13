@@ -5,6 +5,11 @@
 package nodes;
 
 import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
+
+import org.apache.jena.riot.RDFDataMgr;
+import org.apache.jena.riot.RiotException;
+
 import controlP5.Button;
 
 import controlP5.CallbackEvent;
@@ -530,6 +535,11 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
         labelSizeSlider.setValue(graph.selection.getLabelSize());
     }
     
+    // log event in infopanel
+    private void logEvent(String s) {
+        graph.pApp.logEvent(s);
+    }
+    
     /*
      * ControlP5 does not support nesting tabs within other tabs, so this is an
      * extension of controller Groups to behave as nested tabs.  NOTE:  the
@@ -688,7 +698,13 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                 // get uri from text field
                 String uri = importWebURI.getText();
                 // retrieve description as a jena model
-                Model toAdd = Importer.getDescriptionFromWeb(uri);
+                Model toAdd = ModelFactory.createDefaultModel();
+        
+                try {
+                    RDFDataMgr.read(toAdd, uri);
+                } catch (RiotException e) {
+                    logEvent("Valid RDF not hosted at uri \n  " + uri);
+                }
                 
                 // protect from concurrency issues during import
                 graph.pApp.waitForNewFrame(this);
