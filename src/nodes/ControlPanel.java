@@ -843,6 +843,10 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                     float maxY = center.y;
                     float minZ = center.z;
                     float maxZ = center.z;
+                    
+                    float minCamDist = 15 * first.getSize();
+                    
+                    float nodeCount = 1f;
 
                     while (it.hasNext()) {
                         GraphElement e = it.next();
@@ -859,15 +863,17 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                         maxY = Nodes.max(maxY, nPos.y);
                         minZ = Nodes.min(minZ, nPos.z);
                         maxZ = Nodes.max(maxZ, nPos.z);
+                        
+                        nodeCount += 1f;
                     }
-                    center.x =  center.x / graph.nodeCount();
-                    center.y =  center.y / graph.nodeCount();
-                    center.z =  center.z / graph.nodeCount();
+                    center.x =  center.x / (float) nodeCount;
+                    center.y =  center.y / (float) nodeCount;
+                    center.z =  center.z / (float) nodeCount;
 
                     float avgDist = (maxX - minX + maxY - minY + maxZ - minZ) / 3;
                     // set camera
                     graph.pApp.cam.lookAt(center.x, center.y, center.z);
-                    graph.pApp.cam.setDistance(avgDist);
+                    graph.pApp.cam.setDistance(Nodes.max(minCamDist, 1.3f * avgDist));
                 }
             }
         }

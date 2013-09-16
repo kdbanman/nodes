@@ -72,11 +72,11 @@ public class Graph implements Iterable<GraphElement> {
         }
 
         // repulsive force between nodes
-        float coulomb = 10000;
+        float coulomb = 7000;
         // attractive force between connected nodes
         float hooke = .1f;
         // gravitational force to camera center
-        float gravity = 100;
+        float gravity = .5f;
         // base of damping logarithm.  higher => less jitter, slower stabilization
         float saturationLogBase = 1.7f;
         
@@ -106,13 +106,13 @@ public class Graph implements Iterable<GraphElement> {
                     float dist = diff.mag();
 
                     diff.normalize();
-                    diff.mult(degreeScale * coulomb / dist);
+                    diff.mult(degreeScale * coulomb / (dist * dist));
                     delta.sub(diff);
                 }
             }
             
             // add gravitational force from camera centre
-            PVector diff = pApp.getCamLookat();
+            PVector diff = new PVector(0, 0, 0);
             diff.sub(nodePos);
             float dist = diff.mag();
             diff.normalize();
