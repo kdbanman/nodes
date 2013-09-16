@@ -13,6 +13,7 @@
 package nodes;
 
 import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
@@ -28,6 +29,8 @@ import processing.core.PApplet;
 import processing.core.PFont;
 
 import java.util.concurrent.atomic.AtomicBoolean;
+import org.apache.jena.riot.RDFDataMgr;
+import org.openjena.riot.RiotException;
 
 /**
  *
@@ -67,7 +70,6 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
     // exploration buttons to query web/SPARQL for information about selection
     Button exploreWeb;
     Button exploreSparql;
-    Button exploreSdb;
     
     public InfoPanel(int frameWidth, int frameHeight, Graph parentGraph) {
         w = frameWidth;
@@ -97,8 +99,10 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
         
         selectionUpdated = new AtomicBoolean();
         
-        //TODO: change this to a more comprehensive set of instructions
-        infoDefault = "Select a single node or edge for information.";
+        infoDefault = "Select a single node or edge for information about it " +
+                "to be rendered here.\n\nTo get more information, use the exploration buttons to the " +
+                "right to:\n - Query the node/edge URI over the web\n - Query the SPARQL endpoint " +
+                "at the address in Load Triples -> SPARQL -> Endpoint IP:Port or URL\n";
         
         eventLogString = "";
     }
@@ -136,9 +140,7 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
         exploreSparql = cp5.addButton("Explore SPARQL endpoint")
                 .setPosition(w - padding - buttonWidth, 2 * padding + buttonHeight)
                 .setSize(buttonWidth, buttonHeight);
-        exploreSdb = cp5.addButton("Explore SDB instance")
-                .setPosition(w - padding - buttonWidth, 3 * padding + 2 * buttonHeight)
-                .setSize(buttonWidth, buttonHeight);
+        
     }
     
     @Override
@@ -175,7 +177,7 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
     // log event to user.  sufficient newlines automatically added.
     public void logEvent(String s) {
         s = s.trim();
-        eventLogString = s + "\n\n>>>>>\n\n" + eventLogString;
+        eventLogString = ">>>>>\n\n\n\n" + s + eventLogString;
         eventLog.setText(eventLogString);
     }
     
@@ -246,7 +248,10 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
         @Override
         public void controlEvent(CallbackEvent event) {
             if (event.getAction() == ControlP5.ACTION_RELEASED) {
-                // get uri from selected node 
+                
+                // get uri from selected node or edge
+                /////////////////////////////////////
+                
                 String uri;
                 // explore button is only unlocked when exactly one element is 
                 // selected (see draw())
@@ -278,8 +283,20 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
                     logEvent("Select a single node or edge to retrieve its data.");
                     return;
                 }
+                
                 // retrieve description as a jena model
-                Model toAdd = Importer.getDescriptionFromWeb(uri);
+                ///////////////////////////////////////
+                Model toAdd = ModelFactory.createDefaultModel();
+        
+                try {
+                    RDFDataMgr.read(toAdd, uri);
+                } catch (RiotException e) {
+                    logEvent("Valid RDF not hosted at uri \n  " + uri);
+                    return;
+                }
+                
+                // add retrieved model to graph
+                ///////////////////////////////
                 
                 // protect from concurrency issues during import
                 graph.pApp.waitForNewFrame(this);
