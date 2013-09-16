@@ -704,6 +704,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                     RDFDataMgr.read(toAdd, uri);
                 } catch (RiotException e) {
                     logEvent("Valid RDF not hosted at uri \n  " + uri);
+                    return;
                 }
                 
                 // protect from concurrency issues during import
@@ -716,18 +717,15 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                 // an error was encountered)
                 graph.addTriples(toAdd);
                 
-                int afterSize = graph.tripleCount();
-                
-                int addedSize = afterSize - beforeSize;
-                int overlapSize = retrievedSize - addedSize;
+                int addedSize = graph.tripleCount() - beforeSize;
                 
                 // log number of triples added to user
                 logEvent("From uri:\n" + uri + "\n  " + 
                          retrievedSize + " triples retrieved\n  " +
-                         addedSize + " triples added\n  " +
-                         overlapSize + " triples already existed");
-                
+                         addedSize + " triples are new");
+                 
                 graph.pApp.restartRendering(this);
+                
             }
         }
     }

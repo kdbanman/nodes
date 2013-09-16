@@ -172,8 +172,9 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
         selectionUpdated.compareAndSet(false, true);
     }
     
-    // log event to user.  sufficient newlines automatically added
+    // log event to user.  sufficient newlines automatically added.
     public void logEvent(String s) {
+        s = s.trim();
         eventLogString = s + "\n\n" + eventLogString;
         eventLog.setText(eventLogString);
     }
@@ -274,7 +275,7 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
                         uri = edge.triples.iterator().next().getPredicate().getURI();
                     }
                 } else {
-                    InfoPanel.this.logEvent("Select a single node or edge to retrieve its data.");
+                    logEvent("Select a single node or edge to retrieve its data.");
                     return;
                 }
                 // retrieve description as a jena model
@@ -283,9 +284,19 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
                 // protect from concurrency issues during import
                 graph.pApp.waitForNewFrame(this);
                 
+                int retrievedSize = (int) toAdd.size();
+                int addedSize = graph.tripleCount();
+                
                 // add the retriveed model to the graph (toAdd is empty if 
                 // an error was encountered)
                 graph.addTriples(toAdd);
+                
+                addedSize = graph.tripleCount() - addedSize;
+                
+                // log number of triples added to user
+                logEvent("From uri:\n<" + uri + ">\n  " + 
+                         retrievedSize + " triples retrieved,\n  " +
+                         addedSize + " triples are new");
                 
                 graph.pApp.restartRendering(this);
                 

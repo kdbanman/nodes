@@ -176,7 +176,7 @@ public class Nodes extends PApplet {
      * to begin waiting for new frame:
      *   graph.pApp.waitForNewFrame(this);
      * be sure to restart nodes after the process is done messing with Nodes' state:
-     *   
+     *   graph.pApp.restartRendering(tihs);
      */
     public void waitForNewFrame(Object o) {
         try {

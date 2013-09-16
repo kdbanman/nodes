@@ -202,9 +202,8 @@ public class Graph implements Iterable<GraphElement> {
     public int tripleCount() {
         long size = triples.size();
         
-        
-        //DEBUG
-        System.out.println(size + "\n" + (int) size);
+        //DEBUG:  jena models return their size as doubles...  never forget. ugh
+        //System.out.println(size + "\n" + (int) size);
         
         return (int) size;
     }
