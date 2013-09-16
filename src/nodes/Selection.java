@@ -139,6 +139,13 @@ public class Selection implements Iterable<GraphElement> {
     }
     
     /**
+     * @return boolean true if no edges or nodes selected
+     */
+    public boolean empty() {
+        return nodeCount() == 0 && edgeCount() == 0;
+    }
+    
+    /**
      * @return set of currently selected nodes
      */
     public Set<Node> getNodes() {

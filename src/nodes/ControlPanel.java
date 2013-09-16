@@ -42,6 +42,7 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicBoolean;
 import nodes.Graph.GraphIterator;
 
@@ -825,7 +826,13 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
         public void controlEvent(CallbackEvent event) {
             if (event.getAction() == ControlP5.ACTION_RELEASED) {
                 
-                GraphIterator it = graph.iterator();
+                Iterator<GraphElement> it;
+                if (graph.selection.empty()) {
+                    it = graph.iterator();
+                } else {
+                    it = graph.selection.iterator();
+                }
+                
                 if (it.hasNext()) {
                     GraphElement first = it.next();
                     // calculate center of graph
@@ -837,7 +844,11 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                     float minZ = center.z;
                     float maxZ = center.z;
 
-                    for (Node n : graph.getNodes()) {
+                    while (it.hasNext()) {
+                        GraphElement e = it.next();
+                        if (e instanceof Edge) continue;
+                        
+                        Node n = (Node) e;
                         PVector nPos = n.getPosition();
 
                         center.add(n.getPosition());
