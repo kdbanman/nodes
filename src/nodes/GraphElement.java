@@ -93,6 +93,7 @@ public class GraphElement<T> extends Controller<T> {
     protected void onEnter() {
         pApp.mouseContent = this;
         pApp.hovered.add(this);
+        
         currentCol = hoverCol;
     }
 

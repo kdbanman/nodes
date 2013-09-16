@@ -404,12 +404,14 @@ public class Graph implements Iterable<GraphElement> {
         return removeEdge(e.src, e.dst);
     }
     
+    /**
+     * 
+     * @param string id of node to be retrieved
+     * @return Node referred to by string parameter, or null if such a node
+     * does not exist
+     */
     public Node getNode(String n) {
         Node ret = (Node) cp5.getController(n);
-        
-        if (ret == null) {
-            Nodes.println("Node " + n + " not found.");
-        }
         
         return ret;
     }
