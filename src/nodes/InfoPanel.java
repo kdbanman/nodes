@@ -175,7 +175,7 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
     // log event to user.  sufficient newlines automatically added.
     public void logEvent(String s) {
         s = s.trim();
-        eventLogString = s + "\n\n" + eventLogString;
+        eventLogString = s + "\n\n>>>>>\n\n" + eventLogString;
         eventLog.setText(eventLogString);
     }
     

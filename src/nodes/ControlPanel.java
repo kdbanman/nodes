@@ -4,6 +4,10 @@
  */
 package nodes;
 
+import com.hp.hpl.jena.query.Query;
+import com.hp.hpl.jena.query.QueryExecution;
+import com.hp.hpl.jena.query.QueryExecutionFactory;
+import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 
@@ -89,6 +93,12 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
     
     // text field for user-input URIs for description retrieval from the web
     Textfield importWebURI;
+    
+    // text field for sparql endpoint uri or ip addr for querying uri nbrhoods
+    Textfield importSparqlEndpoint;
+    
+    // text field for sparql query formation
+    Textfield sparqlQueryURI;
     
     // selection modifier menu and populator
     ListBox modifierMenu;
@@ -222,7 +232,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
         
         // Web import elements
         
-        importWebURI = cp5.addTextfield("URI",
+        importWebURI = cp5.addTextfield("Entity URI",
                 padding,
                 padding,
                 w - 2 * padding,
@@ -240,44 +250,30 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
         
         // SPARQL import elements
         
-        cp5.addTextfield("IP:Port or URL", 
+        importSparqlEndpoint = cp5.addTextfield("Endpoint IP:Port or URL", 
                     padding - w / 4, 
                     padding, 
                     w - 2 * padding, 
                     elementHeight)
                 .setAutoClear(false)
+                .setText("http://dbpedia.org/sparql")
                 .addCallback(new CopyPasteMenuListener())
                 .moveTo(sparqlGroup);
-        cp5.addTextfield("Username", 
+        sparqlQueryURI = cp5.addTextfield("Entity URI ", 
                     padding - w / 4, 
                     labelledElementHeight + padding, 
                     w - 2 * padding, 
                     elementHeight)
                 .setAutoClear(false)
-                .addCallback(new CopyPasteMenuListener())
-                .moveTo(sparqlGroup);
-        cp5.addTextfield("Password", 
-                    padding - w / 4, 
-                    2 * labelledElementHeight + padding, 
-                    w - 2 * padding, 
-                    elementHeight)
-                .setAutoClear(false)
-                .setPasswordMode(true)
-                .addCallback(new CopyPasteMenuListener())
-                .moveTo(sparqlGroup);
-        cp5.addTextfield("Query", 
-                    padding - w / 4, 
-                    3 * labelledElementHeight + padding, 
-                    w - 2 * padding, 
-                    elementHeight)
-                .setAutoClear(false)
+                .setText("http://dbpedia.org/resource/Albert_Einstein")
                 .addCallback(new CopyPasteMenuListener())
                 .moveTo(sparqlGroup);
         
-        cp5.addButton("Query Server")
+        cp5.addButton("Query Endpoint")
                 .setSize(buttonWidth, buttonHeight)
                 .setPosition(w - buttonWidth - padding - w / 4, 
-                    4 * labelledElementHeight + padding)
+                    3 * labelledElementHeight + padding)
+                .addCallback(new QuerySparqlListener())
                 .moveTo(sparqlGroup);
         
         //==============
@@ -720,7 +716,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                 int addedSize = graph.tripleCount() - beforeSize;
                 
                 // log number of triples added to user
-                logEvent("From uri:\n" + uri + "\n  " + 
+                logEvent("From uri:\n " + uri + "\n  " + 
                          retrievedSize + " triples retrieved\n  " +
                          addedSize + " triples are new");
                  
@@ -737,7 +733,49 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
         @Override
         public void controlEvent(CallbackEvent event) {
             if (event.getAction() == ControlP5.ACTION_RELEASED) {
-                //TODO
+                // get endpoint uri
+                String endpoint = importSparqlEndpoint.getText();
+                
+                // get uri from text field and form query
+                String uri = sparqlQueryURI.getText();
+                String queryString = "CONSTRUCT { <" + uri + "> ?p1 ?o . "
+                        + "?s ?p2 <" + uri + "> } " + ""
+                        + "WHERE { <" + uri + "> ?p1 ?o . "
+                        + "?s ?p2 <" + uri + "> }";
+                
+                // construct query
+                Query query = QueryFactory.create(queryString);
+                
+                QueryExecution qexec = QueryExecutionFactory.sparqlService(endpoint, query);
+                
+                // retrieve description as a jena model
+                Model toAdd;
+                try {
+                    toAdd = qexec.execConstruct();
+                } catch (Exception e) {
+                    logEvent("Valid RDF not returned from endpoint:\n" + endpoint);
+                    return;
+                }
+                
+                // protect from concurrency issues during import
+                graph.pApp.waitForNewFrame(this);
+                
+                int retrievedSize = (int) toAdd.size();
+                int beforeSize = graph.tripleCount();
+                
+                // add the retriveed model to the graph (toAdd is empty if 
+                // an error was encountered)
+                graph.addTriples(toAdd);
+                
+                int addedSize = graph.tripleCount() - beforeSize;
+                
+                // log number of triples added to user
+                logEvent("From endpoint:\n" + endpoint + "\n\n" +
+                         "about uri: \n" + uri + "\n " +
+                         retrievedSize + " triples retrieved\n " +
+                         addedSize + " triples are new");
+                 
+                graph.pApp.restartRendering(this);
             }
         }
     }
