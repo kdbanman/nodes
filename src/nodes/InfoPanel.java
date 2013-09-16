@@ -12,6 +12,10 @@
  */
 package nodes;
 
+import com.hp.hpl.jena.query.Query;
+import com.hp.hpl.jena.query.QueryExecution;
+import com.hp.hpl.jena.query.QueryExecutionFactory;
+import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.RDFNode;
@@ -139,7 +143,8 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
                 .addCallback(new WebExplorationListener());
         exploreSparql = cp5.addButton("Explore SPARQL endpoint")
                 .setPosition(w - padding - buttonWidth, 2 * padding + buttonHeight)
-                .setSize(buttonWidth, buttonHeight);
+                .setSize(buttonWidth, buttonHeight)
+                .addCallback(new SparqlExplorationListener());
         
     }
     
@@ -177,7 +182,7 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
     // log event to user.  sufficient newlines automatically added.
     public void logEvent(String s) {
         s = s.trim();
-        eventLogString = ">>>>>\n\n\n\n" + s + eventLogString;
+        eventLogString = ">>>>>\n\n" + s + "\n\n" + eventLogString;
         eventLog.setText(eventLogString);
     }
     
@@ -236,12 +241,50 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
         return rendered;
     }
     
+    /*
+     * returns String uri of singly selected node or edge, null if selection
+     * is not a single element.
+     */
+    private String getSelectedURI() {
+        String uri;
+        if (graph.selection.nodeCount() == 1 && graph.selection.edgeCount() == 0) {
+            uri = graph.selection.getNodes().iterator().next().getName();
+        } else if (graph.selection.edgeCount() == 1 && graph.selection.nodeCount() == 0) {
+            Edge edge = (Edge) graph.selection.getEdges().iterator().next();
+
+            if (edge.triples.size() > 1) {
+                // user needs to choose which triple to explore
+                TripleChooserFrame chooser = new TripleChooserFrame(this, edge, graph.triples);
+
+                // this thread will be started again upon closure of TripleChooserFrame
+                try {
+                    synchronized(this) {
+                        this.wait();
+                    }
+                } catch (InterruptedException e) {
+                    System.out.println("ExplorationListener was not able to wait for TripleChooserFrame");
+                }
+                // triple chooser's thread will be sleeping, waiting for this
+                // to retrieve the chosen triple (Statement)
+                uri = chooser.choice().getPredicate().getURI();
+                chooser.close();
+            } else {
+                uri = edge.triples.iterator().next().getPredicate().getURI();
+            }
+        } else {
+            // more than one GraphElement is selected
+            uri = null;
+        }
+        
+        return uri;
+    }
+    
     /***************************************
      * exploration button callback listeners
      ***************************************/
     
     /*
-     * attach to web query button in import tab to enable retrieval of rdf
+     * attach to web query button to enable retrieval of rdf
      * descriptions as published at resources' uris.
      */
     private class WebExplorationListener implements CallbackListener {
@@ -250,37 +293,11 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
             if (event.getAction() == ControlP5.ACTION_RELEASED) {
                 
                 // get uri from selected node or edge
-                /////////////////////////////////////
                 
-                String uri;
-                // explore button is only unlocked when exactly one element is 
-                // selected (see draw())
-                if (graph.selection.nodeCount() == 1) {
-                    uri = graph.selection.getNodes().iterator().next().getName();
-                } else if (graph.selection.edgeCount() == 1) {
-                    Edge edge = (Edge) graph.selection.getEdges().iterator().next();
-                    
-                    if (edge.triples.size() > 1) {
-                        // user needs to choose which triple to explore
-                        TripleChooserFrame chooser = new TripleChooserFrame(this, edge, graph.triples);
-
-                        // this thread will be started again upon closure of TripleChooserFrame
-                        try {
-                            synchronized(this) {
-                                this.wait();
-                            }
-                        } catch (InterruptedException e) {
-                            System.out.println("ExplorationListener was not able to wait for TripleChooserFrame");
-                        }
-                        // triple chooser's thread will be sleeping, waiting for this
-                        // to retrieve the chosen triple (Statement)
-                        uri = chooser.choice().getPredicate().getURI();
-                        chooser.close();
-                    } else {
-                        uri = edge.triples.iterator().next().getPredicate().getURI();
-                    }
-                } else {
-                    logEvent("Select a single node or edge to retrieve its data.");
+                String uri = getSelectedURI();
+                
+                if (uri == null) {
+                    logEvent("Select a *single* node or edge to retrieve its data.");
                     return;
                 }
                 
@@ -315,6 +332,78 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
                          retrievedSize + " triples retrieved,\n  " +
                          addedSize + " triples are new");
                 
+                graph.pApp.restartRendering(this);
+                
+                // queue controller selection update if one is not already queued
+                selectionUpdated.compareAndSet(false, true);
+            }
+        }
+    }
+    
+    /*
+     * attach to sparql query button to enable retrieval of rdf
+     * descriptions as published at resources' uris.  (coupled to textfield in
+     * ControlPanel)
+     */
+    private class SparqlExplorationListener implements CallbackListener {
+        @Override
+        public void controlEvent(CallbackEvent event) {
+            if (event.getAction() == ControlP5.ACTION_RELEASED) {
+                
+                // get uri from selected node or edge and form query
+                String uri = getSelectedURI();
+                
+                // ensure uri was retrieved
+                if (uri == null) {
+                    logEvent("Select a *single* node or edge to retrieve its data.");
+                    return;
+                }
+                
+                // form query
+                String queryString = "CONSTRUCT { <" + uri + "> ?p1 ?o . "
+                        + "?s ?p2 <" + uri + "> } " + ""
+                        + "WHERE { <" + uri + "> ?p1 ?o . "
+                        + "?s ?p2 <" + uri + "> }";
+                
+                // get endpoint uri
+                String endpoint = graph.pApp.getSparqlEndpoint();
+                
+                // construct query
+                Query query = QueryFactory.create(queryString);
+                
+                QueryExecution qexec = QueryExecutionFactory.sparqlService(endpoint, query);
+                
+                // retrieve description as a jena model
+                Model toAdd;
+                try {
+                    toAdd = qexec.execConstruct();
+                } catch (Exception e) {
+                    logEvent("Valid RDF not returned from endpoint:\n" + endpoint +
+                            "\n\nCheck endpoint address and status.");
+                    return;
+                }
+                
+                // add retrieved model to graph
+                ///////////////////////////////
+                
+                // protect from concurrency issues during import
+                graph.pApp.waitForNewFrame(this);
+                
+                int retrievedSize = (int) toAdd.size();
+                int beforeSize = graph.tripleCount();
+                
+                // add the retriveed model to the graph (toAdd is empty if 
+                // an error was encountered)
+                graph.addTriples(toAdd);
+                
+                int addedSize = graph.tripleCount() - beforeSize;
+                
+                // log number of triples added to user
+                logEvent("From endpoint:\n" + endpoint + "\n\n" +
+                         "about uri: \n" + uri + "\n " +
+                         retrievedSize + " triples retrieved\n " +
+                         addedSize + " triples are new");
+                 
                 graph.pApp.restartRendering(this);
                 
                 // queue controller selection update if one is not already queued

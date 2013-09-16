@@ -384,6 +384,12 @@ public class Nodes extends PApplet {
         infoPanelFrame.info.logEvent(s);
     }
     
+    // get SPARQL endpoint URI from control panel.  now *this* is tiiiggght coupling. :(
+    // maintainability is decreasing as this project cuts into school
+    public String getSparqlEndpoint() {
+        return controlPanelFrame.controls.importSparqlEndpoint.getText();
+    }
+    
     /**
      * @param args the command line arguments
      */
