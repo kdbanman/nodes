@@ -346,6 +346,12 @@ public class Nodes extends PApplet {
         float[] camPos = cam.getPosition();
         return new PVector(camPos[0], camPos[1], camPos[2]);
     }
+    
+    // get current camera look target in PVector form
+    public PVector getCamLookat() {
+        float[] camLook =cam.getLookAt();
+        return new PVector(camLook[0], camLook[1], camLook[2]);
+    }
 
     // make sure that no GraphElement erroneously keeps mouseover state:
     // ControlP5's native onLeave() calls are based on the assumption that only

@@ -61,19 +61,31 @@ public class Graph implements Iterable<GraphElement> {
 
     }
 
+    /**
+     * iterative force-directed layout algorithm.  one layout() call is one iteration.
+     */
     public void layout() {
+        // initialize map of changes in node positions
         HashMap<Node, PVector> deltas = new HashMap<>();
-
-        float coulomb = 10000;
-        float hooke = .05f;
-
         for (Node node : adjacent.keySet()) {
             deltas.put(node, new PVector(0, 0, 0));
         }
+
+        // repulsive force between nodes
+        float coulomb = 10000;
+        // attractive force between connected nodes
+        float hooke = .1f;
+        // gravitational force to camera center
+        float gravity = 100;
+        // base of damping logarithm.  higher => less jitter, slower stabilization
+        float saturationLogBase = 1.7f;
+        
+        // calculate position delta for each node
         for (Node n : adjacent.keySet()) {
             PVector delta = deltas.get(n);
             PVector nodePos = n.getPosition();
 
+            // add attractive force movement from neighbors
             for (Node nbr : adjacent.get(n)) {
                 PVector diff = nbr.getPosition().get();
                 diff.sub(nodePos);
@@ -83,6 +95,7 @@ public class Graph implements Iterable<GraphElement> {
                 delta.add(diff);
             }
 
+            // add repulsive force movement from all other nodes
             for (Node other : adjacent.keySet()) {
                 if (!other.equals(n)) {
                     float degreeScale = (float) (getDegree(other) * getDegree(other));
@@ -97,18 +110,26 @@ public class Graph implements Iterable<GraphElement> {
                     delta.sub(diff);
                 }
             }
+            
+            // add gravitational force from camera centre
+            PVector diff = pApp.getCamLookat();
+            diff.sub(nodePos);
+            float dist = diff.mag();
+            diff.normalize();
+            diff.mult(gravity * dist);
+            delta.add(diff);
         }
 
+        // apply damping and set new positions
         for (Node node : adjacent.keySet()) {
             //apply saturation damping to delta
             PVector delta = deltas.get(node);
             float mag = delta.mag();
-            delta.limit(Nodes.log(mag) / Nodes.log(2));
+            delta.limit(Nodes.log(mag) / Nodes.log(saturationLogBase));
 
             // apply delta to position
             PVector pos = node.getPosition();
             pos.add(delta);
-            //print(deltas.get(nodeID));
         }
     }
 
