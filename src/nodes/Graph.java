@@ -72,13 +72,13 @@ public class Graph implements Iterable<GraphElement> {
         }
 
         // repulsive force between nodes
-        float coulomb = 7000;
+        float coulomb = 15000;
         // attractive force between connected nodes
         float hooke = .1f;
         // gravitational force to camera center
         float gravity = .5f;
         // base of damping logarithm.  higher => less jitter, slower stabilization
-        float saturationLogBase = 1.7f;
+        float saturationLogBase = 1.8f;
         
         // calculate position delta for each node
         for (Node n : adjacent.keySet()) {

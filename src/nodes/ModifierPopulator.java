@@ -3,6 +3,7 @@
  */
 package nodes;
 
+import com.hp.hpl.jena.graph.Triple;
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
@@ -10,19 +11,20 @@ import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.RDFNode;
+import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.vocabulary.RDF;
 import controlP5.ListBox;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- *TODO::
- *  This abstraction isn't complete.  The first 5 modifiers need to be part of
- *  a modifier set.  All rdf:type selectors need to be part of a modifier set.
- *  All ?s ?p ?o edge pattern matcher selectors need to be part of a modifier set.  
- *  node ?p ?o and ?s ?p node are part of a set.  Select edge predicates as nodes
- *  is part of some set too.  Sets should probably have their colors known to them.
- * 
+ * dynamically populated menu system whose entries appear and disappear according
+ * to the contents of the current selection.  there are Modifiers and ModifierSets.
+ * Both are persistent.  Each of the former can have zero or one menu entries linked.
+ * Each of the latter can have zero or more Modifiers within, all of which share
+ * the same compatibility test (EX: one rdf:type Modifier for each such triple
+ * pertaining to a selected Node, all are compatible if the selected node has *any*
+ * rdf:type outgoing predicates).
  */
 public class ModifierPopulator {
     
@@ -31,6 +33,7 @@ public class ModifierPopulator {
     private Selection selection;
     
     private ArrayList<Modifier> modifiers;
+    private ArrayList<ModifierSet> modifierSets;
     
     private HashMap<Integer, Modifier> runIndex;
     
@@ -42,9 +45,13 @@ public class ModifierPopulator {
         selection = graph.selection;
         
         modifiers = new ArrayList<>();
+        modifierSets = new ArrayList<>();
         
         runIndex = new HashMap<>();
         
+        // integer address for accessing menu item methods when clicked
+        // (this value is currently never reset, just incremented.  though it
+        // should take a safely long time to traverse all positive integers)
         menuIndex = 0;
         
         // TODO: refactor this to a classloader thing so plugins work
@@ -53,30 +60,44 @@ public class ModifierPopulator {
         modifiers.add(new SelectEdges());
         modifiers.add(new SelectNeighbors());
         modifiers.add(new InvertSelection());
+        
+        modifierSets.add(new SelectCorrespondingNode());
     }
     
+    // iterates through all persistent Modifiers and ModifierSets
     public void populate(ListBox menu, Selection selection) {
+        // add newly compatible modifiers, remove newly incompatible ones
         for (Modifier mod : modifiers) {
             // add the modifier to the menu and register it with runIndex
             // if it isn't already and if it's compatible with the current selection
-            if (mod.checkCompatibleAndConstruct() && !runIndex.containsValue(mod)) {
-                
-                menu.addItem(mod.getTitle(), menuIndex);
-                runIndex.put(menuIndex, mod);
-                
-                menuIndex++;
+            if (mod.isCompatible() && !runIndex.containsValue(mod)) {
+                addEntry(menu, mod);
             // if the modifier is not compatible with the current selection but
             // it is still registered/in the menu, then remove it from the menu/index
-            } else if (!mod.checkCompatibleAndConstruct() && runIndex.containsValue(mod)) {
+            } else if (!mod.isCompatible() && runIndex.containsValue(mod)) {
+                removeEntry(menu, mod);
+            }
+        }
+        
+        for (ModifierSet mSet : modifierSets) {
+            // remove old modifiers
+            for (Modifier mod : mSet.getModifiers()) {
+                removeEntry(menu, mod);
+            }
+            if (mSet.isCompatible()) {
                 
-                int toRemove = menu.getItem(mod.getTitle()).getValue();
-                
-                menu.removeItem(mod.getTitle());
-                runIndex.remove(toRemove);
+                mSet.constructModifiers();
+                for (Modifier mod : mSet.getModifiers()) {
+                    addEntry(menu, mod);
+                }
             }
         }
     }
     
+    /**
+     * runs the Modifier selection modification at the index passed.
+     * @param modIdx menu index to run (corresponds to runIndex key, internally)
+     */
     public void run(int modIdx) {
         try {
             runIndex.get(modIdx).modify();
@@ -85,16 +106,56 @@ public class ModifierPopulator {
         }
     }
     
+    /*
+     * adds menu entry for Modifier passed
+     */
+    private void addEntry(ListBox menu, Modifier mod) {
+        /*
+         * TODO: check for runIndex collision (new mod for same key)
+         */
+        menu.addItem(mod.getTitle(), menuIndex);
+        runIndex.put(menuIndex, mod);
+
+        menuIndex++;
+        if (menuIndex == Integer.MAX_VALUE) {
+            // this *really* shouldn't happen, but its bugs will be
+            // insidious if it does.  tests have verified bad behaviour
+            // when menuIndex wraps around to MIN_VALUE
+            System.out.println("ERROR: menuIndex has reached max int");
+        }
+    }
+    
+    /**
+     * removes menu entry for Modifier passed
+     */
+    private void removeEntry(ListBox menu, Modifier mod) {
+        /*
+         * TODO: unchecked conditions:
+         * - menu doesn't contain modifier passed
+         * - runIndex doesn't contain corresponding entry
+         */
+        int toRemove = menu.getItem(mod.getTitle()).getValue();
+
+        menu.removeItem(mod.getTitle());
+        runIndex.remove(toRemove);
+    }
+    
     private abstract class Modifier {
-        public abstract boolean checkCompatibleAndConstruct();
+        public abstract boolean isCompatible();
         public abstract String getTitle();
         public abstract void modify();
+    }
+    
+    private abstract class ModifierSet {
+        public abstract ArrayList<Modifier> getModifiers();
+        public abstract boolean isCompatible();
+        public abstract void constructModifiers();
     }
     
     private class SelectAll extends Modifier {
         
         @Override
-        public boolean checkCompatibleAndConstruct() {
+        public boolean isCompatible() {
             return true;
         }
         
@@ -114,7 +175,7 @@ public class ModifierPopulator {
     private class SelectNodes extends Modifier {
         
         @Override
-        public boolean checkCompatibleAndConstruct() {
+        public boolean isCompatible() {
             return selection.nodeCount() > 0 && selection.edgeCount() > 0;
         }
         
@@ -132,7 +193,7 @@ public class ModifierPopulator {
     private class SelectEdges extends Modifier {
         
         @Override
-        public boolean checkCompatibleAndConstruct() {
+        public boolean isCompatible() {
             return selection.nodeCount() > 0 && selection.edgeCount() > 0;
         }
         
@@ -150,7 +211,7 @@ public class ModifierPopulator {
     private class SelectNeighbors extends Modifier {
         
         @Override
-        public boolean checkCompatibleAndConstruct() {
+        public boolean isCompatible() {
             return selection.nodeCount() > 0 || selection.edgeCount() > 0;
         }
         
@@ -179,7 +240,7 @@ public class ModifierPopulator {
     private class InvertSelection extends Modifier {
         
         @Override
-        public boolean checkCompatibleAndConstruct() {
+        public boolean isCompatible() {
             return selection.nodeCount() > 0 || selection.edgeCount() > 0;
         }
         
@@ -199,7 +260,69 @@ public class ModifierPopulator {
         }
     }
     
-    /*
+    //TODO:private class SelectCorrespondingEdges extends Modifier {}
+    
+    private class SelectCorrespondingNode extends ModifierSet {
+        private ArrayList<Modifier> modifiers;
+        Edge edge;
+        
+        public SelectCorrespondingNode() {
+            modifiers = new ArrayList<>();
+        }
+        
+        @Override
+        public ArrayList<Modifier> getModifiers() {
+            return modifiers;
+        }
+        
+        @Override
+        public boolean isCompatible() {
+            if (selection.edgeCount() == 1 && selection.nodeCount() == 0) {
+                edge = selection.getEdges().iterator().next();
+                for (Statement s : edge.triples) {
+                    if (graph.cp5.get(s.getPredicate().getURI()) != null) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+        
+        @Override
+        public void constructModifiers() {
+            for (Statement s : edge.triples) {
+                if (graph.cp5.get(s.getPredicate().getURI()) != null) {
+                    modifiers.add(new SelectPredicateNode(s.getPredicate().getURI()));
+                }
+            }
+        }
+        
+        private class SelectPredicateNode extends Modifier {
+            String pred;
+            
+            public SelectPredicateNode(String predicate) {
+                pred = predicate;
+            }
+            
+            @Override
+            public boolean isCompatible() { return true; }
+            
+            @Override
+            public String getTitle() {
+                return "Select node corresponding to " + graph.prefixed(pred);
+            }
+            
+            @Override
+            public void modify() {
+                selection.clear();
+                selection.add((Node) graph.cp5.get(pred));
+            }
+        }
+    }
+    
+    
+    
+    /*TODO: modifier set for nodes of same type (multiple types per entity)
     private class SelectSameType extends Modifier {
         ArrayList<RDFNode> types;
         

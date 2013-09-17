@@ -113,7 +113,7 @@ public class Nodes extends PApplet {
         waitingOnNewFrame = null;
         
         // local test data
-        // graph.addTriples(Importer.getDescriptionFromWeb("Albert_Einstein.rdf"));   
+        // graph.addTriples(Importer.getDescriptionFromWeb("Albert_Einstein.rdf"));
     }
 
     @Override
