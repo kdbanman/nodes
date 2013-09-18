@@ -3,19 +3,16 @@
  */
 package nodes;
 
-import com.hp.hpl.jena.graph.Triple;
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QueryFactory;
-import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.vocabulary.RDF;
-import controlP5.Controller;
+
 import controlP5.ListBox;
-import controlP5.ListBoxItem;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
@@ -57,7 +54,8 @@ public class ModifierPopulator {
         // should take a safely long time to traverse all positive integers)
         menuIndex = 0;
         
-        // TODO: refactor this to a classloader thing so plugins work
+        // construct all modifiers and modifier sets, adding them to the
+        // corresponding lists
         modifiers.add(new SelectAll());
         modifiers.add(new SelectNodes());
         modifiers.add(new SelectEdges());
