@@ -58,7 +58,6 @@ public class Graph implements Iterable<GraphElement> {
 
         adjacent = new HashMap<>();
         edges = new HashSet<>();
-
     }
 
     /**

@@ -8,7 +8,10 @@ import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.Property;
+import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Statement;
+import com.hp.hpl.jena.rdf.model.StmtIterator;
 import com.hp.hpl.jena.vocabulary.RDF;
 
 import controlP5.ListBox;
@@ -61,6 +64,7 @@ public class ModifierPopulator {
         modifiers.add(new SelectEdges());
         modifiers.add(new SelectNeighbors());
         modifiers.add(new InvertSelection());
+        modifiers.add(new SelectCorrespondingEdges());
         
         modifierSets.add(new SelectCorrespondingNode());
     }
@@ -262,7 +266,48 @@ public class ModifierPopulator {
         }
     }
     
-    //TODO:private class SelectCorrespondingEdges extends Modifier {}
+    private class SelectCorrespondingEdges extends Modifier {
+        String uri;
+        
+        @Override
+        public boolean isCompatible() {
+            if (selection.nodeCount() == 1 && selection.edgeCount() == 0) {
+                try {
+                    uri = selection.getNodes().iterator().next().getName();
+                } catch (NoSuchElementException e) {
+                    //user deselected node before this line.  no problem - this
+                    //is obviously not compatible. return false
+                    return false;
+                }
+                // determine if model contains statements with node's name as property
+                return model.contains(null, model.createProperty(uri));
+            }
+            return false;
+        }
+        
+        @Override
+        public String getTitle() {
+            return "Select edges with to property " + graph.prefixed(uri);
+        }
+        
+        @Override
+        public void modify() {
+            // select all edges with statements with node's name as property
+            //////////////////
+            selection.clear();
+            // query model
+            StmtIterator it = model.listStatements(null, model.createProperty(uri), (RDFNode) null);
+            
+            // for each statement, add edge between subject and object to selection
+            while (it.hasNext()) {
+                Statement s = it.next();
+                String sub = s.getSubject().toString();
+                String obj = s.getObject().toString();
+                
+                selection.add(graph.getEdge(sub, obj));
+            }
+        }
+    }
     
     private class SelectCorrespondingNode extends ModifierSet {
         private ArrayList<Modifier> modifiers;
