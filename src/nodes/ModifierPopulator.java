@@ -13,9 +13,12 @@ import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.vocabulary.RDF;
+import controlP5.Controller;
 import controlP5.ListBox;
+import controlP5.ListBoxItem;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.NoSuchElementException;
 
 /**
  * dynamically populated menu system whose entries appear and disappear according
@@ -82,7 +85,7 @@ public class ModifierPopulator {
         for (ModifierSet mSet : modifierSets) {
             // remove old modifiers
             for (Modifier mod : mSet.getModifiers()) {
-                removeEntry(menu, mod);
+                if (runIndex.containsValue(mod)) removeEntry(menu, mod);
             }
             if (mSet.isCompatible()) {
                 
@@ -134,6 +137,7 @@ public class ModifierPopulator {
          * - menu doesn't contain modifier passed
          * - runIndex doesn't contain corresponding entry
          */
+        
         int toRemove = menu.getItem(mod.getTitle()).getValue();
 
         menu.removeItem(mod.getTitle());
@@ -278,7 +282,13 @@ public class ModifierPopulator {
         @Override
         public boolean isCompatible() {
             if (selection.edgeCount() == 1 && selection.nodeCount() == 0) {
-                edge = selection.getEdges().iterator().next();
+                try {
+                    edge = selection.getEdges().iterator().next();
+                } catch (NoSuchElementException e) {
+                    //user deselected edge before this line.  no problem - this
+                    //is obviously not compatible. return false
+                    return false;
+                }
                 for (Statement s : edge.triples) {
                     if (graph.cp5.get(s.getPredicate().getURI()) != null) {
                         return true;
@@ -290,6 +300,8 @@ public class ModifierPopulator {
         
         @Override
         public void constructModifiers() {
+            modifiers.clear();
+            
             for (Statement s : edge.triples) {
                 if (graph.cp5.get(s.getPredicate().getURI()) != null) {
                     modifiers.add(new SelectPredicateNode(s.getPredicate().getURI()));
