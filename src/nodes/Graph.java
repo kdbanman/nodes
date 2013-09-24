@@ -77,7 +77,7 @@ public class Graph implements Iterable<GraphElement> {
         // gravitational force to camera center
         float gravity = .5f;
         // base of damping logarithm.  higher => less jitter, slower stabilization
-        float saturationLogBase = 1.8f;
+        float saturationLogBase = 10f;
         
         // calculate position delta for each node
         for (Node n : adjacent.keySet()) {

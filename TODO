@@ -1,3 +1,5 @@
+- add literal/resource modifier to menu
+
 - rename virtuoso to SDB and implement database connection
 
 - add SPARQL web retrieval
