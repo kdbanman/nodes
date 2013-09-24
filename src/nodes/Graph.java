@@ -29,6 +29,7 @@ public class Graph implements Iterable<GraphElement> {
     Selection selection;
     
     Model triples;
+    Model lastAdded;
     
     int nodeCount;
     int edgeCount;
@@ -137,6 +138,7 @@ public class Graph implements Iterable<GraphElement> {
      */
     public void addTriples(Model toAdd) {
         // add to model first so that prefixes are used in the GraphElements
+        lastAdded = toAdd;
         triples.add(toAdd);
         
         int prevMapSize = triples.getNsPrefixMap().size();

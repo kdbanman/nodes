@@ -64,6 +64,7 @@ public class ModifierPopulator {
         modifiers.add(new SelectEdges());
         modifiers.add(new SelectNeighbors());
         modifiers.add(new InvertSelection());
+        modifiers.add(new SelectLastAdded());
         modifiers.add(new SelectCorrespondingEdges());
         
         modifierSets.add(new SelectCorrespondingNode());
@@ -240,6 +241,35 @@ public class ModifierPopulator {
                 }
             }
             selection.commitBuffer();
+        }
+    }
+    
+    private class SelectLastAdded extends Modifier {
+        
+        @Override
+        public boolean isCompatible() {
+            return graph.lastAdded != null && !graph.lastAdded.isEmpty();
+        }
+        
+        @Override
+        public String getTitle() {
+            return "Select most recently added subgraph";
+        }
+        
+        @Override
+        public void modify() {
+            selection.clear();
+            StmtIterator it = graph.lastAdded.listStatements();
+            while (it.hasNext()) {
+                Statement s = it.next();
+                
+                Node src = graph.getNode(s.getSubject().toString());
+                Node dst = graph.getNode(s.getObject().toString());
+                
+                selection.add(src);
+                selection.add(dst);
+                selection.add(graph.getEdge(src, dst));
+            }
         }
     }
     
