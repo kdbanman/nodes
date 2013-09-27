@@ -1,3 +1,5 @@
+- fix bug where user deletes triples from recent addition, then tries to select recently added subgraph.  fatal crash
+
 - add literal/resource modifier to menu
 
 - rename virtuoso to SDB and implement database connection
