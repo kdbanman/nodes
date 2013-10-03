@@ -27,6 +27,10 @@ import controlP5.CallbackEvent;
 import controlP5.CallbackListener;
 import controlP5.ControlP5;
 import controlP5.Textarea;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.NoSuchElementException;
 
 import processing.core.PApplet;
@@ -35,6 +39,8 @@ import processing.core.PFont;
 import java.util.concurrent.atomic.AtomicBoolean;
 import org.apache.jena.riot.RDFDataMgr;
 import org.openjena.riot.RiotException;
+import org.xhtmlrenderer.simple.XHTMLPanel;
+import org.xhtmlrenderer.swing.NoNamespaceHandler;
 
 /**
  *
@@ -58,15 +64,15 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
     // selection.  see selectionChanged() and draw().
     AtomicBoolean selectionUpdated;
     
-    // default string for infobox when single GraphElement is not selected
+    // default for infobox when single GraphElement is not selected
     String infoDefault;
     
     // string to add events to
     String eventLogString;
     
     // scrollable text area to render triples readable according to selection
-    // or to provide application instructions
-    Textarea infoBox;
+    // or to provide application instructions using HTML
+    XHTMLPanel infoBox;
     
     // scrollable text area to log events/feedback to the user
     Textarea eventLog;
@@ -75,7 +81,7 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
     Button exploreWeb;
     Button exploreSparql;
     
-    public InfoPanel(int frameWidth, int frameHeight, Graph parentGraph) {
+    public InfoPanel(int frameWidth, int frameHeight, Graph parentGraph, XHTMLPanel htmlPanel) {
         w = frameWidth;
         h = frameHeight;
         
@@ -100,14 +106,19 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
         
         // initialize graph
         graph = parentGraph;
+        infoBox = htmlPanel;
         
         selectionUpdated = new AtomicBoolean();
         
-        infoDefault = "Select a single node or edge for information about it " +
-                "to be rendered here.\n\nTo get more information, use the exploration buttons to the " +
-                "right to:\n - Query the node/edge URI over the web\n - Query the SPARQL endpoint " +
-                "at the address in Load Triples -> SPARQL -> Endpoint IP:Port or URL\n";
-        
+        // read html template into default
+        try {
+            infoDefault = "";
+            for (String line : Files.readAllLines(Paths.get("resources/NodeInfoPanel.html"), StandardCharsets.UTF_8)) {
+                infoDefault += line;
+            }
+        } catch (IOException e) {
+            System.out.println("ERROR: IO error: failed to read HTML template.");
+        }
         eventLogString = "";
     }
     
@@ -123,11 +134,8 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
                 .setMoveable(false);
     
         // scrollable text area to render triples readable
-        infoBox = cp5.addTextarea("Data Window")
-                .setPosition(padding, padding)
-                .setSize(w - 3 * padding - buttonWidth, h - 2 * padding - 50)
-                .setText(infoDefault)
-                .setFont(infoFont);
+        System.out.println(infoDefault);
+        infoBox.setDocumentFromString(infoDefault, "", new NoNamespaceHandler());
         
         eventLog = cp5.addTextarea("Event Log")
                 .setPosition(w - padding - buttonWidth, 4 * padding + 3 * buttonHeight)
@@ -168,7 +176,7 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
                     // react to the change, so this exception is silently swallowed.
                 }
             }
-            infoBox.setText(toDisplay);
+            //infoBox.setText(toDisplay);
         }
     }
     

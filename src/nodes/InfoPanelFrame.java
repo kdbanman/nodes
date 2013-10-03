@@ -6,6 +6,8 @@ package nodes;
 
 import java.awt.BorderLayout;
 import java.awt.Frame;
+import org.xhtmlrenderer.simple.FSScrollPane;
+import org.xhtmlrenderer.simple.XHTMLPanel;
 
 /**
  *
@@ -32,7 +34,9 @@ public class InfoPanelFrame extends Frame {
     }
     
     public void initialize(Graph graph) {
-        info = new InfoPanel(w, h, graph);
+        XHTMLPanel htmlPanel = new XHTMLPanel();
+        FSScrollPane htmlPane = new FSScrollPane(htmlPanel);
+        info = new InfoPanel(w, h, graph, htmlPanel);
         
         add(info, BorderLayout.CENTER);
         validate();

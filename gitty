@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-git add src/* TODO
+git add lib/* dist/* resources/* src/* TODO
 git add -u
 git status
 read -p "Commit message: " desc
