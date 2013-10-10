@@ -27,7 +27,9 @@ import controlP5.CallbackEvent;
 import controlP5.CallbackListener;
 import controlP5.ControlP5;
 import controlP5.Textarea;
+import java.util.Collection;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 import processing.core.PApplet;
 import processing.core.PFont;
@@ -54,9 +56,9 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
     ControlP5 cp5;
     Graph graph;
     
-    // update flag raised if the controllers have not responded to a change in
-    // selection.  see selectionChanged() and draw().
-    AtomicBoolean selectionUpdated;
+    // update flag raised if hovered or selected graph elemnents have changed.
+    //   see selectionChanged() and draw().
+    AtomicBoolean updateNecessary;
     
     // default string for infobox when single GraphElement is not selected
     String infoDefault;
@@ -101,7 +103,7 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
         // initialize graph
         graph = parentGraph;
         
-        selectionUpdated = new AtomicBoolean();
+        updateNecessary = new AtomicBoolean();
         
         infoDefault = "Select a single node or edge for information about it " +
                 "to be rendered here.\n\nTo get more information, use the exploration buttons to the " +
@@ -136,6 +138,7 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
                 .setFont(eventFont)
                 .setColor(0xFFFF5555);
         
+        // TODO: move these to main control panel
         // exploration buttons to query the web or the database
         exploreWeb = cp5.addButton("Explore Web")
                 .setPosition(w - padding - buttonWidth, padding)
@@ -152,31 +155,67 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
     public void draw() {
         background(0);
         
-        if (selectionUpdated.getAndSet(false)) {
-            String toDisplay = infoDefault;
+        if (updateNecessary.getAndSet(false)) {
+            String toDisplay = "";
             
-            if (graph.selection.nodeCount() + graph.selection.edgeCount() == 1) {
-                try {
-                    if (graph.selection.nodeCount() == 1) {
-                        toDisplay = renderedNodeString(graph.selection.getNodes().iterator().next());
-                    } else {
-                        toDisplay = renderedEdgeString(graph.selection.getEdges().iterator().next());
-                    }
-                } catch (NoSuchElementException e) {
-                    // when the user is changing the selection rapidly, the iterator may fail here.
-                    // this is not an issue, since the next infopanel frame will
-                    // react to the change, so this exception is silently swallowed.
+            if (!graph.pApp.getHovered().isEmpty() ||
+                graph.selection.nodeCount() + graph.selection.edgeCount() != 0) {
+                if (!graph.pApp.getHovered().isEmpty()) {
+                    toDisplay += "==================\n" +
+                                 "Mouseover Elements\n" +
+                                 "==================\n\n";
+                    toDisplay += renderElementSetString(graph.pApp.getHovered());
+                    toDisplay += "\n\n";
                 }
+                
+                if (graph.selection.nodeCount() != 0) {
+                    toDisplay += "==============\n" +
+                                "Selected Nodes\n" +
+                                "==============\n\n";
+                    toDisplay += renderElementSetString(graph.selection.getNodes());
+                    toDisplay += "\n\n";
+                }
+                
+                if (graph.selection.edgeCount() != 0) {
+                    toDisplay += "==============\n" +
+                                "Selected Edges\n" +
+                                "==============\n\n";
+                    toDisplay += renderElementSetString(graph.selection.getEdges());
+                }
+            } else {
+                toDisplay = infoDefault;
             }
             infoBox.setText(toDisplay);
         }
     }
     
+    public void updateNextFrame() {
+        updateNecessary.compareAndSet(false, true);
+    }
+    
     // every time selection is changed, this is called
     @Override
     public void selectionChanged() {
-        // queue controller selection update if one is not already queued
-        selectionUpdated.compareAndSet(false, true);
+        updateNextFrame();
+    }
+    
+    /**
+     * 
+     * @param elements collection of graph elements whose data neighborhoods
+     * will be serialized sequentially.
+     */
+    private String renderElementSetString(Collection<? extends GraphElement> elements) {
+        String setInfo = "";
+        String barDivide = "\n\n===================================\n\n";
+        
+        for (GraphElement e : elements) {
+            setInfo += renderedElementString(e);
+            setInfo += barDivide;
+        }
+        if (setInfo.length() != 0) 
+            setInfo = setInfo.substring(0, setInfo.length() - barDivide.length());
+        
+        return setInfo;
     }
     
     // log event to user.  sufficient newlines automatically added.
@@ -184,6 +223,14 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
         s = s.trim();
         eventLogString = ">>>>>\n\n" + s + "\n\n" + eventLogString;
         eventLog.setText(eventLogString);
+    }
+    
+    public String renderedElementString(GraphElement e) {
+        if (e instanceof Node) {
+            return renderedNodeString((Node) e);
+        } else {
+            return renderedEdgeString((Edge) e);
+        }
     }
     
     /*
@@ -235,7 +282,7 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
                 rendered += "\n\nNo data yet retrieved about predicate\n  " + s.getPredicate().toString()
                         + "\n\nTry querying the web or a SPARQL instance with the button to the right.";
             }
-            rendered += "\n\n\n\n";
+            rendered += "\n\n";
         }
         
         return rendered;
@@ -335,7 +382,7 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
                 graph.pApp.restartRendering(this);
                 
                 // queue controller selection update if one is not already queued
-                selectionUpdated.compareAndSet(false, true);
+                updateNecessary.compareAndSet(false, true);
             }
         }
     }
@@ -407,7 +454,7 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
                 graph.pApp.restartRendering(this);
                 
                 // queue controller selection update if one is not already queued
-                selectionUpdated.compareAndSet(false, true);
+                updateNecessary.compareAndSet(false, true);
             }
         }
     }

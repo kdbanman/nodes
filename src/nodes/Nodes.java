@@ -352,6 +352,19 @@ public class Nodes extends PApplet {
         float[] camLook =cam.getLookAt();
         return new PVector(camLook[0], camLook[1], camLook[2]);
     }
+    
+    public ArrayList<GraphElement> getHovered() {
+        return hovered;
+    }
+    
+    // when a GraphElement is moused over, it calls this with itself as a
+    // parameter
+    public void addToHovered(GraphElement element) {
+        hovered.add(element);
+        
+        // notify info panel of change in hover
+        infoPanelFrame.info.updateNextFrame();
+    }
 
     // make sure that no GraphElement erroneously keeps mouseover state:
     // ControlP5's native onLeave() calls are based on the assumption that only
@@ -368,6 +381,9 @@ public class Nodes extends PApplet {
                 // state accordingly and remove it from the list.
                 e.notHovered();
                 it.remove();
+                
+                // notify info panel of change in hover
+                infoPanelFrame.info.updateNextFrame();
             }
         }
     }
