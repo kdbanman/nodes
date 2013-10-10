@@ -55,7 +55,7 @@ public class Edge extends GraphElement<Edge>  {
             // Translate(x,y,0) called already in Controller, but nodes are in 3D
             p.translate(0,0,edge.getPosition().z);
             
-            if (isInside() || displayLabel) {
+            if (displayLabel) {
                 displayLabel();
             }
             

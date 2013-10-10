@@ -1,14 +1,12 @@
-- fix bug where user deletes triples from recent addition, then tries to select recently added subgraph.  fatal crash
+- move exploration buttons to top level tab
+
+- move event log to top level tab
 
 - add literal/resource modifier to menu
 
 - rename virtuoso to SDB and implement database connection
 
-- add SPARQL web retrieval
-
 - add SDB retrieval from infopanel
-
-- set up state management for hover/select response in infopanel
 
 - implement main application arrow controls for camera strafe
 
@@ -35,8 +33,6 @@
 #MODIFIERS
 ##########
 
-- select node corresponding to edge predicate (> 1 triple per edge => >1 entry in modifier menu
-
 - select all nodes of same rdf:Type
 
 - select all triples with common predicate, predicate and object, subject, subj and obj, bla bla bla
@@ -52,14 +48,23 @@
 ########
 
 - exploration: colorize based on database or web retrieval
+
+####################################################
+COMPLETED                                 (:r !date)
+
+not a comprehensive changelog - see git log for that
+####################################################
+
+Thu Oct 10 00:37:45 MDT 2013
+- fix bug where user deletes triples from recent addition, then tries to select recently added subgraph.  fatal crash
+
+- add SPARQL web retrieval
+
 - hover response for info window
 
-###########################
-COMPLETED        (:r !date)
+- select node corresponding to edge predicate (> 1 triple per edge => >1 entry in modifier menu
 
-not a comprehensive change
-log - see git log for that
-###########################
+- set up state management for hover/select response in infopanel
 
 
 Thu Sep  5 16:12:16 MDT 2013
