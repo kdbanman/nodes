@@ -31,4 +31,7 @@ Icon
 
 .*
 *~
-/dist/
+
+# don't ignore this document
+############################
+!.gitignore

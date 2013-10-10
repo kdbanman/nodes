@@ -1,7 +1,12 @@
 #!/bin/bash -e
 
-git add src/* TODO
+# stage important project files
+git add dist/* lib/* src/* resources/* README.md TODO gitty .gitignore
+# stage file deletions
 git add -u
+# show user what's to be committed
 git status
+# get the commit message
 read -p "Commit message: " desc
+# commit with the message
 git commit -m "$desc"
