@@ -207,10 +207,17 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
     private String renderElementSetString(Collection<? extends GraphElement> elements) {
         String setInfo = "";
         String barDivide = "\n\n===================================\n\n";
-        
-        for (GraphElement e : elements) {
-            setInfo += renderedElementString(e);
-            setInfo += barDivide;
+        try {
+            for (GraphElement e : elements) {
+                setInfo += renderedElementString(e);
+                setInfo += barDivide;
+            }
+        } catch (java.util.ConcurrentModificationException exc) {
+            // if, during iteration through the collection of graph elements,
+            // that collection is modified, then this catch block is executed.
+            // the string setInfo will be rerendered next frame, so return the
+            // error string as a passive indicator of the (transient state)
+            return "<comodification error in renderElementSetString()>";
         }
         if (setInfo.length() != 0) 
             setInfo = setInfo.substring(0, setInfo.length() - barDivide.length());

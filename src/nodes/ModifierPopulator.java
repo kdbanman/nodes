@@ -266,9 +266,15 @@ public class ModifierPopulator {
                 Node src = graph.getNode(s.getSubject().toString());
                 Node dst = graph.getNode(s.getObject().toString());
                 
-                selection.add(src);
-                selection.add(dst);
-                selection.add(graph.getEdge(src, dst));
+                // since the user may have removed graph elements from the most
+                // recently added subgraph, make sure we aren't adding the
+                // corresponding nulls to selection
+                if (src != null) selection.add(src);
+                if (dst != null) selection.add(dst);
+                if (src != null && dst != null) {
+                    Edge edge = graph.getEdge(src, dst);
+                    if (edge != null) selection.add(graph.getEdge(src, dst));
+                }
             }
         }
     }
