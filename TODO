@@ -1,3 +1,9 @@
+- document modifier populator
+	- pay special attention to what can be mutated and what cannot
+	- maybe private up
+
+- autoscroll infobox to top every update
+
 - move exploration buttons to top level tab
 
 - move event log to top level tab
