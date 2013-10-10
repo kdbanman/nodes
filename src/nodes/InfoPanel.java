@@ -151,44 +151,56 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
         
     }
     
+    // draw() is called every time a frame is rendered
     @Override
     public void draw() {
         background(0);
         
+        // if the update flag has been raised, rerender the text in the infobox
         if (updateNecessary.getAndSet(false)) {
             String toDisplay = "";
             
+            // if no elements are hovered over by mouse and selection is empty,
+            // then display the default text
             if (!graph.pApp.getHovered().isEmpty() ||
                 graph.selection.nodeCount() + graph.selection.edgeCount() != 0) {
+                // if elements are hovered over, display their information
+                // instead of selected elements
                 if (!graph.pApp.getHovered().isEmpty()) {
                     toDisplay += "==================\n" +
                                  "Mouseover Elements\n" +
                                  "==================\n\n";
                     toDisplay += renderElementSetString(graph.pApp.getHovered());
                     toDisplay += "\n\n";
-                }
-                
-                if (graph.selection.nodeCount() != 0) {
-                    toDisplay += "==============\n" +
-                                "Selected Nodes\n" +
-                                "==============\n\n";
-                    toDisplay += renderElementSetString(graph.selection.getNodes());
-                    toDisplay += "\n\n";
-                }
-                
-                if (graph.selection.edgeCount() != 0) {
-                    toDisplay += "==============\n" +
-                                "Selected Edges\n" +
-                                "==============\n\n";
-                    toDisplay += renderElementSetString(graph.selection.getEdges());
+                } else {
+                    // render information about selected nodes
+                    if (graph.selection.nodeCount() != 0) {
+                        toDisplay += "==============\n" +
+                                    "Selected Nodes\n" +
+                                    "==============\n\n";
+                        toDisplay += renderElementSetString(graph.selection.getNodes());
+                        toDisplay += "\n\n";
+                    }
+                    // render information about selected edges
+                    if (graph.selection.edgeCount() != 0) {
+                        toDisplay += "==============\n" +
+                                    "Selected Edges\n" +
+                                    "==============\n\n";
+                        toDisplay += renderElementSetString(graph.selection.getEdges());
+                    }
                 }
             } else {
+                // no graph elements are being inspected, so display the default text
                 toDisplay = infoDefault;
             }
             infoBox.setText(toDisplay);
         }
     }
     
+    /**
+     * set the flag to update the infopanel text (i.e. if the selection or 
+     * mouseover elements have changed)
+     */
     public void updateNextFrame() {
         updateNecessary.compareAndSet(false, true);
     }
@@ -196,10 +208,14 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
     // every time selection is changed, this is called
     @Override
     public void selectionChanged() {
+        // if the selection has changed, then the text will need to be updated,
+        // so set the flag.
         updateNextFrame();
     }
     
     /**
+     * renders a collection of graph elements as a sequence of strings describing
+     * their local data neihborhood.
      * 
      * @param elements collection of graph elements whose data neighborhoods
      * will be serialized sequentially.
@@ -232,7 +248,11 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
         eventLog.setText(eventLogString);
     }
     
-    public String renderedElementString(GraphElement e) {
+    /*
+     * returns a well-formatted description of the passed graph element based
+     * on its data neighborhood
+     */
+    private String renderedElementString(GraphElement e) {
         if (e instanceof Node) {
             return renderedNodeString((Node) e);
         } else {
@@ -245,7 +265,7 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
      * represents based on the existing (imported) data.  do not pass null
      * values.
      */
-    public String renderedNodeString(Node n) {
+    private String renderedNodeString(Node n) {
         String rendered = "Data Neigborhood for:  " + graph.prefixed(n.getName()) + "\n\n";
         
         StmtIterator outbound = graph.triples.listStatements(graph.getResource(n.getName()), null, (RDFNode) null);
@@ -276,7 +296,7 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
      * returns a well-formatted description of the predicates that the passed
      * edge represents based on the existing data.
      */
-    public String renderedEdgeString(Edge e) {
+    private String renderedEdgeString(Edge e) {
         String rendered = "";
         for (Statement s : e.triples) {
             rendered += graph.prefixed(s.getSubject().toString()) + "  " +
