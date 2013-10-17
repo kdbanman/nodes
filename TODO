@@ -1,18 +1,44 @@
+#CORE FEATURES
+##############
+
+- hide/show feature
+	- TODO: add from nodes.txt after meeting
+
+- hmtl rendered infobox
+
+- autoscroll infobox to top every update
+
+#MODIFIERS
+##########
+
+- filter only literals
+- filter only resources
+
+- select common neighborhood of selected nodes
+
+- select all nodes of same rdf:Type
+
+- select all edges with common predicate, predicate and object, subject, subj and obj, bla bla bla
+	- for edges that contain at least one triple in each direction, what do?  probably just populate selection list for each triple in edge for triple-dependent queries
+
+- select shortest path between 2 nodes
+
+- select most central node of selection
+
+- select most central edge of selection
+
+#MISC
+#####
+
 - document modifier populator
 	- pay special attention to what can be mutated and what cannot
 	- maybe private up
-
-- autoscroll infobox to top every update
 
 - move exploration buttons to top level tab
 
 - move event log to top level tab
 
-- add literal/resource modifier to menu
-
-- rename virtuoso to SDB and implement database connection
-
-- add SDB retrieval from infopanel
+- add SDB retrieval
 
 - implement main application arrow controls for camera strafe
 
@@ -36,24 +62,6 @@
 
 - implement error/notification popup window system
 
-#MODIFIERS
-##########
-
-- select all nodes of same rdf:Type
-
-- select all triples with common predicate, predicate and object, subject, subj and obj, bla bla bla
-	- for edges that contain at least one triple in each direction, what do?  probably just populate selection list for each triple in edge for triple-dependent queries
-
-- select shortest path between 2 nodes
-
-- select most central node
-
-- select most central edge
-
-#OPTIONS
-########
-
-- exploration: colorize based on database or web retrieval
 
 ####################################################
 COMPLETED                                 (:r !date)
