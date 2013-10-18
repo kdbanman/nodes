@@ -224,7 +224,7 @@ public class Nodes extends PApplet {
                     // if the user is not dragging a graph element, enable selection
                     drag = DragBehaviour.SELECT;
                     // add to selection if shift button is held
-                    if (!shiftPressed()) graph.selection.clear();
+                    if (!shiftPressed()) graph.getSelection().clear();
                 } else {
                     // if the user is dragging a graph element, enable movement
                     drag = DragBehaviour.DRAG;
@@ -248,7 +248,7 @@ public class Nodes extends PApplet {
 
                 // every time the selection box is changed, clear the selection
                 // and recompute the box membership of each graph element
-                graph.selection.clearBuffer();
+                graph.getSelection().clearBuffer();
                 for (GraphElement n : graph) {
                     // get screen coordinates of graph element
                     PVector nPos = n.getPosition();
@@ -257,7 +257,7 @@ public class Nodes extends PApplet {
 
                     // test membership graph element
                     if (nX <= maxX && nX >= minX && nY <= maxY && nY >= minY) {
-                        graph.selection.addToBuffer(n);
+                        graph.getSelection().addToBuffer(n);
                     }
                 }
             } else {
@@ -302,7 +302,7 @@ public class Nodes extends PApplet {
                 mouseContent.moveIfNotSelected(horiz, vert);
 
                 // now that element has been moved if unselected, move the selection
-                for (Node n : graph.selection.getNodes()) {
+                for (Node n : graph.getSelection().getNodes()) {
                     n.getPosition().add(horiz);
                     n.getPosition().add(vert);
                 }
@@ -316,17 +316,17 @@ public class Nodes extends PApplet {
         if (mouseButton == LEFT) {
             if (drag == DragBehaviour.SELECT) {
                 // clear the selection if shift is not held
-                if (!shiftPressed()) graph.selection.clear();
+                if (!shiftPressed()) graph.getSelection().clear();
                 
                 if (leftButtonDragging) {
                     // if left button was being dragged during selection,
                     // add the contents of the selection buffer to the selection
-                    graph.selection.commitBuffer();
+                    graph.getSelection().commitBuffer();
                 } else if (mouseContent != null) {
                     // if the user was not dragging, then just a single click
                     // occurred.  if the user clicked on an element, then invert
                     // its selection status
-                    graph.selection.invert(mouseContent);
+                    graph.getSelection().invert(mouseContent);
                 }
             }
             // left button is no longer being dragged

@@ -31,7 +31,6 @@ import java.util.NoSuchElementException;
  */
 public class ModifierPopulator {
     
-    private Graph graph;
     private Model model;
     private Selection selection;
     
@@ -42,10 +41,7 @@ public class ModifierPopulator {
     
     private int menuIndex;
     
-    public ModifierPopulator(Graph g) {
-        graph = g;
-        model = graph.triples;
-        selection = graph.selection;
+    public ModifierPopulator() {
         
         modifiers = new ArrayList<>();
         modifierSets = new ArrayList<>();
@@ -70,29 +66,44 @@ public class ModifierPopulator {
         modifierSets.add(new SelectCorrespondingNode());
     }
     
-    // iterates through all persistent Modifiers and ModifierSets
-    public void populate(ListBox menu, Selection selection) {
+    /** 
+     * iterate through all persistent Modifiers and ModifierSets.  cleans
+     * old menu entries (that are no longer compatible with the selection)
+     * and populates with (compatible) new ones
+     * @param menu list of clickable menu items to be populated
+     */
+    public void populate(ListBox menu, Graph g) {
+        //TODO: complete the graph state decouple
+        // update selection and model to current (for hidden data feature)
+        model = g.getRenderedTriples();
+        selection = g.getSelection();
+        
         // add newly compatible modifiers, remove newly incompatible ones
         for (Modifier mod : modifiers) {
             // add the modifier to the menu and register it with runIndex
             // if it isn't already and if it's compatible with the current selection
             if (mod.isCompatible() && !runIndex.containsValue(mod)) {
+                // add menu entry for modifier
                 addEntry(menu, mod);
             // if the modifier is not compatible with the current selection but
             // it is still registered/in the menu, then remove it from the menu/index
             } else if (!mod.isCompatible() && runIndex.containsValue(mod)) {
+                // remove menu entry for modifier
                 removeEntry(menu, mod);
             }
         }
         
+        // modifier sets 
         for (ModifierSet mSet : modifierSets) {
-            // remove old modifiers
+            // remove old modifiers from last populate() call
             for (Modifier mod : mSet.getModifiers()) {
                 if (runIndex.containsValue(mod)) removeEntry(menu, mod);
             }
+            // test compatibility with current selection
             if (mSet.isCompatible()) {
-                
+                // construct new modifiers (menu entries) based on current selection
                 mSet.constructModifiers();
+                // add newly constructed modifiers to menu
                 for (Modifier mod : mSet.getModifiers()) {
                     addEntry(menu, mod);
                 }
@@ -108,7 +119,7 @@ public class ModifierPopulator {
         try {
             runIndex.get(modIdx).modify();
         } catch (Exception e) {
-            System.out.println("Error: Bad menu index passed");
+            System.out.println("Error: Bad menu index passed.  idx=" + modIdx);
         }
     }
     
@@ -147,19 +158,27 @@ public class ModifierPopulator {
         runIndex.remove(toRemove);
     }
     
-    private abstract class Modifier {
+    /**
+     * TODO: to keep code decoupled, pass selection, model and graph to each function.
+     *          must prevent (or at least dissuade) model, graph, selection from being tied to local state
+     *          because these things change.
+     */
+    public interface Modifier {
         public abstract boolean isCompatible();
         public abstract String getTitle();
         public abstract void modify();
     }
     
-    private abstract class ModifierSet {
+    /**
+     * 
+     */
+    public interface ModifierSet {
         public abstract ArrayList<Modifier> getModifiers();
         public abstract boolean isCompatible();
         public abstract void constructModifiers();
     }
     
-    private class SelectAll extends Modifier {
+    private class SelectAll implements Modifier {
         
         @Override
         public boolean isCompatible() {
@@ -179,7 +198,7 @@ public class ModifierPopulator {
         }
     }
     
-    private class SelectNodes extends Modifier {
+    private class SelectNodes implements Modifier {
         
         @Override
         public boolean isCompatible() {
@@ -197,7 +216,7 @@ public class ModifierPopulator {
         }
     }
     
-    private class SelectEdges extends Modifier {
+    private class SelectEdges implements Modifier {
         
         @Override
         public boolean isCompatible() {
@@ -215,7 +234,7 @@ public class ModifierPopulator {
         }
     }
     
-    private class SelectNeighbors extends Modifier {
+    private class SelectNeighbors implements Modifier {
         
         @Override
         public boolean isCompatible() {
@@ -244,11 +263,11 @@ public class ModifierPopulator {
         }
     }
     
-    private class SelectLastAdded extends Modifier {
+    private class SelectLastAdded implements Modifier {
         
         @Override
         public boolean isCompatible() {
-            return graph.lastAdded != null && !graph.lastAdded.isEmpty();
+            return graph.getAllPreviouslyAddedTriples() != null && !graph.getAllPreviouslyAddedTriples().isEmpty();
         }
         
         @Override
@@ -259,7 +278,7 @@ public class ModifierPopulator {
         @Override
         public void modify() {
             selection.clear();
-            StmtIterator it = graph.lastAdded.listStatements();
+            StmtIterator it = graph.getAllPreviouslyAddedTriples().listStatements();
             while (it.hasNext()) {
                 Statement s = it.next();
                 
@@ -279,7 +298,7 @@ public class ModifierPopulator {
         }
     }
     
-    private class InvertSelection extends Modifier {
+    private class InvertSelection implements Modifier {
         
         @Override
         public boolean isCompatible() {
@@ -302,7 +321,7 @@ public class ModifierPopulator {
         }
     }
     
-    private class SelectCorrespondingEdges extends Modifier {
+    private class SelectCorrespondingEdges implements Modifier {
         String uri;
         
         @Override
@@ -345,7 +364,7 @@ public class ModifierPopulator {
         }
     }
     
-    private class SelectCorrespondingNode extends ModifierSet {
+    private class SelectCorrespondingNode implements ModifierSet {
         private ArrayList<Modifier> modifiers;
         Edge edge;
         
@@ -388,7 +407,7 @@ public class ModifierPopulator {
             }
         }
         
-        private class SelectPredicateNode extends Modifier {
+        private class SelectPredicateNode implements Modifier {
             String pred;
             
             public SelectPredicateNode(String predicate) {
@@ -414,7 +433,7 @@ public class ModifierPopulator {
     
     
     /*TODO: modifier set for nodes of same type (multiple types per entity)
-    private class SelectSameType extends Modifier {
+    private class SelectSameType implements Modifier {
         ArrayList<RDFNode> types;
         
         Query qry;

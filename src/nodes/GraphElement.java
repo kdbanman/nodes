@@ -48,7 +48,7 @@ public class GraphElement<T> extends Controller<T> {
         graph = parentGraph;
         proj = parentGraph.proj;
         pApp = parentGraph.pApp;
-        selection = parentGraph.selection;
+        selection = parentGraph.getSelection();
         
         hoverCol = 0xFF5FEA6D;
     

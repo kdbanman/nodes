@@ -116,7 +116,7 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
     @Override
     public void setup() {
         // subscribe to changes in selection.  see overridden selectionChanged()
-        graph.selection.addListener(this);
+        graph.getSelection().addListener(this);
         
         size(w, h);
         frameRate(25);
@@ -163,7 +163,7 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
             // if no elements are hovered over by mouse and selection is empty,
             // then display the default text
             if (!graph.pApp.getHovered().isEmpty() ||
-                graph.selection.nodeCount() + graph.selection.edgeCount() != 0) {
+                graph.getSelection().nodeCount() + graph.getSelection().edgeCount() != 0) {
                 // if elements are hovered over, display their information
                 // instead of selected elements
                 if (!graph.pApp.getHovered().isEmpty()) {
@@ -174,19 +174,19 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
                     toDisplay += "\n\n";
                 } else {
                     // render information about selected nodes
-                    if (graph.selection.nodeCount() != 0) {
+                    if (graph.getSelection().nodeCount() != 0) {
                         toDisplay += "==============\n" +
                                     "Selected Nodes\n" +
                                     "==============\n\n";
-                        toDisplay += renderElementSetString(graph.selection.getNodes());
+                        toDisplay += renderElementSetString(graph.getSelection().getNodes());
                         toDisplay += "\n\n";
                     }
                     // render information about selected edges
-                    if (graph.selection.edgeCount() != 0) {
+                    if (graph.getSelection().edgeCount() != 0) {
                         toDisplay += "==============\n" +
                                     "Selected Edges\n" +
                                     "==============\n\n";
-                        toDisplay += renderElementSetString(graph.selection.getEdges());
+                        toDisplay += renderElementSetString(graph.getSelection().getEdges());
                     }
                 }
             } else {
@@ -266,9 +266,10 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
      * values.
      */
     private String renderedNodeString(Node n) {
+        // construct string describing currently rendered data neighborhood
         String rendered = "Data Neigborhood for:  " + graph.prefixed(n.getName()) + "\n\n";
         
-        StmtIterator outbound = graph.triples.listStatements(graph.getResource(n.getName()), null, (RDFNode) null);
+        StmtIterator outbound = graph.getRenderedTriples().listStatements(graph.getResource(n.getName()), null, (RDFNode) null);
         while (outbound.hasNext()) {
             Statement s = outbound.next();
             rendered += "  " + graph.prefixed(s.getPredicate().toString()) + "  "
@@ -276,9 +277,9 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
         }
         rendered += "\n";
         
-        StmtIterator inbound = graph.triples.listStatements(null, null, (RDFNode) graph.getResource(n.getName()));
+        StmtIterator inbound = graph.getRenderedTriples().listStatements(null, null, (RDFNode) graph.getResource(n.getName()));
         if (!inbound.hasNext()) {
-            inbound = graph.triples.listStatements(null, null, n.getName());
+            inbound = graph.getRenderedTriples().listStatements(null, null, n.getName());
         }
         if (!inbound.hasNext()) {
             //TODO: figure out a way to get literal statuments working.  they don't
@@ -321,14 +322,14 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
      */
     private String getSelectedURI() {
         String uri;
-        if (graph.selection.nodeCount() == 1 && graph.selection.edgeCount() == 0) {
-            uri = graph.selection.getNodes().iterator().next().getName();
-        } else if (graph.selection.edgeCount() == 1 && graph.selection.nodeCount() == 0) {
-            Edge edge = (Edge) graph.selection.getEdges().iterator().next();
+        if (graph.getSelection().nodeCount() == 1 && graph.getSelection().edgeCount() == 0) {
+            uri = graph.getSelection().getNodes().iterator().next().getName();
+        } else if (graph.getSelection().edgeCount() == 1 && graph.getSelection().nodeCount() == 0) {
+            Edge edge = (Edge) graph.getSelection().getEdges().iterator().next();
 
             if (edge.triples.size() > 1) {
                 // user needs to choose which triple to explore
-                TripleChooserFrame chooser = new TripleChooserFrame(this, edge, graph.triples);
+                TripleChooserFrame chooser = new TripleChooserFrame(this, edge, graph.getRenderedTriples());
 
                 // this thread will be started again upon closure of TripleChooserFrame
                 try {

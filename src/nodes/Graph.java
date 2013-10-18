@@ -26,22 +26,22 @@ public class Graph implements Iterable<GraphElement> {
     ControlP5 cp5;
     Nodes pApp;
     
-    Selection selection;
+    private Selection selection;
     
-    Model triples;
-    Model lastAdded;
+    private Model triples;
+    private Model allPreviouslyAddedTriples;
     
-    int nodeCount;
-    int edgeCount;
+    private int nodeCount;
+    private int edgeCount;
     
-    float initPositionSparsity;
+    private float initPositionSparsity;
     
     // adjacent maps node ids (uris and literal values) to lists of node ids
     // NOTE: it's formally redundant to include a set of edges along with
     //       an adjacency list, but it's definitely convenient
     
-    HashMap<Node, ArrayList<Node>> adjacent;
-    HashSet<Edge> edges;
+    private HashMap<Node, ArrayList<Node>> adjacent;
+    private HashSet<Edge> edges;
 
     Graph(UnProjector u, ControlP5 c, Nodes p) {
         proj = u;
@@ -138,7 +138,7 @@ public class Graph implements Iterable<GraphElement> {
      */
     public void addTriples(Model toAdd) {
         // add to model first so that prefixes are used in the GraphElements
-        lastAdded = toAdd;
+        allPreviouslyAddedTriples = toAdd;
         triples.add(toAdd);
         
         int prevMapSize = triples.getNsPrefixMap().size();
@@ -169,6 +169,18 @@ public class Graph implements Iterable<GraphElement> {
         } else {
             Nodes.println("Empty query result - no triples to add.");
         }
+    }
+    
+    public Model getRenderedTriples() {
+        return triples;
+    }
+    
+    public Model getAllPreviouslyAddedTriples() {
+        return allPreviouslyAddedTriples;
+    }
+    
+    public Selection getSelection() {
+        return selection;
     }
     
     public Resource getResource(String uri) {
@@ -428,7 +440,7 @@ public class Graph implements Iterable<GraphElement> {
     
     /**
      * 
-     * @param string id of node to be retrieved
+     * @param n string id of node to be retrieved
      * @return Node referred to by string parameter, or null if such a node
      * does not exist
      */

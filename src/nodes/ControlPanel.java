@@ -44,7 +44,6 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicBoolean;
-import nodes.Graph.GraphIterator;
 
 
 /**
@@ -158,7 +157,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
     @Override
     public void setup() {
         // subscribe to changes in selection.  see overridden selectionChanged()
-        graph.selection.addListener(this);
+        graph.getSelection().addListener(this);
         
         size(w, h);
         
@@ -293,7 +292,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                 .moveTo(transformTab)
                 .hideBar();
         // populate menu according to selection
-        modifierPopulator.populate(modifierMenu, graph.selection);
+        modifierPopulator.populate(modifierMenu);
         
         // Transformation subtabs
         /////////////////////////
@@ -477,7 +476,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
         // last draw() call
         if (selectionUpdated.getAndSet(false)) {
             // populate the dynamic, selection-dependent selection modifier menu
-            modifierPopulator.populate(modifierMenu, graph.selection);
+            modifierPopulator.populate(modifierMenu);
 
             // change color picker, size slider, and label size slider to reflect selection
             updateControllersToSelection();
@@ -499,7 +498,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
         // adjust color of selected elements (if event is not from selection update)
         if (changeElementColor && event.isFrom(colorPicker)) {
             int newColor = colorPicker.getColorValue();
-            for (GraphElement e : graph.selection) {
+            for (GraphElement e : graph.getSelection()) {
                 e.setColor(newColor);
             }
         } else if (event.isFrom(modifierMenu)) {
@@ -525,11 +524,11 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
     public void updateControllersToSelection() {
         // do not change element colors with the resulting ControlEvent here
         changeElementColor = false;
-        colorPicker.setColorValue(graph.selection.getColor());
+        colorPicker.setColorValue(graph.getSelection().getColor());
         changeElementColor = true;
         
-        sizeSlider.setValue(graph.selection.getSize());
-        labelSizeSlider.setValue(graph.selection.getLabelSize());
+        sizeSlider.setValue(graph.getSelection().getSize());
+        labelSizeSlider.setValue(graph.getSelection().getLabelSize());
     }
     
     // log event in infopanel
@@ -796,12 +795,12 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
             if (event.getAction() == ControlP5.ACTION_RELEASED) {
                 // calculate center of current selection of nodes
                 PVector center = new PVector();
-                for (Node n : graph.selection.getNodes()) {
+                for (Node n : graph.getSelection().getNodes()) {
                     center.add(n.getPosition());
                 }
-                center.x =  center.x / graph.selection.nodeCount();
-                center.y =  center.y / graph.selection.nodeCount();
-                center.z =  center.z / graph.selection.nodeCount();
+                center.x =  center.x / graph.getSelection().nodeCount();
+                center.y =  center.y / graph.getSelection().nodeCount();
+                center.z =  center.z / graph.getSelection().nodeCount();
                 
                 // set scale based on user selection.
                 // index 0 == expand, 1 == contract
@@ -810,7 +809,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                 else scale = 0.2f;
                 
                 // scale each node position outward or inward from center
-                for (Node n : graph.selection.getNodes()) {
+                for (Node n : graph.getSelection().getNodes()) {
                     n.getPosition().lerp(center, scale);
                 }
             }
@@ -827,10 +826,10 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
             if (event.getAction() == ControlP5.ACTION_RELEASED) {
                 
                 Iterator<GraphElement> it;
-                if (graph.selection.empty()) {
+                if (graph.getSelection().empty()) {
                     it = graph.iterator();
                 } else {
-                    it = graph.selection.iterator();
+                    it = graph.getSelection().iterator();
                 }
                 
                 if (it.hasNext()) {
@@ -891,11 +890,11 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
         @Override
         public void controlEvent(CallbackEvent event) {
             if (event.getAction() == ControlP5.ACTION_RELEASED) {
-                // get array of names of selected nodes (graph.selection stores
+                // get array of names of selected nodes (Selection stores
                 // things as HashSets, which are not sortable)
-                String[] names = new String[graph.selection.nodeCount()];
+                String[] names = new String[graph.getSelection().nodeCount()];
                 int i = 0;
-                for (Node n : graph.selection.getNodes()) {
+                for (Node n : graph.getSelection().getNodes()) {
                     names[i] = n.getName();
                     i++;
                 }
@@ -913,17 +912,17 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                 // along with the midpoint of the nodes
                 PVector center = new PVector();
                 float maxSize = 0;
-                for (Node n : graph.selection.getNodes()) {
+                for (Node n : graph.getSelection().getNodes()) {
                     center.add(n.getPosition());
                     maxSize = Nodes.max(maxSize, n.getSize());
                 }
                 // radius is circumference / 2pi, but this has been adjusted for appearance
-                float radius = (float) ((float) graph.selection.nodeCount() * 2 * maxSize) / (Nodes.PI);
+                float radius = (float) ((float) graph.getSelection().nodeCount() * 2 * maxSize) / (Nodes.PI);
                 
                 // center is average position
-                center.x =  center.x / graph.selection.nodeCount();
-                center.y =  center.y / graph.selection.nodeCount();
-                center.z =  center.z / graph.selection.nodeCount();
+                center.x =  center.x / graph.getSelection().nodeCount();
+                center.y =  center.y / graph.getSelection().nodeCount();
+                center.z =  center.z / graph.getSelection().nodeCount();
                 
                 // get horizontal and vertical unit vectors w.r.t. screen
                 PVector horiz = graph.proj.getScreenHoriz();
@@ -932,7 +931,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                 PVector vert = graph.proj.getScreenVert();
                 
                 // angular separation of nodes is 2pi / number of nodes
-                float theta = 2 * Nodes.PI / (float) graph.selection.nodeCount();
+                float theta = 2 * Nodes.PI / (float) graph.getSelection().nodeCount();
                 float currAngle = 0;
                 
                 // lay out the selected nodes in the new order in a circle
@@ -1022,7 +1021,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                 }
                 
                 // apply the new size to each element in the selection
-                for (GraphElement e : graph.selection) {
+                for (GraphElement e : graph.getSelection()) {
                     e.setSize(newSize);
                 }
             }
@@ -1038,7 +1037,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
         public void controlEvent(CallbackEvent event) {
             if (event.getAction() == ControlP5.ACTION_RELEASED) {
                 // hide label for each element in the selection
-                for (GraphElement e : graph.selection) {
+                for (GraphElement e : graph.getSelection()) {
                     e.setDisplayLabel(false);
                 }
             }
@@ -1054,7 +1053,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
         public void controlEvent(CallbackEvent event) {
             if (event.getAction() == ControlP5.ACTION_RELEASED) {
                 // show each label for each element in the selection
-                for (GraphElement e : graph.selection) {
+                for (GraphElement e : graph.getSelection()) {
                     e.setDisplayLabel(true);
                 }
             }
@@ -1079,7 +1078,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                 }
                 
                 // apply the new label size to each element in the selection
-                for (GraphElement e : graph.selection) {
+                for (GraphElement e : graph.getSelection()) {
                     e.setLabelSize(newSize);
                 }
             }
@@ -1103,21 +1102,21 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                 // because the Graph.remove*(GraphElement) methods are wrappers
                 // for Graph.remove*(String) methods (only names matter)
                 
-                HashSet<Node> nodesCopy = new HashSet<>(graph.selection.getNodes());
+                HashSet<Node> nodesCopy = new HashSet<>(graph.getSelection().getNodes());
                 // remove all nodes in the selection (this will remove all
                 // connected edges
                 for (Node n : nodesCopy) {
                     // nodes may have been removed between iterations, so check
                     // membership before removal.
-                    if (graph.selection.contains(n)) graph.removeNode(n);
+                    if (graph.getSelection().contains(n)) graph.removeNode(n);
                 }
                 
-                HashSet<Edge> edgesCopy = new HashSet<>(graph.selection.getEdges());
+                HashSet<Edge> edgesCopy = new HashSet<>(graph.getSelection().getEdges());
                 // remove all remaining edges in the selection
                 for (Edge e : edgesCopy) {
                     // edges may have been removed between iterations, so check
                     // membership before removal.
-                    if (graph.selection.contains(e)) graph.removeEdge(e);
+                    if (graph.getSelection().contains(e)) graph.removeEdge(e);
                 }
 
                 graph.pApp.restartRendering(this);
