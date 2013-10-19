@@ -35,4 +35,3 @@ Icon
 # don't ignore this document
 ############################
 !.gitignore
-/dist/
