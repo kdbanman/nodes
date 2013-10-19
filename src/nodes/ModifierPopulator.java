@@ -31,9 +31,6 @@ import java.util.NoSuchElementException;
  */
 public class ModifierPopulator {
     
-    private Model model;
-    private Selection selection;
-    
     private ArrayList<Modifier> modifiers;
     private ArrayList<ModifierSet> modifierSets;
     
@@ -41,7 +38,7 @@ public class ModifierPopulator {
     
     private int menuIndex;
     
-    public ModifierPopulator() {
+    public ModifierPopulator(Graph graph) {
         
         modifiers = new ArrayList<>();
         modifierSets = new ArrayList<>();
@@ -55,15 +52,15 @@ public class ModifierPopulator {
         
         // construct all modifiers and modifier sets, adding them to the
         // corresponding lists
-        modifiers.add(new SelectAll());
-        modifiers.add(new SelectNodes());
-        modifiers.add(new SelectEdges());
-        modifiers.add(new SelectNeighbors());
-        modifiers.add(new InvertSelection());
-        modifiers.add(new SelectLastAdded());
-        modifiers.add(new SelectCorrespondingEdges());
+        modifiers.add(new SelectAll(graph));
+        modifiers.add(new SelectNodes(graph));
+        modifiers.add(new SelectEdges(graph));
+        modifiers.add(new SelectNeighbors(graph));
+        modifiers.add(new InvertSelection(graph));
+        modifiers.add(new SelectLastAdded(graph));
+        modifiers.add(new SelectCorrespondingEdges(graph));
         
-        modifierSets.add(new SelectCorrespondingNode());
+        modifierSets.add(new SelectCorrespondingNode(graph));
     }
     
     /** 
@@ -72,11 +69,7 @@ public class ModifierPopulator {
      * and populates with (compatible) new ones
      * @param menu list of clickable menu items to be populated
      */
-    public void populate(ListBox menu, Graph g) {
-        //TODO: complete the graph state decouple
-        // update selection and model to current (for hidden data feature)
-        model = g.getRenderedTriples();
-        selection = g.getSelection();
+    public void populate(ListBox menu) {
         
         // add newly compatible modifiers, remove newly incompatible ones
         for (Modifier mod : modifiers) {
@@ -159,26 +152,78 @@ public class ModifierPopulator {
     }
     
     /**
-     * TODO: to keep code decoupled, pass selection, model and graph to each function.
-     *          must prevent (or at least dissuade) model, graph, selection from being tied to local state
-     *          because these things change.
+     * elementary implementable for the reactive selection modification menu.
+     * see documentation here as well as existing examples.
      */
-    public interface Modifier {
+    public abstract class Modifier {
+        // access model, selection, element counts, and other desired properties
+        // with getters.  do not tie them to local state with class fields
+        // because they change.
+        final Graph graph;
+        
+        // always construct with the graph to be observed and operated on.
+        public Modifier(Graph graph) {
+            this.graph = graph;
+        }
+                
+        /** 
+         * using the selection size, element counts, jena model queries, etc test
+         * if the *current selection* is compatible with the modifier.
+         * do not put expensive computation in this function - it is run often.
+         */
         public abstract boolean isCompatible();
+        
+        /**
+         * action phrase stating what this modifier will do to the selection.
+         * this will be the menu button label.
+         * do not put expensive computation in this function - it is run often.
+         */
         public abstract String getTitle();
+        
+        /**
+         * modify the selection using jena model queries and graph properties.
+         * this is run once the modifier's menu entry is clicked.
+         */
         public abstract void modify();
     }
     
     /**
-     * 
+     * set of Modifiers that share a common compatibility test.
+     * see documentation here as well as existing examples.
      */
-    public interface ModifierSet {
-        public abstract ArrayList<Modifier> getModifiers();
+    public abstract class ModifierSet {
+        final Graph graph;
+        final ArrayList<Modifier> modifiers;
+        
+        // always construct with the graph to be observed and operated on.
+        public ModifierSet(Graph graph) {
+            this.graph = graph;
+            modifiers = new ArrayList<>();
+        }
+        
+        /**
+         * get the list of modifiers
+         */
+        public ArrayList<Modifier> getModifiers() {
+            return modifiers;
+        }
+        
+        /**
+         * test if the set of modifiers to be constructed are compatible.
+         * do not put expensive computation in this function - it is run often.
+         */
         public abstract boolean isCompatible();
+        
+        /**
+         * construct all the modifiers.  be sure to populate the ArrayList
+         * modifiers.  this is only called if isCompatible() passed.
+         */
         public abstract void constructModifiers();
     }
     
-    private class SelectAll implements Modifier {
+    private class SelectAll extends Modifier {
+        
+        public SelectAll(Graph graph) {super(graph);}
         
         @Override
         public boolean isCompatible() {
@@ -193,16 +238,18 @@ public class ModifierPopulator {
         @Override
         public void modify() {
             for (GraphElement e : graph) {
-                selection.add(e);
+                graph.getSelection().add(e);
             }
         }
     }
     
-    private class SelectNodes implements Modifier {
+    private class SelectNodes extends Modifier {
+        
+        public SelectNodes(Graph graph) {super(graph);}
         
         @Override
         public boolean isCompatible() {
-            return selection.nodeCount() > 0 && selection.edgeCount() > 0;
+            return graph.getSelection().nodeCount() > 0 && graph.getSelection().edgeCount() > 0;
         }
         
         @Override
@@ -212,15 +259,17 @@ public class ModifierPopulator {
         
         @Override
         public void modify() {
-            selection.clearEdges();
+            graph.getSelection().clearEdges();
         }
     }
     
-    private class SelectEdges implements Modifier {
+    private class SelectEdges extends Modifier {
+        
+        public SelectEdges(Graph graph) {super(graph);}
         
         @Override
         public boolean isCompatible() {
-            return selection.nodeCount() > 0 && selection.edgeCount() > 0;
+            return graph.getSelection().nodeCount() > 0 && graph.getSelection().edgeCount() > 0;
         }
         
         @Override
@@ -230,15 +279,17 @@ public class ModifierPopulator {
         
         @Override
         public void modify() {
-            selection.clearNodes();
+            graph.getSelection().clearNodes();
         }
     }
     
-    private class SelectNeighbors implements Modifier {
+    private class SelectNeighbors extends Modifier {
+        
+        public SelectNeighbors(Graph graph) {super(graph);}
         
         @Override
         public boolean isCompatible() {
-            return selection.nodeCount() > 0 || selection.edgeCount() > 0;
+            return graph.getSelection().nodeCount() > 0 || graph.getSelection().edgeCount() > 0;
         }
         
         @Override
@@ -248,22 +299,24 @@ public class ModifierPopulator {
         
         @Override
         public void modify() {
-            selection.clearBuffer();
-            for (Edge e : selection.getEdges()) {
-                selection.addToBuffer(e.dst);
-                selection.addToBuffer(e.src);
+            graph.getSelection().clearBuffer();
+            for (Edge e : graph.getSelection().getEdges()) {
+                graph.getSelection().addToBuffer(e.dst);
+                graph.getSelection().addToBuffer(e.src);
             }
-            for (Node n : selection.getNodes()) {
+            for (Node n : graph.getSelection().getNodes()) {
                 for (Node nbr : graph.getNbrs(n)) {
-                    selection.addToBuffer(nbr);
-                    selection.addToBuffer(graph.getEdge(n, nbr));
+                    graph.getSelection().addToBuffer(nbr);
+                    graph.getSelection().addToBuffer(graph.getEdge(n, nbr));
                 }
             }
-            selection.commitBuffer();
+            graph.getSelection().commitBuffer();
         }
     }
     
-    private class SelectLastAdded implements Modifier {
+    private class SelectLastAdded extends Modifier {
+        
+        public SelectLastAdded(Graph graph) {super(graph);}
         
         @Override
         public boolean isCompatible() {
@@ -277,7 +330,7 @@ public class ModifierPopulator {
         
         @Override
         public void modify() {
-            selection.clear();
+            graph.getSelection().clear();
             StmtIterator it = graph.getAllPreviouslyAddedTriples().listStatements();
             while (it.hasNext()) {
                 Statement s = it.next();
@@ -288,21 +341,23 @@ public class ModifierPopulator {
                 // since the user may have removed graph elements from the most
                 // recently added subgraph, make sure we aren't adding the
                 // corresponding nulls to selection
-                if (src != null) selection.add(src);
-                if (dst != null) selection.add(dst);
+                if (src != null) graph.getSelection().add(src);
+                if (dst != null) graph.getSelection().add(dst);
                 if (src != null && dst != null) {
                     Edge edge = graph.getEdge(src, dst);
-                    if (edge != null) selection.add(graph.getEdge(src, dst));
+                    if (edge != null) graph.getSelection().add(graph.getEdge(src, dst));
                 }
             }
         }
     }
     
-    private class InvertSelection implements Modifier {
+    private class InvertSelection extends Modifier {
+        
+        public InvertSelection(Graph graph) {super(graph);}
         
         @Override
         public boolean isCompatible() {
-            return selection.nodeCount() > 0 || selection.edgeCount() > 0;
+            return graph.getSelection().nodeCount() > 0 || graph.getSelection().edgeCount() > 0;
         }
         
         @Override
@@ -312,30 +367,32 @@ public class ModifierPopulator {
         
         @Override
         public void modify() {
-            selection.clearBuffer();
+            graph.getSelection().clearBuffer();
             for (GraphElement e : graph) {
-                if (!selection.contains(e)) selection.addToBuffer(e);
+                if (!graph.getSelection().contains(e)) graph.getSelection().addToBuffer(e);
             }
-            selection.clear();
-            selection.commitBuffer();
+            graph.getSelection().clear();
+            graph.getSelection().commitBuffer();
         }
     }
     
-    private class SelectCorrespondingEdges implements Modifier {
+    private class SelectCorrespondingEdges extends Modifier {
         String uri;
+        
+        public SelectCorrespondingEdges(Graph graph) {super(graph);}
         
         @Override
         public boolean isCompatible() {
-            if (selection.nodeCount() == 1 && selection.edgeCount() == 0) {
+            if (graph.getSelection().nodeCount() == 1 && graph.getSelection().edgeCount() == 0) {
                 try {
-                    uri = selection.getNodes().iterator().next().getName();
+                    uri = graph.getSelection().getNodes().iterator().next().getName();
                 } catch (NoSuchElementException e) {
                     //user deselected node before this line.  no problem - this
                     //is obviously not compatible. return false
                     return false;
                 }
                 // determine if model contains statements with node's name as property
-                return model.contains(null, model.createProperty(uri));
+                return graph.getRenderedTriples().contains(null, graph.getRenderedTriples().createProperty(uri));
             }
             return false;
         }
@@ -349,9 +406,9 @@ public class ModifierPopulator {
         public void modify() {
             // select all edges with statements with node's name as property
             //////////////////
-            selection.clear();
+            graph.getSelection().clear();
             // query model
-            StmtIterator it = model.listStatements(null, model.createProperty(uri), (RDFNode) null);
+            StmtIterator it = graph.getRenderedTriples().listStatements(null, graph.getRenderedTriples().createProperty(uri), (RDFNode) null);
             
             // for each statement, add edge between subject and object to selection
             while (it.hasNext()) {
@@ -359,29 +416,23 @@ public class ModifierPopulator {
                 String sub = s.getSubject().toString();
                 String obj = s.getObject().toString();
                 
-                selection.add(graph.getEdge(sub, obj));
+                graph.getSelection().add(graph.getEdge(sub, obj));
             }
         }
     }
     
-    private class SelectCorrespondingNode implements ModifierSet {
-        private ArrayList<Modifier> modifiers;
+    private class SelectCorrespondingNode extends ModifierSet {
         Edge edge;
         
-        public SelectCorrespondingNode() {
-            modifiers = new ArrayList<>();
-        }
-        
-        @Override
-        public ArrayList<Modifier> getModifiers() {
-            return modifiers;
+        public SelectCorrespondingNode(Graph graph) {
+            super(graph);
         }
         
         @Override
         public boolean isCompatible() {
-            if (selection.edgeCount() == 1 && selection.nodeCount() == 0) {
+            if (graph.getSelection().edgeCount() == 1 && graph.getSelection().nodeCount() == 0) {
                 try {
-                    edge = selection.getEdges().iterator().next();
+                    edge = graph.getSelection().getEdges().iterator().next();
                 } catch (NoSuchElementException e) {
                     //user deselected edge before this line.  no problem - this
                     //is obviously not compatible. return false
@@ -407,10 +458,11 @@ public class ModifierPopulator {
             }
         }
         
-        private class SelectPredicateNode implements Modifier {
+        private class SelectPredicateNode extends Modifier {
             String pred;
             
             public SelectPredicateNode(String predicate) {
+                super(SelectCorrespondingNode.this.graph);
                 pred = predicate;
             }
             
@@ -424,8 +476,8 @@ public class ModifierPopulator {
             
             @Override
             public void modify() {
-                selection.clear();
-                selection.add((Node) graph.cp5.get(pred));
+                graph.getSelection().clear();
+                graph.getSelection().add((Node) graph.cp5.get(pred));
             }
         }
     }
