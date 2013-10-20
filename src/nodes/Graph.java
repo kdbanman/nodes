@@ -399,7 +399,7 @@ public class Graph implements Iterable<GraphElement> {
             // remove edge from selection
             selection.remove(e);
             // remove triples from the model
-            for (Statement stmt : e.triples) {
+            for (Statement stmt : e.getTriples()) {
                 triples.remove(stmt);
             }
 
@@ -436,7 +436,7 @@ public class Graph implements Iterable<GraphElement> {
     }
 
     public boolean removeEdge(Edge e) {
-        return removeEdge(e.src, e.dst);
+        return removeEdge(e.getSourceNode(), e.getDestinationNode());
     }
     
     /**

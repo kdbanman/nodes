@@ -299,7 +299,7 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
      */
     private String renderedEdgeString(Edge e) {
         String rendered = "";
-        for (Statement s : e.triples) {
+        for (Statement s : e.getTriples()) {
             rendered += graph.prefixed(s.getSubject().toString()) + "  " +
                     graph.prefixed(s.getPredicate().toString()) + "  " +
                     graph.prefixed(s.getObject().toString());
@@ -327,7 +327,7 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
         } else if (graph.getSelection().edgeCount() == 1 && graph.getSelection().nodeCount() == 0) {
             Edge edge = (Edge) graph.getSelection().getEdges().iterator().next();
 
-            if (edge.triples.size() > 1) {
+            if (edge.getTriples().size() > 1) {
                 // user needs to choose which triple to explore
                 TripleChooserFrame chooser = new TripleChooserFrame(this, edge, graph.getRenderedTriples());
 
@@ -344,7 +344,7 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
                 uri = chooser.choice().getPredicate().getURI();
                 chooser.close();
             } else {
-                uri = edge.triples.iterator().next().getPredicate().getURI();
+                uri = edge.getTriples().iterator().next().getPredicate().getURI();
             }
         } else {
             // more than one GraphElement is selected

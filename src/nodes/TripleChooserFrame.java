@@ -42,10 +42,10 @@ public class TripleChooserFrame extends Frame {
         buttonHeight = 30;
             
         frameW = 600;
-        frameH = 3 * padding + buttonHeight + e.triples.size() * elementSize + 100;
+        frameH = 3 * padding + buttonHeight + e.getTriples().size() * elementSize + 100;
         
         waiting = waitingObj;
-        triples = new ArrayList<>(e.triples);
+        triples = new ArrayList<>(e.getTriples());
         pfxMap = pfx;
         
         choice = null;

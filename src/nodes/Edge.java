@@ -23,12 +23,12 @@ public class Edge extends GraphElement<Edge>  {
     // edge shouldn't be long enough to touch its nodes. (cleaner looking)
     // NOTE: using this to directly scale theta in inside() causes a bit
     //       of scaling error, since theta is an angle, not a length
-    float lengthScale;
+    private float lengthScale;
 
-    Node src;
-    Node dst;
+    private Node src;
+    private Node dst;
 
-    HashSet<Statement> triples;
+    private HashSet<Statement> triples;
 
     Edge(Graph parentGraph, String name, Node s, Node d) {
       super(parentGraph, name);
