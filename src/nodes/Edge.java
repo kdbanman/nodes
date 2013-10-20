@@ -9,6 +9,7 @@ import com.hp.hpl.jena.rdf.model.Statement;
 import controlP5.ControllerView;
 
 import java.util.HashSet;
+import java.util.Set;
 
 import processing.core.PApplet;
 import processing.core.PVector;
@@ -187,6 +188,18 @@ public class Edge extends GraphElement<Edge>  {
                     + "> <" + graph.prefixed(t.getPredicate().toString())
                     + "> <" + graph.prefixed(t.getObject().toString()) + ">");
         }
+    }
+    
+    public Node getSourceNode() {
+        return src;
+    }
+    
+    public Node getDestinationNode() {
+        return dst;
+    }
+    
+    public Set<Statement> getTriples() {
+        return triples;
     }
     
     public void addTriple(Statement t) {

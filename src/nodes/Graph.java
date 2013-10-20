@@ -152,7 +152,8 @@ public class Graph implements Iterable<GraphElement> {
         // prefix), then uniqueness is broken. the assertion of sizes here
         // protects from changes, but not from definitions.
         if (newMapSize != prevMapSize + toAddMapSize) {
-            System.out.println("ERROR:  prefix overwritten");
+            // TODO: this "error" is thrown too often to be real.  debug this
+            //System.out.println("ERROR:  prefix overwritten");
         }
         
         StmtIterator it = toAdd.listStatements();
@@ -441,23 +442,27 @@ public class Graph implements Iterable<GraphElement> {
     /**
      * 
      * @param n string id of node to be retrieved
-     * @return Node referred to by string parameter, or null if such a node
-     * does not exist
+     * @return Node referred to by string parameter.  Returns null if the passed
+     * uri identifies either an Edge or nothing at all.
      */
     public Node getNode(String n) {
-        Node ret = (Node) cp5.getController(n);
-        
+        Node ret;
+        try {
+            ret = (Node) cp5.getController(n);
+        } catch (ClassCastException e) {
+            ret = null;
+        }
         return ret;
     }
 
     /**
-     *
+     * returns the existing edge between s and d. order of s and d are actually
+     * irrelevant, the correct edge will be retrieved.  returns null if there is
+     * no edge between the passed node ids, or if one of the passed node ids 
+     * doesn't actually identify a node.
      * @param s id of source node
      * @param d id of destination node
      * @return Edge between nodes, or null if nonexistent
-     *
-     * returns the existing edge between s and d. order of s and d are actually
-     * irrelevant, the correct edge will be retrieved.
      */
     public Edge getEdge(String s, String d) {
         Edge e = (Edge) cp5.getController(s + "|" + d);
@@ -476,7 +481,7 @@ public class Graph implements Iterable<GraphElement> {
     }
 
     /**
-     * prints error message for edge creation between nonexistent nodes
+     * prints error message for edge creation between nonexistent nodes.
      */
     private void printNullEdgeTargets(String s, String d, Node src, Node dst) {
         Nodes.println("ERROR: Edge cannot be retrieved between \n\t"
