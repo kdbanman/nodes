@@ -4,6 +4,13 @@
 package nodes;
 
 import controlP5.ListBox;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.charset.StandardCharsets;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,8 +48,17 @@ public class ModifierPopulator {
         // should take a safely long time to traverse all positive integers)
         menuIndex = 0;
         
+        /* TODO: loadClasses is failing.  the classloader mechanism is silly.
+        ArrayList<Class> modifierClasses = loadClasses(Modifier.class,
+                                                       "resources/modifier_registry",
+                                                       "modifiers/");
+        ArrayList<Class> modifiersetClasses = loadClasses(Modifier.class,
+                                                       "resources/modifierset_registry",
+                                                       "modifiersets/");
+        */
+        
         // construct all modifiers and modifier sets, adding them to the
-        // corresponding lists
+        // corresponding ArrayLists
         modifiers.add(new AllSelector(graph));
         modifiers.add(new NodeFilter(graph));
         modifiers.add(new EdgeFilter(graph));
@@ -52,6 +68,47 @@ public class ModifierPopulator {
         modifiers.add(new CorrespondingEdgesSelector(graph));
         
         modifierSets.add(new CorrespondingNodeSelector(graph));
+    }
+    
+    /**
+     * from the specified registry file, get the specified Classes from the 
+     * specified package-relative path.
+     * @param desiredClass
+     * @param registryFilePath
+     * @param classPath
+     * @return 
+     */
+    private ArrayList<Class> loadClasses(Class desiredClass, String registryFilePath, String classPath) {
+        ArrayList<Class> returnVal = new ArrayList<>();
+        try {
+            
+            // get URL from passed classpath
+            URL location = this.getClass().getClassLoader().getResource("nodes/" + classPath);
+            // instantiate classloader for passed classpath
+            URLClassLoader loader = new URLClassLoader(new URL[]{location});
+            
+            // read the registry file
+            for (String line : Files.readAllLines(Paths.get(registryFilePath),
+                                                  StandardCharsets.UTF_8)) {
+                // if the line in the registry file is not whitespace or a comment,
+                // then try to load the class
+                if (!line.matches("\\s*(#.*)*")){
+                    System.out.println("Attempting to load " + location + line + ".class");
+                    returnVal.add(this.getClass().getClassLoader().loadClass(line + ".class"));
+                }
+            }
+        } catch (MalformedURLException e) {
+            System.out.println("ERROR: URL invalid");
+            e.printStackTrace();
+        } catch (IOException e) {
+            System.out.println("ERROR: Could read from file " + registryFilePath);
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            System.out.println("ERROR: Could not load class");
+            e.printStackTrace();
+        }
+        
+        return returnVal;
     }
     
     /** 
