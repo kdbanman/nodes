@@ -3,10 +3,12 @@
 
 - collapse connections to edge
 
+- hmtl rendered infobox
+
 - hide/show feature
 	- TODO: add from nodes.txt after meeting
 
-- hmtl rendered infobox
+- collapse subgraph to node
 
 #REFACTORS
 ##########
@@ -35,6 +37,8 @@
 
 #MISC
 #####
+
+- remove jars from git
 
 - newline before "Data Neighborhood"
 

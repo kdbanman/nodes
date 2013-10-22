@@ -5,6 +5,8 @@
 
 nbproject/private/
 build/
+lib/
+dist/
 nbbuild/
 nbdist/
 nbactions.xml
@@ -35,4 +37,3 @@ Icon
 # don't ignore this document
 ############################
 !.gitignore
-/dist/

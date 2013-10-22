@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
 # stage important project files
-git add dist/* lib/* src/* resources/* README.md TODO gitty .gitignore
+git add src/* resources/* README.md TODO gitty .gitignore
 # stage file deletions
 git add -u
 # show user what's to be committed
