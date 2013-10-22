@@ -1,5 +1,5 @@
 /*
- * NOT REALLY A FEATURE:  currently, existing edges will only be prefixed when 
+ * currently, existing edges will only be prefixed when 
  * their labels are updated upon addition of triples.
  */
 package nodes;

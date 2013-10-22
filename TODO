@@ -1,6 +1,8 @@
 #CORE FEATURES
 ##############
 
+- collapse connections to edge
+
 - hide/show feature
 	- TODO: add from nodes.txt after meeting
 
@@ -33,6 +35,10 @@
 
 #MISC
 #####
+
+- newline before "Data Neighborhood"
+
+- retitle label to indicate selected, not all
 
 - autoscroll infobox to top every update
 
