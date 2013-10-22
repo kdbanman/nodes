@@ -38,11 +38,10 @@
 #MISC
 #####
 
-- remove jars from git
+- newline before "Data Neighborhood" in Edge string renderer
 
-- newline before "Data Neighborhood"
-
-- retitle label to indicate selected, not all
+- retitle label button to indicate selected, not all
+	- other transformation buttons are affected too
 
 - autoscroll infobox to top every update
 
@@ -82,6 +81,11 @@ COMPLETED                                 (:r !date)
 
 not a comprehensive changelog - see git log for that
 ####################################################
+
+
+Tue Oct 22 14:20:34 MDT 2013
+
+- remove jars from git
 
 Sun Oct 20 17:12:37 MDT 2013
 - split modifier system into separate files in dedicated folder

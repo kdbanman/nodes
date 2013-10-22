@@ -135,7 +135,7 @@ public class GraphElement<T> extends Controller<T> {
         labelSize = s;
         
         try {
-            labelFont = pApp.createFont("labelFont.ttf", labelSize);
+            labelFont = pApp.createFont("resources/labelFont.ttf", labelSize);
             charW = labelFont.getGlyph('A').width;
             charH = labelFont.getGlyph('A').height;
         } catch (Exception e) {

@@ -3,7 +3,9 @@
 # from Netbeans.gitignore
 ##############################
 
-nbproject/private/
+nbproject/*
+build.xml
+manifest.mf
 build/
 lib/
 dist/

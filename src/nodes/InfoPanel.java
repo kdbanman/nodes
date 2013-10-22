@@ -82,14 +82,14 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
         h = frameHeight;
         
         try {
-            infoFont = createFont("labelFont.ttf", 12, true);
+            infoFont = createFont("resources/labelFont.ttf", 12, true);
         } catch (Exception e) {
             System.out.println("ERROR: font not loaded.  ensure labelFont.tiff is in program directory.");
             infoFont = cp5.getFont().getFont();
         }
         
         try {
-            eventFont = createFont("labelFont.ttf", 11, false);
+            eventFont = createFont("resources/labelFont.ttf", 11, false);
         } catch (Exception e) {
             System.out.println("ERROR: font not loaded.  ensure labelFont.tiff is in program directory.");
             eventFont = cp5.getFont().getFont();
