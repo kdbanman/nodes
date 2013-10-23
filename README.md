@@ -1,8 +1,25 @@
 3D rdf data explorer
 
-##dependencies
+##oi, developers:
 
-- java 1.7 (verify with `java -version`)
+if you're tempted to use the git hammer, `git add -A`, don't.  i don't want your IDE transients, your filesystem baggage, or anything else i forgot to put in the .gitignore.
+
+there is a shell script called gitty in the main project directory.  run it with `sh gitty "commit message"` from the main project directory.  it will:
+
+- stage only the following:
+    - source files
+    - resources
+    - the readme
+    - the todo
+    - the bug log
+    - the gitignore
+    - the gitty script itself
+    - all file deletions
+- show you what was committed with a `git status` echo
+
+###dependencies
+
+- java 1.7 (verify with `java -version` or look around in your IDE)
 - [processing 2.x](https://processing.org/download/) (tested up to 2.0.3)
     - all 15 jars from processing-2.\*/core/library/
 - [controlP5 2.0.4](http://code.google.com/p/controlp5/downloads/list)
