@@ -13,9 +13,6 @@
 #REFACTORS
 ##########
 
-- implement classloader system so that modifiers do not need to be compiled with the project
-	- there are big, complex systems to manage plugins, but mine will just be a text file.  that way menu item ordering is easy.
-
 #MODIFIERS
 ##########
 
@@ -71,8 +68,6 @@
 #CLASSES AND INTERFACES
 #######################
 
-- use classloader in constructor of Modifiers when populating modifier list for use of plugins
-
 - implement error/notification popup window system
 
 
@@ -81,6 +76,14 @@ COMPLETED                                 (:r !date)
 
 not a comprehensive changelog - see git log for that
 ####################################################
+
+Fri Oct 25 14:54:29 MDT 2013
+
+- implement classloader system so that modifiers do not need to be compiled with the project
+	- there are big, complex systems to manage plugins, but mine will just be a text file.  that way menu item ordering is easy.
+	- include in text file package as first line, then list all classes:
+NOTE:  this was hard to do.  :)
+
 
 
 Tue Oct 22 14:20:34 MDT 2013
@@ -121,6 +124,7 @@ Thu Sep  5 16:12:16 MDT 2013
 
 Fri Aug 23 15:08:00 MDT 2013
 - UNDO NOT IMPORTANT FOR PROTOTYPE:
+	- implement basic graph stack
 	- implement basic graph stack
 		- ensure deep copying (may have to keep within Graph so that references to it elsewhere don't get screwed up)
 		- this is probably too slow.  it probably needs to store a subset of the structure and know how to restore each part.
@@ -283,7 +287,6 @@ Thu Jul  4 15:02:31 MDT 2013
 	- this will greatly simplify matching Model query results to graph subsets
 	- the current implementation of relations, where each edge has a map from predicates to boolean values (latter indicating direction), will overwrite the triple <A,B,C> if the triple <C,B,A> is added
 	- question.  since edges are identified by source and destination node identifiers, is it still important to leave the triples unprefixed for uniqueness' sake?
-		- yes. imagine the triple <aaaA,b:B,c:C> is added, then the prefix a (for aaa) is discovered, then the same triple is added again.  the new triple will be added to the list, which is incorrect.  
 	- label prefixing isn't as simple as just iterating through labelText and prefixing each. (unless jena will replace all occurrences of nsPrefixMap keys in a string instead of just the first occurrence)  TESTED:  it will not.
 
 - prexfixLabel() function iterates through lines, best called from addNode() and addEdge(), since that is when new prefixes could be discovered

@@ -2,11 +2,11 @@
 
 ##oi, developers:
 
-if you're tempted to use the git hammer, `git add -A`, don't.  i don't want your IDE transients, your filesystem baggage, or anything else i forgot to put in the .gitignore.
+if you're tempted to use the git hammer, `git add -A`, don't.  this project doesn't want your IDE transients, your filesystem baggage, or anything else forgotten by the `.gitignore`.
 
-there is a shell script called gitty in the main project directory.  run it with `sh gitty "commit message"` from the main project directory.  it will:
+as an alternative, there is a shell script called `gitty` in the main project directory.  run it with `sh gitty "commit message"` from the main project directory:
 
-- stage only the following:
+- first, it will stage only the following:
     - source files
     - resources
     - the readme
@@ -15,7 +15,8 @@ there is a shell script called gitty in the main project directory.  run it with
     - the gitignore
     - the gitty script itself
     - all file deletions
-- show you what was committed with a `git status` echo
+- then, it will show you what will be committed with a `git status` echo
+- finally, it will commit said changes to the present branch
 
 ###dependencies
 

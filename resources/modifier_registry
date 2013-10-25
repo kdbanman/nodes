@@ -8,6 +8,10 @@
 # appear in the modifier menu.  Modifiers always come before ModifierSets in the
 # modifier menu.
 
+# PACKAGE
+nodes.modifiers
+
+# CLASSES
 AllSelector
 NodeFilter
 EdgeFilter

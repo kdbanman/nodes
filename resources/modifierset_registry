@@ -8,4 +8,8 @@
 # appear in the modifier menu.  ModifierSets always follow Modifiers in order in
 # the modifier menu.
 
+# PACKAGE
+nodes.modifiersets
+
+# CLASSES
 CorrespondingNodeSelector

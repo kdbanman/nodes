@@ -5,7 +5,7 @@ package nodes;
 
 import controlP5.ListBox;
 import java.io.IOException;
-import java.net.MalformedURLException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Files;
@@ -38,8 +38,13 @@ public class ModifierPopulator {
     
     public ModifierPopulator(Graph graph) {
         
-        modifiers = new ArrayList<>();
-        modifierSets = new ArrayList<>();
+    	// load and construct all classes in modifier and modifierSet registry files
+        modifiers = loadAndConstructModifiers(Modifier.class, 
+        										 "resources/modifier_registry", 
+        										 graph);
+        modifierSets = loadAndConstructModifiers(ModifierSet.class, 
+        											"resources/modifierset_registry", 
+        											graph);
         
         runIndex = new HashMap<>();
         
@@ -47,66 +52,104 @@ public class ModifierPopulator {
         // (this value is currently never reset, just incremented.  though it
         // should take a safely long time to traverse all positive integers)
         menuIndex = 0;
-        
-        ArrayList<Class> modifierClasses = loadClasses(Modifier.class,
-                                                       "resources/modifier_registry",
-                                                       "modifiers/");
-        ArrayList<Class> modifiersetClasses = loadClasses(Modifier.class,
-                                                       "resources/modifierset_registry",
-                                                       "modifiersets/");
-        
-        // construct all modifiers and modifier sets, adding them to the
-        // corresponding ArrayLists
-//        modifiers.add(new AllSelector(graph));
-//        modifiers.add(new NodeFilter(graph));
-//        modifiers.add(new EdgeFilter(graph));
-//        modifiers.add(new NeighborhoodSelector(graph));
-//        modifiers.add(new SelectionInverter(graph));
-//        modifiers.add(new PreviouslyAddedSelector(graph));
-//        modifiers.add(new CorrespondingEdgesSelector(graph));
-//        
-//        modifierSets.add(new CorrespondingNodeSelector(graph));
     }
     
     /**
-     * from the specified registry file, get the specified Classes from the 
-     * specified package-relative path.
-     * @param desiredClass
-     * @param registryFilePath
-     * @param classPath
-     * @return 
+     * from the specified registry file, construct instances of the Classes named within the 
+     * passed package.  this is separate from loadClasses because of the monumental exception
+     * handling business, as well as the fact that it is *only* the instantiation of the
+     * modifiers that depends upon graph.  the rest is abstract enough to generally load the
+     * classes, independent of the implementation of Modifier or ModifierSet.
+     * 
+     * @param desiredClass class from which the listed classes must inherit.
+     * @param registryFilePathpath to file containing list of classes to load
+     * @param packageName package to which the classes belong
+     * @param constructorArg the graph that the modifier objects should be associated with.
+     * @return list of classes named in the registry file
      */
-    private ArrayList<Class> loadClasses(Class desiredClass, String registryFilePath, String classPath) {
-        ArrayList<Class> returnVal = new ArrayList<>();
+    private <T> ArrayList<T> loadAndConstructModifiers(Class<T> desiredClass, String registryFilePath, Graph constructorArg) {
+    	ArrayList<T> returnVal = new ArrayList<>();
+    	try {
+	        for (Class<T> TClass : loadClasses(desiredClass, registryFilePath)) {
+	        	System.out.println("Instantiating " + TClass.getName());
+	        	returnVal.add(TClass.getDeclaredConstructor(constructorArg.getClass()).newInstance(constructorArg));
+	        }
+        } catch (InstantiationException e) {
+			System.err.println("ERROR: Class could not be instantiated.  Ensure that the class has a constructor"
+					 + " and that it is not abstract or an interface.");
+		} catch (IllegalAccessException e) {
+			System.err.println("ERROR: Could not access constructor.  Ensure that the class has a public constructor.");
+		} catch (IllegalArgumentException e) {
+			System.err.println("ERROR: Class did not accept a Graph as a constructor argument.");
+		} catch (InvocationTargetException e) {
+			System.err.println("ERROR: Class construction throws InvocationTargetException.");
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			System.err.println("ERROR: Class does not have a constructor.");
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			System.err.println("ERROR: Class construction throws SecurityException.");
+			e.printStackTrace();
+		}
+    	return returnVal;
+    }
+    
+    /**
+     * from the specified registry file, get the Classes named within the 
+     * passed package.
+     * 
+     * @param desiredClass class from which the listed classes must inherit.
+     * @param registryFilePath path to file containing list of classes to load
+     * @param packageName package to which the classes belong
+     * @return list of classes named in the registry file
+     */
+    private <T> ArrayList<Class<T>> loadClasses(Class<T> desiredClass, String registryFilePath) {
+        ArrayList<Class<T>> returnVal = new ArrayList<>();
         try {
-            
-            // get URL from passed classpath
-            URL location = this.getClass().getClassLoader().getResource("nodes/" + classPath);
-            // instantiate classloader for passed classpath
-            URLClassLoader loader = new URLClassLoader(new URL[]{location});
-            
+        	// will hold the package name with which the registry file is associated
+        	String packageName = null;
+        	
             // read the registry file
             for (String line : Files.readAllLines(Paths.get(registryFilePath),
                                                   StandardCharsets.UTF_8)) {
                 // if the line in the registry file is not whitespace or a comment,
                 // then try to load the class
-            	String path = location + line;
                 if (!line.matches("\\s*(#.*)*")){
-                    System.out.println("Attempting to load " + path);
-                    //TODO:  take this implementation example and make it happen!!
-                    returnVal.add(loader.loadClass("nodes.modifiers.AllSelector"));
+                	
+                	// first non-comment line of the registry should be the package name with which the registry file is
+                	// associated.  (verified as first line by the null check)
+                	if (packageName == null) {
+                		packageName = line;
+                		// the current line is not a Class, so don't continue the loop to try and load it.
+                		continue;
+                	}
+                	
+                	// qualify the listed class name (line in file) with the package name
+                	String qualifiedClassName = packageName + "." + line;
+                    System.out.println("Loading " + qualifiedClassName);
+                    // use the classloader to load the class
+                    Class<?> loadedClass = this.getClass().getClassLoader().loadClass(qualifiedClassName);
+                    
+                    // verify that loaded class is of the desired type and add it to the list
+                    if (desiredClass.isAssignableFrom(loadedClass)) {
+                    	returnVal.add((Class<T>) loadedClass);
+                    } else {
+                    	System.err.println("ERROR: Did not load " + loadedClass.getName());
+                    	System.err.println(loadedClass.getName() + " doesn't inherit from " + desiredClass.getName());
+                    }
                 }
             }
-        } catch (MalformedURLException e) {
-            System.out.println("ERROR: URL invalid");
-            e.printStackTrace();
         } catch (IOException e) {
             System.out.println("ERROR: Could read from file " + registryFilePath);
-            e.printStackTrace();
         } catch (ClassNotFoundException e) {
-            System.out.println("ERROR: Could not load class");
-            e.printStackTrace();
-        }
+            System.out.println("ERROR: Could not load class.  Ensure that it is compiled to a .class in the correct"
+            					+ " package (and corresponding directory).");
+        } catch (NoClassDefFoundError e) {
+        	System.out.println("ERROR: Could not load class.  Ensure that it is compiled to a .class in the correct"
+            					+ " package (and corresponding directory).");
+        } catch (ClassCastException e) {
+			System.err.println("ERROR: Class is not a subclass of " + desiredClass.getName());
+		}
         
         return returnVal;
     }
