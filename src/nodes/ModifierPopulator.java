@@ -48,26 +48,24 @@ public class ModifierPopulator {
         // should take a safely long time to traverse all positive integers)
         menuIndex = 0;
         
-        /* TODO: loadClasses is failing.  the classloader mechanism is silly.
         ArrayList<Class> modifierClasses = loadClasses(Modifier.class,
                                                        "resources/modifier_registry",
                                                        "modifiers/");
         ArrayList<Class> modifiersetClasses = loadClasses(Modifier.class,
                                                        "resources/modifierset_registry",
                                                        "modifiersets/");
-        */
         
         // construct all modifiers and modifier sets, adding them to the
         // corresponding ArrayLists
-        modifiers.add(new AllSelector(graph));
-        modifiers.add(new NodeFilter(graph));
-        modifiers.add(new EdgeFilter(graph));
-        modifiers.add(new NeighborhoodSelector(graph));
-        modifiers.add(new SelectionInverter(graph));
-        modifiers.add(new PreviouslyAddedSelector(graph));
-        modifiers.add(new CorrespondingEdgesSelector(graph));
-        
-        modifierSets.add(new CorrespondingNodeSelector(graph));
+//        modifiers.add(new AllSelector(graph));
+//        modifiers.add(new NodeFilter(graph));
+//        modifiers.add(new EdgeFilter(graph));
+//        modifiers.add(new NeighborhoodSelector(graph));
+//        modifiers.add(new SelectionInverter(graph));
+//        modifiers.add(new PreviouslyAddedSelector(graph));
+//        modifiers.add(new CorrespondingEdgesSelector(graph));
+//        
+//        modifierSets.add(new CorrespondingNodeSelector(graph));
     }
     
     /**
@@ -92,9 +90,11 @@ public class ModifierPopulator {
                                                   StandardCharsets.UTF_8)) {
                 // if the line in the registry file is not whitespace or a comment,
                 // then try to load the class
+            	String path = location + line;
                 if (!line.matches("\\s*(#.*)*")){
-                    System.out.println("Attempting to load " + location + line + ".class");
-                    returnVal.add(this.getClass().getClassLoader().loadClass(line + ".class"));
+                    System.out.println("Attempting to load " + path);
+                    //TODO:  take this implementation example and make it happen!!
+                    returnVal.add(loader.loadClass("nodes.modifiers.AllSelector"));
                 }
             }
         } catch (MalformedURLException e) {
