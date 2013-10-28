@@ -357,6 +357,26 @@ public class Nodes extends PApplet {
         return hovered;
     }
     
+    // returns the GraphElement nearest to the 
+    // TODO: use this to replace mouseContent
+    public GraphElement getNearestHovered() {
+        if (hovered.isEmpty()) return null;
+        
+        proj.calculatePickPoints(mouseX, mouseY);
+        PVector mousePos = proj.ptStartPos;
+
+        GraphElement closest = hovered.get(0);
+        float minDist = mousePos.dist(closest.getPosition());
+        for (GraphElement e : hovered) {
+            float currElementDist = mousePos.dist(e.getPosition());
+            if (minDist > currElementDist) {
+                minDist = currElementDist;
+                closest = e;
+            }
+        }
+        return closest;
+    }
+    
     // when a GraphElement is moused over, it calls this with itself as a
     // parameter
     public void addToHovered(GraphElement element) {
@@ -368,7 +388,8 @@ public class Nodes extends PApplet {
 
     // make sure that no GraphElement erroneously keeps mouseover state:
     // ControlP5's native onLeave() calls are based on the assumption that only
-    // one controller will be hovered over at any given time
+    // one controller will be hovered over at any given time, so onLeave() calls
+    // cannot be depended upon.
     public void cleanHovered() {
         // every time the mouse hovers over a GraphElement, that element 
         // references itself in the hovered list.
@@ -377,9 +398,13 @@ public class Nodes extends PApplet {
         while (it.hasNext()) {
             GraphElement e = it.next();
             if (!e.isInside()) {
-                // if the element is not hovered over any more, call set its 
-                // state accordingly and remove it from the list.
+                // if the element is not hovered over any more, call its  
+                // respective method and remove it from the list.
                 e.notHovered();
+                
+                // GraphElements cannot remove themselves because this iterative
+                // cleanup process is necessary, and it is dangerous to remove
+                // elements from a list while it is being iterated through.
                 it.remove();
                 
                 // notify info panel of change in hover
