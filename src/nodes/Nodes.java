@@ -1,5 +1,5 @@
 /*
- * main application logic for Nodes, not including controllers.
+ * main application logic for Nodes.
  */
 package nodes;
 
