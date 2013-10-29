@@ -10,13 +10,21 @@ import java.util.NoSuchElementException;
 /**
  * listenable, iterable, buffered set of GraphElements in which Nodes and Edges
  * are separately accessible.  elements can be added to the selection without
- * buffering them first, and elements in the buffer are treated as "selected."
- * the buffer is a mechanism to allow arbitrary rectangle group selection
- * without affecting what has already been selected.
+ * buffering them first.
  * 
- * the selection buffer is a useful concept when you need to add to the
- * selection based on the selection contents, so you shouldn't or can't modify
- * the selection.
+ * elements in the buffer are treated as "selected" by the contains() method,
+ * the nodeCount() and edgeCount() methods, the empty() methods, and the
+ * SelectionListeners.  this might seem silly and specific.  it is.  here's why,
+ * until the system is refactored: the buffer is a mechanism originally designed
+ * to allow arbitrary rectangle group selection without affecting what has
+ * already been selected, and it was used carelessly elsewhere.  hence the need
+ * for a refactor.
+ * 
+ * however, the selection buffer is a useful concept when you need to add to the
+ * selection based on the selection contents, and thus you shouldn't or can't
+ * modify the selection.  if you're comfortable using this Selection's buffer
+ * system, go for it.  if not, use a Set as local state and make your own.
+ * either way, here's why a buffer is necessary sometimes:
  * 
  * for instance, say you want to add to the selection every node neighboring the
  * current selection.  if you iterate through each node that is currently
@@ -33,6 +41,37 @@ import java.util.NoSuchElementException;
  * 1. clear the buffer
  * 2. iterate through all selected nodes, adding each node's neighbors to the *buffer*
  * 3. commit the buffer
+ * 
+ * ===============
+ * REFACTOR NOTES:
+ * 
+ * These do consider buffered elements selected:
+ * - contains()
+ * - nodeCount() and edgeCount()
+ * - empty()
+ * 
+ * - listeners
+ * 
+ * 
+ * These don't consider buffered elements selected:
+ * - getNodes() and getEdges()
+ * - clearNodes() and clearEdges()
+ * 
+ * - clear()
+ * 
+ * - add() and remove()
+ * 
+ * - iteration
+ * 
+ * - getColorOfSelection()
+ * - getSizeOfSelection()
+ * - getLabelSizeOfSelection()
+ * 
+ * 
+ * Undefined behaviour when used with nonempty buffer:
+ * 
+ * - invertSelectionOfElement()
+ * ========================
  * 
  * @author kdbanman
  */
@@ -56,19 +95,31 @@ public class Selection implements Iterable<GraphElement> {
     }
     
     /**
-     * @return selected status of Node
+     * checks if Node has been selected or buffered.
+     * 
+     * @param n Node whose membership in selection and buffer is to be
+     * tested.
+     * @return selected or buffered status of Node
      */
     public boolean contains(Node n) {
         return nodes.contains(n) || nodeBuffer.contains(n);
     }
     /**
-     * @return selected status of Edge
+     * checks if Edge has been selected or buffered.
+     * 
+     * @param e Edge whose membership in selection and buffer is to be
+     * tested.
+     * @return selected or buffered status of Edge
      */
     public boolean contains(Edge e) {
         return edges.contains(e) || edgeBuffer.contains(e);
     }
     /**
-     * @return selected status of GraphElement
+     * checks if GraphElement has been selected or buffered.
+     * 
+     * @param e GraphElement whose membership in selection and buffer is to be
+     * tested.
+     * @return selected or buffered status of GraphElement
      */
     public boolean contains(GraphElement e) {
         boolean ret = false;
@@ -114,7 +165,11 @@ public class Selection implements Iterable<GraphElement> {
     }
     
     /**
-     * empties current selection of nodes
+     * empties current selection of nodes.
+     * 
+     * broadcasts change to SelectionListeners.
+     * 
+     * does not affect buffer.
      */
     public void clearNodes() {
         synchronized (nodes) {
@@ -124,7 +179,12 @@ public class Selection implements Iterable<GraphElement> {
     }
     
     /**
-     * empties current selection of edges
+     * empties current selection of edges.
+     * 
+     * broadcasts change to SelectionListeners.
+     * 
+     * does not affect buffer.
+     * 
      */
     public void clearEdges() {
         synchronized (edges) {
@@ -133,27 +193,81 @@ public class Selection implements Iterable<GraphElement> {
         broadcastChange();
     }
     
+    /**
+     * Add Node to selection.
+     * 
+     * broadcasts change to SelectionListeners.
+     * 
+     * does not affect buffer.
+     * 
+     * @param n Node to add to selection.
+     */
     public void add(Node n) {
         nodes.add(n);
         broadcastChange();
     }
+    /**
+     * Add Edge to selection.
+     * 
+     * broadcasts change to SelectionListeners.
+     * 
+     * does not affect buffer.
+     * 
+     * @param e Edge to add to selection.
+     */
     public void add(Edge e) {
         edges.add(e);
         broadcastChange();
     }
+    /**
+     * Add GraphElement to selection.
+     * 
+     * broadcasts change to SelectionListeners.
+     * 
+     * does not affect buffer.
+     * 
+     * @param e GraphElement to add to selection.
+     */
     public void add(GraphElement e) {
         if (e instanceof Edge) add((Edge ) e);
         else if (e instanceof Node) add((Node) e);
     }
     
+    /**
+     * Remove Node from selection.
+     * 
+     * broadcasts change to SelectionListeners.
+     * 
+     * does not affect buffer.
+     * 
+     * @param n Node to remove from selection.
+     */
     public void remove(Node n) {
         nodes.remove(n);
         broadcastChange();
     }
+    /**
+     * Remove Edge from selection.
+     * 
+     * broadcasts change to SelectionListeners.
+     * 
+     * does not affect buffer.
+     * 
+     * @param e Edge to remove from selection.
+     */
     public void remove(Edge e) {
         edges.remove(e);
         broadcastChange();
     }
+    /**
+     * Remove GraphElement from selection.
+     * 
+     * broadcasts change to SelectionListeners.
+     * 
+     * does not affect buffer.
+     * 
+     * @param e GraphElement to remove from selection.
+     */
     public void remove(GraphElement e) {
         if (e instanceof Edge) remove((Edge) e);
         else if (e instanceof Node) remove((Node) e);
@@ -161,6 +275,11 @@ public class Selection implements Iterable<GraphElement> {
     
     /**
      * if passed GraphElement is selected, deselect it.  otherwise, select it.
+     * 
+     * broadcasts change to SelectionListeners.
+     * 
+     * behavior undefined when used with buffer.
+     * 
      * @param e GraphElement to invert selection status of
      */
     public void invertSelectionOfElement(GraphElement e) {
@@ -173,7 +292,11 @@ public class Selection implements Iterable<GraphElement> {
     }
     
     /**
-     * clears selection of nodes and edges.  does not affect buffer.
+     * clears selection of nodes and edges.
+     * 
+     * broadcasts change to SelectionListeners.
+     * 
+     * does not affect buffer.
      */
     public void clear() {
         synchronized (nodes) {
@@ -191,6 +314,8 @@ public class Selection implements Iterable<GraphElement> {
     
     /**
      * Add node to selection buffer.
+     * 
+     * broadcasts change to SelectionListeners.
      * @param n Node to buffer for selection.
      */
     public void addToBuffer(Node n) {
@@ -201,6 +326,8 @@ public class Selection implements Iterable<GraphElement> {
     }
     /**
      * Add edge to selection buffer.
+     * 
+     * broadcasts change to SelectionListeners.
      * @param e Edge to buffer for selection.
      */
     public void addToBuffer(Edge e) {
@@ -211,6 +338,8 @@ public class Selection implements Iterable<GraphElement> {
     }
     /**
      * Add GraphElement to selection buffer
+     * 
+     * broadcasts change to SelectionListeners.
      * @param e GraphElement to buffer for selection.
      */
     public void addToBuffer(GraphElement e) {
@@ -220,6 +349,8 @@ public class Selection implements Iterable<GraphElement> {
     
     /**
      * Remove Node from selection buffer.
+     * 
+     * broadcasts change to SelectionListeners.
      * @param n Node to remove from selection buffer.
      */
     public void removeFromBuffer(Node n) {
@@ -228,6 +359,8 @@ public class Selection implements Iterable<GraphElement> {
     }
     /**
      * Remove Edge from selection buffer.
+     * 
+     * broadcasts change to SelectionListeners.
      * @param e Edge to remove from selection buffer.
      */
     public void removeFromBuffer(Edge e) {
@@ -236,6 +369,8 @@ public class Selection implements Iterable<GraphElement> {
     }
     /**
      * Remove GraphElement from selection buffer.
+     * 
+     * broadcasts change to SelectionListeners.
      * @param e GraphElement to remove from selection buffer.
      */
     public void removeFromBuffer(GraphElement e) {
@@ -246,6 +381,8 @@ public class Selection implements Iterable<GraphElement> {
     /**
      *  Move all Nodes and Edges currently in the selection buffer to the actual
      * selection.  Clears the buffer.
+     * 
+     * broadcasts change to SelectionListeners.
      */
     public void commitBuffer() {
         synchronized(nodes) {
@@ -260,6 +397,8 @@ public class Selection implements Iterable<GraphElement> {
     
     /** 
      * Clear all Nodes and Edges from the selection buffer.
+     * 
+     * broadcasts change to SelectionListeners.
      */
     public void clearBuffer() {
         synchronized (nodeBuffer) {
@@ -268,6 +407,7 @@ public class Selection implements Iterable<GraphElement> {
         synchronized (edgeBuffer) {
             edgeBuffer.clear();
         }
+        broadcastChange();
     }
     
     /*
@@ -355,8 +495,9 @@ public class Selection implements Iterable<GraphElement> {
 
         /**
          * safely remove GraphElement pointed to by iterator from selection  
-         * (does *not* remove from selection buffer).  also broadcasts change
-         * to SelectionListeners with broadcastChange().
+         * (does *not* remove from selection buffer).
+         * 
+         * broadcasts change to SelectionListeners.
          */
         @Override
         public void remove() {
