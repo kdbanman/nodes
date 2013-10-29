@@ -520,11 +520,11 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
     public void updateControllersToSelection() {
         // do not change element colors with the resulting ControlEvent here
         changeElementColor = false;
-        colorPicker.setColorValue(graph.getSelection().getColor());
+        colorPicker.setColorValue(graph.getSelection().getColorOfSelection());
         changeElementColor = true;
         
-        sizeSlider.setValue(graph.getSelection().getSize());
-        labelSizeSlider.setValue(graph.getSelection().getLabelSize());
+        sizeSlider.setValue(graph.getSelection().getSizeOfSelection());
+        labelSizeSlider.setValue(graph.getSelection().getLabelSizeOfSelection());
     }
     
     // log event in infopanel

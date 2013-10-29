@@ -9,10 +9,31 @@ import java.util.NoSuchElementException;
 
 /**
  * listenable, iterable, buffered set of GraphElements in which Nodes and Edges
- * are separately manipulable.  elements can be added to the selection without
+ * are separately accessible.  elements can be added to the selection without
  * buffering them first, and elements in the buffer are treated as "selected."
  * the buffer is a mechanism to allow arbitrary rectangle group selection
  * without affecting what has already been selected.
+ * 
+ * the selection buffer is a useful concept when you need to add to the
+ * selection based on the selection contents, so you shouldn't or can't modify
+ * the selection.
+ * 
+ * for instance, say you want to add to the selection every node neighboring the
+ * current selection.  if you iterate through each node that is currently
+ * selected,  and you add each node's neighbors to the selection, one of two
+ * things will happen:
+ * A. your runtime environment will detect that you are modifying a collection
+ *    that you are iterating through, and it will throw a big ol' concurrent
+ *    modification exception
+ * B. your runtime environment will not detect the concurrent modification, and
+ *    you may (or may not, depending upon implementation) iterate through the
+ *    neighbor(s) you added to the selection, adding their neighborhoods as well
+ * 
+ * neither of these are what you wanted.  you should use the buffer instead:
+ * 1. clear the buffer
+ * 2. iterate through all selected nodes, adding each node's neighbors to the *buffer*
+ * 3. commit the buffer
+ * 
  * @author kdbanman
  */
 public class Selection implements Iterable<GraphElement> {
@@ -22,7 +43,7 @@ public class Selection implements Iterable<GraphElement> {
     private final Set<Node> nodeBuffer;
     private final Set<Edge> edgeBuffer;
     
-    ArrayList<SelectionListener> listeners;
+    private final ArrayList<SelectionListener> listeners;
     
     Selection() {
         nodes = Collections.synchronizedSet(new HashSet<Node>());
@@ -32,70 +53,6 @@ public class Selection implements Iterable<GraphElement> {
         edgeBuffer = Collections.synchronizedSet(new HashSet<Edge>());
         
         listeners = new ArrayList<>();
-    }
-    
-    /**
-     * @return integer color of selected element(s). returns 0 (black) if selection is
-     * empty or heterogeneous in color
-     */
-    public int getColor() {
-        int color;
-        int black = 0xFF000000;
-        
-        SelectionIterator it = this.iterator();
-        
-        // get color of first element, return black if empty
-        if (it.hasNext()) color = it.next().getCol();
-        else return black;
-        
-        // verify that all other selected elements are the same color, return
-        // black otherwise
-        while (it.hasNext()) {
-            int nextCol = it.next().getCol();
-            if (nextCol != color) return black;
-        }
-        
-        return color;
-    }
-    
-    /**
-     * @return float size of selected element(s). returns 0 if selection is
-     * empty or heterogeneous in size
-     */
-    public float getSize() {
-        // same pattern as getColor, but for size
-        float size;
-        SelectionIterator it = this.iterator();
-        
-        if (it.hasNext()) size = it.next().getSize();
-        else return 0;
-        
-        while (it.hasNext()) {
-            float nextSize = it.next().getSize();
-            if (nextSize != size) return 0;
-        }
-        
-        return size;
-    }
-    
-    /**
-     * @return integer label size of selected element(s). returns 0 if selection is
-     * empty or heterogeneous in label size
-     */
-    public int getLabelSize() {
-        // same pattern as getColor, but for size
-        int size;
-        SelectionIterator it = this.iterator();
-        
-        if (it.hasNext()) size = it.next().getLabelSize();
-        else return 0;
-        
-        while (it.hasNext()) {
-            int nextSize = it.next().getLabelSize();
-            if (nextSize != size) return 0;
-        }
-        
-        return size; 
     }
     
     /**
@@ -122,35 +79,35 @@ public class Selection implements Iterable<GraphElement> {
     }
     
     /**
-     * @return integer number of currently selected nodes
+     * @return number of currently selected nodes, including buffered Nodes.
      */
     public int nodeCount() {
         return nodes.size() + nodeBuffer.size();
     }
     
     /**
-     * @return integer number of currently selected edges
+     * @return number of currently selected edges, including buffered Edges.
      */
     public int edgeCount() {
         return edges.size() + edgeBuffer.size();
     }
     
     /**
-     * @return boolean true if no edges or nodes selected
+     * @return true if no edges or nodes are selected or buffered.
      */
     public boolean empty() {
         return nodeCount() == 0 && edgeCount() == 0;
     }
     
     /**
-     * @return set of currently selected nodes
+     * @return set of currently selected nodes. (does not include buffered nodes)
      */
     public Set<Node> getNodes() {
         return nodes;
     }
     
     /**
-     * @return set of currently selected edges
+     * @return set of currently selected edges. (does not include buffered edges)
      */
     public Set<Edge> getEdges() {
         return edges;
@@ -204,6 +161,7 @@ public class Selection implements Iterable<GraphElement> {
     
     /**
      * if passed GraphElement is selected, deselect it.  otherwise, select it.
+     * @param e GraphElement to invert selection status of
      */
     public void invertSelectionOfElement(GraphElement e) {
         if (contains(e)) {
@@ -231,36 +189,64 @@ public class Selection implements Iterable<GraphElement> {
      * Buffer operations
      */
     
+    /**
+     * Add node to selection buffer.
+     * @param n Node to buffer for selection.
+     */
     public void addToBuffer(Node n) {
         if (!nodes.contains(n)) {
             nodeBuffer.add(n);
         }
         broadcastChange();
     }
+    /**
+     * Add edge to selection buffer.
+     * @param e Edge to buffer for selection.
+     */
     public void addToBuffer(Edge e) {
         if (!edges.contains(e)) {
             edgeBuffer.add(e);
         }
         broadcastChange();
     }
+    /**
+     * Add GraphElement to selection buffer
+     * @param e GraphElement to buffer for selection.
+     */
     public void addToBuffer(GraphElement e) {
         if (e instanceof Edge) addToBuffer((Edge ) e);
         else if (e instanceof Node) addToBuffer((Node) e);
     }
     
+    /**
+     * Remove Node from selection buffer.
+     * @param n Node to remove from selection buffer.
+     */
     public void removeFromBuffer(Node n) {
         nodeBuffer.remove(n);
         broadcastChange();
     }
+    /**
+     * Remove Edge from selection buffer.
+     * @param e Edge to remove from selection buffer.
+     */
     public void removeFromBuffer(Edge e) {
         edgeBuffer.remove(e);
         broadcastChange();
     }
+    /**
+     * Remove GraphElement from selection buffer.
+     * @param e GraphElement to remove from selection buffer.
+     */
     public void removeFromBuffer(GraphElement e) {
         if (e instanceof Edge) removeFromBuffer((Edge) e);
         else if (e instanceof Node) removeFromBuffer((Node) e);
     }
     
+    /**
+     *  Move all Nodes and Edges currently in the selection buffer to the actual
+     * selection.  Clears the buffer.
+     */
     public void commitBuffer() {
         synchronized(nodes) {
             nodes.addAll(nodeBuffer);
@@ -268,9 +254,13 @@ public class Selection implements Iterable<GraphElement> {
         synchronized(edges) {
             edges.addAll(edgeBuffer);
         }
+        broadcastChange();
         clearBuffer();
     }
     
+    /** 
+     * Clear all Nodes and Edges from the selection buffer.
+     */
     public void clearBuffer() {
         synchronized (nodeBuffer) {
             nodeBuffer.clear();
@@ -307,12 +297,13 @@ public class Selection implements Iterable<GraphElement> {
         public void selectionChanged();
     }
     
-    /*
-     * iterator operations and class
+    /**
+     * Iterator for iterating through all selected Nodes then all selected Edges.
+     * (Does *not* iterate through buffer).
+     * @return 
      */
-    
     @Override
-    public SelectionIterator iterator() {
+    public Iterator<GraphElement> iterator() {
         return new SelectionIterator();
     }
     
@@ -320,8 +311,8 @@ public class Selection implements Iterable<GraphElement> {
      * iterates through all nodes then all edges
      */
     public class SelectionIterator implements Iterator<GraphElement> {
-        Iterator itNodes;
-        Iterator itEdges;
+        private Iterator itNodes;
+        private Iterator itEdges;
         
         private boolean iteratingThroughNodes;
         
@@ -332,11 +323,21 @@ public class Selection implements Iterable<GraphElement> {
             iteratingThroughNodes = true;
         }
         
+        /**
+         * returns true if there is a selected Node or Edge left to iterate
+         * through.  (does *not* look at selection buffer)
+         * @return 
+         */
         @Override
         public boolean hasNext() {
             return itNodes.hasNext() || itEdges.hasNext();
         }
         
+        /**
+         * iterates through all selected nodes then all selected edges.  (does
+         * *not* iterate through selection buffer.)
+         * @return 
+         */
         @Override
         public GraphElement next() {
             GraphElement ret = null;
@@ -352,6 +353,11 @@ public class Selection implements Iterable<GraphElement> {
             return ret;
         }
 
+        /**
+         * safely remove GraphElement pointed to by iterator from selection  
+         * (does *not* remove from selection buffer).  also broadcasts change
+         * to SelectionListeners with broadcastChange().
+         */
         @Override
         public void remove() {
             if (iteratingThroughNodes) {
@@ -361,5 +367,73 @@ public class Selection implements Iterable<GraphElement> {
             }
             broadcastChange();
         }
+    }
+    
+    /////////////////////
+    //color, size, and label size aggregators for ControlPanel
+    /////////////////////
+    
+    /**
+     * @return integer color of selected element(s). returns 0 (black) if selection is
+     * empty or heterogeneous in color
+     */
+    public int getColorOfSelection() {
+        int color;
+        int black = 0xFF000000;
+        
+        Iterator<GraphElement> it = this.iterator();
+        
+        // get color of first element, return black if empty
+        if (it.hasNext()) color = it.next().getCol();
+        else return black;
+        
+        // verify that all other selected elements are the same color, return
+        // black otherwise
+        while (it.hasNext()) {
+            int nextCol = it.next().getCol();
+            if (nextCol != color) return black;
+        }
+        
+        return color;
+    }
+    
+    /**
+     * @return float size of selected element(s). returns 0 if selection is
+     * empty or heterogeneous in size
+     */
+    public float getSizeOfSelection() {
+        // same pattern as getColor, but for size
+        float size;
+        Iterator<GraphElement> it = this.iterator();
+        
+        if (it.hasNext()) size = it.next().getSize();
+        else return 0;
+        
+        while (it.hasNext()) {
+            float nextSize = it.next().getSize();
+            if (nextSize != size) return 0;
+        }
+        
+        return size;
+    }
+    
+    /**
+     * @return integer label size of selected element(s). returns 0 if selection is
+     * empty or heterogeneous in label size
+     */
+    public int getLabelSizeOfSelection() {
+        // same pattern as getColor, but for size
+        int size;
+        Iterator<GraphElement> it = this.iterator();
+        
+        if (it.hasNext()) size = it.next().getLabelSize();
+        else return 0;
+        
+        while (it.hasNext()) {
+            int nextSize = it.next().getLabelSize();
+            if (nextSize != size) return 0;
+        }
+        
+        return size; 
     }
 }
