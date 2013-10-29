@@ -49,14 +49,11 @@ public class Nodes extends PApplet {
     // drag movement and selection, which all use left mouse button
     DragBehaviour drag;
     
-    // mouseContent is null when the mouse is hovering over background,
-    // and is a reference to a GraphElement when the mouse hovering over one.
-    GraphElement mouseContent;
-    
-    // list for tracking which GraphElements have been hovered over, since
-    // ControlP5's native onLeave() calls are based on the assumption that only
-    // one controller will be hovered over at any given time.
-    // list is populated by calls within GraphElement.
+    // list for tracking which GraphElements have been hovered over.  this is 
+    // necessary because:
+    //   ControlP5's native onLeave() calls are based on the assumption that only
+    //   one controller will be hovered over at any given time.
+    // "hovered" is populated by onEnter() calls within GraphElement.
     ArrayList<GraphElement> hovered;
     
     // object container for GraphElement concurrency between rendering and 
@@ -105,8 +102,6 @@ public class Nodes extends PApplet {
         selectColorRising = true;
         
         drag = DragBehaviour.SELECT;
-        
-        mouseContent = null;
         
         hovered = new ArrayList<>();
         
@@ -220,7 +215,7 @@ public class Nodes extends PApplet {
             // depressed, determine if the user is selecting elements or
             // dragging them around to move them
             if (!leftButtonDragging) {
-                if (mouseContent == null) {
+                if (hovered.isEmpty()) {
                     // if the user is not dragging a graph element, enable selection
                     drag = DragBehaviour.SELECT;
                     // add to selection if shift button is held
@@ -268,6 +263,9 @@ public class Nodes extends PApplet {
                 //    meaning that it stays underneath the mouse cursor.
                 ////////////
                 
+                // element to be moved
+                GraphElement toBeMoved = getNearestHovered();
+                
                 // get distance between pixels on near frustum
                 proj.calculatePickPoints(0, 0);
                 PVector origin = proj.ptStartPos.get();
@@ -287,19 +285,19 @@ public class Nodes extends PApplet {
                 proj.calculatePickPoints(mouseX, mouseY);
                 PVector camPos = getCamPosition();
                 float cursorDist = PVector.dist(proj.ptStartPos, camPos);
-                float elementDist = PVector.dist(mouseContent.getPosition(), camPos);
+                float elementDist = PVector.dist(toBeMoved.getPosition(), camPos);
                 float scale = elementDist / cursorDist;
 
                 // calculate drag vectors
                 horiz.mult(scale * rawDistH);
                 vert.mult(scale * rawDistV);
 
-                // because shift may or may not be held at this point, mouseContent may
+                // because shift may or may not be held at this point, mouse content may
                 // or may not be in the selection, so it should be moved separately from
                 // the selection if it is not selected.  single element movement is 
                 // semantically different between nodes and edges (edge position is
                 // derived), so the moveIfNotSelected() is overriden in Edge
-                mouseContent.moveIfNotSelected(horiz, vert);
+                toBeMoved.moveIfNotSelected(horiz, vert);
 
                 // now that element has been moved if unselected, move the selection
                 for (Node n : graph.getSelection().getNodes()) {
@@ -322,11 +320,11 @@ public class Nodes extends PApplet {
                     // if left button was being dragged during selection,
                     // add the contents of the selection buffer to the selection
                     graph.getSelection().commitBuffer();
-                } else if (mouseContent != null) {
+                } else if (!hovered.isEmpty()) {
                     // if the user was not dragging, then just a single click
                     // occurred.  if the user clicked on an element, then invert
                     // its selection status
-                    graph.getSelection().invert(mouseContent);
+                    graph.getSelection().invert(getNearestHovered());
                 }
             }
             // left button is no longer being dragged
@@ -357,8 +355,8 @@ public class Nodes extends PApplet {
         return hovered;
     }
     
-    // returns the GraphElement nearest to the 
-    // TODO: use this to replace mouseContent
+    // returns the GraphElement nearest to the cursor position on the near 
+    // frustum plane
     public GraphElement getNearestHovered() {
         if (hovered.isEmpty()) return null;
         

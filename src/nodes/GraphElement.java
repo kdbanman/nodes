@@ -91,9 +91,7 @@ public class GraphElement<T> extends Controller<T> {
 
     @Override
     protected void onEnter() {
-        pApp.mouseContent = this;
         pApp.addToHovered(this);
-        
         currentCol = hoverCol;
     }
 
@@ -108,7 +106,8 @@ public class GraphElement<T> extends Controller<T> {
     }
     
     public void notHovered() {
-        pApp.mouseContent = null;
+        //not removed from pApp.hovered because that list is regularly iterated
+        //through.  removals outside that iterator are dangerous.
         currentCol = defaultCol;
     }
     

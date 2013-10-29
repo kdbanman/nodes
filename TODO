@@ -37,15 +37,11 @@
 #MISC
 #####
 
-- main application thread needs to know hovered element nearest the mouse near-frustum position  (getNearestHovered)
-	- drag movement needs to use this
-	- replace mouseContent with this
-
 - additional logic to Node and Edge isInside() code: whether it visible (opposite the camera from the near frustum plane)
 	- if this isn't already there, it should be
 	- if it is there, move it to a dedicated boolean method
 		- box selection needs to use this to fix the bug where things behind the near frustum are selected
-NOTE:  already in the Node.inside() code by virtue of vector angle calculation
+NOTE:  *this is only necessary within Edge*  (already in the Node.inside() code by virtue of vector angle calculation)
 
 - newline before "Data Neighborhood" in Edge string renderer
 
@@ -88,6 +84,13 @@ COMPLETED                                 (:r !date)
 
 not a comprehensive changelog - see git log for that
 ####################################################
+
+
+Mon Oct 28 21:42:02 MDT 2013
+- main application thread needs to know hovered element nearest the mouse near-frustum position  (getNearestHovered)
+	- drag movement needs to use this
+	- replace mouseContent with this
+
 
 Fri Oct 25 14:54:29 MDT 2013
 
