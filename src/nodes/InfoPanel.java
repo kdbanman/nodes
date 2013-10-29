@@ -1,14 +1,7 @@
 /*
- * Information panel for a hovored/selected GraphElement.  Shows instructions if the
- * selection is not a single GraphElement and no GraphElement is being hovered over.
- * otherwise displays:
- * 
- * - namespace prefix legend in displayed information
- * - buttons to query for more triples (if the node is a URI resource)
- * 
- * Displayed information changes with mouse hover until a single element is
- * selected, then the information freezes.  (performance requirements may 
- * necessitate the hover response as an option).
+ * Information panel for a hovored/selected GraphElement.Displayed information changes with mouse hover content.  When the mouse is
+ * not hovering over an element, all selected elements will have their information
+ * rendered.
  */
 package nodes;
 
@@ -28,8 +21,6 @@ import controlP5.CallbackListener;
 import controlP5.ControlP5;
 import controlP5.Textarea;
 import java.util.Collection;
-import java.util.NoSuchElementException;
-import java.util.Set;
 
 import processing.core.PApplet;
 import processing.core.PFont;

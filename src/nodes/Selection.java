@@ -1,6 +1,3 @@
-/*
- * 
- */
 package nodes;
 
 import java.util.ArrayList;
@@ -208,7 +205,7 @@ public class Selection implements Iterable<GraphElement> {
     /**
      * if passed GraphElement is selected, deselect it.  otherwise, select it.
      */
-    public void invert(GraphElement e) {
+    public void invertSelectionOfElement(GraphElement e) {
         if (contains(e)) {
             remove(e);
         } else {

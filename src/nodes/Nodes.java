@@ -15,7 +15,6 @@ import processing.opengl.PGraphics3D;
 
 /**
  * 
- * 
  * @author kdbanman
  */
 public class Nodes extends PApplet {
@@ -106,9 +105,6 @@ public class Nodes extends PApplet {
         hovered = new ArrayList<>();
         
         waitingOnNewFrame = null;
-        
-        // local test data
-        // graph.addTriples(Importer.getDescriptionFromWeb("Albert_Einstein.rdf"));
     }
 
     @Override
@@ -324,7 +320,7 @@ public class Nodes extends PApplet {
                     // if the user was not dragging, then just a single click
                     // occurred.  if the user clicked on an element, then invert
                     // its selection status
-                    graph.getSelection().invert(getNearestHovered());
+                    graph.getSelection().invertSelectionOfElement(getNearestHovered());
                 }
             }
             // left button is no longer being dragged

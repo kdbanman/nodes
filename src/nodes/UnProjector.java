@@ -1,14 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package nodes;
 
 import processing.core.PMatrix3D;
 import processing.core.PVector;
 
 import processing.opengl.PGraphics3D;
-
 
 public class UnProjector
 {

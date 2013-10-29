@@ -6,17 +6,12 @@ package nodes;
 import controlP5.ListBox;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.charset.StandardCharsets;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import nodes.modifiers.*;
-import nodes.modifiersets.*;
 
 /**
  * dynamically populated menu system whose entries appear and disappear according
@@ -40,11 +35,11 @@ public class ModifierPopulator {
         
     	// load and construct all classes in modifier and modifierSet registry files
         modifiers = loadAndConstructModifiers(Modifier.class, 
-        										 "resources/modifier_registry", 
-        										 graph);
+                                              "resources/modifier_registry", 
+                                              graph);
         modifierSets = loadAndConstructModifiers(ModifierSet.class, 
-        											"resources/modifierset_registry", 
-        											graph);
+                                              "resources/modifierset_registry", 
+                                              graph);
         
         runIndex = new HashMap<>();
         

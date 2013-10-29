@@ -16,9 +16,6 @@ import processing.core.PVector;
 /**
  *
  * @author kdbanman
- *
- * NOTE: consider making (most) of the private methods public, making sure that
- * consistency is maintained within them.
  */
 public class Graph implements Iterable<GraphElement> {
 

@@ -1,11 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package nodes;
 
 import controlP5.ControllerView;
-import java.util.Iterator;
 
 import processing.core.PApplet;
 import processing.core.PVector;
