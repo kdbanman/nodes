@@ -21,4 +21,4 @@ git status
 # commit with the message
 git commit -m "$1"
 # remind user of amend
-echo "**if something isn't right, remember 'git commit --amend \"commit msg\"'**"
+echo "**if something isn't right, remember \"git commit --amend\"**"
