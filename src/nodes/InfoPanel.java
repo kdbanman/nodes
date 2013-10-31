@@ -296,7 +296,7 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
                     graph.prefixed(s.getObject().toString());
             Node predicateNode = graph.getNode(s.getPredicate().toString());
             if (predicateNode != null) {
-                rendered += renderedNodeString(predicateNode);
+                rendered += "\n\n" + renderedNodeString(predicateNode);
             } else {
                 rendered += "\n\nNo data yet retrieved about predicate\n  " + s.getPredicate().toString()
                         + "\n\nTry querying the web or a SPARQL instance with the button to the right.";
