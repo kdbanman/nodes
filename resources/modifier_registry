@@ -19,3 +19,4 @@ NeighborhoodSelector
 SelectionInverter
 PreviouslyAddedSelector
 CorrespondingEdgesSelector
+CommonNeighboursSelector
