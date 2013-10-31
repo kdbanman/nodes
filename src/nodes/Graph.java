@@ -136,11 +136,12 @@ public class Graph implements Iterable<GraphElement> {
     public void addTriples(Model toAdd) {
         // add to model first so that prefixes are used in the GraphElements
         allPreviouslyAddedTriples = toAdd;
-        triples.add(toAdd);
+        //triples.add(toAdd);
         
         int prevMapSize = triples.getNsPrefixMap().size();
         int toAddMapSize = toAdd.getNsPrefixMap().size();
         
+        // add yet undiscovered namespace prefixes to the model
         triples.withDefaultMappings(toAdd);
         int newMapSize = triples.getNsPrefixMap().size();
         
@@ -150,7 +151,7 @@ public class Graph implements Iterable<GraphElement> {
         // protects from changes, but not from definitions.
         if (newMapSize != prevMapSize + toAddMapSize) {
             // TODO: this "error" is thrown too often to be real.  debug this
-            //System.out.println("ERROR:  prefix overwritten");
+            System.out.println("ERROR:  prefix overwritten");
         }
         
         StmtIterator it = toAdd.listStatements();
@@ -198,7 +199,15 @@ public class Graph implements Iterable<GraphElement> {
         return triples.getNsPrefixURI(uri);
     }
 
-    public Edge addTriple(Statement triple) {
+    /**
+     * Creates a copy of the passed Statement with the Graph's model "triples",
+     * adds the copy to "triples", adds the copy to the correct Edge (either by
+     * adding it to an existing edge or creating a new one), and returns the copy.
+     * 
+     * @param triple Statement to add to the Graph
+     * @return Statement originating from the Graph's model
+     */ 
+    public Statement addTriple(Statement triple) {
         String sub = triple.getSubject().toString();
         String obj = triple.getObject().toString();
 
@@ -211,8 +220,17 @@ public class Graph implements Iterable<GraphElement> {
         // addEdge returns the existing edge if one already exists between the two nodes
         //      note:  node order does not matter.
         e = addEdge(sub, obj);
-        e.addTriple(triple);
-        return e;
+        
+        // create the triple using the Graph's model so that Statement.getModel()
+        // works as expected
+        Statement tripleToAdd = triples.createStatement(triple.getSubject(),
+                                                        triple.getPredicate(),
+                                                        triple.getObject());
+        // add the created triple to the model
+        triples.add(tripleToAdd);
+        // associate the triple with the edge
+        e.addTriple(tripleToAdd);
+        return tripleToAdd;
     }
 
     public Set<Node> getNodes() {

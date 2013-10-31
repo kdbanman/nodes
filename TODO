@@ -53,8 +53,6 @@
 - move event log to top level tab
 	- NOTE: don't do this.  this is just fine as an infopanel swing element thing
 
-- debug graph prefix "error"
-
 - add SDB retrieval
 
 - implement main application arrow controls for camera strafe
@@ -90,6 +88,9 @@ COMPLETED                                 (:r !date)
 
 not a comprehensive changelog - see git log for that
 ####################################################
+
+Thu Oct 31 14:20:36 MDT 2013
+- debug graph prefix "error"
 
 
 Mon Oct 28 21:42:02 MDT 2013
