@@ -1,14 +1,14 @@
 #CORE FEATURES
 ##############
 
+- hmtl rendered infobox
+	- 2 way data interaction (textual vs. 3D)
+
 - save jena model as rdfxml
 
+- context menus on right click over 3D view
+
 - collapse connections to edge
-
-- hmtl rendered infobox
-
-- hide/show feature
-	- TODO: add from nodes.txt after meeting
 
 - collapse subgraph to node
 
@@ -91,6 +91,10 @@ not a comprehensive changelog - see git log for that
 
 Thu Oct 31 14:20:36 MDT 2013
 - debug graph prefix "error"
+
+- hide/show feature
+	- TODO: add from nodes.txt after meeting
+	- NOTE: this can be replaced by opacity settings!! wheee
 
 
 Mon Oct 28 21:42:02 MDT 2013

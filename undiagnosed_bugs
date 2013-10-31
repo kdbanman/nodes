@@ -1,3 +1,14 @@
+Exception in thread "Animation Thread" java.lang.NullPointerException
+	at nodes.ModifierPopulator.removeEntry(ModifierPopulator.java:234)
+	at nodes.ModifierPopulator.populate(ModifierPopulator.java:171)
+	at nodes.ControlPanel.draw(ControlPanel.java:475)
+	at processing.core.PApplet.handleDraw(PApplet.java:2305)
+	at processing.core.PGraphicsJava2D.requestDraw(PGraphicsJava2D.java:243)
+	at processing.core.PApplet.run(PApplet.java:2176)
+	at java.lang.Thread.run(Thread.java:722)
+
+
+
 ERROR: Cannot remove nonexistent edge between:
 http://www.w3.org/2000/01/rdf-schema#Class
 http://www.w3.org/2000/01/rdf-schema#Class
