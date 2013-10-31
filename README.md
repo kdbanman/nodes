@@ -50,6 +50,13 @@ as an alternative, there is a shell script called `gitty` in the main project di
 - then, it will show you what will be committed with a `git status` echo
 - finally, it will commit said changes to the present branch
 
+###selection modifier and modifier set development
+
+the selection modifier menu dynamically populates with actions to modify the current selection.
+each menu item corresponds to a different selection modifier, and the items are inserted into the menu if they are compatible with the current selection.
+to create one, write and compile a java class that inherits from one of the abstract classes `Modifier` or `ModifierSet`.
+for nodes to see your class, add its name to `resources/modifier_registry` or `resources/modifierset_registry`, respectively.
+
 ###dependencies
 
 - java 1.7 (verify with `java -version` or look around in your IDE)
