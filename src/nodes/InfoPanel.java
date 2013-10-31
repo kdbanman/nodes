@@ -320,7 +320,7 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
 
             if (edge.getTriples().size() > 1) {
                 // user needs to choose which triple to explore
-                TripleChooserFrame chooser = new TripleChooserFrame(this, edge, graph.getRenderedTriples());
+                TripleChooserFrame chooser = new TripleChooserFrame(this, edge);
 
                 // this thread will be started again upon closure of TripleChooserFrame
                 try {
@@ -335,7 +335,7 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
                 uri = chooser.choice().getPredicate().getURI();
                 chooser.close();
             } else {
-                uri = edge.getTriples().iterator().next().getPredicate().getURI();
+                uri = edge.getSingleTriple().getPredicate().getURI();
             }
         } else {
             // more than one GraphElement is selected
@@ -381,15 +381,18 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
                 // add retrieved model to graph
                 ///////////////////////////////
                 
-                // protect from concurrency issues during import
-                graph.pApp.waitForNewFrame(this);
-                
                 int retrievedSize = (int) toAdd.size();
                 int addedSize = graph.tripleCount();
                 
-                // add the retriveed model to the graph (toAdd is empty if 
+                // protect from concurrency issues during import
+                graph.pApp.waitForNewFrame(this);
+                
+                // add the retrieved model to the graph (toAdd is empty if 
                 // an error was encountered)
                 graph.addTriples(toAdd);
+                
+                // concurrency issues now over
+                graph.pApp.restartRendering(this);
                 
                 addedSize = graph.tripleCount() - addedSize;
                 
@@ -398,7 +401,6 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
                          retrievedSize + " triples retrieved,\n  " +
                          addedSize + " triples are new");
                 
-                graph.pApp.restartRendering(this);
                 
                 // queue controller selection update if one is not already queued
                 updateNecessary.compareAndSet(false, true);

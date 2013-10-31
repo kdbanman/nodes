@@ -202,6 +202,23 @@ public class Edge extends GraphElement<Edge>  {
         return triples;
     }
     
+    /**
+     * If the Edge is associated with a single triple, return that one.  If >1,
+     * return any of them.  (which one is undefined because Sets don't order)
+     * 
+     * @return Statement
+     */
+    public Statement getSingleTriple() {
+        if (!triples.isEmpty()) {
+            return triples.iterator().next();
+        } else {
+            System.out.println("ERROR: Edge " + this.getName() + " has no triples");
+            // return null so that a stacktrace is shown for the inevitable
+            // NullPointerException
+            return null;
+        }
+    }
+    
     public void addTriple(Statement t) {
         String sub = t.getSubject().toString();
         String pred = t.getPredicate().toString();

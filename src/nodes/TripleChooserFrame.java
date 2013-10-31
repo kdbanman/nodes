@@ -13,6 +13,14 @@ import java.util.ArrayList;
 import processing.core.PApplet;
 
 /**
+ * Given an Edge representing multiple triples, this popup window gives a
+ * UI for choosing a single one of those triples.
+ * 
+ * IMPORTANT:  
+ * The execution of the Object requiring a single triple choice (i.e. the Object
+ * constructing and using a TripleChooserFrame) *needs* to be halted with a
+ * synchronized Object.wait() call.  When the OK button of a TripleChooserFrame
+ * is clicked, the waiting object will be restarted with an Object.notify() call.
  *
  * @author kdbanman
  */
@@ -33,7 +41,43 @@ public class TripleChooserFrame extends Frame {
     
     TripleChooser chooser;
     
-    public TripleChooserFrame(Object waitingObj, Edge e, PrefixMapping pfx) {
+    /**
+     * Choose a triple from an edge containing >1 triple.  Usage example:
+     * 
+     *      // get a triple from an edge
+     * 
+     *      Statement chosenTriple;
+     * 
+     *      if (edge.getTriples().size() > 1) {
+     * 
+     *          // create chooser window
+     *          TripleChooserFrame chooser = new TripleChooserFrame(this, edge);
+     * 
+     *          // this thread will be started again upon closure of TripleChooserFrame
+     *          try {
+     *              synchronized(this) {
+     *                  this.wait();
+     *              }
+     *          } catch (InterruptedException e) {
+     *              System.out.println("ExplorationListener was not able to wait for TripleChooserFrame");
+     *          }
+     *          // chooser will now have restarted this thread, so it is safe
+     *          // to get the triple choice.
+     *          chosenTriple = chooser.choice();
+     * 
+     *          // now that a Statement has been chosen, the chooser window can be closed
+     *          chooser.close();
+     * 
+     *      } else {
+     * 
+     *          chosenTriple = edge.getSingleTriple();
+     * 
+     *      }
+     * 
+     * @param waitingObj Object whose execution is waiting on the TripleChooserFrame
+     * @param e Edge containing more than one triple
+     */
+    public TripleChooserFrame(Object waitingObj, Edge e) {
         super("Triple Chooser");
         
         padding = 10;
@@ -46,7 +90,14 @@ public class TripleChooserFrame extends Frame {
         
         waiting = waitingObj;
         triples = new ArrayList<>(e.getTriples());
-        pfxMap = pfx;
+        // based on the integrity of the Graph, every Edge will have >= 1 triple
+        // but just in case...
+        if (!e.getTriples().isEmpty()) {
+            pfxMap = e.getSingleTriple().getModel();
+        } else {
+            System.out.println("ERROR: Edge " + e.getName() + " has no triples");
+            System.exit(1);
+        }
         
         choice = null;
         
@@ -117,10 +168,9 @@ public class TripleChooserFrame extends Frame {
             background(0);
         }
         
-        /********************
-         * chooser listeners
-         *******************/
-        
+        /**
+         * code for click action on OK button
+         */
         private class OkButtonListener implements CallbackListener {
             @Override
             public void controlEvent(CallbackEvent event) {

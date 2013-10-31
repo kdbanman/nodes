@@ -134,26 +134,13 @@ public class Graph implements Iterable<GraphElement> {
      * adds triples to model, adding Nodes and Edges as necessary
      */
     public void addTriples(Model toAdd) {
-        // add to model first so that prefixes are used in the GraphElements
+        // triples to be added are now the most recently added triples
         allPreviouslyAddedTriples = toAdd;
-        //triples.add(toAdd);
-        
-        int prevMapSize = triples.getNsPrefixMap().size();
-        int toAddMapSize = toAdd.getNsPrefixMap().size();
         
         // add yet undiscovered namespace prefixes to the model
         triples.withDefaultMappings(toAdd);
-        int newMapSize = triples.getNsPrefixMap().size();
         
-        // if the prefix map for the Model triples changes or defines a
-        // prefix for uris that already exist in the model (with the old or no
-        // prefix), then uniqueness is broken. the assertion of sizes here
-        // protects from changes, but not from definitions.
-        if (newMapSize != prevMapSize + toAddMapSize) {
-            // TODO: this "error" is thrown too often to be real.  debug this
-            System.out.println("ERROR:  prefix overwritten");
-        }
-        
+        // add each triple in the model to the graph
         StmtIterator it = toAdd.listStatements();
         if (it.hasNext()) {
             // stop rendering because of transient ugliness and for possible concurrency issues
