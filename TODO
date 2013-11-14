@@ -1,7 +1,7 @@
 #CORE FEATURES
 ##############
 
-- hmtl rendered infobox
+- hmtl or controller rendered infobox
 	- 2 way data interaction (textual vs. 3D)
 
 - save jena model as rdfxml

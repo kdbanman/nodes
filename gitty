@@ -13,7 +13,7 @@ if [ ! -z "$2" ]; then
 fi
 
 # stage important project files
-git add src/* resources/* README.md TODO undiagnosed_bugs gitty .gitignore
+git add src/* resources/* README.md TODO unreplicated_bugs gitty .gitignore
 # stage file deletions
 git add -u .
 # show user what's to be committed

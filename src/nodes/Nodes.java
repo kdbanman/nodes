@@ -385,6 +385,7 @@ public class Nodes extends PApplet {
     // one controller will be hovered over at any given time, so onLeave() calls
     // cannot be depended upon.
     public void cleanHovered() {
+        
         // every time the mouse hovers over a GraphElement, that element 
         // references itself in the hovered list.
         // iterate over each element in hovered.
