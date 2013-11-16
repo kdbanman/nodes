@@ -154,16 +154,6 @@ public class Nodes extends PApplet {
         
         // iterate selection color pulsation
         updateSelectColor();
-        
-        // draw graph in order of depth
-        // replace relevant functionality of blocked ControlWindow.draw() method
-        graph.cp5.getWindow().updateEvents();
-        PriorityQueue<GraphElement> elementQueue = graph.getDistanceSortedGraphElements();
-        while (!elementQueue.isEmpty()) {
-            GraphElement currentElement = elementQueue.poll();
-            currentElement.updateInternalEvents(this);
-            currentElement.draw(this);
-        }
     }
     
     /*

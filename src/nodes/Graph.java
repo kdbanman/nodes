@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import com.hp.hpl.jena.rdf.model.*;
 
 import controlP5.ControlP5;
+import controlP5.ControlWindow;
+import controlP5.ControllerGroup;
+import controlP5.Tab;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -14,6 +17,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.PriorityQueue;
 import java.util.Set;
+import processing.core.PApplet;
 
 import processing.core.PVector;
 
@@ -26,6 +30,8 @@ public class Graph implements Iterable<GraphElement> {
     UnProjector proj;
     ControlP5 cp5;
     Nodes pApp;
+    
+    ControllerGroup graphElementGroup;
     
     private Selection selection;
     
@@ -48,11 +54,12 @@ public class Graph implements Iterable<GraphElement> {
         proj = u;
         pApp = p;
         
-        cp5 = new ControlP5(p);
+        cp5 = new ControlP5(p)
+                .setMoveable(false);
         cp5.disableShortcuts();
-        cp5.blockDraw = true;
         
-        
+        graphElementGroup = new DepthSortedGroup(cp5, "GraphElementGroup")
+                .open();
         
         selection = new Selection();
 
@@ -331,7 +338,8 @@ public class Graph implements Iterable<GraphElement> {
                     .setPosition(pApp.random(-initBoundary, initBoundary),
                     pApp.random(-initBoundary, initBoundary),
                     pApp.random(-initBoundary, initBoundary))
-                    .setSize(10);
+                    .setSize(10)
+                    .setGroup(graphElementGroup);
 
             adjacent.put(n, new ArrayList<Node>());
 
@@ -361,7 +369,9 @@ public class Graph implements Iterable<GraphElement> {
             return getEdge(s, d);
         } else {
 
-            Edge e = new Edge(this, s + "|" + d, src, dst).setSize(5);
+            Edge e = new Edge(this, s + "|" + d, src, dst)
+                    .setSize(5)
+                    .setGroup(graphElementGroup);
 
             adjacent.get(src).add(dst);
             adjacent.get(dst).add(src);
@@ -553,6 +563,29 @@ public class Graph implements Iterable<GraphElement> {
         @Override
         public void remove() {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+    }
+    
+    /**
+     * DepthSortedTab is meant to hold GraphElements only. The point of it is to
+     * override the drawControllers() method so that the order in which the
+     * elements are rendered can be controlled.  It renders whether or not it
+     * is open (see ControllerGroup.drawControllers() for context).
+     */
+    private final class DepthSortedGroup extends ControllerGroup<DepthSortedGroup> {
+        public DepthSortedGroup(ControlP5 theControlP5, String theName) {
+            super(theControlP5, theName);
+        }
+        
+        @Override
+        public void drawControllers(PApplet theApplet) {
+            // draw graph in order of depth
+            PriorityQueue<GraphElement> elementQueue = getDistanceSortedGraphElements();
+            while (!elementQueue.isEmpty()) {
+                GraphElement currentElement = elementQueue.poll();
+                currentElement.updateInternalEvents(pApp);
+                currentElement.draw(pApp);
+            }
         }
     }
 }
