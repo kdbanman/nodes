@@ -8,6 +8,7 @@ import processing.core.*;
 import controlP5.ControlP5;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.PriorityQueue;
 
 //  this is the PeasyCam from https://github.com/jeffg2k/peasycam
 import peasy.PeasyCam;
@@ -21,8 +22,6 @@ public class Nodes extends PApplet {
 
     // 3D graph-viewing camera
     PeasyCam cam;
-    // 3D graph controlP5 instance
-    ControlP5 cp5;
     // matrix and vector module for interaction in 3D
     UnProjector proj;
     // graph module for RDF visualization
@@ -66,6 +65,7 @@ public class Nodes extends PApplet {
         int h = 768;
         size(w, h, P3D);
         frameRate(30);
+        noStroke();
 
         // initialize camera
         cam = new PeasyCam(this, 0, 0, 0, 600);
@@ -81,11 +81,8 @@ public class Nodes extends PApplet {
         cam.setSpeedLock(false);
         cam.setDamping(.4, .4, .4);
 
-
-        // this ControlP5 is only for the Graph, the ControlWindow has its own
-        cp5 = new ControlP5(this);
         proj = new UnProjector(this);
-        graph = new Graph(proj, cp5, this);
+        graph = new Graph(proj, this);
         
         // horrible hack means that static panelFrame has already been constructed
         // within main()
@@ -125,10 +122,8 @@ public class Nodes extends PApplet {
         // light orange pastel background color
         background(0xFFFFDCBF);
 
-        // necessary for unprojection functionality
+        // light the scene from the cursor
         proj.captureViewMatrix((PGraphics3D) this.g);
-
-        // pretty light
         proj.calculatePickPoints(mouseX, mouseY);
         pointLight(255, 255, 255, proj.ptStartPos.x, proj.ptStartPos.y, proj.ptStartPos.z);
 
@@ -144,7 +139,6 @@ public class Nodes extends PApplet {
             // HUD calls allow drawing on screen instead of 3D space
             cam.beginHUD();
             fill(0x33333333);
-            noStroke();
             rect(minX, minY, maxX - minX, maxY - minY);
             cam.endHUD();
         }
@@ -160,6 +154,16 @@ public class Nodes extends PApplet {
         
         // iterate selection color pulsation
         updateSelectColor();
+        
+        // draw graph in order of depth
+        // replace relevant functionality of blocked ControlWindow.draw() method
+        graph.cp5.getWindow().updateEvents();
+        PriorityQueue<GraphElement> elementQueue = graph.getDistanceSortedGraphElements();
+        while (!elementQueue.isEmpty()) {
+            GraphElement currentElement = elementQueue.poll();
+            currentElement.updateInternalEvents(this);
+            currentElement.draw(this);
+        }
     }
     
     /*

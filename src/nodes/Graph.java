@@ -6,9 +6,13 @@ import java.util.ArrayList;
 import com.hp.hpl.jena.rdf.model.*;
 
 import controlP5.ControlP5;
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.PriorityQueue;
 import java.util.Set;
 
 import processing.core.PVector;
@@ -40,10 +44,15 @@ public class Graph implements Iterable<GraphElement> {
     private HashMap<Node, ArrayList<Node>> adjacent;
     private HashSet<Edge> edges;
 
-    Graph(UnProjector u, ControlP5 c, Nodes p) {
+    Graph(UnProjector u, Nodes p) {
         proj = u;
-        cp5 = c;
         pApp = p;
+        
+        cp5 = new ControlP5(p);
+        cp5.disableShortcuts();
+        cp5.blockDraw = true;
+        
+        
         
         selection = new Selection();
 
@@ -56,6 +65,28 @@ public class Graph implements Iterable<GraphElement> {
 
         adjacent = new HashMap<>();
         edges = new HashSet<>();
+    }
+    
+    public PriorityQueue<GraphElement> getDistanceSortedGraphElements() {
+        Collection<GraphElement> elements = cp5.getAll(GraphElement.class);
+        
+        PriorityQueue<GraphElement> sorted = new PriorityQueue(100,
+            new Comparator<GraphElement>() {
+                PVector referencePoint = pApp.getCamPosition();
+                @Override
+                public int compare(GraphElement e1, GraphElement e2) {
+                    if (e1 == e2) return 0;
+                    float e1Dist = referencePoint.dist(e1.getPosition());
+                    float e2Dist = referencePoint.dist(e2.getPosition());
+                    // order is swapped to prioritize furthest elements
+                    return Float.compare(e2Dist, e1Dist);
+                }
+            });
+        
+        for (GraphElement e : elements) {
+            sorted.offer(e);
+        }
+        return sorted;
     }
 
     /**
@@ -143,7 +174,7 @@ public class Graph implements Iterable<GraphElement> {
         // add each triple in the model to the graph
         StmtIterator it = toAdd.listStatements();
         if (it.hasNext()) {
-            // stop rendering because of transient ugliness and for possible concurrency issues
+            // stop ControlP5 from doing stuff for possible concurrency issues
             cp5.setAutoDraw(false);
             
             while (it.hasNext()) {
