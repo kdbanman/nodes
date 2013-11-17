@@ -5,10 +5,8 @@ package nodes;
 
 import processing.core.*;
 
-import controlP5.ControlP5;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.PriorityQueue;
 
 //  this is the PeasyCam from https://github.com/jeffg2k/peasycam
 import peasy.PeasyCam;
