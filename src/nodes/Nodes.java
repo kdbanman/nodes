@@ -5,7 +5,6 @@ package nodes;
 
 import processing.core.*;
 
-import controlP5.ControlP5;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -21,8 +20,6 @@ public class Nodes extends PApplet {
 
     // 3D graph-viewing camera
     PeasyCam cam;
-    // 3D graph controlP5 instance
-    ControlP5 cp5;
     // matrix and vector module for interaction in 3D
     UnProjector proj;
     // graph module for RDF visualization
@@ -65,7 +62,8 @@ public class Nodes extends PApplet {
         int w = 1024;
         int h = 768;
         size(w, h, P3D);
-        frameRate(30);  
+        frameRate(30);
+        noStroke();
 
         // initialize camera
         cam = new PeasyCam(this, 0, 0, 0, 600);
@@ -81,11 +79,8 @@ public class Nodes extends PApplet {
         cam.setSpeedLock(false);
         cam.setDamping(.4, .4, .4);
 
-
-        // this ControlP5 is only for the Graph, the ControlWindow has its own
-        cp5 = new ControlP5(this);
         proj = new UnProjector(this);
-        graph = new Graph(proj, cp5, this);
+        graph = new Graph(proj, this);
         
         // horrible hack means that static panelFrame has already been constructed
         // within main()
@@ -125,10 +120,8 @@ public class Nodes extends PApplet {
         // light orange pastel background color
         background(0xFFFFDCBF);
 
-        // necessary for unprojection functionality
+        // light the scene from the cursor
         proj.captureViewMatrix((PGraphics3D) this.g);
-
-        // pretty light
         proj.calculatePickPoints(mouseX, mouseY);
         pointLight(255, 255, 255, proj.ptStartPos.x, proj.ptStartPos.y, proj.ptStartPos.z);
 

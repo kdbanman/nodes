@@ -2,9 +2,12 @@
 ##############
 
 - hmtl or controller rendered infobox
-	- 2 way data interaction (textual vs. 3D)
+	- use swingbox or jeditorpane.  both of these should embed into the existing infopanelframe, it will just take some size/layout consideration.
+		- get this thing displaying a test page!
 
 - save jena model as rdfxml
+
+- 2 way data interaction between infobox and graph(textual vs. 3D)
 
 - context menus on right click over 3D view
 
@@ -42,8 +45,6 @@
 
 - move exploration buttons to top level tab
 	- put these buttons in the README under UI systems
-
-- newline before "Data Neighborhood" in Edge string renderer
 
 - retitle label button to indicate selected, not all
 	- other transformation buttons are affected too
@@ -88,6 +89,12 @@ COMPLETED                                 (:r !date)
 
 not a comprehensive changelog - see git log for that
 ####################################################
+
+Sat Nov 16 16:12:41 MST 2013
+- newline before "Data Neighborhood" in Edge string renderer
+
+- fix depth-based transparency bug
+
 
 Thu Oct 31 14:20:36 MDT 2013
 - debug graph prefix "error"
