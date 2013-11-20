@@ -65,7 +65,7 @@ public class Nodes extends PApplet {
         int w = 1024;
         int h = 768;
         size(w, h, P3D);
-        frameRate(30);
+        frameRate(30);  
 
         // initialize camera
         cam = new PeasyCam(this, 0, 0, 0, 600);

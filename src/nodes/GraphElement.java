@@ -84,6 +84,10 @@ public class GraphElement<T> extends Controller<T> {
     public int getCol() {
         return defaultCol;
     }
+    
+    public boolean isTransparent() {
+        return getCol() < 0xFF000000;
+    }
 
     @Override
     protected void onEnter() {

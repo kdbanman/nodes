@@ -258,7 +258,9 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
      */
     private String renderedNodeString(Node n) {
         // construct string describing currently rendered data neighborhood
-        String rendered = "Data Neigborhood for:  " + graph.prefixed(n.getName()) + "\n\n";
+        String rendered = "Entity Name:  " + graph.prefixed(n.getName()) + "\n\n";
+        
+        rendered += "Properties of " + graph.prefixed(n.getName()) + ":\n\n";
         
         StmtIterator outbound = graph.getRenderedTriples().listStatements(graph.getResource(n.getName()), null, (RDFNode) null);
         while (outbound.hasNext()) {
@@ -291,6 +293,7 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
     private String renderedEdgeString(Edge e) {
         String rendered = "";
         for (Statement s : e.getTriples()) {
+            rendered += "Edge triple:  ";
             rendered += graph.prefixed(s.getSubject().toString()) + "  " +
                     graph.prefixed(s.getPredicate().toString()) + "  " +
                     graph.prefixed(s.getObject().toString());
@@ -298,8 +301,7 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
             if (predicateNode != null) {
                 rendered += "\n\n" + renderedNodeString(predicateNode);
             } else {
-                rendered += "\n\nNo data yet retrieved about predicate\n  " + s.getPredicate().toString()
-                        + "\n\nTry querying the web or a SPARQL instance with the button to the right.";
+                rendered += "\n\nNo data yet retrieved about entity\n  " + s.getPredicate().toString();
             }
             rendered += "\n\n";
         }
