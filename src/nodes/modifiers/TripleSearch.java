@@ -66,10 +66,13 @@ public class TripleSearch extends Modifier {
             src = e.getSourceNode();
             dest = e.getDestinationNode();
 
-            if (src != null && src.getLabel().contains(searchTerm))
+            if(e.getName().contains(searchTerm))
+                sele.addToBuffer(e);
+
+            if (src != null && src.getName().contains(searchTerm))
                 sele.addToBuffer(src);
 
-            if (dest != null && dest.getLabel().contains(searchTerm))
+            if (dest != null && dest.getName().contains(searchTerm))
                 sele.addToBuffer(dest);
 
             src = null;

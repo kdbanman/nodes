@@ -20,8 +20,9 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.PriorityQueue;
 import java.util.Set;
-import processing.core.PApplet;
 
+import processing.core.PApplet;
+import processing.core.PFont;
 import processing.core.PVector;
 
 /**
@@ -36,6 +37,7 @@ public class Graph implements Iterable<GraphElement> {
     
     ControllerGroup graphElementGroup;
     
+    private static final String FONTRESOURCE = "resources/labelFont.ttf";
     private Selection selection;
     
     private Model triples;
@@ -52,6 +54,7 @@ public class Graph implements Iterable<GraphElement> {
     
     private HashMap<Node, ArrayList<Node>> adjacent;
     private HashSet<Edge> edges;
+    private HashMap<Integer, PFont> fonts;
 
     Graph(UnProjector u, Nodes p) {
         proj = u;
@@ -75,6 +78,7 @@ public class Graph implements Iterable<GraphElement> {
 
         adjacent = new HashMap<>();
         edges = new HashSet<>();
+        fonts = new HashMap<>();
     }
     
     public PriorityQueue<GraphElement> getDistanceSortedGraphElements() {
@@ -554,6 +558,31 @@ public class Graph implements Iterable<GraphElement> {
         Nodes.println("\n" + problem + "\n  doesn't exist as Node.");
     }
     
+    /**
+     * To avoid duplication of font object creations this method will return a font object for a specific
+     * size or create a new font element if it doesn't exists
+     * @param size size of font > 0
+     * @return font element NULL if invalid size
+     */
+    public PFont getFontBySize(int size) {
+
+        if(size <= 0)
+            return null;
+
+        if(fonts.containsKey(size))
+           return fonts.get(size);
+
+        PFont font = cp5.getFont().getFont();
+
+        try {
+            font = pApp.createFont(FONTRESOURCE, size);
+        } catch(Exception e) {
+            System.out.println("ERROR: font not loaded.  ensure " + FONTRESOURCE + " is in program directory.");
+        }
+
+        return font;
+    }
+
     /**
      * iterates through all nodes then all edges
      */

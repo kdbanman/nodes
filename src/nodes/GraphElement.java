@@ -132,21 +132,12 @@ public class GraphElement<T> extends Controller<T> {
     
     public final void setLabelSize(int s) {
         labelSize = s;
-        
-        try {
-            labelFont = pApp.createFont("resources/labelFont.ttf", labelSize);
-            charW = labelFont.getGlyph('A').width;
-            charH = labelFont.getGlyph('A').height;
-        } catch (Exception e) {
-            System.out.println("ERROR: font not loaded.  ensure labelFont.tiff is in program directory.");
-            labelFont = graph.cp5.getFont().getFont();
-        }
-        
+        labelFont = graph.getFontBySize(labelSize);
         charW = labelFont.getGlyph('A').width;
         charH = labelFont.getGlyph('A').height;
-        
+
         calculateLabelDim();
-        
+
         pApp.textFont(labelFont);
     }
     
