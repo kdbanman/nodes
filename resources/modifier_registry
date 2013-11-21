@@ -12,6 +12,7 @@
 nodes.modifiers
 
 # CLASSES
+TripleSearch
 AllSelector
 NodeFilter
 EdgeFilter

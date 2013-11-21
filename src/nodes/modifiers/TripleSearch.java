@@ -2,7 +2,6 @@ package nodes.modifiers;
 
 import java.awt.BorderLayout;
 import java.awt.Frame;
-import java.util.ArrayList;
 import java.util.Set;
 
 import processing.core.PApplet;
@@ -10,39 +9,37 @@ import controlP5.CallbackEvent;
 import controlP5.CallbackListener;
 import controlP5.ControlP5;
 import controlP5.Textfield;
+import nodes.Edge;
 import nodes.Graph;
 import nodes.Modifier;
 import nodes.Node;
 import nodes.Selection;
 
 /**
- * @author Karim
+ * @author karim
  *
- * Modifier for selecting a list of nodes that share a common number of nodes speicifed by the user
+ * Search modifier, adds the ability to search for nodes containing or matching a string specified by the user
  * via a popup window
  */
-public class NeighbourNodesFinder extends Modifier {
+public class TripleSearch extends Modifier {
 
-    /**
-     * @param graph
-     */
-    public NeighbourNodesFinder(Graph graph) {
+    public TripleSearch(Graph graph) {
         super(graph);
     }
 
     @Override
     public boolean isCompatible() {
-        return graph.nodeCount() > 0;
+        return graph.tripleCount() > 0;
     }
 
     @Override
     public String getTitle() {
-        return "Find nodes with common neighbours";
+        return "Search";
     }
 
     @Override
     public void modify() {
-        FinderFrame f = new FinderFrame(this);
+        SearchFrame s = new SearchFrame(this);
 
         try {
             synchronized (this) {
@@ -52,33 +49,31 @@ public class NeighbourNodesFinder extends Modifier {
             e.printStackTrace();
         }
 
-        int num = f.getNeighboursSelection();
-        f.close();
+        String searchTerm = s.getSearchTerm();
+        s.close();
 
-        if (num <= 0)
+        if (searchTerm == null || searchTerm.isEmpty())
             return;
 
         Selection sele = graph.getSelection();
         sele.clearBuffer();
         sele.clear();
 
-        Set<Node> nodes = graph.getNodes();
+        Set<Edge> edges = graph.getEdges();
+        Node src, dest;
 
-        for (Node i : nodes) {
-            for (Node j : nodes) {
+        for (Edge e : edges) {
+            src = e.getSourceNode();
+            dest = e.getDestinationNode();
 
-                if (i == j)
-                    continue;
+            if (src != null && src.getLabel().contains(searchTerm))
+                sele.addToBuffer(src);
 
-                ArrayList<Node> nbrs = graph.getCommonNbrs(i, j);
+            if (dest != null && dest.getLabel().contains(searchTerm))
+                sele.addToBuffer(dest);
 
-                if (nbrs.size() == num) {
-                    if (!sele.contains(i))
-                        sele.addToBuffer(i);
-                    if (!sele.contains(j))
-                        sele.addToBuffer(j);
-                }
-            }
+            src = null;
+            dest = null;
         }
         sele.commitBuffer();
     }
@@ -86,19 +81,19 @@ public class NeighbourNodesFinder extends Modifier {
     /*
      * Mostly taken from TripleChoserFrame by kdbanman
      */
-    private class FinderFrame extends Frame {
+    private class SearchFrame extends Frame {
 
-        private static final long serialVersionUID = -5963247227145726367L;
+        private static final long serialVersionUID = 1150469663366192294L;
 
-        int neighbours;
+        private String searchTerm;
         int frameW, frameH;
 
         Object waiting;
 
-        FinderWindow finder;
+        SearchWindow search;
 
-        public FinderFrame(Object waitingObj) {
-            super("choose a number");
+        public SearchFrame(Object waitingObj) {
+            super("Enter search text");
 
             frameW = 300;
             frameH = 80;
@@ -111,53 +106,53 @@ public class NeighbourNodesFinder extends Modifier {
             setLocationRelativeTo(null);
             setResizable(false);
             setVisible(true);
-            finder = new FinderWindow();
+            search = new SearchWindow();
 
-            add(finder, BorderLayout.CENTER);
+            add(search, BorderLayout.CENTER);
             validate();
-            finder.init();
-        }
-
-        public int getNeighboursSelection() {
-            return neighbours;
-        }
-
-        public void setNeighboursSelection(int neighbours) {
-            this.neighbours = neighbours;
+            search.init();
         }
 
         public void close() {
-            finder.stop();
+            search.stop();
             dispose();
         }
 
-        private class FinderWindow extends PApplet {
+        public String getSearchTerm() {
+            return searchTerm;
+        }
+
+        public void setSearchTerm(String searchTerm) {
+            this.searchTerm = searchTerm;
+        }
+
+        private class SearchWindow extends PApplet {
 
             private static final long serialVersionUID = 982758246505135143L;
 
             ControlP5 cp5;
-            Textfield nBox;
+            Textfield sBox;
 
-            public FinderWindow() {}
+            public SearchWindow() {}
 
             @Override
             public void setup() {
                 size(frameW, frameH);
                 cp5 = new ControlP5(this);
 
-                nBox = cp5.addTextfield("number of neighbours")
-                        .setPosition(20, 20).setSize(100, 14).setInputFilter(ControlP5.INTEGER);;
+                sBox = cp5.addTextfield("search text").setPosition(20, 20)
+                        .setSize(150, 20).setText("").setFocus(true);
 
-                setNeighboursSelection(1);
+                setSearchTerm("");
 
-                cp5.addButton("FIND NODES").setPosition(200, 20)
-                        .setSize(70, 14).addCallback(new CallbackListener() {
+                cp5.addButton("FIND TRIPLES").setPosition(200, 20)
+                        .setSize(70, 20).addCallback(new CallbackListener() {
 
                             @Override
                             public void controlEvent(CallbackEvent event) {
                                 if (event.getAction() == ControlP5.ACTION_RELEASED) {
 
-                                    setNeighboursSelection(Integer.parseInt(nBox.getText()));
+                                    setSearchTerm(sBox.getText());
 
                                     synchronized (waiting) {
                                         waiting.notify();
