@@ -9,8 +9,11 @@ import controlP5.ControlP5;
 import controlP5.ControlWindow;
 import controlP5.ControllerGroup;
 import controlP5.Tab;
+
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -298,10 +301,28 @@ public class Graph implements Iterable<GraphElement> {
     /**
      * returns null if node nonexistent
      */
+    @SuppressWarnings("unchecked")
     public ArrayList<Node> getNbrs(Node n) {
-        return adjacent.get(n);
+        return (ArrayList<Node>) adjacent.get(n).clone();
     }
 
+    /**
+     * Given two nodes this will return the common neighbours that they share
+     * @param a node
+     * @param b node
+     * @return list of common neighbours
+     */
+    public ArrayList<Node> getCommonNbrs(Node a, Node b) {
+
+        if(a == null || b == null)
+            return (ArrayList<Node>) Collections.<Node>emptyList();
+
+        ArrayList<Node> rtn = getNbrs(a);
+
+        rtn.retainAll(getNbrs(b));
+
+        return rtn;
+    }
     /**
      * return node's degree for view graph, not for the relational graph
      */
