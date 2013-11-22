@@ -218,6 +218,12 @@ public class Graph implements Iterable<GraphElement> {
         return triples.getResource(uri);
     }
     
+    /**
+     * 
+     * @param uri
+     * @return namespace prefixed version of uri. 
+     *      Example: http://www.w3.org/1999/02/22-rdf-syntax-ns#type --> rdf:type
+     */
     public String prefixed(String uri) {
         return triples.shortForm(uri);
     }
