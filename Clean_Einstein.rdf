@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<rdf:RDF
+	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+	xmlns:owl="http://www.w3.org/2002/07/owl#"
+	xmlns:dcterms="http://purl.org/dc/terms/"
+	xmlns:dbpedia-owl="http://dbpedia.org/ontology/"
+	xmlns:foaf="http://xmlns.com/foaf/0.1/"
+	xmlns:dbpprop="http://dbpedia.org/property/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:ns8="http://www.w3.org/ns/prov#" >
+  <rdf:Description rdf:about="http://dbpedia.org/resource/%C3%89mile_Meyerson">
+    <dbpedia-owl:influencedBy rdf:resource="http://dbpedia.org/resource/Albert_Einstein" />
+    <dbpprop:influences rdf:resource="http://dbpedia.org/resource/Albert_Einstein" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://dbpedia.org/resource/Boris_Podolsky">
+    <dbpedia-owl:influencedBy rdf:resource="http://dbpedia.org/resource/Albert_Einstein" />
+    <dbpprop:influences rdf:resource="http://dbpedia.org/resource/Albert_Einstein" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://dbpedia.org/resource/David_Bohm">
+    <dbpedia-owl:influencedBy rdf:resource="http://dbpedia.org/resource/Albert_Einstein" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://dbpedia.org/resource/Gunnar_Nordstr%C3%B6m">
+    <dbpedia-owl:influenced rdf:resource="http://dbpedia.org/resource/Albert_Einstein" />
+    <dbpedia-owl:influencedBy rdf:resource="http://dbpedia.org/resource/Albert_Einstein" />
+    <dbpprop:influences rdf:resource="http://dbpedia.org/resource/Albert_Einstein" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://dbpedia.org/resource/Kurt_Mendelssohn">
+    <dbpedia-owl:academicAdvisor rdf:resource="http://dbpedia.org/resource/Albert_Einstein" />
+    <dbpprop:academicAdvisors rdf:resource="http://dbpedia.org/resource/Albert_Einstein" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://dbpedia.org/resource/L%C3%A9on_Brillouin">
+    <dbpedia-owl:influencedBy rdf:resource="http://dbpedia.org/resource/Albert_Einstein" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://dbpedia.org/resource/The_Eternal_Jew_(1940_film)">
+    <dbpprop:caption rdf:resource="http://dbpedia.org/resource/Albert_Einstein" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://dbpedia.org/resource/Ernst_Mach">
+    <dbpedia-owl:influenced rdf:resource="http://dbpedia.org/resource/Albert_Einstein" />
+    <dbpprop:influenced rdf:resource="http://dbpedia.org/resource/Albert_Einstein" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://dbpedia.org/resource/Mileva_Mari%C4%87">
+    <dbpedia-owl:spouse rdf:resource="http://dbpedia.org/resource/Albert_Einstein" />
+    <dbpprop:spouse rdf:resource="http://dbpedia.org/resource/Albert_Einstein" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://dbpedia.org/resource/Neil_deGrasse_Tyson">
+    <dbpedia-owl:influencedBy rdf:resource="http://dbpedia.org/resource/Albert_Einstein" />
+    <dbpprop:influences rdf:resource="http://dbpedia.org/resource/Albert_Einstein" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://data.nytimes.com/49783928729941204213">
+    <owl:sameAs rdf:resource="http://dbpedia.org/resource/Albert_Einstein" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://dbpedia.org/resource/Einstein">
+    <dbpedia-owl:wikiPageRedirects rdf:resource="http://dbpedia.org/resource/Albert_Einstein" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://dbpedia.org/resource/Albert_Eienstein">
+    <dbpedia-owl:wikiPageRedirects rdf:resource="http://dbpedia.org/resource/Albert_Einstein" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://dbpedia.org/resource/A_Tribute_to_Einstein">
+    <dbpedia-owl:wikiPageRedirects rdf:resource="http://dbpedia.org/resource/Albert_Einstein" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://dbpedia.org/resource/Einstein_(crater)">
+    <dbpprop:eponym rdf:resource="http://dbpedia.org/resource/Albert_Einstein" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://de.dbpedia.org/resource/Albert_Einstein">
+    <owl:sameAs rdf:resource="http://dbpedia.org/resource/Albert_Einstein" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://fr.dbpedia.org/resource/Albert_Einstein">
+    <owl:sameAs rdf:resource="http://dbpedia.org/resource/Albert_Einstein" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://dbpedia.org/resource/List_of_Nobel_laureates_by_university_affiliation">
+    <dbpprop:t rdf:resource="http://dbpedia.org/resource/Albert_Einstein" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://dbpedia.org/resource/2001_Einstein">
+    <dbpprop:namedAfter rdf:resource="http://dbpedia.org/resource/Albert_Einstein" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://dbpedia.org/resource/Mujahid_Kamran">
+    <dbpedia-owl:influencedBy rdf:resource="http://dbpedia.org/resource/Albert_Einstein" />
+    <dbpprop:influences rdf:resource="http://dbpedia.org/resource/Albert_Einstein" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://dbpedia.org/resource/Einstein_(disambiguation)">
+    <dbpedia-owl:wikiPageDisambiguates rdf:resource="http://dbpedia.org/resource/Albert_Einstein" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://dbpedia.org/resource/Atomic_Power_(film)">
+    <dbpedia-owl:starring rdf:resource="http://dbpedia.org/resource/Albert_Einstein" />
+    <dbpprop:starring rdf:resource="http://dbpedia.org/resource/Albert_Einstein" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://dbpedia.org/resource/Ernst_G._Straus">
+    <dbpedia-owl:academicAdvisor rdf:resource="http://dbpedia.org/resource/Albert_Einstein" />
+    <dbpprop:academicAdvisors rdf:resource="http://dbpedia.org/resource/Albert_Einstein" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://dbpedia.org/resource/Albert_Einstein">
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/PeopleAssociatedWithTheUniversityOfZurich" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/Philosopher110423589" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/JewishAmericanScientists" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/GermanEmigrantsToSwitzerland" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/AmericanPeopleOfSwiss-JewishDescent" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/20th-centurySwissPeople" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/PeopleInAFirst-cousinRelationship" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/AmericanPeopleOfGerman-JewishDescent" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/AcademicsOfCharlesUniversityInPrague" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/SwissEmigrantsToTheUnitedStates" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/YagoLegalActorGeo" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/Colleague109935990" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/Astronomer109818343" />
+    <rdf:type rdf:resource="http://db/home/kdbanman/Desktoppedia.org/class/yago/SwissInventors" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/AmericanInventors" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/Deist110000459" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/GermanHumanitarians" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/SwissNobelLaureates" />
+    <rdf:type rdf:resource="http://schema.org/Person" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/Whole100003553" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/Speaker110630188" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/GermanPhysicists" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/GermanInventors" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/JewishPhysicists" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/Physicist110428004" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/NonreligiousPerson109625789" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/LivingThing100004258" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/Exile110071332" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/JewishPhilosophers" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/Scientist110560637" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/Recipient109627906" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/AmericanPacifists" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/Scholar110557854" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/Migrant110314952" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/Inquirer110207831" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/SwissPacifists" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/Intellectual109621545" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/Pacifist110390199" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/Benefactor109608709" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/Emigrant110051975" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/National109625401" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/Alumnus109786338" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/Associate109816771" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/NobelLaureatesInPhysics" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/Articulator109811712" />
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/Laureate110249011" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/Object100002684" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/AmericanHumanitarians" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/Refugee110516016" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/19th-centuryGermanPeople" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/GermanPhilosophers" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/19th-centuryAmericanPeople" />
+    <rdf:type rdf:resource="http://umbel.org/umbel/rc/PersonWithOccupation" />
+    <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Person" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/GoodPerson110138767" />
+    <rdf:type rdf:resource="http://dbpedia.org/ontology/Scientist" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/Cosmologist109819667" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/Inventor110214637" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/Traveler109629752" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/PhysicalEntity100001930" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/Communicator109610660" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/Peer109626238" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/TheoreticalPhysicists" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/GermanNobelLaureates" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/19th-centurySwissPeople" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/Professional110480253" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/Citizen109923673" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/SwissHumanitarians" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/SwissPhilosophers" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/PatentExaminers" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/Examiner110068234" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/StatelessPersons" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/FellowsOfTheLeopoldina" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/GermanPacifists" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/PeopleFromUlm" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/JewishInventors" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/JewishPacifists" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/Writer110794014" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/Creator109614315" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/Academician109759069" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/CausalAgent100007347" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/Organism100004475" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/YagoLegalActor" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/Absentee109757653" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/NaturalizedCitizensOfTheUnitedStates" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/Agnostic109779124" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/JewishAgnostics" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/Humanitarian110191613" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/DisplacedPerson110017890" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/JewishAmericanWriters" />
+    <rdf:type rdf:resource="http://dbpedia.org/ontology/Agent" />
+    <rdf:type rdf:resource="http://dbpedia.org/ontology/Person" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/Person100007846" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/Honoree110183757" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/SwissPhysicists" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/ETHZurichAlumni" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/Acquirer109764201" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/Adult109605289" />
+    <rdf:type rdf:resource="http://umbel.org/umbel/rc/Scientist" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/PeopleFromTheKingdomOfW%C3%BCrttemberg" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/Educator110045713" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/AmericanPhysicists" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/Deists" />
+    <rdf:type rdf:resource="http://dbpedia.org/class/yago/Cosmologists" />
+    <dcterms:subject rdf:resource="http://dbpedia.org/resource/Category:People_with_acquired_Swiss_citizenship" />
+    <dcterms:subject rdf:resource="http://dbpedia.org/resource/Category:Nobel_laureates_in_Physics" />
+    <dcterms:subject rdf:resource="http://dbpedia.org/resource/Category:People_from_Munich" />
+    <dcterms:subject rdf:resource="http://dbpedia.org/resource/Category:Swiss_emigrants_to_the_United_States" />
+    <dcterms:subject rdf:resource="http://dbpedia.org/resource/Category:Foreign_Members_of_the_Royal_Society" />
+    <dcterms:subject rdf:resource="http://dbpedia.org/resource/Category:Jewish_agnostics" />
+    <dcterms:subject rdf:resource="http://dbpedia.org/resource/Category:German_Jews_who_emigrated_to_the_United_States_to_escape_Nazism" />
+    <dcterms:subject rdf:resource="http://dbpedia.org/resource/Category:American_agnostics" />
+    <dcterms:subject rdf:resource="http://dbpedia.org/resource/Category:Academics_of_Charles_University_in_Prague" />
+    <dcterms:subject rdf:resource="http://dbpedia.org/resource/Category:1955_deaths" />
+    <dcterms:subject rdf:resource="http://dbpedia.org/resource/Category:People_from_Zurich" />
+    <dcterms:subject rdf:resource="http://dbpedia.org/resource/Category:Swiss_agnostics" />
+    <dcterms:subject rdf:resource="http://dbpedia.org/resource/Category:Stateless_people" />
+    <dcterms:subject rdf:resource="http://dbpedia.org/resource/Category:People_from_Ulm" />
+    <dcterms:subject rdf:resource="http://dbpedia.org/resource/Category:Deaths_from_abdominal_aortic_aneurysm" />
+    <dcterms:subject rdf:resource="http://dbpedia.org/resource/Category:Einstein_family" />
+    <dcterms:subject rdf:resource="http://dbpedia.org/resource/Category:Patent_examiners" />
+    <dcterms:subject rdf:resource="http://dbpedia.org/resource/Category:German_socialists" />
+    <dcterms:subject rdf:resource="http://dbpedia.org/resource/Category:German_emigrants_to_Switzerland" />
+    <dcterms:subject rdf:resource="http://dbpedia.org/resource/Category:Jewish_physicists" />
+    <dcterms:subject rdf:resource="http://dbpedia.org/resource/Category:ETH_Zurich_alumni" />
+    <dcterms:subject rdf:resource="http://dbpedia.org/resource/Category:Swiss_physicists" />
+    <dcterms:subject rdf:resource="http://dbpedia.org/resource/Category:1879_births" />
+    <dcterms:subject rdf:resource="http://dbpedia.org/resource/Category:People_from_Princeton,_New_Jersey" />
+    <dcterms:subject rdf:resource="http://dbpedia.org/resource/Category:Winners_of_the_Max_Planck_Medal" />
+    <dcterms:subject rdf:resource="http://dbpedia.org/resource/Category:People_with_acquired_Austria-Hungary_citizenship" />
+    <dcterms:subject rdf:resource="http://dbpedia.org/resource/Category:Philosophers_of_science" />
+    <dcterms:subject rdf:resource="http://dbpedia.org/resource/Category:Naturalized_citizens_of_the_United_States" />
+    <dcterms:subject rdf:resource="http://dbpedia.org/resource/Category:People_from_Bern" />
+    <dcterms:subject rdf:resource="http://dbpedia.org/resource/Category:Theoretical_physicists" />
+    <dcterms:subject rdf:resource="http://dbpedia.org/resource/Category:American_physicists" />
+    <dcterms:subject rdf:resource="http://dbpedia.org/resource/Category:Leiden_University_faculty" />
+    <dcterms:subject rdf:resource="http://dbpedia.org/resource/Category:Albert_Einstein" />
+    <dcterms:subject rdf:resource="http://dbpedia.org/resource/Category:Jewish_American_scientists" />
+    <dcterms:subject rdf:resource="http://dbpedia.org/resource/Category:People_from_Berlin" />
+    <dcterms:subject rdf:resource="http://dbpedia.org/resource/Category:Cosmologists" />
+    <dcterms:subject rdf:resource="http://dbpedia.org/resource/Category:German_physicists" />
+    <dcterms:subject rdf:resource="http://dbpedia.org/resource/Category:Institute_for_Advanced_Study_faculty" />
+    <dcterms:subject rdf:resource="http://dbpedia.org/resource/Category:ETH_Zurich_faculty" />
+    <dcterms:subject rdf:resource="http://dbpedia.org/resource/Category:Pacifists" />
+    <dbpedia-owl:academicAdvisor rdf:resource="http://dbpedia.org/resource/Heinrich_Friedrich_Weber" />
+    <dbpedia-owl:birthDate rdf:datatype="http://www.w3.org/2001/XMLSchema#date">1879-03-14</dbpedia-owl:birthDate>
+    <dbpedia-owl:birthPlace rdf:resource="http://dbpedia.org/resource/Kingdom_of_W%C3%BCrttemberg" />
+    <dbpedia-owl:birthPlace rdf:resource="http://dbpedia.org/resource/Ulm" />
+    <dbpedia-owl:birthPlace rdf:resource="http://dbpedia.org/resource/German_Empire" />
+    <dbpedia-owl:birthPlace rdf:resource="http://dbpedia.org/resource/Baden-W%C3%BCrttemberg" />
+    <dbpedia-owl:deathDate rdf:datatype="http://www.w3.org/2001/XMLSchema#date">1955-04-18</dbpedia-owl:deathDate>
+    <dbpedia-owl:deathPlace rdf:resource="http://dbpedia.org/resource/Princeton,_New_Jersey" />
+    <dbpedia-owl:deathPlace rdf:resource="http://dbpedia.org/resource/United_States" />
+    <dbpedia-owl:doctoralAdvisor rdf:resource="http://dbpedia.org/resource/Alfred_Kleiner" />
+    <dbpedia-owl:field rdf:resource="http://dbpedia.org/resource/Physics" />
+    <dbpedia-owl:residence rdf:resource="http://dbpedia.org/resource/Switzerland" />
+    <dbpedia-owl:residence rdf:resource="http://dbpedia.org/resource/United_States" />
+    <dbpedia-owl:spouse rdf:resource="http://dbpedia.org/resource/Mileva_Mari%C4%87" />
+    <dbpedia-owl:wikiPageID rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">736</dbpedia-owl:wikiPageID>
+    <dbpedia-owl:wikiPageRevisionID rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">548308618</dbpedia-owl:wikiPageRevisionID>
+    <foaf:depiction rdf:resource="http://upload.wikimedia.org/wikipedia/commons/6/66/Einstein_1921_by_F_Schmutzer.jpg" />
+    <foaf:name xml:lang="en">Albert Einstein</foaf:name>
+    <dbpedia-owl:thumbnail rdf:resource="http://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Einstein_1921_by_F_Schmutzer.jpg/200px-Einstein_1921_by_F_Schmutzer.jpg" />
+    <dbpedia-owl:wikiPageExternalLink rdf:resource="http://www.history.com/topics/albert-einstein" />
+    <dbpedia-owl:wikiPageExternalLink rdf:resource="http://nobelprize.org/nobel_prizes/physics/laureates/1921/einstein-bio.html" />
+    <dbpedia-owl:wikiPageExternalLink rdf:resource="http://www.monthlyreview.org/598einstein.php" />
+    <dbpedia-owl:wikiPageExternalLink rdf:resource="http://books.google.com/books?id=875TTxildJ0C&amp;dq=idiots+guide+to+einstein&amp;printsec=frontcover" />
+    <dbpedia-owl:wikiPageExternalLink rdf:resource="http://www.physik.uni-augsburg.de/annalen/history/einstein-papers/1905_17_132-148.pdf" />
+    <dbpedia-owl:wikiPageExternalLink rdf:resource="http://www.wdl.org/en/item/2745/" />
+    <dbpedia-owl:wikiPageExternalLink rdf:resource="http://phys4.harvard.edu/~wilson/NYTimes1948.html" />
+    <dbpedia-owl:wikiPageExternalLink rdf:resource="http://press.princeton.edu/einstein/" />
+    <dbpedia-owl:wikiPageExternalLink rdf:resource="http://press.princeton.edu/einstein/writings.html#papers" />
+    <dbpedia-owl:wikiPageExternalLink rdf:resource="http://vault.fbi.gov/Albert%20Einstein" />
+    <dbpedia-owl:wikiPageExternalLink rdf:resource="http://archon.brandeis.edu/?p=collections/findingaid&amp;id=41" />
+    <dbpedia-owl:wikiPageExternalLink rdf:resource="http://web.archive.org/web/20110608004818/http:/ocw.mit.edu/courses/science-technology-and-society/sts-042j-einstein-oppenheimer-feynman-physics-in-the-20th-century-spring-2006/" />
+    <dbpedia-owl:wikiPageExternalLink rdf:resource="http://www.shapell.org/exhibitions.aspx?einstein-original-letters-in-aid-of-his-brethren" />
+    <dbpedia-owl:wikiPageExternalLink rdf:resource="http://www.monthlyreview.org/598einst.htm" />
+    <dbpedia-owl:wikiPageExternalLink rdf:resource="http://scholar.google.com.au/citations?user=qc6CJjYAAAAJ&amp;hl=en" />
+    <dbpedia-owl:wikiPageExternalLink rdf:resource="http://www.pbs.org/wgbh/aso/databank/entries/bpeins.html" />
+    <dbpedia-owl:wikiPageExternalLink rdf:resource="http://www.msnbc.msn.com/id/46785542/ns/technology_and_science-science/" />
+    <dbpedia-owl:wikiPageExternalLink rdf:resource="http://www.scribd.com/doc/23220527/Ideas-and-Opinions-by-Albert-Einstein" />
+    <dbpedia-owl:wikiPageExternalLink rdf:resource="http://www.nybooks.com/articles/archives/1966/mar/17/on-albert-einstein/?pagination=false" />
+    <dbpedia-owl:wikiPageExternalLink rdf:resource="http://www.alberteinstein.info/" />
+    <dbpedia-owl:wikiPageExternalLink rdf:resource="http://www.einstein.caltech.edu/index.html" />
+    <dbpedia-owl:wikiPageExternalLink rdf:resource="http://nobelprize.org/nobel_prizes/physics/laureates/1921/einstein-lecture.pdf" />
+    <dbpedia-owl:wikiPageExternalLink rdf:resource="http://www-history.mcs.st-andrews.ac.uk/Biographies/Einstein.html" />
+    <dbpedia-owl:wikiPageExternalLink rdf:resource="http://life.tumblr.com/post/526230217/the-einstein-you-never-knew" />
+    <dbpprop:academicAdvisors rdf:resource="http://dbpedia.org/resource/Heinrich_Friedrich_Weber" />
+    <dbpprop:birthDate rdf:datatype="http://www.w3.org/2001/XMLSchema#date">1879-03-14</dbpprop:birthDate>
+    <dbpprop:birthPlace rdf:resource="http://dbpedia.org/resource/Kingdom_of_W%C3%BCrttemberg" />
+    <dbpprop:birthPlace rdf:resource="http://dbpedia.org/resource/Ulm" />
+    <dbpprop:birthPlace rdf:resource="http://dbpedia.org/resource/German_Empire" />
+    <dbpprop:caption xml:lang="en">Albert Einstein in 1921</dbpprop:caption>
+    <dbpprop:children rdf:resource="http://dbpedia.org/resource/Einstein_family" />
+    <dbpprop:children rdf:resource="http://dbpedia.org/resource/Eduard_Einstein" />
+    <dbpprop:children rdf:resource="http://dbpedia.org/resource/Hans_Albert_Einstein" />
+    <dbpprop:dateOfBirth rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1879</dbpprop:dateOfBirth>
+    <dbpprop:dateOfDeath rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1955</dbpprop:dateOfDeath>
+    <dbpprop:deathDate rdf:datatype="http://www.w3.org/2001/XMLSchema#date">1955-04-18</dbpprop:deathDate>
+    <dbpprop:deathPlace xml:lang="en">Princeton, New Jersey, United States</dbpprop:deathPlace>
+    <dbpprop:doctoralAdvisor rdf:resource="http://dbpedia.org/resource/Alfred_Kleiner" />
+    <dbpprop:ethnicity xml:lang="en">Jewish</dbpprop:ethnicity>
+    <dbpprop:fields rdf:resource="http://dbpedia.org/resource/Physics" />
+    <dbpprop:lccn xml:lang="en">n/79/22889</dbpprop:lccn>
+    <dbpprop:name xml:lang="en">Einstein, Albert</dbpprop:name>
+    <dbpprop:name xml:lang="en">Albert Einstein</dbpprop:name>
+    <dbpprop:placeOfBirth rdf:resource="http://dbpedia.org/resource/Ulm" />
+    <dbpprop:placeOfBirth rdf:resource="http://dbpedia.org/resource/German_Empire" />
+    <dbpprop:placeOfBirth rdf:resource="http://dbpedia.org/resource/Baden-W%C3%BCrttemberg" />
+    <dbpprop:placeOfDeath rdf:resource="http://dbpedia.org/resource/Princeton,_New_Jersey" />
+    <dbpprop:placeOfDeath rdf:resource="http://dbpedia.org/resource/United_States" />
+    <dbpprop:pnd rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">118529579</dbpprop:pnd>
+    <dbpprop:residence xml:lang="en">Germany, Italy, Switzerland, Austria, Belgium, United States</dbpprop:residence>
+    <dbpprop:shortDescription rdf:resource="http://dbpedia.org/resource/Physicist" />
+    <dbpprop:signature xml:lang="en">Albert Einstein signature 1934.svg</dbpprop:signature>
+    <dbpprop:spouse xml:lang="en">Mileva Marić</dbpprop:spouse>
+    <dbpprop:viaf rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">75121530</dbpprop:viaf>
+    <dbpprop:wordnet_type rdf:resource="http://www.w3.org/2006/03/wn/wn20/instances/synset-scientist-noun-1" />
+    <foaf:givenName xml:lang="en">Albert</foaf:givenName>
+    <foaf:isPrimaryTopicOf rdf:resource="http://en.wikipedia.org/wiki/Albert_Einstein" />
+    <dc:description xml:lang="en">Physicist</dc:description>
+    <ns8:wasDerivedFrom rdf:resource="http://en.wikipedia.org/wiki/Albert_Einstein?oldid=548308618" />
+    <dbpprop:hasPhotoCollection rdf:resource="http://wifo5-03.informatik.uni-mannheim.de/flickrwrappr/photos/Albert_Einstein" />
+    <foaf:surname xml:lang="en">Einstein</foaf:surname>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://dbpedia.org/resource/Hans_Albert_Einstein">
+    <dbpedia-owl:parent rdf:resource="http://dbpedia.org/resource/Albert_Einstein" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://dbpedia.org/resource/Baruch_Spinoza">
+    <dbpedia-owl:influenced rdf:resource="http://dbpedia.org/resource/Albert_Einstein" />
+    <dbpprop:influenced rdf:resource="http://dbpedia.org/resource/Albert_Einstein" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://dbpedia.org/resource/Le%C3%B3_Szil%C3%A1rd">
+    <dbpedia-owl:academicAdvisor rdf:resource="http://dbpedia.org/resource/Albert_Einstein" />
+    <dbpprop:academicAdvisors rdf:resource="http://dbpedia.org/resource/Albert_Einstein" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://dbpedia.org/resource/Photon">
+    <dbpprop:theorized rdf:resource="http://dbpedia.org/resource/Albert_Einstein" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://dbpedia.org/resource/Paco_Ahlgren">
+    <dbpedia-owl:influencedBy rdf:resource="http://dbpedia.org/resource/Albert_Einstein" />
+    <dbpprop:influences rdf:resource="http://dbpedia.org/resource/Albert_Einstein" />
+  </rdf:Description>
+</rdf:RDF>
