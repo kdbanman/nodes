@@ -57,10 +57,6 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
     // string to add events to
     String eventLogString;
     
-    // scrollable text area to render triples readable according to selection
-    // or to provide application instructions
-    Textarea infoBox;
-    
     // scrollable text area to log events/feedback to the user
     Textarea eventLog;
     
@@ -114,13 +110,6 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
         
         cp5 = new ControlP5(this)
                 .setMoveable(false);
-    
-        // scrollable text area to render triples readable
-        infoBox = cp5.addTextarea("Data Window")
-                .setPosition(padding, padding)
-                .setSize(w - 3 * padding - buttonWidth, h - 2 * padding - 50)
-                .setText(infoDefault)
-                .setFont(infoFont);
         
         eventLog = cp5.addTextarea("Event Log")
                 .setPosition(w - padding - buttonWidth, 4 * padding + 3 * buttonHeight)
@@ -184,7 +173,6 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
                 // no graph elements are being inspected, so display the default text
                 toDisplay = infoDefault;
             }
-            infoBox.setText(toDisplay);
         }
     }
     
