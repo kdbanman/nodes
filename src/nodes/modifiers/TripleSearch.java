@@ -66,13 +66,13 @@ public class TripleSearch extends Modifier {
             src = e.getSourceNode();
             dest = e.getDestinationNode();
 
-            if(e.getName().contains(searchTerm))
+            if(e.getName().contains(searchTerm) || graph.prefixed(e.getName()).contains(searchTerm))
                 sele.addToBuffer(e);
 
-            if (src != null && src.getName().contains(searchTerm))
+            if (src != null && (src.getName().contains(searchTerm) || graph.prefixed(src.getName()).contains(searchTerm)))
                 sele.addToBuffer(src);
 
-            if (dest != null && dest.getName().contains(searchTerm))
+            if (dest != null && (dest.getName().contains(searchTerm) || graph.prefixed(dest.getName()).contains(searchTerm)))
                 sele.addToBuffer(dest);
 
             src = null;
@@ -99,7 +99,7 @@ public class TripleSearch extends Modifier {
             super("Enter search text");
 
             frameW = 300;
-            frameH = 80;
+            frameH = 100;
 
             waiting = waitingObj;
 
