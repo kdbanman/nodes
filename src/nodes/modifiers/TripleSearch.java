@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Frame;
 import java.util.Set;
 
+import com.hp.hpl.jena.rdf.model.Statement;
+
 import processing.core.PApplet;
 import controlP5.CallbackEvent;
 import controlP5.CallbackListener;
@@ -74,6 +76,11 @@ public class TripleSearch extends Modifier {
 
             if (dest != null && (dest.getName().contains(searchTerm) || graph.prefixed(dest.getName()).contains(searchTerm)))
                 sele.addToBuffer(dest);
+
+            for(Statement st: e.getTriples()) {
+                if(st.getPredicate() != null && (st.getPredicate().toString().contains(searchTerm) || graph.prefixed(st.getPredicate().toString()).contains(searchTerm)))
+                    sele.addToBuffer(e);
+            }
 
             src = null;
             dest = null;
