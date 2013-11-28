@@ -1,3 +1,6 @@
+startup on OSX will gray out windows and not respond (intermittent, first start only, works second time)
+
+
 Exception in thread "Animation Thread" java.lang.NullPointerException
 	at nodes.ModifierPopulator.removeEntry(ModifierPopulator.java:234)
 	at nodes.ModifierPopulator.populate(ModifierPopulator.java:171)

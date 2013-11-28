@@ -1,9 +1,8 @@
 #CORE FEATURES
 ##############
 
-- hmtl or controller rendered infobox
-	- use swingbox or jeditorpane.  both of these should embed into the existing infopanelframe, it will just take some size/layout consideration.
-		- get this thing displaying a test page!
+- html renderer for infopanel
+	- extract and modify string-building methods from infopanel
 
 - save jena model as rdfxml
 
@@ -21,18 +20,35 @@
 #REFACTORS
 ##########
 
+- rename the infopanel components more meaningfully
+
+- remove leftover cruft from the plaintext infopanel
+
 #MODIFIERS
 ##########
 
 - filter only literals
+
+- filter only numerical literals
+
+- filter only strings
+
 - filter only resources
 
-- select common neighborhood of selected nodes
+- select all rdf:comment
 
-- select all nodes of same rdf:Type
+- select connected rdf:comment
 
-- select all edges with common predicate, predicate and object, subject, subj and obj, bla bla bla
-	- for edges that contain at least one triple in each direction, what do?  probably just populate selection list for each triple in edge for triple-dependent queries
+- select connected rdf:type
+
+- MODIFIERSET (resource can have multiple types) : select all nodes of same rdf:Type
+
+- MODIFIERSET (edge can have multiple triples) : select all edges with common predicate, predicate and object, subject and predicate
+	- exclusions:
+		-common subject, predicate, and object will select exactly the already-selected edge
+		- common subject and object will select exactly the. already-selected edge
+		- common subject or object are trivial for the user to figure out - just select the neighborhood of the node he or she wants
+	- is there a special case for edges that contain at least one triple in each direction
 
 - select shortest path between 2 nodes
 
@@ -89,6 +105,14 @@ COMPLETED                                 (:r !date)
 
 not a comprehensive changelog - see git log for that
 ####################################################
+
+Thu Nov 28 16:43:12 MST 2013
+- select common neighborhood of selected nodes
+
+- hmtl or controller rendered infobox
+	- use swingbox or jeditorpane.  both of these should embed into the existing infopanelframe, it will just take some size/layout consideration.
+		- get this thing displaying a test page!
+
 
 Sat Nov 16 16:12:41 MST 2013
 - newline before "Data Neighborhood" in Edge string renderer
