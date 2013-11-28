@@ -7,16 +7,20 @@
 
 - save jena model as rdfxml
 
+- sdb connectivity in "Load Triples" and in "Explore..."
+
+- save program state to .nod file
+	- load program state from bla
+
 - 2 way data interaction between infobox and graph(textual vs. 3D)
 
 - context menus on right click over 3D view
 
+- generalize visual representation/processing with w3's n-ary relation spec
+
 - collapse connections to edge
 
 - collapse subgraph to node
-
-- save program state to .nod file
-	- load program state from bla
 
 #REFACTORS
 ##########
