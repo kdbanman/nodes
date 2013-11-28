@@ -64,10 +64,7 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
     Button exploreWeb;
     Button exploreSparql;
     
-    public InfoPanel(int frameWidth, int frameHeight, Graph parentGraph) {
-        w = frameWidth;
-        h = frameHeight;
-        
+    public InfoPanel(int frameHeight, Graph parentGraph) {
         try {
             infoFont = createFont("resources/labelFont.ttf", 12, true);
         } catch (Exception e) {
@@ -87,6 +84,9 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
         buttonWidth = 200;
         buttonHeight = 30;
         
+        w = buttonWidth + 2 * padding;
+        h = frameHeight;
+        
         // initialize graph
         graph = parentGraph;
         
@@ -98,6 +98,20 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
                 "at the address in Load Triples -> SPARQL -> Endpoint IP:Port or URL\n";
         
         eventLogString = "";
+    }
+    
+    public int getWidth() {
+        return w;
+    }
+    
+    public int getHeight() {
+        return h;
+    }
+    
+    public void setHeight(int newHeight) {
+        h = newHeight;
+        size(w, h);
+        eventLog.setSize(buttonWidth, h - 4 * padding - 2 * buttonHeight - 50);
     }
     
     @Override
@@ -112,14 +126,12 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
                 .setMoveable(false);
         
         eventLog = cp5.addTextarea("Event Log")
-                .setPosition(w - padding - buttonWidth, 4 * padding + 3 * buttonHeight)
-                .setSize(buttonWidth, h - 5 * padding - 3 * buttonHeight - 25)
+                .setPosition(w - padding - buttonWidth, 3 * padding + 2 * buttonHeight)
+                .setSize(buttonWidth, h - 4 * padding - 2 * buttonHeight - 50)
                 .setText(eventLogString)
                 .setFont(eventFont)
                 .setColor(0xFFFF5555);
         
-        // TODO: move these to main control panel
-        // exploration buttons to query the web or the database
         exploreWeb = cp5.addButton("Explore Web")
                 .setPosition(w - padding - buttonWidth, padding)
                 .setSize(buttonWidth, buttonHeight)
