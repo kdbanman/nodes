@@ -33,7 +33,7 @@ import org.openjena.riot.RiotException;
  *
  * @author kdbanman
  */
-public class InfoPanel extends PApplet implements Selection.SelectionListener {
+public class InfoPanelControllers extends PApplet implements Selection.SelectionListener {
     int w, h;
     
     int padding;
@@ -64,7 +64,7 @@ public class InfoPanel extends PApplet implements Selection.SelectionListener {
     Button exploreWeb;
     Button exploreSparql;
     
-    public InfoPanel(int frameHeight, Graph parentGraph) {
+    public InfoPanelControllers(int frameHeight, Graph parentGraph) {
         try {
             infoFont = createFont("resources/labelFont.ttf", 12, true);
         } catch (Exception e) {

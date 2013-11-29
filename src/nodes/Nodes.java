@@ -370,7 +370,7 @@ public class Nodes extends PApplet {
         hovered.add(element);
         
         // notify info panel of change in hover
-        infoPanelFrame.info.updateNextFrame();
+        infoPanelFrame.infoControllers.updateNextFrame();
     }
 
     // make sure that no GraphElement erroneously keeps mouseover state:
@@ -396,7 +396,7 @@ public class Nodes extends PApplet {
                 it.remove();
                 
                 // notify info panel of change in hover
-                infoPanelFrame.info.updateNextFrame();
+                infoPanelFrame.infoControllers.updateNextFrame();
             }
         }
     }
@@ -416,7 +416,7 @@ public class Nodes extends PApplet {
     
     // log event to user in infopanel event box
     public void logEvent(String s) {
-        infoPanelFrame.info.logEvent(s);
+        infoPanelFrame.infoControllers.logEvent(s);
     }
     
     // get SPARQL endpoint URI from control panel.  now *this* is tiiiggght coupling. :(

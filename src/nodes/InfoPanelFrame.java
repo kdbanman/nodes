@@ -8,10 +8,8 @@ import java.awt.Insets;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import javax.swing.JEditorPane;
-import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
-import javax.swing.plaf.basic.BasicTextFieldUI;
 import javax.swing.text.html.HTMLDocument;
 
 /**
@@ -21,11 +19,12 @@ import javax.swing.text.html.HTMLDocument;
 public class InfoPanelFrame extends Frame {
     int w, h;
     
-    JEditorPane testPane;
+    JEditorPane htmlInfoPane;
     JScrollPane scrollPane;
-    InfoPanel info;
+    InfoPanelControllers infoControllers;
     
     HTMLDocument doc;
+    HTMLBuilder htmlBuilder;
     
     public InfoPanelFrame() {
         super("Information Panel");
@@ -40,75 +39,64 @@ public class InfoPanelFrame extends Frame {
         setLocation(30, 530);
         setResizable(true);
         setVisible(true);
+ 
+        htmlBuilder = new HTMLBuilder();
     }
     
     public void initialize(Graph graph) {
     	
-    	testPane = new JTextPane();
-    	testPane.setContentType("text/html");
-        /* NOTES:
-         * - font tags don't persist for long.  each table row seems to need one enclosing the <tr> tag
-         * - 
-         */
-    	testPane.setText("<html bgcolor=\"#000000\"><table border=\"0\">" +
-    					 "<font color=\"white\"><tr><th>Month</th><th>Savings</th></tr></font><font color=\"white\"><tr>" +
-    					 "<td>Integer metus purus, faucibus sed ornare ac, interdum" +
-    					 " sed neque. Vestibulum a urna sit amet nisl tincidunt convallis. Fusce sagittis" +
-    					 " lacus sit amet nisi commodo cursus et mattis massa. In tincidunt tellus at" +
-    					 " lectus interdum egestas. Aliquam erat volutpat. Pellentesque in congue lorem." +
-    					 " Vestibulum molestie massa eget sapien porttitor gravida. Duis tristique ultrices" +
-    					 " pulvinar. Pellentesque tempus quam purus, nec tincidunt metus lacinia a. Vestibulum" +
-    					 " ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; " +
-    					 " condimentum vehicula sem, at condimentum ante placerat sit amet. Fusce mi turpis," +
-    					 " fermentum ac nibh id, vehicula pulvinar sapien. Suspendisse odio arcu, sagittis non " +
-    					 "sagittis at, ornare sed nibh. Suspendisse potenti.</td><td>$100</td></tr></font>" +
-    					 "</table>" +
-    					 "<body> <font color=\"white\"> <p>Paragraph 1</p><p>Paragraph 2</p><p>Paragraph 1</p>" +
-    					 "<p><b>Paragraph 2</p><p>Paragraph 1</p></b><p>Paragraph 2</p><p>Paragraph 1</p>" +
-    					 "<p>Paragraph 2</p><p>Paragraph 1</p><p>Paragraph 2</p><p>Paragraph 1</p>" +
-    					 "<p>Paragraph 2</p><p>Integer metus purus, faucibus sed ornare ac, interdum" +
-    					 " sed neque. Vestibulum a urna sit amet nisl tincidunt convallis. Fusce sagittis" +
-    					 " lacus sit amet nisi commodo cursus et mattis massa. In tincidunt tellus at" +
-    					 " lectus interdum egestas. Aliquam erat volutpat. Pellentesque in congue lorem." +
-    					 " Vestibulum molestie massa eget sapien porttitor gravida. Duis tristique ultrices" +
-    					 " pulvinar. Pellentesque tempus quam purus, nec tincidunt metus lacinia a. Vestibulum" +
-    					 " ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; " +
-    					 " condimentum vehicula sem, at condimentum ante placerat sit amet. Fusce mi turpis," +
-    					 " fermentum ac nibh id, vehicula pulvinar sapien. Suspendisse odio arcu, sagittis non " +
-    					 "sagittis at, ornare sed nibh. Suspendisse potenti.</p><p>Paragraph 2</p><p>Paragraph 1</p>" +
-    					 "<p>Paragraph 2</p><p>Paragraph 1</p><p>Paragraph 2</p></font></body></html>");
-        
-        testPane.setCaretPosition(0);
-        testPane.setMargin(new Insets(0,0,0,0));
-    	testPane.setEditable(false);
+    	// set up html formatted text pane for readable data rendering
+    	htmlInfoPane = new JTextPane();
+    	htmlInfoPane.setContentType("text/html");
+
     	
-        scrollPane = new JScrollPane(testPane);
+
+    	htmlInfoPane.setText("<html bgcolor=\"#000000\">" +
+    					 "<body>" +
+    					 "<h1><font color=\"#FFFFFF\">title weeeeeeeee</font></h1>" +
+    					 "<table border=\"1\">" +
+    					 "<font color=\"#FFFFFF\"><tr><th>Month</th><th>Savings</th></tr></font>" +
+    					 "<font color=\"#FFFFFF\"><tr><td>butt</td><td>$100</td></tr></font>" +
+    					 "<font color=\"#FFFFFF\"><tr><td>boo</td><td>$1030</td></tr></font>" +
+    					 "</table>" +
+    					 "</body>" +
+    					 "</html>");
+    	
+    	doc = (HTMLDocument) htmlInfoPane.getDocument();
+    	// setEditable() affects setText() for no clear reasons. fucking swing. try to manipulate the source document instead
+    	htmlInfoPane.setEditable(false);
+        htmlInfoPane.setMargin(new Insets(0,0,0,0));
+    	
+    	// make text pane scrollable
+        scrollPane = new JScrollPane(htmlInfoPane);
         scrollPane.setPreferredSize(new Dimension(580, h));
         
+        // add pane to frame
     	add(scrollPane, BorderLayout.EAST);
     	
-    	doc = (HTMLDocument) testPane.getDocument();
-    	
-        info = new InfoPanel(h, graph);
+    	//set up and add exploration buttons and event log
+        infoControllers = new InfoPanelControllers(h, graph);
+        add(infoControllers, BorderLayout.WEST);
         
-        add(info, BorderLayout.WEST);
+        // validate the frame (for layout, magic, etc.)
         validate();
-        info.init();
+        infoControllers.init();
         
+        // make sure components are resized appropriately
         addComponentListener(new ComponentListener(){
             @Override
             public void componentResized(ComponentEvent e) {
                 w = InfoPanelFrame.this.getWidth();
                 h = InfoPanelFrame.this.getHeight();
                 
-                int calculatedWidth = w - InfoPanelFrame.this.info.getWidth();
+                int calculatedWidth = w - InfoPanelFrame.this.infoControllers.getWidth();
                 calculatedWidth = calculatedWidth > 50 ? calculatedWidth : 50;
                 
                 Dimension calculatedSize = new Dimension(calculatedWidth, h);
                 
                 scrollPane.setPreferredSize(calculatedSize);
                 
-                InfoPanelFrame.this.info.setHeight(h);
+                InfoPanelFrame.this.infoControllers.setHeight(h);
                 
                 InfoPanelFrame.this.validate();
             }
