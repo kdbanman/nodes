@@ -8,6 +8,7 @@ import java.util.Set;
 import processing.core.PApplet;
 import controlP5.CallbackEvent;
 import controlP5.CallbackListener;
+import controlP5.ControlKey;
 import controlP5.ControlP5;
 import controlP5.Textfield;
 import nodes.Graph;
@@ -18,7 +19,7 @@ import nodes.Selection;
 /**
  * @author Karim
  *
- * Modifier for selecting a list of nodes that share a common number of nodes speicifed by the user
+ * Modifier for selecting a list of nodes that share a common number of nodes specified by the user
  * via a popup window
  */
 public class NeighbourNodesFinder extends Modifier {
@@ -116,6 +117,7 @@ public class NeighbourNodesFinder extends Modifier {
             add(finder, BorderLayout.CENTER);
             validate();
             finder.init();
+
         }
 
         public int getNeighboursSelection() {
@@ -146,7 +148,8 @@ public class NeighbourNodesFinder extends Modifier {
                 cp5 = new ControlP5(this);
 
                 nBox = cp5.addTextfield("number of neighbours")
-                        .setPosition(20, 20).setSize(100, 14).setInputFilter(ControlP5.INTEGER);;
+                        .setPosition(20, 20).setSize(100, 14)
+                        .setInputFilter(ControlP5.INTEGER).setText("1");
 
                 setNeighboursSelection(1);
 
@@ -156,20 +159,37 @@ public class NeighbourNodesFinder extends Modifier {
                             @Override
                             public void controlEvent(CallbackEvent event) {
                                 if (event.getAction() == ControlP5.ACTION_RELEASED) {
+                                    ParseAndExit();
 
-                                    setNeighboursSelection(Integer.parseInt(nBox.getText()));
-
-                                    synchronized (waiting) {
-                                        waiting.notify();
-                                    }
                                 }
                             }
                         });
+
+                cp5.mapKeyFor(new ControlKey() {
+
+                    @Override
+                    public void keyEvent() {
+                        ParseAndExit();
+                    }
+                }, ENTER);
             }
 
             @Override
             public void draw() {
                 background(0);
+            }
+
+            private void ParseAndExit() {
+                String text = nBox.getText();
+
+                if (text == null || text.isEmpty())
+                    return;
+
+                setNeighboursSelection(Integer.parseInt(text));
+
+                synchronized (waiting) {
+                    waiting.notify();
+                }
             }
         }
     }
