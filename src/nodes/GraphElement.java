@@ -73,6 +73,10 @@ public class GraphElement<T> extends Controller<T> {
         return setSize(s, s);
     }
     
+    public Graph getGraph() {
+        return graph;
+    }
+    
     public float getSize() {
         return size;
     }
