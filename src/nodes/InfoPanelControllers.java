@@ -11,16 +11,12 @@ import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
-import com.hp.hpl.jena.rdf.model.RDFNode;
-import com.hp.hpl.jena.rdf.model.Statement;
-import com.hp.hpl.jena.rdf.model.StmtIterator;
 
 import controlP5.Button;
 import controlP5.CallbackEvent;
 import controlP5.CallbackListener;
 import controlP5.ControlP5;
 import controlP5.Textarea;
-import java.util.Collection;
 
 import processing.core.PApplet;
 import processing.core.PFont;
@@ -33,7 +29,7 @@ import org.openjena.riot.RiotException;
  *
  * @author kdbanman
  */
-public class InfoPanelControllers extends PApplet implements Selection.SelectionListener {
+public class InfoPanelControllers extends PApplet {
     int w, h;
     
     int padding;
@@ -46,10 +42,6 @@ public class InfoPanelControllers extends PApplet implements Selection.Selection
     
     ControlP5 cp5;
     Graph graph;
-    
-    // update flag raised if hovered or selected graph elemnents have changed.
-    //   see selectionChanged() and draw().
-    AtomicBoolean updateNecessary;
     
     // default string for infobox when single GraphElement is not selected
     String infoDefault;
@@ -65,12 +57,6 @@ public class InfoPanelControllers extends PApplet implements Selection.Selection
     Button exploreSparql;
     
     public InfoPanelControllers(int frameHeight, Graph parentGraph) {
-        try {
-            infoFont = createFont("resources/labelFont.ttf", 12, true);
-        } catch (Exception e) {
-            System.out.println("ERROR: font not loaded.  ensure labelFont.tiff is in program directory.");
-            infoFont = cp5.getFont().getFont();
-        }
         
         try {
             eventFont = createFont("resources/labelFont.ttf", 11, false);
@@ -89,13 +75,6 @@ public class InfoPanelControllers extends PApplet implements Selection.Selection
         
         // initialize graph
         graph = parentGraph;
-        
-        updateNecessary = new AtomicBoolean();
-        
-        infoDefault = "Select a single node or edge for information about it " +
-                "to be rendered here.\n\nTo get more information, use the exploration buttons to the " +
-                "right to:\n - Query the node/edge URI over the web\n - Query the SPARQL endpoint " +
-                "at the address in Load Triples -> SPARQL -> Endpoint IP:Port or URL\n";
         
         eventLogString = "";
     }
@@ -116,8 +95,6 @@ public class InfoPanelControllers extends PApplet implements Selection.Selection
     
     @Override
     public void setup() {
-        // subscribe to changes in selection.  see overridden selectionChanged()
-        graph.getSelection().addListener(this);
         
         size(w, h);
         frameRate(25);
@@ -147,89 +124,6 @@ public class InfoPanelControllers extends PApplet implements Selection.Selection
     @Override
     public void draw() {
         background(0);
-        
-        // if the update flag has been raised, rerender the text in the infobox
-        if (updateNecessary.getAndSet(false)) {
-            String toDisplay = "";
-            
-            // if no elements are hovered over by mouse and selection is empty,
-            // then display the default text
-            if (!graph.pApp.getHovered().isEmpty() ||
-                graph.getSelection().nodeCount() + graph.getSelection().edgeCount() != 0) {
-                // if elements are hovered over, display their information
-                // instead of selected elements
-                if (!graph.pApp.getHovered().isEmpty()) {
-                    toDisplay += "==================\n" +
-                                 "Mouseover Elements\n" +
-                                 "==================\n\n";
-                    toDisplay += renderElementSetString(graph.pApp.getHovered());
-                    toDisplay += "\n\n";
-                } else {
-                    // render information about selected nodes
-                    if (graph.getSelection().nodeCount() != 0) {
-                        toDisplay += "==============\n" +
-                                    "Selected Nodes\n" +
-                                    "==============\n\n";
-                        toDisplay += renderElementSetString(graph.getSelection().getNodes());
-                        toDisplay += "\n\n";
-                    }
-                    // render information about selected edges
-                    if (graph.getSelection().edgeCount() != 0) {
-                        toDisplay += "==============\n" +
-                                    "Selected Edges\n" +
-                                    "==============\n\n";
-                        toDisplay += renderElementSetString(graph.getSelection().getEdges());
-                    }
-                }
-            } else {
-                // no graph elements are being inspected, so display the default text
-                toDisplay = infoDefault;
-            }
-        }
-    }
-    
-    /**
-     * set the flag to update the infopanel text (i.e. if the selection or 
-     * mouseover elements have changed)
-     */
-    public void updateNextFrame() {
-        updateNecessary.compareAndSet(false, true);
-    }
-    
-    // every time selection is changed, this is called
-    @Override
-    public void selectionChanged() {
-        // if the selection has changed, then the text will need to be updated,
-        // so set the flag.
-        updateNextFrame();
-    }
-    
-    /**
-     * renders a collection of graph elements as a sequence of strings describing
-     * their local data neihborhood.
-     * 
-     * @param elements collection of graph elements whose data neighborhoods
-     * will be serialized sequentially.
-     */
-    private String renderElementSetString(Collection<? extends GraphElement> elements) {
-        String setInfo = "";
-        String barDivide = "\n\n===================================\n\n";
-        try {
-            for (GraphElement e : elements) {
-                setInfo += renderedElementString(e);
-                setInfo += barDivide;
-            }
-        } catch (java.util.ConcurrentModificationException exc) {
-            // if, during iteration through the collection of graph elements,
-            // that collection is modified, then this catch block is executed.
-            // the string setInfo will be rerendered next frame, so return the
-            // error string as a passive indicator of the (transient state)
-            return "<comodification error in renderElementSetString()>";
-        }
-        if (setInfo.length() != 0) 
-            setInfo = setInfo.substring(0, setInfo.length() - barDivide.length());
-        
-        return setInfo;
     }
     
     // log event to user.  sufficient newlines automatically added.
@@ -237,76 +131,6 @@ public class InfoPanelControllers extends PApplet implements Selection.Selection
         s = s.trim();
         eventLogString = ">>>>>\n\n" + s + "\n\n" + eventLogString;
         eventLog.setText(eventLogString);
-    }
-    
-    /*
-     * returns a well-formatted description of the passed graph element based
-     * on its data neighborhood
-     */
-    private String renderedElementString(GraphElement e) {
-        if (e instanceof Node) {
-            return renderedNodeString((Node) e);
-        } else {
-            return renderedEdgeString((Edge) e);
-        }
-    }
-    
-    /*
-     * returns a well formatted description of the entity the passed Node
-     * represents based on the existing (imported) data.  do not pass null
-     * values.
-     */
-    private String renderedNodeString(Node n) {
-        // construct string describing currently rendered data neighborhood
-        String rendered = "Entity Name:  " + graph.prefixed(n.getName()) + "\n\n";
-        
-        rendered += "Properties of " + graph.prefixed(n.getName()) + ":\n\n";
-        
-        StmtIterator outbound = graph.getRenderedTriples().listStatements(graph.getResource(n.getName()), null, (RDFNode) null);
-        while (outbound.hasNext()) {
-            Statement s = outbound.next();
-            rendered += "  " + graph.prefixed(s.getPredicate().toString()) + "  "
-                    + graph.prefixed(s.getObject().toString()) + "\n";
-        }
-        rendered += "\n";
-        
-        StmtIterator inbound = graph.getRenderedTriples().listStatements(null, null, (RDFNode) graph.getResource(n.getName()));
-        if (!inbound.hasNext()) {
-            inbound = graph.getRenderedTriples().listStatements(null, null, n.getName());
-        }
-        if (!inbound.hasNext()) {
-            //TODO: figure out a way to get literal statuments working.  they don't
-            // show up in the infopanel as "is <pred> of <uri resource>
-        }
-        while (inbound.hasNext()) {
-            Statement s = inbound.next();
-            rendered += "  is  " + graph.prefixed(s.getPredicate().toString()) + "  of  "
-                    + graph.prefixed(s.getSubject().toString()) + "\n";
-        }
-        return rendered;
-    }
-    
-    /*
-     * returns a well-formatted description of the predicates that the passed
-     * edge represents based on the existing data.
-     */
-    private String renderedEdgeString(Edge e) {
-        String rendered = "";
-        for (Statement s : e.getTriples()) {
-            rendered += "Edge triple:  ";
-            rendered += graph.prefixed(s.getSubject().toString()) + "  " +
-                    graph.prefixed(s.getPredicate().toString()) + "  " +
-                    graph.prefixed(s.getObject().toString());
-            Node predicateNode = graph.getNode(s.getPredicate().toString());
-            if (predicateNode != null) {
-                rendered += "\n\n" + renderedNodeString(predicateNode);
-            } else {
-                rendered += "\n\nNo data yet retrieved about entity\n  " + s.getPredicate().toString();
-            }
-            rendered += "\n\n";
-        }
-        
-        return rendered;
     }
     
     /*
@@ -402,10 +226,6 @@ public class InfoPanelControllers extends PApplet implements Selection.Selection
                 logEvent("From uri:\n<" + uri + ">\n  " + 
                          retrievedSize + " triples retrieved,\n  " +
                          addedSize + " triples are new");
-                
-                
-                // queue controller selection update if one is not already queued
-                updateNecessary.compareAndSet(false, true);
             }
         }
     }
@@ -475,9 +295,6 @@ public class InfoPanelControllers extends PApplet implements Selection.Selection
                          addedSize + " triples are new");
                  
                 graph.pApp.restartRendering(this);
-                
-                // queue controller selection update if one is not already queued
-                updateNecessary.compareAndSet(false, true);
             }
         }
     }

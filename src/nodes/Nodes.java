@@ -369,8 +369,8 @@ public class Nodes extends PApplet {
     public void addToHovered(GraphElement element) {
         hovered.add(element);
         
-        // notify info panel of change in hover
-        infoPanelFrame.infoControllers.updateNextFrame();
+        // display new hovered element in info panel
+        infoPanelFrame.displayInformationText(hovered);
     }
 
     // make sure that no GraphElement erroneously keeps mouseover state:
@@ -395,8 +395,10 @@ public class Nodes extends PApplet {
                 // elements from a list while it is being iterated through.
                 it.remove();
                 
-                // notify info panel of change in hover
-                infoPanelFrame.infoControllers.updateNextFrame();
+                // if hovered is now empty, render the selection.
+                // if not, render the hovered elements
+                if (hovered.isEmpty()) infoPanelFrame.displayInformationText(hovered);
+                else infoPanelFrame.displayInformationText(graph.getSelection());
             }
         }
     }
@@ -416,7 +418,7 @@ public class Nodes extends PApplet {
     
     // log event to user in infopanel event box
     public void logEvent(String s) {
-        infoPanelFrame.infoControllers.logEvent(s);
+        infoPanelFrame.logEvent(s);
     }
     
     // get SPARQL endpoint URI from control panel.  now *this* is tiiiggght coupling. :(

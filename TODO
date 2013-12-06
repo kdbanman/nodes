@@ -1,13 +1,14 @@
 #CORE FEATURES
 ##############
 
-- hmtl or controller rendered infobox
-	- use swingbox or jeditorpane.  both of these should embed into the existing infopanelframe, it will just take some size/layout consideration.
-		- get this thing displaying a test page!
-
+- get info panel to render selection when it is not empty
+	- mouse hover still has preference
+	
 - save jena model as rdfxml
 
 - sdb connectivity in "Load Triples" and in "Explore..."
+
+- put readme.md subset as instructions for the infopanel when selection is empty
 
 - save program state to .nod file
 	- load program state from bla
@@ -53,12 +54,8 @@
 - retitle label button to indicate selected, not all
 	- other transformation buttons are affected too
 
-- autoscroll infobox to top every update
-
 - move event log to top level tab
 	- NOTE: don't do this.  this is just fine as an infopanel swing element thing
-
-- add SDB retrieval
 
 - implement main application arrow controls for camera strafe
 	- put these keys in the README under UI systems
@@ -93,6 +90,13 @@ COMPLETED                                 (:r !date)
 
 not a comprehensive changelog - see git log for that
 ####################################################
+
+
+Thu Dec  5 20:20:06 MST 2013
+- hmtl or controller rendered infobox
+	- use swingbox or jeditorpane.  both of these should embed into the existing infopanelframe, it will just take some size/layout consideration.
+		- get this thing displaying a test page!
+
 
 Sat Nov 16 16:12:41 MST 2013
 - newline before "Data Neighborhood" in Edge string renderer

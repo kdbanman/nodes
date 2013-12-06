@@ -88,6 +88,10 @@ public class Node extends GraphElement<Node> {
     }
     
     public StmtIterator getInboundStatements() {
-        return graph.getRenderedTriples().listStatements(null, null, (RDFNode) graph.getResource(getName()));
+        StmtIterator inbound = graph.getRenderedTriples().listStatements(null, null, (RDFNode) graph.getResource(getName()));
+        if (!inbound.hasNext()) {
+            inbound = graph.getRenderedTriples().listStatements(null, null, getName());
+        }
+        return inbound;
     }
 }

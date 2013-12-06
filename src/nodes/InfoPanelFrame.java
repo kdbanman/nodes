@@ -19,12 +19,15 @@ import javax.swing.text.html.HTMLDocument;
 public class InfoPanelFrame extends Frame {
     int w, h;
     
-    JEditorPane htmlInfoPane;
-    JScrollPane scrollPane;
-    InfoPanelControllers infoControllers;
+    // these are fields so that they may be resized by the componentResized()
+    // method in the anonymous class within initialize()
+    private JScrollPane scrollPane;
+    private InfoPanelControllers infoControllers;
     
-    HTMLDocument doc;
-    HTMLBuilder htmlBuilder;
+    // because swing is very sensitive about how you touch it, these are used
+    // to change the text within the information panel
+    private HTMLDocument doc;
+    private HTMLBuilder htmlBuilder;
     
     public InfoPanelFrame() {
         super("Information Panel");
@@ -46,27 +49,21 @@ public class InfoPanelFrame extends Frame {
     public void initialize(Graph graph) {
     	
     	// set up html formatted text pane for readable data rendering
-    	htmlInfoPane = new JTextPane();
+    	JEditorPane htmlInfoPane = new JTextPane();
     	htmlInfoPane.setContentType("text/html");
 
     	
 
     	htmlInfoPane.setText("<html bgcolor=\"#000000\">" +
-    					 "<body>" +
-    					 "<h1><font color=\"#FFFFFF\">title weeeeeeeee</font></h1>" +
-    					 "<table border=\"1\">" +
-    					 "<font color=\"#FFFFFF\"><tr><th>Month</th><th>Savings</th></tr></font>" +
-    					 "<font color=\"#FFFFFF\"><tr><td>butt</td><td>$100</td></tr></font>" +
-    					 "<font color=\"#FFFFFF\"><tr><td>boo</td><td>$1030</td></tr></font>" +
-    					 "</table>" +
-    					 "</body>" +
+    					 
     					 "</html>");
     	
     	doc = (HTMLDocument) htmlInfoPane.getDocument();
-    	// setEditable() affects setText() for no clear reasons. fucking swing. try to manipulate the source document instead
+    	// setEditable() affects setText() for no clear reason. fucking swing. try to manipulate the source document instead
     	htmlInfoPane.setEditable(false);
         htmlInfoPane.setMargin(new Insets(0,0,0,0));
-    	
+        
+        
     	// make text pane scrollable
         scrollPane = new JScrollPane(htmlInfoPane);
         scrollPane.setPreferredSize(new Dimension(580, h));
@@ -108,5 +105,14 @@ public class InfoPanelFrame extends Frame {
             public void componentHidden(ComponentEvent e) {}
             
         });
+    }
+    
+    public void displayInformationText(Iterable<? extends GraphElement> elements) {
+        // affects state of doc.  ugly, but it works
+        htmlBuilder.renderAsHTML(elements, doc);
+    }
+    
+    public void logEvent(String s) {
+        infoControllers.logEvent(s);
     }
 }
