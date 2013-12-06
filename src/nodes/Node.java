@@ -1,5 +1,7 @@
 package nodes;
 
+import com.hp.hpl.jena.rdf.model.RDFNode;
+import com.hp.hpl.jena.rdf.model.StmtIterator;
 import controlP5.ControllerView;
 
 import processing.core.PApplet;
@@ -79,5 +81,13 @@ public class Node extends GraphElement<Node> {
     
     public String getPrefixedName() {
         return graph.prefixed(getName());
+    }
+    
+    public StmtIterator getOutboundStatements() {
+        return graph.getRenderedTriples().listStatements(graph.getResource(getName()), null, (RDFNode) null);
+    }
+    
+    public StmtIterator getInboundStatements() {
+        return graph.getRenderedTriples().listStatements(null, null, (RDFNode) graph.getResource(getName()));
     }
 }
