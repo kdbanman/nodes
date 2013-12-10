@@ -10,23 +10,25 @@ import java.awt.event.ComponentListener;
 import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
-import javax.swing.text.html.HTMLDocument;
+import javax.swing.text.html.HTMLEditorKit;
+import nodes.Selection.SelectionListener;
 
 /**
  *
  * @author kdbanman
  */
-public class InfoPanelFrame extends Frame {
+public class InfoPanelFrame extends Frame implements SelectionListener{
     int w, h;
+    
+    Graph graph;
     
     // these are fields so that they may be resized by the componentResized()
     // method in the anonymous class within initialize()
     private JScrollPane scrollPane;
     private InfoPanelControllers infoControllers;
     
-    // because swing is very sensitive about how you touch it, these are used
-    // to change the text within the information panel
-    private HTMLDocument doc;
+    // these are used to change the text within the information panel
+    JEditorPane htmlInfoPane;
     private HTMLBuilder htmlBuilder;
     
     public InfoPanelFrame() {
@@ -47,19 +49,16 @@ public class InfoPanelFrame extends Frame {
     }
     
     public void initialize(Graph graph) {
+        this.graph = graph;
+        
+        graph.getSelection().addListener(this);
     	
     	// set up html formatted text pane for readable data rendering
-    	JEditorPane htmlInfoPane = new JTextPane();
+    	htmlInfoPane = new JTextPane();
     	htmlInfoPane.setContentType("text/html");
-
     	
-
-    	htmlInfoPane.setText("<html bgcolor=\"#000000\">" +
-    					 
-    					 "</html>");
-    	
-    	doc = (HTMLDocument) htmlInfoPane.getDocument();
-    	// setEditable() affects setText() for no clear reason. fucking swing. try to manipulate the source document instead
+        htmlInfoPane.setEditorKit(new HTMLEditorKit());
+        htmlInfoPane.setText("<html bgcolor=\"#000000\"></html>");
     	htmlInfoPane.setEditable(false);
         htmlInfoPane.setMargin(new Insets(0,0,0,0));
         
@@ -108,11 +107,16 @@ public class InfoPanelFrame extends Frame {
     }
     
     public void displayInformationText(Iterable<? extends GraphElement> elements) {
-        // affects state of doc.  ugly, but it works
-        htmlBuilder.renderAsHTML(elements, doc);
+        // change the contents of the HTML document
+        htmlInfoPane.setText(htmlBuilder.renderAsHTML(elements, w - infoControllers.getWidth() - 20));
     }
     
     public void logEvent(String s) {
         infoControllers.logEvent(s);
+    }
+
+    @Override
+    public void selectionChanged() {
+        displayInformationText(graph.getSelection());
     }
 }

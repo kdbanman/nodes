@@ -24,39 +24,34 @@ public class HTMLBuilder {
      * each node is rendered with a table for outgoing triples and a table for incoming triples.
      * each edge is rendered with a table for each triple contained within it.
      */
-    public void renderAsHTML(Iterable<? extends GraphElement> elements, HTMLDocument doc) {
+    public String renderAsHTML(Iterable<? extends GraphElement> elements, int width) {
     	String bodyHTML = "";
         
         try {
+            // build HTML from passed collection
             for (GraphElement e : elements) {
-                bodyHTML += renderedElement(e);
+                bodyHTML += renderedElement(e, width);
             }
         } catch (java.util.ConcurrentModificationException exc) {
             // if, during iteration through the collection of graph elements,
             // that collection is modified, then this catch block is executed.
             // the string setInfo will be rerendered next frame, so return the
             // error string as a passive indicator of the (transient state)
-            bodyHTML = "<font color=\"#FFFFFF\">comodification error in HTMLBuilder.renderAsHTML()</font>";
+            bodyHTML = "<font face=\"courier\" color=\"#FFFFFF\">comodification error in HTMLBuilder.renderAsHTML()</font>";
         }
         
-    	try {
-            doc.setInnerHTML(doc.getDefaultRootElement(), header + bodyHTML + footer);
-        } catch (BadLocationException ex) {
-            System.out.println("bad location");
-        } catch (IOException ex) {
-            System.out.println("io exception");
-        }
+        return header + bodyHTML + footer;
     }
     
     /**
      * render a single GraphElement as a sequence of HTML headings and tables.
      * undefined behavior for null parameter.
      */
-    private String renderedElement(GraphElement e) {
+    private String renderedElement(GraphElement e, int width) {
         if (e instanceof Node) {
-            return renderedNode((Node) e);
+            return renderedNode((Node) e, width);
         } else {
-            return renderedEdge((Edge) e);
+            return renderedEdge((Edge) e, width);
         }
     }
     
@@ -64,17 +59,17 @@ public class HTMLBuilder {
      * render a single Node as a sequence of HTML headings and tables.
      * separate tables are rendered for incoming and outgoing triples.
      */
-    private String renderedNode(Node n) {
+    private String renderedNode(Node n, int width) {
         Graph graph = n.getGraph();
         
         String rendered = h1Heading("Entity: ");
         rendered += fontWrap(n.getPrefixedName());
         
         rendered += h2Heading("Entity Properties: ");
-        rendered += statementTable(n.getOutboundStatements(), graph);
+        rendered += statementTable(n.getOutboundStatements(), graph, width);
         
         rendered += h2Heading("Connections To Entity: ");
-        rendered += statementTable(n.getInboundStatements(), graph);
+        rendered += statementTable(n.getInboundStatements(), graph, width);
         
         return rendered;
     }
@@ -82,11 +77,11 @@ public class HTMLBuilder {
     /**
      * render a single Edge as an HTML heading and table of its contained triples.
      */
-    private String renderedEdge(Edge e) {
+    private String renderedEdge(Edge e, int width) {
         Graph graph = e.getGraph();
         
         String rendered = h2Heading("Statements Within Edge:");
-        rendered += statementTable(e.getTriples().iterator(), graph);
+        rendered += statementTable(e.getTriples().iterator(), graph, width);
         
         return rendered;
     }
@@ -103,12 +98,12 @@ public class HTMLBuilder {
         return "<h3>" + fontWrap(headingText) + "</h3>";
     }
     
-    private String statementTable(Iterator<Statement> it, Graph graph) {
+    private String statementTable(Iterator<Statement> it, Graph graph, int width) {
         String rendered = "";
         if (!it.hasNext()) {
             rendered = fontWrap("  None");
         } else {
-            rendered = "<table border=\"1\">" + tableHead("Node", "Property", "Value");
+            rendered = "<table border=\"1\" cellspacing=\"0\" width=\"" + width + "\">" + tableHead("Node", "Property", "Value");
 
             while (it.hasNext()) {
                 Statement s = it.next();
@@ -122,7 +117,7 @@ public class HTMLBuilder {
     }
     
     private String fontWrap(String inside) {
-    	return "<font color=\"#FFFFFF\">" + inside + "</font>";
+    	return "<font face=\"tahoma\" color=\"#FFFFFF\">" + inside + "</font>";
     }
     
     private String tableHead(String first, String second, String third) {

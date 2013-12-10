@@ -84,6 +84,7 @@ public class Selection implements Iterable<GraphElement> {
     private final Set<Edge> edgeBuffer;
     
     private final ArrayList<SelectionListener> listeners;
+    //private final ArrayList<TimedSelectionListener> timedListeners;
     
     Selection() {
         nodes = Collections.synchronizedSet(new HashSet<Node>());
@@ -93,6 +94,7 @@ public class Selection implements Iterable<GraphElement> {
         edgeBuffer = Collections.synchronizedSet(new HashSet<Edge>());
         
         listeners = new ArrayList<>();
+        //timedListeners = new ArrayList<>();
     }
     
     /**

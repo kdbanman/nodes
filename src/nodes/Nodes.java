@@ -397,7 +397,7 @@ public class Nodes extends PApplet {
                 
                 // if hovered is now empty, render the selection.
                 // if not, render the hovered elements
-                if (hovered.isEmpty()) infoPanelFrame.displayInformationText(hovered);
+                if (!hovered.isEmpty()) infoPanelFrame.displayInformationText(hovered);
                 else infoPanelFrame.displayInformationText(graph.getSelection());
             }
         }
