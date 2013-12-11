@@ -1,10 +1,7 @@
 package nodes;
 
 import com.hp.hpl.jena.rdf.model.Statement;
-import java.io.IOException;
 import java.util.Iterator;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.html.HTMLDocument;
 
 /**
  * Class for constructing well-formatted HTML based upon jena models.
@@ -15,8 +12,8 @@ public class HTMLBuilder {
     private String header, footer;
     
     public HTMLBuilder() {
-    	header = "<body>";
-    	footer = "</body>";
+    	header = "<html bgcolor=\"#000000\"><body>";
+    	footer = "</body></html>";
     }
     
     /**
