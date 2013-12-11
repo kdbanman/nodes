@@ -108,7 +108,11 @@ public class InfoPanelFrame extends Frame implements SelectionListener{
     
     public void displayInformationText(Iterable<? extends GraphElement> elements) {
         // change the contents of the HTML document
-        htmlInfoPane.setText(htmlBuilder.renderAsHTML(elements, w - infoControllers.getWidth() - 20));
+        try {
+            htmlInfoPane.setText(htmlBuilder.renderAsHTML(elements, w - infoControllers.getWidth() - 20));
+        } catch (Exception e) {
+            System.out.println("ERROR: Swing cannot handle this html:\n\n" + htmlBuilder.renderAsHTML(elements, w - infoControllers.getWidth() - 20));
+        }
     }
     
     public void logEvent(String s) {
