@@ -31,12 +31,15 @@ public class InfoPanelFrame extends Frame implements SelectionListener{
     JEditorPane htmlInfoPane;
     private HTMLBuilder htmlBuilder;
     
+    /**
+     * Must call initialize() after constructor!
+     */
     public InfoPanelFrame() {
         super("Information Panel");
         
         // window parameters
         w = 800;
-        h = 400;
+        h = 500;
         
         setLayout(new BorderLayout());
 
@@ -44,12 +47,18 @@ public class InfoPanelFrame extends Frame implements SelectionListener{
         setLocation(30, 530);
         setResizable(true);
         setVisible(true);
- 
-        htmlBuilder = new HTMLBuilder();
     }
     
-    public void initialize(Graph graph) {
+    /**
+     * Must be called after constructor.
+     * 
+     * @param graph Graph used for prefixing URIs
+     * @param maximumElements Maximum number of elements that will be rendered as HTML text.  Adjust for performance.
+     */
+    public void initialize(Graph graph, int maximumElements) {
         this.graph = graph;
+        
+        htmlBuilder = new HTMLBuilder(maximumElements);
         
         graph.getSelection().addTimedListener(this, 500);
     	
@@ -112,7 +121,10 @@ public class InfoPanelFrame extends Frame implements SelectionListener{
             htmlInfoPane.setText(htmlBuilder.renderAsHTML(elements, w - infoControllers.getWidth() - 20));
         } catch (Exception e) {
             System.out.println("ERROR: Swing cannot handle this html:\n\n" + htmlBuilder.renderAsHTML(elements, w - infoControllers.getWidth() - 20));
+            e.printStackTrace();
         }
+        validate();
+        scrollPane.getVerticalScrollBar().setValue(0);
     }
     
     public void logEvent(String s) {

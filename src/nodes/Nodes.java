@@ -85,7 +85,7 @@ public class Nodes extends PApplet {
         // horrible hack means that static panelFrame has already been constructed
         // within main()
         controlPanelFrame.initialize(graph);
-        infoPanelFrame.initialize(graph);
+        infoPanelFrame.initialize(graph, 50);
         
         // set program startup default values (see comments in field declaration
         // for more information)
