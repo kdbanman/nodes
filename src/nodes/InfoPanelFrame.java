@@ -51,7 +51,7 @@ public class InfoPanelFrame extends Frame implements SelectionListener{
     public void initialize(Graph graph) {
         this.graph = graph;
         
-        graph.getSelection().addListener(this);
+        graph.getSelection().addTimedListener(this, 500);
     	
     	// set up html formatted text pane for readable data rendering
     	htmlInfoPane = new JTextPane();
