@@ -1,9 +1,6 @@
 #CORE FEATURES
 ##############
 
-- html renderer for infopanel
-	- extract and modify string-building methods from infopanel
-
 - sdb retrieval
 
 - save program state to .nod file
@@ -12,6 +9,10 @@
 - save jena model as rdfxml
 
 - context menus on right click over 3D view
+
+- move existing "ERROR: ..." print statements to event log in InfoPanelControllers
+
+- put more detailed feedback for lengthy processes in the event log of InfoPanelControllers
 
 - 2 way data interaction between infobox and graph(textual vs. 3D)
 
@@ -92,14 +93,17 @@ NOTE:  *this is only necessary within Edge*  (already in the Node.inside() code 
 #CLASSES AND INTERFACES
 #######################
 
-- implement error/notification popup window system
-
 
 ####################################################
 COMPLETED                                 (:r !date)
 
 not a comprehensive changelog - see git log for that
 ####################################################
+
+
+Tue Dec 10 17:26:28 MST 2013
+- fix html performance issues with timed selectionlistener
+
 
 Thu Dec  5 20:20:06 MST 2013
 - hmtl or controller rendered infobox
