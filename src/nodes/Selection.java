@@ -1,13 +1,11 @@
 package nodes;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -88,9 +86,6 @@ public class Selection implements Iterable<GraphElement> {
     private final Set<Edge> edgeBuffer;
     
     private final ArrayList<SelectionListener> listeners;
-    private final ArrayList<TimedSelectionListener> timedListeners;
-    
-    private final ScheduledExecutorService timedExecutor;
     
     Selection() {
         nodes = Collections.synchronizedSet(new HashSet<Node>());
@@ -100,9 +95,6 @@ public class Selection implements Iterable<GraphElement> {
         edgeBuffer = Collections.synchronizedSet(new HashSet<Edge>());
         
         listeners = new ArrayList<>();
-        timedListeners = new ArrayList<>();
-        
-        timedExecutor = Executors.newSingleThreadScheduledExecutor();
     }
     
     /**
@@ -428,21 +420,13 @@ public class Selection implements Iterable<GraphElement> {
         listeners.add(l);
     }
     
-    public void addTimedListener(SelectionListener l, long waitIntervalMillis) {
-        timedListeners.add(new TimedSelectionListener(l, waitIntervalMillis));
-    }
-    
     public void removeListener(SelectionListener l) {
         try {
             listeners.remove(l);
         } catch (Exception e) {
-            try {
-                timedListeners.remove(l);
-            } catch (Exception ex) {
-                System.err.println("Cannot remove unregistered SelectionListener.");
-                System.err.println(l);
-                e.printStackTrace();
-            }
+            System.err.println("Cannot remove unregistered SelectionListener.");
+            System.err.println(l);
+            e.printStackTrace();
         }
     }
     
@@ -450,39 +434,10 @@ public class Selection implements Iterable<GraphElement> {
         for (SelectionListener l : listeners) {
             l.selectionChanged();
         }
-        for (TimedSelectionListener l : timedListeners) {
-            if (!l.checkAndSetScheduled()) {
-                timedExecutor.schedule(l, l.waitInterval, TimeUnit.MILLISECONDS);
-            }
-        }
     }
     
     public interface SelectionListener {
         public void selectionChanged();
-    }
-    
-    private class TimedSelectionListener implements Runnable {
-        private long waitInterval;
-        private boolean scheduled;
-        private SelectionListener listener;
-        
-        TimedSelectionListener(SelectionListener listener, long waitInterval) {
-            this.listener = listener;
-            this.waitInterval = waitInterval;
-            scheduled = false;
-        }
-        
-        @Override
-        public void run() {
-            listener.selectionChanged();
-            scheduled = false;
-        }
-        
-        public boolean checkAndSetScheduled() {
-            boolean ret = scheduled;
-            scheduled = true;
-            return ret;
-        }
     }
     
     /**

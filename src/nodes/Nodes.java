@@ -85,7 +85,9 @@ public class Nodes extends PApplet {
         // horrible hack means that static panelFrame has already been constructed
         // within main()
         controlPanelFrame.initialize(graph);
-        infoPanelFrame.initialize(graph, 50);
+        // initialize info panel so that it renders up to 50 graph elements simultaneously
+        // at a maximum rate of once every .75 seconds
+        infoPanelFrame.initialize(graph, 50, 750);
         
         // set program startup default values (see comments in field declaration
         // for more information)

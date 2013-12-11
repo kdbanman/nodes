@@ -7,6 +7,9 @@ import java.awt.Frame;
 import java.awt.Insets;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
@@ -31,6 +34,11 @@ public class InfoPanelFrame extends Frame implements SelectionListener{
     JEditorPane htmlInfoPane;
     private HTMLBuilder htmlBuilder;
     
+    // HTML rendering is expensive, so it is repeated at minimum interval
+    private long updateInterval;
+    private boolean updateScheduled;
+    private final ScheduledExecutorService updateExecutor;
+    
     /**
      * Must call initialize() after constructor!
      */
@@ -47,6 +55,8 @@ public class InfoPanelFrame extends Frame implements SelectionListener{
         setLocation(30, 530);
         setResizable(true);
         setVisible(true);
+        
+        updateExecutor = Executors.newSingleThreadScheduledExecutor();
     }
     
     /**
@@ -55,12 +65,15 @@ public class InfoPanelFrame extends Frame implements SelectionListener{
      * @param graph Graph used for prefixing URIs
      * @param maximumElements Maximum number of elements that will be rendered as HTML text.  Adjust for performance.
      */
-    public void initialize(Graph graph, int maximumElements) {
+    public void initialize(Graph graph, int maximumElements, long updateInterval) {
         this.graph = graph;
         
         htmlBuilder = new HTMLBuilder(maximumElements);
         
-        graph.getSelection().addTimedListener(this, 500);
+        this.updateInterval = updateInterval;
+        updateScheduled = false;
+        
+        graph.getSelection().addListener(this);
     	
     	// set up html formatted text pane for readable data rendering
     	htmlInfoPane = new JTextPane();
@@ -70,7 +83,6 @@ public class InfoPanelFrame extends Frame implements SelectionListener{
         htmlInfoPane.setText("<html bgcolor=\"#000000\"></html>");
     	htmlInfoPane.setEditable(false);
         htmlInfoPane.setMargin(new Insets(0,0,0,0));
-        
         
     	// make text pane scrollable
         scrollPane = new JScrollPane(htmlInfoPane);
@@ -115,16 +127,28 @@ public class InfoPanelFrame extends Frame implements SelectionListener{
         });
     }
     
-    public void displayInformationText(Iterable<? extends GraphElement> elements) {
-        // change the contents of the HTML document
-        try {
-            htmlInfoPane.setText(htmlBuilder.renderAsHTML(elements, w - infoControllers.getWidth() - 20));
-        } catch (Exception e) {
-            System.out.println("ERROR: Swing cannot handle this html:\n\n" + htmlBuilder.renderAsHTML(elements, w - infoControllers.getWidth() - 20));
-            e.printStackTrace();
+    public void displayInformationText(final Iterable<? extends GraphElement> elements) {
+        // check if minimum interval has elapsed
+        if (!checkAndSetScheduled()) {
+            updateExecutor.schedule(new Runnable() {
+                @Override
+                public void run() {
+                    // try to get swing to change the contents of the HTML pane
+                    try {
+                        htmlInfoPane.setText(htmlBuilder.renderAsHTML(elements, w - infoControllers.getWidth() - 20));
+                    } catch (Exception e) {
+                        System.out.println("ERROR: Swing cannot handle this html:\n\n" + htmlBuilder.renderAsHTML(elements, w - infoControllers.getWidth() - 20));
+                        e.printStackTrace();
+                    }
+                    // update swing
+                    validate();
+                    scrollPane.getVerticalScrollBar().setValue(0);
+                    
+                    // update completed, set flag accordingly
+                    updateScheduled = false;
+                }
+            }, updateInterval, TimeUnit.MILLISECONDS);
         }
-        validate();
-        scrollPane.getVerticalScrollBar().setValue(0);
     }
     
     public void logEvent(String s) {
@@ -134,5 +158,14 @@ public class InfoPanelFrame extends Frame implements SelectionListener{
     @Override
     public void selectionChanged() {
         displayInformationText(graph.getSelection());
+    }
+    
+    /**
+     * sets the updateScheduled flag to true, returns the value before it was set
+     */
+    private boolean checkAndSetScheduled() {
+        boolean ret = updateScheduled;
+        updateScheduled = true;
+        return ret;
     }
 }
