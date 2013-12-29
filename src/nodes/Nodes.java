@@ -59,8 +59,8 @@ public class Nodes extends PApplet {
     @Override
     public void setup() {
         // configure parent PApplet
-        int w = 1024;
-        int h = 768;
+        int w = 400;
+        int h = 300;
         size(w, h, P3D);
         frameRate(30);
         noStroke();
@@ -380,6 +380,9 @@ public class Nodes extends PApplet {
     // one controller will be hovered over at any given time, so onLeave() calls
     // cannot be depended upon.
     public void cleanHovered() {
+        // the infopanel has a jarring flash every time its html contents are 
+        // rerendered, so this boolean ensures it is not done more than necessary
+        boolean infopanelNeedsUpdate = false;
         
         // every time the mouse hovers over a GraphElement, that element 
         // references itself in the hovered list.
@@ -397,11 +400,16 @@ public class Nodes extends PApplet {
                 // elements from a list while it is being iterated through.
                 it.remove();
                 
-                // if hovered is now empty, render the selection.
-                // if not, render the hovered elements
-                if (!hovered.isEmpty()) infoPanelFrame.displayInformationText(hovered);
-                else infoPanelFrame.displayInformationText(graph.getSelection());
+                // infopanel needs an update because the hovered contents have changed
+                infopanelNeedsUpdate = true;
             }
+        }
+
+        if (infopanelNeedsUpdate) {
+            // if hovered is now empty, render the selection.
+            if (!hovered.isEmpty()) infoPanelFrame.displayInformationText(hovered);
+            // if not, render the hovered elements
+            else infoPanelFrame.displayInformationText(graph.getSelection());
         }
     }
     

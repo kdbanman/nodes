@@ -111,7 +111,8 @@ public class GraphElement<T> extends Controller<T> {
     
     public void notHovered() {
         //not removed from pApp.hovered because that list is regularly iterated
-        //through.  removals outside that iterator are dangerous.
+        //through and removals outside that iteration are dangerous.  this is 
+        //not a problem because the Nodes class maintains the list every frame.
         currentCol = defaultCol;
     }
     
