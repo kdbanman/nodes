@@ -30,10 +30,17 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -96,7 +103,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
     Textfield dataFilename;
     
     // text field for project filename
-    Textfield projectName;
+    Textfield projectFilename;
     
     // selection modifier menu and populator
     ListBox modifierMenu;
@@ -490,7 +497,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
         
         // Project Save elements
         
-        projectName = cp5.addTextfield("Project Name",
+        projectFilename = cp5.addTextfield("Project Name",
                 padding - w / 4,
                 padding,
                 w - 2 * padding,
@@ -1169,12 +1176,18 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
      */
     private class SaveTriplesListener implements CallbackListener {
 
-        /*
-         * TODO
-         */
         @Override
         public void controlEvent(CallbackEvent ce) {
-            //graph.getRenderedTriples().write(null);
+            Writer writer = null;
+            try {
+                writer = new BufferedWriter(new OutputStreamWriter(
+                      new FileOutputStream(dataFilename.getText()), "utf-8"));
+                graph.getRenderedTriples().write(writer);
+            } catch (IOException ex) {
+              logEvent("Failed to save file " + dataFilename.getText());
+            } finally {
+               try {writer.close();} catch (Exception ex) {}
+            }
         }
     }
     

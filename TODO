@@ -1,7 +1,6 @@
-#DIAGNOSED BUGS
+#BUGS
 ###############
-- null pointer exception occurs in Selection.java:435 because broadcastChange() can be called by mouseReleased() before the control panel or the info panel has been initialized.
-	- add isReady() in listener interface to check for initialization condition
+- null pointer exception occurs in Selection.java:435 in broadcastChange()
 
 #CORE FEATURES
 ##############
