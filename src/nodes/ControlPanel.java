@@ -6,6 +6,10 @@ import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
+import com.hp.hpl.jena.rdf.model.RDFNode;
+import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.rdf.model.Selector;
+import com.hp.hpl.jena.rdf.model.SimpleSelector;
 
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.RiotException;
@@ -697,11 +701,9 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
             if (event.getAction() == ControlP5.ACTION_RELEASED) {
                 // get uri from text field
                 String uri = importWebURI.getText();
-                // retrieve description as a jena model
-                Model toAdd = ModelFactory.createDefaultModel();
-        
+                Model toAdd;
                 try {
-                    RDFDataMgr.read(toAdd, uri);
+                    toAdd = IO.getDescription(uri);
                 } catch (RiotException e) {
                     logEvent("Valid RDF not hosted at uri \n  " + uri);
                     return;
@@ -739,23 +741,13 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
             if (event.getAction() == ControlP5.ACTION_RELEASED) {
                 // get endpoint uri
                 String endpoint = importSparqlEndpoint.getText();
-                
                 // get uri from text field and form query
                 String uri = sparqlQueryURI.getText();
-                String queryString = "CONSTRUCT { <" + uri + "> ?p1 ?o . "
-                        + "?s ?p2 <" + uri + "> } " + ""
-                        + "WHERE { <" + uri + "> ?p1 ?o . "
-                        + "?s ?p2 <" + uri + "> }";
-                
-                // construct query
-                Query query = QueryFactory.create(queryString);
-                
-                QueryExecution qexec = QueryExecutionFactory.sparqlService(endpoint, query);
                 
                 // retrieve description as a jena model
                 Model toAdd;
                 try {
-                    toAdd = qexec.execConstruct();
+                    toAdd = IO.getDescriptionSparql(endpoint, uri);
                 } catch (Exception e) {
                     logEvent("Valid RDF not returned from endpoint:\n" + endpoint);
                     return;

@@ -194,10 +194,9 @@ public class InfoPanelControllers extends PApplet {
                 
                 // retrieve description as a jena model
                 ///////////////////////////////////////
-                Model toAdd = ModelFactory.createDefaultModel();
-        
+                Model toAdd;
                 try {
-                    RDFDataMgr.read(toAdd, uri);
+                    toAdd = IO.getDescription(uri);
                 } catch (RiotException e) {
                     logEvent("Valid RDF not hosted at uri \n  " + uri);
                     return;
@@ -247,25 +246,13 @@ public class InfoPanelControllers extends PApplet {
                     logEvent("Select a *single* node or edge to retrieve its data.");
                     return;
                 }
-                
-                // form query
-                String queryString = "CONSTRUCT { <" + uri + "> ?p1 ?o . "
-                        + "?s ?p2 <" + uri + "> } " + ""
-                        + "WHERE { <" + uri + "> ?p1 ?o . "
-                        + "?s ?p2 <" + uri + "> }";
-                
                 // get endpoint uri
                 String endpoint = graph.pApp.getSparqlEndpoint();
-                
-                // construct query
-                Query query = QueryFactory.create(queryString);
-                
-                QueryExecution qexec = QueryExecutionFactory.sparqlService(endpoint, query);
                 
                 // retrieve description as a jena model
                 Model toAdd;
                 try {
-                    toAdd = qexec.execConstruct();
+                    toAdd = IO.getDescriptionSparql(endpoint, uri);
                 } catch (Exception e) {
                     logEvent("Valid RDF not returned from endpoint:\n" + endpoint +
                             "\n\nCheck endpoint address and status.");
