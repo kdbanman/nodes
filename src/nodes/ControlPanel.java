@@ -708,26 +708,11 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                     logEvent("Valid RDF not hosted at uri \n  " + uri);
                     return;
                 }
-                
-                // protect from concurrency issues during import
-                graph.pApp.waitForNewFrame(this);
-                
-                int retrievedSize = (int) toAdd.size();
-                int beforeSize = graph.tripleCount();
-                
-                // add the retriveed model to the graph (toAdd is empty if 
-                // an error was encountered)
-                graph.addTriples(toAdd);
-                
-                int addedSize = graph.tripleCount() - beforeSize;
-                
-                // log number of triples added to user
-                logEvent("From uri:\n " + uri + "\n  " + 
-                         retrievedSize + " triples retrieved\n  " +
-                         addedSize + " triples are new");
-                 
-                graph.pApp.restartRendering(this);
-                
+                // add the retrived model to the graph (toAdd is empty if 
+                // an error was encountered).
+                // log results to user.
+                logEvent("From uri:\n " + uri + "\n  ");
+                graph.addTriplesLogged(toAdd);
             }
         }
     }
@@ -752,26 +737,12 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                     logEvent("Valid RDF not returned from endpoint:\n" + endpoint);
                     return;
                 }
-                
-                // protect from concurrency issues during import
-                graph.pApp.waitForNewFrame(this);
-                
-                int retrievedSize = (int) toAdd.size();
-                int beforeSize = graph.tripleCount();
-                
                 // add the retriveed model to the graph (toAdd is empty if 
                 // an error was encountered)
-                graph.addTriples(toAdd);
-                
-                int addedSize = graph.tripleCount() - beforeSize;
-                
-                // log number of triples added to user
+                 // log results.
                 logEvent("From endpoint:\n" + endpoint + "\n\n" +
-                         "about uri: \n" + uri + "\n " +
-                         retrievedSize + " triples retrieved\n " +
-                         addedSize + " triples are new");
-                 
-                graph.pApp.restartRendering(this);
+                         "about uri: \n" + uri + "\n ");
+                graph.addTriplesLogged(toAdd);
             }
         }
     }

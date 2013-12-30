@@ -201,29 +201,11 @@ public class InfoPanelControllers extends PApplet {
                     logEvent("Valid RDF not hosted at uri \n  " + uri);
                     return;
                 }
-                
-                // add retrieved model to graph
-                ///////////////////////////////
-                
-                int retrievedSize = (int) toAdd.size();
-                int addedSize = graph.tripleCount();
-                
-                // protect from concurrency issues during import
-                graph.pApp.waitForNewFrame(this);
-                
                 // add the retrieved model to the graph (toAdd is empty if 
-                // an error was encountered)
-                graph.addTriples(toAdd);
-                
-                // concurrency issues now over
-                graph.pApp.restartRendering(this);
-                
-                addedSize = graph.tripleCount() - addedSize;
-                
-                // log number of triples added to user
-                logEvent("From uri:\n<" + uri + ">\n  " + 
-                         retrievedSize + " triples retrieved,\n  " +
-                         addedSize + " triples are new");
+                // an error was encountered).
+                // log results.
+                logEvent("From uri:\n<" + uri + ">\n  ");
+                graph.addTriplesLogged(toAdd);
             }
         }
     }
@@ -258,29 +240,12 @@ public class InfoPanelControllers extends PApplet {
                             "\n\nCheck endpoint address and status.");
                     return;
                 }
-                
-                // add retrieved model to graph
-                ///////////////////////////////
-                
-                // protect from concurrency issues during import
-                graph.pApp.waitForNewFrame(this);
-                
-                int retrievedSize = (int) toAdd.size();
-                int beforeSize = graph.tripleCount();
-                
                 // add the retriveed model to the graph (toAdd is empty if 
-                // an error was encountered)
-                graph.addTriples(toAdd);
-                
-                int addedSize = graph.tripleCount() - beforeSize;
-                
-                // log number of triples added to user
+                // an error was encountered).
+                // log results.
                 logEvent("From endpoint:\n" + endpoint + "\n\n" +
-                         "about uri: \n" + uri + "\n " +
-                         retrievedSize + " triples retrieved\n " +
-                         addedSize + " triples are new");
-                 
-                graph.pApp.restartRendering(this);
+                         "about uri: \n" + uri + "\n ");
+                graph.addTriplesLogged(toAdd);
             }
         }
     }

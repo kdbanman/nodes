@@ -171,11 +171,14 @@ public class Graph implements Iterable<GraphElement> {
         }
     }
 
-    /*
-     * adds triples to model, adding Nodes and Edges as necessary
+    /**
+     * adds triples to model, adding Nodes and Edges as necessary.
      */
     public void addTriples(Model toAdd) {
+        // protect from concurrency issues during import
+        pApp.waitForNewFrame(this);
         // triples to be added are now the most recently added triples
+
         allPreviouslyAddedTriples = toAdd;
         
         // add yet undiscovered namespace prefixes to the model
@@ -196,6 +199,28 @@ public class Graph implements Iterable<GraphElement> {
         } else {
             Nodes.println("Empty query result - no triples to add.");
         }
+        
+        // concurrency danger over
+        pApp.restartRendering(this);
+    }
+    
+    /**
+     * adds triples to model, adding Nodes and Edges as necessary.
+     * outputs feedback to event log.
+     */
+    public void addTriplesLogged(Model toAdd) {
+        int retrievedSize = (int) toAdd.size();
+                int beforeSize = tripleCount();
+                
+                // add the retriveed model to the graph (toAdd is empty if 
+                // an error was encountered)
+                addTriples(toAdd);
+                
+                int addedSize = tripleCount() - beforeSize;
+                
+                // log number of triples added to user
+                pApp.logEvent(retrievedSize + " triples retrieved\n  " +
+                         addedSize + " triples are new");
     }
     
     public Model getRenderedTriples() {
