@@ -6,17 +6,13 @@ import java.util.ArrayList;
 import com.hp.hpl.jena.rdf.model.*;
 
 import controlP5.ControlP5;
-import controlP5.ControlWindow;
 import controlP5.ControllerGroup;
-import controlP5.Tab;
 
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.PriorityQueue;
 import java.util.Set;
@@ -104,9 +100,9 @@ public class Graph implements Iterable<GraphElement> {
     }
 
     /**
-     * iterative force-directed layout algorithm.  one layout() call is one iteration.
+     * invoke single iteration of iterative force-directed layout algorithm.
      */
-    public void layout() {
+    public void autoLayoutIteration() {
         // initialize map of changes in node positions
         HashMap<Node, PVector> deltas = new HashMap<>();
         for (Node node : adjacent.keySet()) {

@@ -21,7 +21,6 @@ import controlP5.Textarea;
 import processing.core.PApplet;
 import processing.core.PFont;
 
-import java.util.concurrent.atomic.AtomicBoolean;
 import org.apache.jena.riot.RDFDataMgr;
 import org.openjena.riot.RiotException;
 

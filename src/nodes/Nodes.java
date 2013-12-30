@@ -59,8 +59,8 @@ public class Nodes extends PApplet {
     @Override
     public void setup() {
         // configure parent PApplet
-        int w = 400;
-        int h = 300;
+        int w = 1024;
+        int h = 768;
         size(w, h, P3D);
         frameRate(30);
         noStroke();
@@ -146,8 +146,8 @@ public class Nodes extends PApplet {
         
         // perform a step of the force-directed layout if the corresponding control
         // is selected
-        if (controlPanelFrame.controls.autoLayout.getState()) {
-            graph.layout();
+        if (controlPanelFrame.controls.autoLayoutSelected()) {
+            graph.autoLayoutIteration();
         }
         
         // ensure no graph elements are mistakenly mouse-hovered
@@ -413,8 +413,7 @@ public class Nodes extends PApplet {
         }
     }
     
-    // mechanism for making selection color pulsate in grayscale with a
-    // breathing rhythm
+    // mechanism for making selection color pulsate in grayscale
     public void updateSelectColor() {
         if (selectColor >= 0xFFBABABA) {
             selectColorRising = false;
@@ -431,10 +430,9 @@ public class Nodes extends PApplet {
         infoPanelFrame.logEvent(s);
     }
     
-    // get SPARQL endpoint URI from control panel.  now *this* is tiiiggght coupling. :(
-    // maintainability is decreasing as this project cuts into school
+    // get SPARQL endpoint URI from control panel.
     public String getSparqlEndpoint() {
-        return controlPanelFrame.controls.importSparqlEndpoint.getText();
+        return controlPanelFrame.controls.getHttpSparqlEndpoint();
     }
     
     /**

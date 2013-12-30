@@ -442,6 +442,14 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
         //=========
     }
     
+    public String getHttpSparqlEndpoint() {
+        return importSparqlEndpoint.getText();
+    }
+    
+    public boolean autoLayoutSelected() {
+        return autoLayout.getState();
+    }
+    
     // all controlP5 controllers are drawn after draw(), so herein lies any
     // arbiter-style controller logic, as well as miscellaneous actions that 
     // must occur every frame.
