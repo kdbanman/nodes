@@ -215,22 +215,37 @@ public class Graph implements Iterable<GraphElement> {
     }
     
     /**
+     * returns namespace prefixed version (short form) of uri.
+     * Example: "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" --> "rdf:type"
      * 
-     * @param uri
      * @return namespace prefixed version of uri. 
-     *      Example: http://www.w3.org/1999/02/22-rdf-syntax-ns#type --> rdf:type
      */
-    public String prefixed(String uri) {
-        return triples.shortForm(uri);
+    public String prefixed(String fullUri) {
+        return triples.shortForm(fullUri);
     }
-    public String expanded(String prefixed) {
-        return triples.expandPrefix(prefixed);
+    /**
+     * returns the fully qualified uri from a prefixed version.
+     * Example: "rdf:type" --> "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+     * 
+     * @param prefixed
+     * @return expanded form.
+     */
+    public String expanded(String prefixedUri) {
+        return triples.expandPrefix(prefixedUri);
     }
+    /**
+     * returns the prefix corresponding to a uri.
+     * Example: "http://www.w3.org/1999/02/22-rdf-syntax-ns" --> "rdf"
+     */
     public String prefix(String uri) {
         return triples.getNsURIPrefix(uri);
     }
-    public String prefixURI(String uri) {
-        return triples.getNsPrefixURI(uri);
+    /**
+     * returns the uri corresponding to a prefix.
+     * Example: "rdf" --> "http://www.w3.org/1999/02/22-rdf-syntax-ns"
+     */
+    public String prefixURI(String prefix) {
+        return triples.getNsPrefixURI(prefix);
     }
 
     /**
