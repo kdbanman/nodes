@@ -4,6 +4,7 @@
 package nodes;
 
 import controlP5.ListBox;
+import controlP5.ListBoxItem;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
@@ -230,7 +231,11 @@ public class ModifierPopulator {
          * - menu doesn't contain modifier passed
          * - runIndex doesn't contain corresponding entry
          */
-        
+        // line 239 throws a nullpointerexception sometimes.  it's expressions aresplit
+        // into the following two so that the exception's stack trace is
+        // as helpful
+        String title = mod.getTitle();
+        ListBoxItem item = menu.getItem(title);
         int toRemove = menu.getItem(mod.getTitle()).getValue();
 
         menu.removeItem(mod.getTitle());
