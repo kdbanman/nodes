@@ -791,8 +791,8 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                 // add the retrived model to the graph (toAdd is empty if 
                 // an error was encountered).
                 // log results to user.
-                logEvent("From uri:\n " + uri + "\n  ");
                 graph.addTriplesLogged(toAdd);
+                logEvent("From uri:\n " + uri + "\n  ");
             }
         }
     }
@@ -820,9 +820,9 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                 // add the retriveed model to the graph (toAdd is empty if 
                 // an error was encountered)
                  // log results.
+                graph.addTriplesLogged(toAdd);
                 logEvent("From endpoint:\n" + endpoint + "\n\n" +
                          "about uri: \n" + uri + "\n ");
-                graph.addTriplesLogged(toAdd);
             }
         }
     }
@@ -1183,6 +1183,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                 writer = new BufferedWriter(new OutputStreamWriter(
                       new FileOutputStream(dataFilename.getText()), "utf-8"));
                 graph.getRenderedTriples().write(writer);
+                logEvent("RDF-XML file " + dataFilename.getText() + "\nsaved to application directory.");
             } catch (IOException ex) {
               logEvent("Failed to save file " + dataFilename.getText());
             } finally {

@@ -204,8 +204,8 @@ public class InfoPanelControllers extends PApplet {
                 // add the retrieved model to the graph (toAdd is empty if 
                 // an error was encountered).
                 // log results.
-                logEvent("From uri:\n<" + uri + ">\n  ");
                 graph.addTriplesLogged(toAdd);
+                logEvent("From uri:\n<" + uri + ">\n  ");
             }
         }
     }
@@ -243,9 +243,9 @@ public class InfoPanelControllers extends PApplet {
                 // add the retriveed model to the graph (toAdd is empty if 
                 // an error was encountered).
                 // log results.
+                graph.addTriplesLogged(toAdd);
                 logEvent("From endpoint:\n" + endpoint + "\n\n" +
                          "about uri: \n" + uri + "\n ");
-                graph.addTriplesLogged(toAdd);
             }
         }
     }
