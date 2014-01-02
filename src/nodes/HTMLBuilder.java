@@ -1,16 +1,7 @@
 package nodes;
 
 import com.hp.hpl.jena.rdf.model.Statement;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.Shape;
-import java.awt.font.FontRenderContext;
-import java.awt.font.GlyphJustificationInfo;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
-import sun.font.CoreMetrics;
-import sun.font.TextLineComponent;
 
 /**
  * Class for constructing well-formatted HTML based upon jena models.

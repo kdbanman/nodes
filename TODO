@@ -1,6 +1,28 @@
+#META
+#####
+
+-? are low priority considerations
+
 #BUGS
-###############
+#####
 - null pointer exception occurs in Selection.java:435 in broadcastChange()
+
+#KARIM
+######
+
+- context menus on right click over 3D view
+
+- research maven
+	- include controlp5, peasycam, and core processing jars in project (include licenses!)
+
+- explore alternatives to swing for formatted infopanel text
+
+- split ControlPanel.java inner classes into separate files
+
+- conditional element sorting based on transparency
+	- see Graph.DepthSortedGroup
+
+- make labels prettier somehow
 
 #CORE FEATURES
 ##############
@@ -8,28 +30,21 @@
 - sdb retrieval
 
 - save program state to .nod file
-	- load program state from bla
-
-- save jena model as rdfxml
-
-- context menus on right click over 3D view
+	- define schema within IO.class
 
 - move existing "ERROR: ..." print statements to event log in InfoPanelControllers
 
 - put more detailed feedback for lengthy processes in the event log of InfoPanelControllers
 
 - 2 way data interaction between infobox and graph(textual vs. 3D)
+	- hyperlinks with html infobox
 
-- collapse connections to edge
+-? collapse connections to edge
 
-- collapse subgraph to node
+-? collapse subgraph to node
 
 #REFACTORS
 ##########
-
-- rename the infopanel components more meaningfully
-
-- remove leftover cruft from the plaintext infopanel
 
 #MODIFIERS
 ##########
@@ -66,13 +81,8 @@
 #MISC
 #####
 
-- move exploration buttons to top level tab
-	- put these buttons in the README under UI systems
-
 - retitle label button to indicate selected, not all
 	- other transformation buttons are affected too
-
-- autoscroll infobox to top every update
 
 - implement main application arrow controls for camera strafe
 	- put these keys in the README under UI systems
@@ -83,9 +93,8 @@
 		- box selection needs to use this to fix the bug where things behind the near frustum are selected
 NOTE:  *this is only necessary within Edge*  (already in the Node.inside() code by virtue of vector angle calculation)
 
-- test multiple additions for prefix overwrite (rdf then rdfs documents replicates)
-
-- fix height/width of text background for labels.
+- test multiple additions for prefix overwrite (rdf then rdfs documents replicates)  OR  just ensure that we do not overwrite existing prefixes
+	- could cause data integrity problems if prefixed names exist in the Graph whose namespace prefixes have changed within the Graph's jena model.
 
 - add numerical size scale
 	- 1 pass to find min and max, then set scale for interpolation, then 1 more pass to modifiy scale.
@@ -103,6 +112,13 @@ COMPLETED                                 (:r !date)
 
 not a comprehensive changelog - see git log for that
 ####################################################
+
+Thu Jan  2 15:14:02 MST 2014
+- rename the infopanel components more meaningfully
+
+- save jena model as rdfxml
+
+- remove leftover cruft from the plaintext infopanel
 
 
 Tue Dec 10 17:26:28 MST 2013

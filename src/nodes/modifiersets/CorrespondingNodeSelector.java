@@ -6,7 +6,6 @@ import nodes.Edge;
 import nodes.Graph;
 import nodes.Modifier;
 import nodes.ModifierSet;
-import nodes.Node;
 
 /**
  *

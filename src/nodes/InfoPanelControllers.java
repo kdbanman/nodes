@@ -5,12 +5,7 @@
  */
 package nodes;
 
-import com.hp.hpl.jena.query.Query;
-import com.hp.hpl.jena.query.QueryExecution;
-import com.hp.hpl.jena.query.QueryExecutionFactory;
-import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
 
 import controlP5.Button;
 import controlP5.CallbackEvent;
@@ -21,7 +16,6 @@ import controlP5.Textarea;
 import processing.core.PApplet;
 import processing.core.PFont;
 
-import org.apache.jena.riot.RDFDataMgr;
 import org.openjena.riot.RiotException;
 
 /**
@@ -36,14 +30,10 @@ public class InfoPanelControllers extends PApplet {
     int buttonWidth;
     int buttonHeight;
     
-    PFont infoFont;
     PFont eventFont;
     
     ControlP5 cp5;
     Graph graph;
-    
-    // default string for infobox when single GraphElement is not selected
-    String infoDefault;
     
     // string to add events to
     String eventLogString;

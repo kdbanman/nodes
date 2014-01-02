@@ -17,6 +17,7 @@ import org.openjena.riot.RiotException;
  * @author kdbanman
  */
 public class IO {
+    
     //ensure non-instantiability
     private IO() {
         
