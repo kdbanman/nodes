@@ -15,38 +15,39 @@ public class Node extends GraphElement<Node> {
   
     // name of controller is the URI or literal value
     // UnProjector is for 3D extension of inside()
-    Node(Graph parentGraph, String name) {
-      super(parentGraph, name);
-      
-      labelText.add(name);
-      updateLabel();
+	Node(Graph parentGraph, String name) {
+		super(parentGraph, name);
 
-      setView(new ControllerView() {
-          @Override
-          public void display(PApplet p, Object n) {
-            Node node = (Node) n;
+		labelText.add(name);
+		updateLabel();
 
-            // render in 3D
-            p.pushMatrix();
-            
-            if (selected() && !inside()) {
-                p.fill(pApp.selectColor);
-            } else {
-                p.fill(currentCol);
-            }
-                   
-            // Translate(x,y,0) called already, but nodes are in 3D
-            p.translate(0,0,node.getPosition().z);
-            p.sphere(node.size);
-            if (displayLabel) {
-                displayLabel();
-            }
-            
-            p.popMatrix();
-          }
-        }
-      );
-    }
+		ControllerView<Node> view = new ControllerView<Node>() {
+
+			@Override
+			public void display(PApplet p, Node n) {
+				Node node = (Node) n;
+				// render in 3D
+				p.pushMatrix();
+
+				if (selected() && !inside()) {
+					p.fill(pApp.selectColor);
+				} else {
+					p.fill(currentCol);
+				}
+
+				// Translate(x,y,0) called already, but nodes are in 3D
+				p.translate(0, 0, node.getPosition().z);
+				p.sphere(node.size);
+				if (displayLabel) {
+					displayLabel();
+				}
+
+				p.popMatrix();
+			}
+		};
+
+		setView(view);
+	}
     
     @Override
     public boolean inside() {

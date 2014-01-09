@@ -3,17 +3,18 @@ package nodes;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Frame;
-
 import java.awt.Insets;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
 import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.text.html.HTMLEditorKit;
+
 import nodes.Selection.SelectionListener;
 
 /**
@@ -21,7 +22,10 @@ import nodes.Selection.SelectionListener;
  * @author kdbanman
  */
 public class InfoPanelFrame extends Frame implements SelectionListener{
-    int w, h;
+
+	private static final long serialVersionUID = -1446971722812934704L;
+
+	int w, h;
     
     Graph graph;
     
@@ -127,7 +131,7 @@ public class InfoPanelFrame extends Frame implements SelectionListener{
         });
     }
     
-    public void displayInformationText(final Iterable<? extends GraphElement> elements) {
+    public void displayInformationText(final Iterable<? extends GraphElement<?>> elements) {
         // check if minimum interval has elapsed
         if (!checkAndSetScheduled()) {
             updateExecutor.schedule(new Runnable() {

@@ -225,7 +225,7 @@ public class GraphElement<T> extends Controller<T> {
             return false;
         }
 
-        return getName().equals(((GraphElement) e).getName());
+        return getName().equals(((GraphElement<?>) e).getName());
     }
 
     @Override

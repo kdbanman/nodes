@@ -5,7 +5,6 @@ import com.hp.hpl.jena.rdf.model.Model;
 import org.apache.jena.riot.RiotException;
 
 import controlP5.Button;
-
 import controlP5.CallbackEvent;
 import controlP5.CallbackListener;
 import controlP5.ColorPicker;
@@ -18,12 +17,10 @@ import controlP5.Slider;
 import controlP5.Tab;
 import controlP5.Textfield;
 import controlP5.Toggle;
-
 import processing.core.PVector;
 import processing.core.PApplet;
 
 import java.util.ArrayList;
-
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
@@ -45,7 +42,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author kdbanman
  */
 public class ControlPanel extends PApplet implements Selection.SelectionListener {
-    int w, h;
+
+	private static final long serialVersionUID = 7771053293767517965L;
+
+	int w, h;
     
     ControlP5 cp5;
     Graph graph;
@@ -178,7 +178,8 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
         transformTab = cp5.addTab("Transform")
                 .setWidth(w / 4)
                 .setHeight(tabHeight);
-        Tab optionTab = cp5.addTab("Options")
+        @SuppressWarnings("unused") //will probably have later use
+		Tab optionTab = cp5.addTab("Options")
                 .setWidth(w / 4)
                 .setHeight(tabHeight);
         Tab saveTab = cp5.addTab("Save/Load")
@@ -583,7 +584,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
         // adjust color of selected elements (if event is not from selection update)
         if (changeElementColor && event.isFrom(colorPicker)) {
             int newColor = colorPicker.getColorValue();
-            for (GraphElement e : graph.getSelection()) {
+            for (GraphElement<?> e : graph.getSelection()) {
                 e.setColor(newColor);
             }
         } else if (event.isFrom(modifierMenu)) {
@@ -869,15 +870,15 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
         public void controlEvent(CallbackEvent event) {
             if (event.getAction() == ControlP5.ACTION_RELEASED) {
                 
-                Iterator<GraphElement> it;
-                if (graph.getSelection().empty()) {
-                    it = graph.iterator();
-                } else {
-                    it = graph.getSelection().iterator();
-                }
+                Iterator<GraphElement<?>> it;
+				if (graph.getSelection().empty()) {
+					it = graph.iterator();
+				} else {
+					it = graph.getSelection().iterator();
+				}
                 
                 if (it.hasNext()) {
-                    GraphElement first = it.next();
+					GraphElement<?> first = it.next();
                     // calculate center of graph
                     PVector center = first.getPosition().get();
                     float minX = center.x;
@@ -892,7 +893,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                     float nodeCount = 1f;
 
                     while (it.hasNext()) {
-                        GraphElement e = it.next();
+						GraphElement<?> e = it.next();
                         if (e instanceof Edge) continue;
                         
                         Node n = (Node) e;
@@ -1065,7 +1066,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                 }
                 
                 // apply the new size to each element in the selection
-                for (GraphElement e : graph.getSelection()) {
+                for (GraphElement<?> e : graph.getSelection()) {
                     e.setSize(newSize);
                 }
             }
@@ -1081,7 +1082,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
         public void controlEvent(CallbackEvent event) {
             if (event.getAction() == ControlP5.ACTION_RELEASED) {
                 // hide label for each element in the selection
-                for (GraphElement e : graph.getSelection()) {
+                for (GraphElement<?> e : graph.getSelection()) {
                     e.setDisplayLabel(false);
                 }
             }
@@ -1097,7 +1098,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
         public void controlEvent(CallbackEvent event) {
             if (event.getAction() == ControlP5.ACTION_RELEASED) {
                 // show each label for each element in the selection
-                for (GraphElement e : graph.getSelection()) {
+                for (GraphElement<?> e : graph.getSelection()) {
                     e.setDisplayLabel(true);
                 }
             }
@@ -1122,7 +1123,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                 }
                 
                 // apply the new label size to each element in the selection
-                for (GraphElement e : graph.getSelection()) {
+                for (GraphElement<?> e : graph.getSelection()) {
                     e.setLabelSize(newSize);
                 }
             }

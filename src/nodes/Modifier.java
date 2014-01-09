@@ -5,6 +5,17 @@ package nodes;
 * see documentation here as well as existing examples.
 */
 public abstract class Modifier {
+
+	/**
+	 * Enumeration types for modifier types
+	 */
+	public enum ModifierType {
+		NONE, //For non-interactive modifiers
+		ALL,
+		VIEW,
+		PANEL
+	}
+
    // access model, selection, element counts, and other desired properties
    // with getters.  do not tie them to local state with class fields
    // because they change.
@@ -38,4 +49,10 @@ public abstract class Modifier {
     * this is run once the modifier's menu entry is clicked.
     */
    public abstract void modify();
+
+   /**
+    * make sure that implementers return a specific type of a modifier
+    * this is used to choose visibility in the graph and/or control panel
+    */
+   public abstract ModifierType getType();
 }

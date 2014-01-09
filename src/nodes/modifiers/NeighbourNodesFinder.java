@@ -40,6 +40,11 @@ public class NeighbourNodesFinder extends Modifier {
         return "Find nodes with common neighbours";
     }
 
+	@Override
+	public ModifierType getType() {
+		return ModifierType.ALL;
+	}
+
     @Override
     public void modify() {
         FinderFrame f = new FinderFrame(this);

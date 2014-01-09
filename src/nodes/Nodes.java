@@ -18,7 +18,8 @@ import processing.opengl.PGraphics3D;
  */
 public class Nodes extends PApplet {
 
-    // 3D graph-viewing camera
+	private static final long serialVersionUID = 8527157297916319L;
+	// 3D graph-viewing camera
     PeasyCam cam;
     // matrix and vector module for interaction in 3D
     UnProjector proj;
@@ -50,7 +51,7 @@ public class Nodes extends PApplet {
     //   ControlP5's native onLeave() calls are based on the assumption that only
     //   one controller will be hovered over at any given time.
     // "hovered" is populated by onEnter() calls within GraphElement.
-    ArrayList<GraphElement> hovered;
+    ArrayList<GraphElement<?>> hovered;
     
     // object container for GraphElement concurrency between rendering and 
     // external modification
@@ -235,7 +236,7 @@ public class Nodes extends PApplet {
                 // every time the selection box is changed, clear the selection
                 // and recompute the box membership of each graph element
                 graph.getSelection().clearBuffer();
-                for (GraphElement n : graph) {
+                for (GraphElement<?> n : graph) {
                     // get screen coordinates of graph element
                     PVector nPos = n.getPosition();
                     float nX = screenX(nPos.x, nPos.y, nPos.z);
@@ -255,7 +256,7 @@ public class Nodes extends PApplet {
                 ////////////
                 
                 // element to be moved
-                GraphElement toBeMoved = getNearestHovered();
+				GraphElement<?> toBeMoved = getNearestHovered();
                 
                 // get distance between pixels on near frustum
                 proj.calculatePickPoints(0, 0);
@@ -342,21 +343,21 @@ public class Nodes extends PApplet {
         return new PVector(camLook[0], camLook[1], camLook[2]);
     }
     
-    public ArrayList<GraphElement> getHovered() {
+    public ArrayList<GraphElement<?>> getHovered() {
         return hovered;
     }
     
     // returns the GraphElement nearest to the cursor position on the near 
     // frustum plane
-    public GraphElement getNearestHovered() {
+    public GraphElement<?> getNearestHovered() {
         if (hovered.isEmpty()) return null;
         
         proj.calculatePickPoints(mouseX, mouseY);
         PVector mousePos = proj.ptStartPos;
 
-        GraphElement closest = hovered.get(0);
+        GraphElement<?> closest = hovered.get(0);
         float minDist = mousePos.dist(closest.getPosition());
-        for (GraphElement e : hovered) {
+        for (GraphElement<?> e : hovered) {
             float currElementDist = mousePos.dist(e.getPosition());
             if (minDist > currElementDist) {
                 minDist = currElementDist;
@@ -368,7 +369,7 @@ public class Nodes extends PApplet {
     
     // when a GraphElement is moused over, it calls this with itself as a
     // parameter
-    public void addToHovered(GraphElement element) {
+    public void addToHovered(GraphElement<?> element) {
         hovered.add(element);
         
         // display new hovered element in info panel
@@ -387,9 +388,9 @@ public class Nodes extends PApplet {
         // every time the mouse hovers over a GraphElement, that element 
         // references itself in the hovered list.
         // iterate over each element in hovered.
-        Iterator<GraphElement> it = hovered.iterator();
+        Iterator<GraphElement<?>> it = hovered.iterator();
         while (it.hasNext()) {
-            GraphElement e = it.next();
+			GraphElement<?> e = it.next();
             if (!e.isInside()) {
                 // if the element is not hovered over any more, call its  
                 // respective method and remove it from the list.

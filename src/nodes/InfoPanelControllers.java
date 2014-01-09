@@ -6,24 +6,25 @@
 package nodes;
 
 import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.shared.JenaException;
 
 import controlP5.Button;
 import controlP5.CallbackEvent;
 import controlP5.CallbackListener;
 import controlP5.ControlP5;
 import controlP5.Textarea;
-
 import processing.core.PApplet;
 import processing.core.PFont;
-
-import org.openjena.riot.RiotException;
 
 /**
  *
  * @author kdbanman
  */
 public class InfoPanelControllers extends PApplet {
-    int w, h;
+
+	private static final long serialVersionUID = 3002206163652044724L;
+
+	int w, h;
     
     int padding;
     int elementHeight;
@@ -187,7 +188,7 @@ public class InfoPanelControllers extends PApplet {
                 Model toAdd;
                 try {
                     toAdd = IO.getDescription(uri);
-                } catch (RiotException e) {
+                } catch (JenaException e) {
                     logEvent("Valid RDF not hosted at uri \n  " + uri);
                     return;
                 }

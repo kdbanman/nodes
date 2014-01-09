@@ -25,13 +25,13 @@ import processing.core.PVector;
  *
  * @author kdbanman
  */
-public class Graph implements Iterable<GraphElement> {
+public class Graph implements Iterable<GraphElement<?>> {
 
     UnProjector proj;
     ControlP5 cp5;
     Nodes pApp;
     
-    ControllerGroup graphElementGroup;
+    ControllerGroup<?> graphElementGroup;
     
     private static final String FONTRESOURCE = "resources/labelFont.ttf";
     private Selection selection;
@@ -77,23 +77,24 @@ public class Graph implements Iterable<GraphElement> {
         fonts = new HashMap<>();
     }
     
-    public PriorityQueue<GraphElement> getDistanceSortedGraphElements() {
-        Collection<GraphElement> elements = cp5.getAll(GraphElement.class);
+    public PriorityQueue<GraphElement<?>> getDistanceSortedGraphElements() {
+
+        @SuppressWarnings("rawtypes") //cp5 is mistakenly returning a rawtype
+		Collection<GraphElement> elements = cp5.getAll(GraphElement.class);
+
+        PriorityQueue<GraphElement<?>> sorted = new PriorityQueue<GraphElement<?>>(100, new Comparator<GraphElement<?>>() {
+            PVector referencePoint = pApp.getCamPosition();
+            @Override
+            public int compare(GraphElement<?> e1, GraphElement<?> e2) {
+                if (e1 == e2) return 0;
+                float e1Dist = referencePoint.dist(e1.getPosition());
+                float e2Dist = referencePoint.dist(e2.getPosition());
+                // order is swapped to prioritize furthest elements
+                return Float.compare(e2Dist, e1Dist);
+            }
+        });
         
-        PriorityQueue<GraphElement> sorted = new PriorityQueue(100,
-            new Comparator<GraphElement>() {
-                PVector referencePoint = pApp.getCamPosition();
-                @Override
-                public int compare(GraphElement e1, GraphElement e2) {
-                    if (e1 == e2) return 0;
-                    float e1Dist = referencePoint.dist(e1.getPosition());
-                    float e2Dist = referencePoint.dist(e2.getPosition());
-                    // order is swapped to prioritize furthest elements
-                    return Float.compare(e2Dist, e1Dist);
-                }
-            });
-        
-        for (GraphElement e : elements) {
+        for (GraphElement<?> e : elements) {
             sorted.offer(e);
         }
         return sorted;
@@ -452,7 +453,8 @@ public class Graph implements Iterable<GraphElement> {
 
     }
 
-    private Edge addEdge(Node s, Node d) {
+    @SuppressWarnings("unused")
+	private Edge addEdge(Node s, Node d) {
         return addEdge(s.getName(), d.getName());
     }
 
@@ -628,9 +630,9 @@ public class Graph implements Iterable<GraphElement> {
     /**
      * iterates through all nodes then all edges
      */
-    public class GraphIterator implements Iterator<GraphElement> {
-        Iterator itNodes;
-        Iterator itEdges;
+    public class GraphIterator implements Iterator<GraphElement<?>> {
+        Iterator<Node> itNodes;
+        Iterator<Edge> itEdges;
         
         public GraphIterator() {
             itNodes = getNodes().iterator();
@@ -643,10 +645,10 @@ public class Graph implements Iterable<GraphElement> {
         }
         
         @Override
-        public GraphElement next() {
-            GraphElement ret = null;
-            if (itNodes.hasNext()) ret = (GraphElement) itNodes.next();
-            else if (itEdges.hasNext()) ret = (GraphElement) itEdges.next();
+        public GraphElement<?> next() {
+            GraphElement<?> ret = null;
+            if (itNodes.hasNext()) ret = (GraphElement<?>) itNodes.next();
+            else if (itEdges.hasNext()) ret = (GraphElement<?>) itEdges.next();
             else throw new NoSuchElementException();
             
             return ret;
@@ -672,9 +674,9 @@ public class Graph implements Iterable<GraphElement> {
         @Override
         public void drawControllers(PApplet theApplet) {
             // draw graph in order of depth
-            PriorityQueue<GraphElement> elementQueue = getDistanceSortedGraphElements();
+            PriorityQueue<GraphElement<?>> elementQueue = getDistanceSortedGraphElements();
             while (!elementQueue.isEmpty()) {
-                GraphElement currentElement = elementQueue.poll();
+                GraphElement<?> currentElement = elementQueue.poll();
                 currentElement.updateInternalEvents(pApp);
                 currentElement.draw(pApp);
             }

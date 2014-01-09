@@ -10,7 +10,6 @@ import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.SimpleSelector;
 import org.apache.jena.riot.RDFDataMgr;
-import org.openjena.riot.RiotException;
 
 /**
  *
@@ -33,7 +32,7 @@ public class IO {
      * @param uri HTTP or filesystem URL.  Throws RiotException if the valid RDF is not returned.
      * @return jena Model of Statements.
      */
-    public static Model getDescription(String uri) throws RiotException {
+    public static Model getDescription(String uri) {
         // retrieve description as a jena model
         Model retrievedTriples = ModelFactory.createDefaultModel();
         RDFDataMgr.read(retrievedTriples, uri);

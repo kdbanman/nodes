@@ -64,6 +64,11 @@ public class CorrespondingNodeSelector extends ModifierSet {
             return "Select node corresponding to " + graph.prefixed(pred);
         }
 
+		@Override
+		public ModifierType getType() {
+			return ModifierType.ALL;
+		}
+
         @Override
         public void modify() {
             graph.getSelection().clear();

@@ -37,53 +37,55 @@ public class Edge extends GraphElement<Edge>  {
       dst = d;
 
       triples = new HashSet<>();
-
       lengthScale = 0.9f;
 
-      setView(new ControllerView() {
-          @Override
-          public void display(PApplet p, Object e) {
-            Edge edge = (Edge) e;
+      ControllerView<Edge> view = new ControllerView<Edge>() {
+			@Override
+			public void display(PApplet p, Edge e) {
+				Edge edge = (Edge) e;
 
-            edge.updatePosition();
+				edge.updatePosition();
 
-            // get vector between the source and the destination nodes
-            PVector between = edge.dst.getPosition().get();
-            between.sub(edge.src.getPosition());
+				// get vector between the source and the destination nodes
+				PVector between = edge.dst.getPosition().get();
+				between.sub(edge.src.getPosition());
 
-            p.pushMatrix();
-            
-            // Translate(x,y,0) called already in Controller, but nodes are in 3D
-            p.translate(0,0,edge.getPosition().z);
-            
-            if (displayLabel) {
-                displayLabel();
-            }
-            
-            // Rotate towards the destination node to orient the edge
-            PVector  target = between.get();
+				p.pushMatrix();
 
-            PVector up = new PVector(0,1,0);
-            PVector axis = target.cross(up);
-            float angle = PVector.angleBetween(target, up);
+				// Translate(x,y,0) called already in Controller, but nodes are
+				// in 3D
+				p.translate(0, 0, edge.getPosition().z);
 
-            p.rotate(-angle, axis.x, axis.y, axis.z);
+				if (displayLabel) {
+					displayLabel();
+				}
 
-            float len = between.mag() - edge.src.size - edge.dst.size;
-            
-            if (selected() && !inside()) {
-                p.fill(pApp.selectColor);
-            } else {
-                p.fill(currentCol);
-            }
-            
-            p.box(edge.size, edge.lengthScale*len, edge.size); 
-            
-            p.popMatrix();
-          }
-        }
-      );
-    }
+				// Rotate towards the destination node to orient the edge
+				PVector target = between.get();
+
+				PVector up = new PVector(0, 1, 0);
+				PVector axis = target.cross(up);
+				float angle = PVector.angleBetween(target, up);
+
+				p.rotate(-angle, axis.x, axis.y, axis.z);
+
+				float len = between.mag() - edge.src.size - edge.dst.size;
+
+				if (selected() && !inside()) {
+					p.fill(pApp.selectColor);
+				} else {
+					p.fill(currentCol);
+				}
+
+				p.box(edge.size, edge.lengthScale * len, edge.size);
+
+				p.popMatrix();
+
+			}
+		};
+
+		setView(view);
+	}
 
     @Override
     public boolean inside() {

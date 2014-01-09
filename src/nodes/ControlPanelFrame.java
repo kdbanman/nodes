@@ -13,7 +13,10 @@ import java.awt.Frame;
  * @author kdbanman
  */
 public class ControlPanelFrame extends Frame {
-    public ControlPanel controls;
+
+	private static final long serialVersionUID = -7064090646163909907L;
+
+	public ControlPanel controls;
     
     int w;
     int h;

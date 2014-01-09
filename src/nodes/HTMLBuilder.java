@@ -1,6 +1,7 @@
 package nodes;
 
 import com.hp.hpl.jena.rdf.model.Statement;
+
 import java.util.Iterator;
 
 /**
@@ -31,13 +32,13 @@ public class HTMLBuilder {
      * each node is rendered with a table for outgoing triples and a table for incoming triples.
      * each edge is rendered with a table for each triple contained within it.
      */
-    public String renderAsHTML(Iterable<? extends GraphElement> elements, int width) {
+    public String renderAsHTML(Iterable<? extends GraphElement<?>> elements, int width) {
     	String bodyHTML = "";
         
         try {
             // build HTML from passed collection
             int i = 0;
-            for (GraphElement e : elements) {
+            for (GraphElement<?> e : elements) {
                 bodyHTML += renderedElement(e, width);
                 bodyHTML += "<br><hr align=\"center\" width=\"" + 2 * width / 3 + "\">";
                 i++;
@@ -62,7 +63,7 @@ public class HTMLBuilder {
      * render a single GraphElement as a sequence of HTML headings and tables.
      * undefined behavior for null parameter.
      */
-    private String renderedElement(GraphElement e, int width) {
+    private String renderedElement(GraphElement<?> e, int width) {
         if (e instanceof Node) {
             return renderedNode((Node) e, width);
         } else {
@@ -109,7 +110,8 @@ public class HTMLBuilder {
         return "<h2>" + fontWrap(headingText) + "</h2>";
     }
     
-    private String h3Heading(String headingText) {
+    @SuppressWarnings("unused") //Kirby needs to use this later?
+	private String h3Heading(String headingText) {
         return "<h3>" + fontWrap(headingText) + "</h3>";
     }
     
