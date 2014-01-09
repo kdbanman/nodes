@@ -33,14 +33,28 @@ public class IO {
      * @return jena Model of Statements.
      */
     public static Model getDescription(String uri) {
+        return getDescription(uri, uri);
+    }
+    
+    /**
+     * Reads rdf from http or filesystem urls.
+     * Attempts to read from documentUri all triples incoming and outgoing
+     * from entityUri.  If entityUri is not described by documentUri, then all
+     * triples within documentUri are returned.
+     * 
+     * @param documentUri HTTP or filesystem URL.  Throws RiotException if the valid RDF is not returned.
+     * @param entityUri Entity described within document at documentUri
+     * @return jena Model of Statements
+     */
+    public static Model getDescription(String documentUri, String entityUri) {
         // retrieve description as a jena model
         Model retrievedTriples = ModelFactory.createDefaultModel();
-        RDFDataMgr.read(retrievedTriples, uri);
+        RDFDataMgr.read(retrievedTriples, documentUri);
 
         // if the queried uri represents a resource, rather than a
         // document that does not describe the retrieval uri, then
         // only include that resource's immediate neighborhood
-        RDFNode asResource = retrievedTriples.createResource(uri);
+        RDFNode asResource = retrievedTriples.createResource(entityUri);
         Model toAdd = retrievedTriples;
         if (retrievedTriples.containsResource(asResource)) {
             toAdd = retrievedTriples.query(new SimpleSelector((Resource) asResource, null, (Object) null));

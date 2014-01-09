@@ -7,6 +7,9 @@
 #####
 - null pointer exception occurs in Selection.java:435 in broadcastChange()
 
+- it is possible to hover over nodes and edges without having their data rendered on the information panel.
+	- timing replicates this bug.  if you go to hover over a GraphElement just as the InformationPanel is being updated, it doesn't render.  advise fiddling with thread timings and consistency checks within InformationPanel.
+
 #KARIM
 ######
 
@@ -26,8 +29,6 @@
 
 #CORE FEATURES
 ##############
-
-- sdb retrieval
 
 - save program state to .nod file
 	- define schema within IO.class
@@ -112,6 +113,10 @@ COMPLETED                                 (:r !date)
 
 not a comprehensive changelog - see git log for that
 ####################################################
+
+Thu Jan  9 16:48:18 MST 2014
+- file triples retrieval
+
 
 Thu Jan  2 15:14:02 MST 2014
 - rename the infopanel components more meaningfully
