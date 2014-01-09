@@ -2,6 +2,8 @@ package nodes;
 
 import com.hp.hpl.jena.rdf.model.Model;
 
+import nodes.Modifier.ModifierType;
+
 import org.apache.jena.riot.RiotException;
 
 import controlP5.Button;
@@ -32,6 +34,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -104,7 +109,9 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
     
     // selection modifier menu and populator
     ListBox modifierMenu;
-    ModifierPopulator modifierPopulator;
+    private Collection<Modifier> modifiers = Collections.emptyList();
+    private Collection<ModifierSet> modifiersets = Collections.emptyList();
+    private final HashMap<Integer, Modifier> uiModifiers = new HashMap<Integer, Modifier>();
     
     // radio for radial layout sorting order (lexico or numerical)
     RadioButton sortOrder;
@@ -147,10 +154,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
         buttonWidth = 100;
         buttonHeight = 30;
         modifiersBoxHeight = 200;
-        
-        // selection modifier menu populator
-        modifierPopulator = new ModifierPopulator(graph);
-        
+
         // sub tab lists to manipulate in draw() for tab behaviour
         importSubTabs = new ArrayList<>();
         transformSubTabs = new ArrayList<>();
@@ -295,8 +299,16 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                 .setScrollbarWidth(elementHeight)
                 .moveTo(transformTab)
                 .hideBar();
-        // populate menu according to selection
-        modifierPopulator.populate(modifierMenu);
+
+        try {
+	        modifiers = graph.getModifiersList();
+	        modifiersets = graph.getModifierSetsList();
+        } catch (Exception e) {
+	        e.printStackTrace();
+	        System.err.println("ERROR: getting list of Modifiers/ModifierSets");
+        }
+
+        populateModifierMenu();
         
         // Transformation subtabs
         /////////////////////////
@@ -557,12 +569,12 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
         if (autoLayout.getState() && (!transformTab.isOpen() || !positionGroup.isOpen())) {
             autoLayout.setState(false);
         }
-        
+
         // update controllers to selection if selection has changed since
         // last draw() call
         if (selectionUpdated.getAndSet(false)) {
             // populate the dynamic, selection-dependent selection modifier menu
-            modifierPopulator.populate(modifierMenu);
+			populateModifierMenu();
 
             // change color picker, size slider, and label size slider to reflect selection
             updateControllersToSelection();
@@ -588,7 +600,11 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                 e.setColor(newColor);
             }
         } else if (event.isFrom(modifierMenu)) {
-            modifierPopulator.run((int) event.getValue());
+            try {
+	            uiModifiers.get((int) event.getValue()).modify();
+            } catch (Exception e) {
+	            e.printStackTrace();
+            }
         }
     }
     
@@ -1220,4 +1236,42 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
         }
         
     }
+
+    /*
+     * Refreshes the visual modifiers menu list
+     */
+    private void populateModifierMenu() {
+		if (modifierMenu == null || (modifiers.isEmpty() && modifiersets.isEmpty()))
+			return;
+
+		for (Modifier m : modifiers) {
+			if (!uiModifiers.containsValue(m)
+			        && (m.getType() == ModifierType.ALL || m.getType() == ModifierType.PANEL)
+			        && m.isCompatible()) {
+
+				modifierMenu.addItem(m.getTitle(), uiModifiers.size());
+				uiModifiers.put(uiModifiers.size(), m);
+			}
+
+			if (uiModifiers.containsValue(m) && !m.isCompatible()) {
+				uiModifiers.remove(modifierMenu.getItem(m.getTitle()).getValue());
+				modifierMenu.removeItem(m.getTitle());
+			}
+		}
+		for (ModifierSet s : modifiersets) {
+			for (Modifier m : s.getModifiers()) {
+				if (uiModifiers.containsValue(m)) {
+					uiModifiers.remove(modifierMenu.getItem(m.getTitle()).getValue());
+					modifierMenu.removeItem(m.getTitle());
+				}
+			}
+			if (s.isCompatible()) {
+				s.constructModifiers();
+				for (Modifier m : s.getModifiers()) {
+					modifierMenu.addItem(m.getTitle(), uiModifiers.size());
+					uiModifiers.put(uiModifiers.size(), m);
+				}
+			}
+		}
+	}
 }

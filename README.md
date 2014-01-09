@@ -70,4 +70,10 @@ for nodes to see your class, add its name to `resources/modifier_registry` or `r
     - peasycam.jar from peasycam/library/
 - [apache jena](http://www.apache.org/dist/jena/binaries/) (tested with 2.11.0)
     - all 14 jars from apache-jena-2.11.0/lib/
+- [google reflections 0.9.9 RC1](https://code.google.com/p/reflections/downloads/list)
+- [google guava](https://code.google.com/p/guava-libraries/)
+	- version >= 1.5 non-gwt
+- [javassist](http://www.csg.ci.i.u-tokyo.ac.jp/~chiba/javassist/)
+	- tested with 3.18.0.GA
 
+dependencies will need to be downloaded manually for now untill we mavenize the project.

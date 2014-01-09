@@ -1,5 +1,6 @@
 package nodes;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.ArrayList;
 
@@ -13,9 +14,12 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.NoSuchElementException;
 import java.util.PriorityQueue;
 import java.util.Set;
+
+import org.reflections.Reflections;
 
 import processing.core.PApplet;
 import processing.core.PFont;
@@ -52,6 +56,11 @@ public class Graph implements Iterable<GraphElement<?>> {
     private HashSet<Edge> edges;
     private HashMap<Integer, PFont> fonts;
 
+    private static final Reflections reflections = new Reflections("");
+
+    private final Set<Modifier> modifiers = new LinkedHashSet<Modifier>();
+    private Set<ModifierSet> modifiersets = new LinkedHashSet<ModifierSet>();;
+
     Graph(UnProjector u, Nodes p) {
         proj = u;
         pApp = p;
@@ -75,6 +84,12 @@ public class Graph implements Iterable<GraphElement<?>> {
         adjacent = new HashMap<>();
         edges = new HashSet<>();
         fonts = new HashMap<>();
+
+        loadModifiers();
+        loadModifierSets();
+
+        System.out.println("Loaded " + modifiers.size() + " Modifier(s)");
+        System.out.println("Loaded " + modifiersets.size() + " ModifierSet(s)");
     }
     
     public PriorityQueue<GraphElement<?>> getDistanceSortedGraphElements() {
@@ -682,4 +697,81 @@ public class Graph implements Iterable<GraphElement<?>> {
             }
         }
     }
+
+	/**
+     * Loads and creates instances of all modifier classes that have been loaded in the current JVM using reflections
+     */
+	private void loadModifiers() {
+		Set<Class<? extends Modifier>> subTypes = reflections.getSubTypesOf(Modifier.class);
+
+		for (Class<? extends Modifier> TClass : subTypes) {
+
+			if (java.lang.reflect.Modifier.isPrivate(TClass.getModifiers()))
+				continue;
+
+			try {
+				modifiers.add(TClass.getDeclaredConstructor(this.getClass()).newInstance(this));
+			} catch (InstantiationException | IllegalAccessException
+			        | IllegalArgumentException | InvocationTargetException
+			        | NoSuchMethodException | SecurityException e) {
+				e.printStackTrace();
+				System.err.println("ERROR: unable to construct " + TClass.getName() + " modifier");
+			}
+		}
+	}
+
+	/**
+     *  Loads and creates instances of all modifiersets classes that have been loaded in the current JVM using reflections
+     */
+	private void loadModifierSets() {
+		Set<Class<? extends ModifierSet>> subTypes = reflections.getSubTypesOf(ModifierSet.class);
+
+		for (Class<? extends ModifierSet> TClass : subTypes) {
+
+			if (java.lang.reflect.Modifier.isPrivate(TClass.getModifiers()))
+				continue;
+
+			try {
+				modifiersets.add(TClass.getDeclaredConstructor(this.getClass()).newInstance(this));
+
+			} catch (InstantiationException | IllegalAccessException
+			        | IllegalArgumentException | InvocationTargetException
+			        | NoSuchMethodException | SecurityException e) {
+				e.printStackTrace();
+				System.err.println("ERROR: unable to construct " + TClass.getName() + " modifierset");
+			}
+		}
+	}
+
+	/**
+	 * Retrieve a list of all modifiers, list is write-safe
+	 * @return Collection of modifiers
+	 * @throws Exception on failure to initiate a modifier
+	 */
+	public Collection<Modifier> getModifiersList() throws Exception {
+		ArrayList<Modifier> list = new ArrayList<Modifier>(modifiers.size());
+
+		Iterator<Modifier> it = modifiers.iterator();
+
+		while (it.hasNext())
+			list.add(it.next().getClass().getConstructor(this.getClass()).newInstance(this)); //Hacky copy, not going down the road of Cloneable. This will suffice
+
+		return list;
+	}
+
+	/**
+	 * Retrieve a list of all modifiersets, list is write-safe
+	 * @return Collection of modifiersset
+	 * @throws Exception on failure to initiate a modifierset
+	 */
+	public Collection<ModifierSet> getModifierSetsList() throws Exception {
+		ArrayList<ModifierSet> list = new ArrayList<ModifierSet>(modifiersets.size());
+
+		Iterator<ModifierSet> it = modifiersets.iterator();
+
+		while (it.hasNext())
+			list.add(it.next().getClass().getConstructor(this.getClass()).newInstance(this)); //Hacky copy, not going down the road of Cloneable. This will suffice
+
+		return list;
+	}
 }
