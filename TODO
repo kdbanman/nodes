@@ -8,6 +8,7 @@
 - null pointer exception occurs in Selection.java:435 in broadcastChange()
 
 - it is possible to hover over nodes and edges without having their data rendered on the information panel.
+	- UPDATE: html is now constructed on every displayInformationText() call, so that only the (slow) rendering process of swing is within the spawned Runnable
 	- timing replicates this bug.  if you go to hover over a GraphElement just as the InformationPanel is being updated, it doesn't render.  advise fiddling with thread timings and consistency checks within InformationPanel.
 
 #KARIM
