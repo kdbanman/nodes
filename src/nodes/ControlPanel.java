@@ -1,6 +1,7 @@
 package nodes;
 
 import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.RDFNode;
 
 import nodes.Modifier.ModifierType;
 
@@ -311,7 +312,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                 .setAutoClear(false)
                 .addCallback(new CopyPasteMenuListener())
                 .moveTo(fileGroup);
-        fileImportQueryEntity = cp5.addTextfield("Entity to Query",
+        fileImportQueryEntity = cp5.addTextfield("Entity to Query (Optional)",
                 padding - w / 2,
                 labelledElementHeight + padding,
                 w - 2 * padding,
@@ -895,13 +896,37 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                 try {
                     toAdd = IO.getDescription(docUri, entityUri);
                 } catch (RiotException e) {
-                    logEvent("Valid RDF not contained within \n  " + docUri);
+                    logEvent("Error encountered reading RDF from\n  " + docUri);
                     return;
                 }
-                // add the retrived model to the graph (toAdd is empty if 
-                // an error was encountered).
-                // log results to user.
-                graph.addTriplesLogged(toAdd);
+                
+                //NOTE: the logged items will be in reverse order as they appear below.
+                
+                // UI BEHAVIOUR:
+                // if the user did not specify an entity to describe, load all data from file
+                // if the user did specify such an entity, and that entity is within the file, load the desrcibing data
+                // if the user did specify such an entity, and that entity is not within the file, load no data
+                
+                // provide feedback as to whethere or not the file contains
+                // the query entity
+                if (!entityUri.equals("")) {
+                    RDFNode entityAsResource = toAdd.createResource(entityUri);
+                    if (toAdd.containsResource(entityAsResource)) {
+                        // add the retrived model to the graph (toAdd is empty if 
+                        // an IO error was encountered).
+                        // log results to user.
+                        graph.addTriplesLogged(toAdd);
+                        logEvent("Describing entity:\n " + entityUri + "\n  ");
+                    } else {
+                        logEvent("Warning: entity:\n " + entityUri + "\n not found!\n(All eoeo");
+                    }
+                } else {
+                    // add the retrived model to the graph (toAdd is empty if 
+                    // an IO error was encountered).
+                    // log results to user.
+                    graph.addTriplesLogged(toAdd);
+                }
+                
                 logEvent("From file:\n " + docUri + "\n  ");
             }
         }
