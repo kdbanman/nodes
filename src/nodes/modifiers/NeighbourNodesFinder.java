@@ -161,34 +161,20 @@ public class NeighbourNodesFinder extends Modifier {
                 cp5.addButton("FIND NODES").setPosition(200, 20)
                         .setSize(70, 14).addCallback(new CallbackListener() {
 
-                            @Override
-                            public void controlEvent(CallbackEvent event) {
-                                if (event.getAction() == ControlP5.ACTION_RELEASED) {
-<<<<<<< HEAD
-                                    ParseAndExit();
+					        @Override
+					        public void controlEvent(CallbackEvent event) {
+						        if (event.getAction() == ControlP5.ACTION_RELEASED)
+							        ParseAndExit();
+					        }
+				        });
 
-=======
-							        try {
-								        setNeighboursSelection(Integer.parseInt(nBox.getText()));
-							        } catch (NumberFormatException e) {
-								        setNeighboursSelection(0);
-							        }
+				cp5.mapKeyFor(new ControlKey() {
 
-                                    synchronized (waiting) {
-                                        waiting.notify();
-                                    }
->>>>>>> refs/heads/master
-                                }
-                            }
-                        });
-
-                cp5.mapKeyFor(new ControlKey() {
-
-                    @Override
-                    public void keyEvent() {
-                        ParseAndExit();
-                    }
-                }, ENTER);
+					@Override
+					public void keyEvent() {
+						ParseAndExit();
+					}
+				}, ENTER);
             }
 
             @Override
@@ -202,7 +188,11 @@ public class NeighbourNodesFinder extends Modifier {
                 if (text == null || text.isEmpty())
                     return;
 
-                setNeighboursSelection(Integer.parseInt(text));
+                try {
+			        setNeighboursSelection(Integer.parseInt(text));
+		        } catch (NumberFormatException e) {
+			        setNeighboursSelection(0);
+		        }
 
                 synchronized (waiting) {
                     waiting.notify();
