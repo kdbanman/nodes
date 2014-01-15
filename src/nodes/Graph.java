@@ -1,25 +1,25 @@
 package nodes;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.ArrayList;
 
 import com.hp.hpl.jena.rdf.model.*;
 
 import controlP5.ControlP5;
-import controlP5.ControlWindow;
 import controlP5.ControllerGroup;
-import controlP5.Tab;
 
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
+import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.PriorityQueue;
 import java.util.Set;
+
+import org.reflections.Reflections;
 
 import processing.core.PApplet;
 import processing.core.PFont;
@@ -29,13 +29,13 @@ import processing.core.PVector;
  *
  * @author kdbanman
  */
-public class Graph implements Iterable<GraphElement> {
+public class Graph implements Iterable<GraphElement<?>> {
 
     UnProjector proj;
     ControlP5 cp5;
     Nodes pApp;
     
-    ControllerGroup graphElementGroup;
+    ControllerGroup<?> graphElementGroup;
     
     private static final String FONTRESOURCE = "resources/labelFont.ttf";
     private Selection selection;
@@ -55,6 +55,11 @@ public class Graph implements Iterable<GraphElement> {
     private HashMap<Node, ArrayList<Node>> adjacent;
     private HashSet<Edge> edges;
     private HashMap<Integer, PFont> fonts;
+    //shouldn't be more than single instance of Graph but just in-case
+    private static final Reflections reflections = new Reflections("");
+
+    private final LinkedList<Modifier> modifiers = new LinkedList<Modifier>();
+    private final LinkedList<ModifierSet> modifiersets = new LinkedList<ModifierSet>();;
 
     Graph(UnProjector u, Nodes p) {
         proj = u;
@@ -79,34 +84,41 @@ public class Graph implements Iterable<GraphElement> {
         adjacent = new HashMap<>();
         edges = new HashSet<>();
         fonts = new HashMap<>();
+
+        loadModifiers();
+        loadModifierSets();
+
+        System.out.println("Total Modifiers: " + modifiers.size());
+        System.out.println("Total ModifierSets: " + modifiersets.size());
     }
-    
-    public PriorityQueue<GraphElement> getDistanceSortedGraphElements() {
-        Collection<GraphElement> elements = cp5.getAll(GraphElement.class);
+
+    public PriorityQueue<GraphElement<?>> getDistanceSortedGraphElements() {
+
+        @SuppressWarnings("rawtypes") //cp5 is mistakenly returning a rawtype
+		Collection<GraphElement> elements = cp5.getAll(GraphElement.class);
+
+        PriorityQueue<GraphElement<?>> sorted = new PriorityQueue<GraphElement<?>>(100, new Comparator<GraphElement<?>>() {
+            PVector referencePoint = pApp.getCamPosition();
+            @Override
+            public int compare(GraphElement<?> e1, GraphElement<?> e2) {
+                if (e1 == e2) return 0;
+                float e1Dist = referencePoint.dist(e1.getPosition());
+                float e2Dist = referencePoint.dist(e2.getPosition());
+                // order is swapped to prioritize furthest elements
+                return Float.compare(e2Dist, e1Dist);
+            }
+        });
         
-        PriorityQueue<GraphElement> sorted = new PriorityQueue(100,
-            new Comparator<GraphElement>() {
-                PVector referencePoint = pApp.getCamPosition();
-                @Override
-                public int compare(GraphElement e1, GraphElement e2) {
-                    if (e1 == e2) return 0;
-                    float e1Dist = referencePoint.dist(e1.getPosition());
-                    float e2Dist = referencePoint.dist(e2.getPosition());
-                    // order is swapped to prioritize furthest elements
-                    return Float.compare(e2Dist, e1Dist);
-                }
-            });
-        
-        for (GraphElement e : elements) {
+        for (GraphElement<?> e : elements) {
             sorted.offer(e);
         }
         return sorted;
     }
 
     /**
-     * iterative force-directed layout algorithm.  one layout() call is one iteration.
+     * invoke single iteration of iterative force-directed layout algorithm.
      */
-    public void layout() {
+    public void autoLayoutIteration() {
         // initialize map of changes in node positions
         HashMap<Node, PVector> deltas = new HashMap<>();
         for (Node node : adjacent.keySet()) {
@@ -175,11 +187,14 @@ public class Graph implements Iterable<GraphElement> {
         }
     }
 
-    /*
-     * adds triples to model, adding Nodes and Edges as necessary
+    /**
+     * adds triples to model, adding Nodes and Edges as necessary.
      */
     public void addTriples(Model toAdd) {
+        // protect from concurrency issues during import
+        pApp.waitForNewFrame(this);
         // triples to be added are now the most recently added triples
+
         allPreviouslyAddedTriples = toAdd;
         
         // add yet undiscovered namespace prefixes to the model
@@ -200,6 +215,28 @@ public class Graph implements Iterable<GraphElement> {
         } else {
             Nodes.println("Empty query result - no triples to add.");
         }
+        
+        // concurrency danger over
+        pApp.restartRendering(this);
+    }
+    
+    /**
+     * adds triples to model, adding Nodes and Edges as necessary.
+     * outputs feedback to event log.
+     */
+    public void addTriplesLogged(Model toAdd) {
+        int retrievedSize = (int) toAdd.size();
+                int beforeSize = tripleCount();
+                
+                // add the retriveed model to the graph (toAdd is empty if 
+                // an error was encountered)
+                addTriples(toAdd);
+                
+                int addedSize = tripleCount() - beforeSize;
+                
+                // log number of triples added to user
+                pApp.logEvent(retrievedSize + " triples retrieved\n  " +
+                         addedSize + " triples are new");
     }
     
     public Model getRenderedTriples() {
@@ -219,22 +256,37 @@ public class Graph implements Iterable<GraphElement> {
     }
     
     /**
+     * returns namespace prefixed version (short form) of uri.
+     * Example: "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" --> "rdf:type"
      * 
-     * @param uri
      * @return namespace prefixed version of uri. 
-     *      Example: http://www.w3.org/1999/02/22-rdf-syntax-ns#type --> rdf:type
      */
-    public String prefixed(String uri) {
-        return triples.shortForm(uri);
+    public String prefixed(String fullUri) {
+        return triples.shortForm(fullUri);
     }
-    public String expanded(String prefixed) {
-        return triples.expandPrefix(prefixed);
+    /**
+     * returns the fully qualified uri from a prefixed version.
+     * Example: "rdf:type" --> "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+     * 
+     * @param prefixed
+     * @return expanded form.
+     */
+    public String expanded(String prefixedUri) {
+        return triples.expandPrefix(prefixedUri);
     }
+    /**
+     * returns the prefix corresponding to a uri.
+     * Example: "http://www.w3.org/1999/02/22-rdf-syntax-ns" --> "rdf"
+     */
     public String prefix(String uri) {
         return triples.getNsURIPrefix(uri);
     }
-    public String prefixURI(String uri) {
-        return triples.getNsPrefixURI(uri);
+    /**
+     * returns the uri corresponding to a prefix.
+     * Example: "rdf" --> "http://www.w3.org/1999/02/22-rdf-syntax-ns"
+     */
+    public String prefixURI(String prefix) {
+        return triples.getNsPrefixURI(prefix);
     }
 
     /**
@@ -416,7 +468,8 @@ public class Graph implements Iterable<GraphElement> {
 
     }
 
-    private Edge addEdge(Node s, Node d) {
+    @SuppressWarnings("unused")
+	private Edge addEdge(Node s, Node d) {
         return addEdge(s.getName(), d.getName());
     }
 
@@ -554,6 +607,26 @@ public class Graph implements Iterable<GraphElement> {
         return getEdge(s.getName(), d.getName());
     }
 
+	/**
+	 * Retrieves a list of the loaded modifiers
+	 * List is ready-only, any write operations will throw UnsupportedOperationException.
+	 * @return Collection of modifiers
+	 * @throws Exception on failure to initiate a modifier
+	 */
+	public Collection<Modifier> getModifiersList() throws Exception {
+		return Collections.unmodifiableList(modifiers);
+	}
+
+	/**
+	 * Retrieves a list of the loaded modifiersets
+	 * List is ready-only, any write operations will throw UnsupportedOperationException.
+	 * @return Collection of modifiersset
+	 * @throws Exception on failure to initiate a modifierset
+	 */
+	public Collection<ModifierSet> getModifierSetsList() throws Exception {
+		return Collections.unmodifiableList(modifiersets);
+	}
+
     /**
      * prints error message for edge creation between nonexistent nodes.
      */
@@ -592,9 +665,9 @@ public class Graph implements Iterable<GraphElement> {
     /**
      * iterates through all nodes then all edges
      */
-    public class GraphIterator implements Iterator<GraphElement> {
-        Iterator itNodes;
-        Iterator itEdges;
+    public class GraphIterator implements Iterator<GraphElement<?>> {
+        Iterator<Node> itNodes;
+        Iterator<Edge> itEdges;
         
         public GraphIterator() {
             itNodes = getNodes().iterator();
@@ -607,10 +680,10 @@ public class Graph implements Iterable<GraphElement> {
         }
         
         @Override
-        public GraphElement next() {
-            GraphElement ret = null;
-            if (itNodes.hasNext()) ret = (GraphElement) itNodes.next();
-            else if (itEdges.hasNext()) ret = (GraphElement) itEdges.next();
+        public GraphElement<?> next() {
+            GraphElement<?> ret = null;
+            if (itNodes.hasNext()) ret = (GraphElement<?>) itNodes.next();
+            else if (itEdges.hasNext()) ret = (GraphElement<?>) itEdges.next();
             else throw new NoSuchElementException();
             
             return ret;
@@ -636,12 +709,67 @@ public class Graph implements Iterable<GraphElement> {
         @Override
         public void drawControllers(PApplet theApplet) {
             // draw graph in order of depth
-            PriorityQueue<GraphElement> elementQueue = getDistanceSortedGraphElements();
+            PriorityQueue<GraphElement<?>> elementQueue = getDistanceSortedGraphElements();
             while (!elementQueue.isEmpty()) {
-                GraphElement currentElement = elementQueue.poll();
+                GraphElement<?> currentElement = elementQueue.poll();
                 currentElement.updateInternalEvents(pApp);
                 currentElement.draw(pApp);
             }
         }
     }
+
+	/**
+     * Loads and creates instances of all modifier classes that have been loaded in the current JVM using reflections
+     */
+	private void loadModifiers() {
+		//reflections magic
+		Set<Class<? extends Modifier>> subTypes = reflections.getSubTypesOf(Modifier.class);
+
+		for (Class<? extends Modifier> TClass : subTypes) {
+			//ignore "private" modifiers such as those sub-classed in a ModifierSet that get loaded separately 
+			if (java.lang.reflect.Modifier.isPrivate(TClass.getModifiers()))
+				continue;
+
+			try {
+				modifiers.add(TClass.getDeclaredConstructor(this.getClass()).newInstance(this));
+				System.out.println("Initiated: " + TClass.getName());
+			} catch (InstantiationException | IllegalAccessException
+			        | IllegalArgumentException | InvocationTargetException
+			        | NoSuchMethodException | SecurityException e) {
+				e.printStackTrace();
+				System.err.println("ERROR: unable to construct " + TClass.getName() + " modifier");
+			}
+		}
+
+		// let's sort them
+		Collections.sort(modifiers, new Comparator<Modifier>() {
+			@Override
+			public int compare(Modifier m1, Modifier m2) {
+				return Integer.compare(m1.getTitle().length(), m2.getTitle().length());
+			}
+		});
+	}
+
+	/**
+     *  Loads and creates instances of all modifiersets classes that have been loaded in the current JVM using reflections
+     */
+	private void loadModifierSets() {
+		Set<Class<? extends ModifierSet>> subTypes = reflections.getSubTypesOf(ModifierSet.class);
+
+		for (Class<? extends ModifierSet> TClass : subTypes) {
+			//Private ModifierSet?
+			if (java.lang.reflect.Modifier.isPrivate(TClass.getModifiers()))
+				continue;
+
+			try {
+				modifiersets.add(TClass.getDeclaredConstructor(this.getClass()).newInstance(this));
+				System.out.println("Initiated: " + TClass.getName());
+			} catch (InstantiationException | IllegalAccessException
+			        | IllegalArgumentException | InvocationTargetException
+			        | NoSuchMethodException | SecurityException e) {
+				e.printStackTrace();
+				System.err.println("ERROR: unable to construct " + TClass.getName() + " modifierset");
+			}
+		}
+	}
 }

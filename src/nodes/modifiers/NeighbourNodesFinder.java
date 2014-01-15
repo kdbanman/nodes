@@ -41,6 +41,11 @@ public class NeighbourNodesFinder extends Modifier {
         return "Find nodes with common neighbours";
     }
 
+	@Override
+	public ModifierType getType() {
+		return ModifierType.PANEL;
+	}
+
     @Override
     public void modify() {
         FinderFrame f = new FinderFrame(this);
@@ -159,8 +164,20 @@ public class NeighbourNodesFinder extends Modifier {
                             @Override
                             public void controlEvent(CallbackEvent event) {
                                 if (event.getAction() == ControlP5.ACTION_RELEASED) {
+<<<<<<< HEAD
                                     ParseAndExit();
 
+=======
+							        try {
+								        setNeighboursSelection(Integer.parseInt(nBox.getText()));
+							        } catch (NumberFormatException e) {
+								        setNeighboursSelection(0);
+							        }
+
+                                    synchronized (waiting) {
+                                        waiting.notify();
+                                    }
+>>>>>>> refs/heads/master
                                 }
                             }
                         });

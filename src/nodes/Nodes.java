@@ -6,8 +6,17 @@ package nodes;
 import processing.core.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 
+import nodes.Modifier.ModifierType;
+import nodes.controllers.RightClickList;
+import controlP5.ControlEvent;
+import controlP5.ControlP5;
+import controlP5.Tab;
 //  this is the PeasyCam from https://github.com/jeffg2k/peasycam
 import peasy.PeasyCam;
 import processing.opengl.PGraphics3D;
@@ -16,15 +25,22 @@ import processing.opengl.PGraphics3D;
  * 
  * @author kdbanman
  */
-public class Nodes extends PApplet {
+public class Nodes extends PApplet implements Selection.SelectionListener {
 
-    // 3D graph-viewing camera
+	private static final long serialVersionUID = 8527157297916319L;
+	// 3D graph-viewing camera
     PeasyCam cam;
+    //ControlP5
+    ControlP5 cp5;
     // matrix and vector module for interaction in 3D
     UnProjector proj;
     // graph module for RDF visualization
     Graph graph;
-    
+
+    // update flag raised if the controllers have not responded to a change in
+    // selection.  see selectionChanged() and draw().
+    AtomicBoolean selectionUpdated;
+
     // control panel window (contains its own controlP5 instance)
     // static so that it can be initialized in main() as a workaround for the
     // bug that doesn't allow focus to change to panelFrame in linux
@@ -40,17 +56,25 @@ public class Nodes extends PApplet {
     int selectColor;
     // current direction of selection color change (for color pulsation)
     boolean selectColorRising;
-    
+
     // enum for tracking what the mouse is currently doing.  for management of
     // drag movement and selection, which all use left mouse button
     DragBehaviour drag;
-    
+
+    // Right Click list controller
+    RightClickList rightClickList;
+    // Lists of modifiers and modifiersets
+    private Collection<Modifier> modifiers = Collections.emptyList();
+    private Collection<ModifierSet> modifiersets = Collections.emptyList();
+    // Map of list indexes to each modifier
+    private final ConcurrentHashMap<Integer, Modifier> uiModifiers = new ConcurrentHashMap<Integer, Modifier>();
+
     // list for tracking which GraphElements have been hovered over.  this is 
     // necessary because:
     //   ControlP5's native onLeave() calls are based on the assumption that only
     //   one controller will be hovered over at any given time.
     // "hovered" is populated by onEnter() calls within GraphElement.
-    ArrayList<GraphElement> hovered;
+    ArrayList<GraphElement<?>> hovered;
     
     // object container for GraphElement concurrency between rendering and 
     // external modification
@@ -68,6 +92,9 @@ public class Nodes extends PApplet {
         // initialize camera
         cam = new PeasyCam(this, 0, 0, 0, 600);
         
+        cp5 = new ControlP5(this);
+        cp5.setAutoDraw(false);
+
         // configure camera controls
         cam.setLeftDragHandler(null);
         cam.setRightDragHandler(cam.getRotateDragHandler());
@@ -85,7 +112,9 @@ public class Nodes extends PApplet {
         // horrible hack means that static panelFrame has already been constructed
         // within main()
         controlPanelFrame.initialize(graph);
-        infoPanelFrame.initialize(graph);
+        // initialize info panel so that it renders up to 50 graph elements simultaneously
+        // at a maximum rate of once every .75 seconds
+        infoPanelFrame.initialize(graph, 50, 750);
         
         // set program startup default values (see comments in field declaration
         // for more information)
@@ -100,11 +129,31 @@ public class Nodes extends PApplet {
         hovered = new ArrayList<>();
         
         waitingOnNewFrame = null;
+
+        selectionUpdated = new AtomicBoolean();
+
+        graph.getSelection().addListener(this);
+
+        // Right click list controller
+		rightClickList = new RightClickList(cp5, (Tab) cp5.controlWindow.getTabs().get(1), "rightClickList", 0, 0, 200, 20);
+		//equivalent to cp5.MultiList
+		cp5.register(null, "", rightClickList);
+		rightClickList.registerProperty("value")
+						.setVisible(false)
+						.hide();
+		//get a list of modifiers and modifiersets
+        try {
+	        modifiers = graph.getModifiersList();
+	        modifiersets = graph.getModifierSetsList();
+        } catch (Exception e) {
+	        e.printStackTrace();
+	        System.err.println("ERROR: getting list of Modifiers/ModifierSets");
+        }
     }
 
     @Override
     public void draw() {
-        
+
         if (waitingOnNewFrame != null) {
             synchronized (waitingOnNewFrame) {
                 waitingOnNewFrame.notify();
@@ -119,6 +168,14 @@ public class Nodes extends PApplet {
         }
         // light orange pastel background color
         background(0xFFFFDCBF);
+
+		// on re-draw don't erase the right click menu if it's visible
+		if (rightClickList.isVisible()) {
+			// For 2D rect
+			cam.beginHUD();
+			cp5.draw();
+			cam.endHUD();
+        }
 
         // light the scene from the cursor
         proj.captureViewMatrix((PGraphics3D) this.g);
@@ -144,8 +201,8 @@ public class Nodes extends PApplet {
         
         // perform a step of the force-directed layout if the corresponding control
         // is selected
-        if (controlPanelFrame.controls.autoLayout.getState()) {
-            graph.layout();
+        if (controlPanelFrame.controls.autoLayoutSelected()) {
+            graph.autoLayoutIteration();
         }
         
         // ensure no graph elements are mistakenly mouse-hovered
@@ -153,8 +210,25 @@ public class Nodes extends PApplet {
         
         // iterate selection color pulsation
         updateSelectColor();
+	}
+
+    // every time selection is changed, this is called
+    @Override
+    public void selectionChanged() {
+        // queue controller selection update if one is not already queued
+        selectionUpdated.compareAndSet(false, true);
     }
-    
+
+    public void controlEvent(ControlEvent event) {
+		if (event.isFrom(rightClickList)) {
+			try {
+				uiModifiers.get((int) event.getValue()).modify();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+    }
+
     /*
      * synchronize another process between rendering frames of Nodes
      * to begin waiting for new frame:
@@ -189,11 +263,19 @@ public class Nodes extends PApplet {
     // called only when the mouse button is initially depressed, NOT while it is held
     @Override
     public void mousePressed() {
+		rightClickList.hide();
+
         // store initial mouse click location for rectangular selection box
         if (mouseButton == LEFT) {
             lastPressedX = mouseX;
             lastPressedY = mouseY;
         }
+		if (mouseButton == CENTER) {
+			refreshRightClickList();
+
+			rightClickList.updateLocation(mouseX, mouseY);
+			rightClickList.show();
+		}
     }
 
     // called only when the mouse is moved while a button is depressed
@@ -233,7 +315,7 @@ public class Nodes extends PApplet {
                 // every time the selection box is changed, clear the selection
                 // and recompute the box membership of each graph element
                 graph.getSelection().clearBuffer();
-                for (GraphElement n : graph) {
+                for (GraphElement<?> n : graph) {
                     // get screen coordinates of graph element
                     PVector nPos = n.getPosition();
                     float nX = screenX(nPos.x, nPos.y, nPos.z);
@@ -253,7 +335,7 @@ public class Nodes extends PApplet {
                 ////////////
                 
                 // element to be moved
-                GraphElement toBeMoved = getNearestHovered();
+				GraphElement<?> toBeMoved = getNearestHovered();
                 
                 // get distance between pixels on near frustum
                 proj.calculatePickPoints(0, 0);
@@ -340,21 +422,21 @@ public class Nodes extends PApplet {
         return new PVector(camLook[0], camLook[1], camLook[2]);
     }
     
-    public ArrayList<GraphElement> getHovered() {
+    public ArrayList<GraphElement<?>> getHovered() {
         return hovered;
     }
     
     // returns the GraphElement nearest to the cursor position on the near 
     // frustum plane
-    public GraphElement getNearestHovered() {
+    public GraphElement<?> getNearestHovered() {
         if (hovered.isEmpty()) return null;
         
         proj.calculatePickPoints(mouseX, mouseY);
         PVector mousePos = proj.ptStartPos;
 
-        GraphElement closest = hovered.get(0);
+        GraphElement<?> closest = hovered.get(0);
         float minDist = mousePos.dist(closest.getPosition());
-        for (GraphElement e : hovered) {
+        for (GraphElement<?> e : hovered) {
             float currElementDist = mousePos.dist(e.getPosition());
             if (minDist > currElementDist) {
                 minDist = currElementDist;
@@ -366,11 +448,11 @@ public class Nodes extends PApplet {
     
     // when a GraphElement is moused over, it calls this with itself as a
     // parameter
-    public void addToHovered(GraphElement element) {
+    public void addToHovered(GraphElement<?> element) {
         hovered.add(element);
         
-        // notify info panel of change in hover
-        infoPanelFrame.info.updateNextFrame();
+        // display new hovered element in info panel
+        infoPanelFrame.displayInformationText(hovered);
     }
 
     // make sure that no GraphElement erroneously keeps mouseover state:
@@ -378,13 +460,16 @@ public class Nodes extends PApplet {
     // one controller will be hovered over at any given time, so onLeave() calls
     // cannot be depended upon.
     public void cleanHovered() {
+        // the infopanel has a jarring flash every time its html contents are 
+        // rerendered, so this boolean ensures it is not done more than necessary
+        boolean infopanelNeedsUpdate = false;
         
         // every time the mouse hovers over a GraphElement, that element 
         // references itself in the hovered list.
         // iterate over each element in hovered.
-        Iterator<GraphElement> it = hovered.iterator();
+        Iterator<GraphElement<?>> it = hovered.iterator();
         while (it.hasNext()) {
-            GraphElement e = it.next();
+			GraphElement<?> e = it.next();
             if (!e.isInside()) {
                 // if the element is not hovered over any more, call its  
                 // respective method and remove it from the list.
@@ -395,14 +480,20 @@ public class Nodes extends PApplet {
                 // elements from a list while it is being iterated through.
                 it.remove();
                 
-                // notify info panel of change in hover
-                infoPanelFrame.info.updateNextFrame();
+                // infopanel needs an update because the hovered contents have changed
+                infopanelNeedsUpdate = true;
             }
+        }
+
+        if (infopanelNeedsUpdate) {
+            // if hovered is now empty, render the selection.
+            if (!hovered.isEmpty()) infoPanelFrame.displayInformationText(hovered);
+            // if not, render the hovered elements
+            else infoPanelFrame.displayInformationText(graph.getSelection());
         }
     }
     
-    // mechanism for making selection color pulsate in grayscale with a
-    // breathing rhythm
+    // mechanism for making selection color pulsate in grayscale
     public void updateSelectColor() {
         if (selectColor >= 0xFFBABABA) {
             selectColorRising = false;
@@ -416,13 +507,12 @@ public class Nodes extends PApplet {
     
     // log event to user in infopanel event box
     public void logEvent(String s) {
-        infoPanelFrame.info.logEvent(s);
+        infoPanelFrame.logEvent(s);
     }
     
-    // get SPARQL endpoint URI from control panel.  now *this* is tiiiggght coupling. :(
-    // maintainability is decreasing as this project cuts into school
+    // get SPARQL endpoint URI from control panel.
     public String getSparqlEndpoint() {
-        return controlPanelFrame.controls.importSparqlEndpoint.getText();
+        return controlPanelFrame.controls.getHttpSparqlEndpoint();
     }
     
     /**
@@ -440,4 +530,32 @@ public class Nodes extends PApplet {
     public enum DragBehaviour {
         SELECT, DRAG;
     }
+
+    /*
+     * Refreshes the visual right click menu list
+     */
+    private void refreshRightClickList() {
+		if (rightClickList == null || (modifiers.isEmpty() && modifiersets.isEmpty()))
+			return;
+
+		rightClickList.clearButtons();
+		uiModifiers.clear();
+
+		for (Modifier m : modifiers) {
+			if ((m.getType() == ModifierType.ALL || m.getType() == ModifierType.VIEW) && m.isCompatible()) {
+				rightClickList.add(m.getTitle(), uiModifiers.size());
+				uiModifiers.put(uiModifiers.size(), m);
+			}
+		}
+//		for (ModifierSet s : modifiersets) {
+//
+//			if ((s.getType() != ModifierType.ALL || s.getType() != ModifierType.PANEL) || !s.isCompatible())
+//				continue;
+//
+//			for (Modifier m : s.getModifiers()) {
+//				if (m.isCompatible())
+//					uiModifiers.put(m, rightClickList.add(m.getTitle(), uiModifiers.size()));
+//			}
+//		}
+	}
 }

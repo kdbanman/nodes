@@ -22,6 +22,10 @@ nb-configuration.xml
 .LSOverride
 Icon
 
+# Eclipse
+######
+/bin
+
 
 # Thumbnails
 ._*
@@ -39,3 +43,4 @@ Icon
 # don't ignore this document
 ############################
 !.gitignore
+

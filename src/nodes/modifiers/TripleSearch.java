@@ -39,6 +39,10 @@ public class TripleSearch extends Modifier {
         return "Search";
     }
 
+	@Override
+	public ModifierType getType() {
+		return ModifierType.PANEL;
+	}
     @Override
     public void modify() {
         SearchFrame s = new SearchFrame(this);

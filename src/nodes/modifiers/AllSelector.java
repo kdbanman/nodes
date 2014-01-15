@@ -22,9 +22,14 @@ public class AllSelector extends Modifier {
         return "Select all";
     }
 
+	@Override
+	public ModifierType getType() {
+		return ModifierType.ALL;
+	}
+
     @Override
     public void modify() {
-        for (GraphElement e : graph) {
+        for (GraphElement<?> e : graph) {
             graph.getSelection().add(e);
         }
     }

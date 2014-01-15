@@ -21,6 +21,11 @@ public class NodeFilter extends Modifier {
         return "Filter only nodes";
     }
 
+	@Override
+	public ModifierType getType() {
+		return ModifierType.ALL;
+	}
+
     @Override
     public void modify() {
         graph.getSelection().clearEdges();

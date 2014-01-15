@@ -1,44 +1,44 @@
 package nodes;
 
-import com.hp.hpl.jena.query.Query;
-import com.hp.hpl.jena.query.QueryExecution;
-import com.hp.hpl.jena.query.QueryExecutionFactory;
-import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
 
-import org.apache.jena.riot.RDFDataMgr;
+import nodes.Modifier.ModifierType;
+import nodes.controllers.ModifiersListBox;
+
 import org.apache.jena.riot.RiotException;
 
 import controlP5.Button;
-
 import controlP5.CallbackEvent;
 import controlP5.CallbackListener;
 import controlP5.ColorPicker;
 import controlP5.ControlEvent;
 import controlP5.ControlP5;
 import controlP5.Group;
-import controlP5.ListBox;
 import controlP5.RadioButton;
 import controlP5.Slider;
 import controlP5.Tab;
 import controlP5.Textfield;
 import controlP5.Toggle;
-
 import processing.core.PVector;
 import processing.core.PApplet;
 
 import java.util.ArrayList;
-
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 
@@ -47,7 +47,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author kdbanman
  */
 public class ControlPanel extends PApplet implements Selection.SelectionListener {
-    int w, h;
+
+	private static final long serialVersionUID = 7771053293767517965L;
+
+	int w, h;
     
     ControlP5 cp5;
     Graph graph;
@@ -86,6 +89,8 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
     Group openImportSubTab;
     ArrayList<Group> transformSubTabs;
     Group openTransformSubTab;
+    ArrayList<Group> saveSubTabs;
+    Group openSaveSubTab;
     
     // text field for user-input URIs for description retrieval from the web
     Textfield importWebURI;
@@ -96,9 +101,19 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
     // text field for sparql query formation
     Textfield sparqlQueryURI;
     
-    // selection modifier menu and populator
-    ListBox modifierMenu;
-    ModifierPopulator modifierPopulator;
+    // text field for rdf-xml filename
+    Textfield dataFilename;
+    
+    // text field for project filename
+    Textfield projectFilename;
+    
+    // Modifier list controller
+    ModifiersListBox modifiersBox;
+    // Lists of modifiers and modifiersets
+    private Collection<Modifier> modifiers = Collections.emptyList();
+    private Collection<ModifierSet> modifiersets = Collections.emptyList();
+    // Map of list indexes to each modifier
+    private final ConcurrentHashMap<Integer, Modifier> uiModifiers = new ConcurrentHashMap<Integer, Modifier>();
     
     // radio for radial layout sorting order (lexico or numerical)
     RadioButton sortOrder;
@@ -141,13 +156,11 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
         buttonWidth = 100;
         buttonHeight = 30;
         modifiersBoxHeight = 200;
-        
-        // selection modifier menu populator
-        modifierPopulator = new ModifierPopulator(graph);
-        
+
         // sub tab lists to manipulate in draw() for tab behaviour
         importSubTabs = new ArrayList<>();
         transformSubTabs = new ArrayList<>();
+        saveSubTabs = new ArrayList<>();
     }
     
     @Override
@@ -171,10 +184,11 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
         transformTab = cp5.addTab("Transform")
                 .setWidth(w / 4)
                 .setHeight(tabHeight);
-        Tab optionTab = cp5.addTab("Options")
+        @SuppressWarnings("unused") //will probably have later use
+		Tab optionTab = cp5.addTab("Options")
                 .setWidth(w / 4)
                 .setHeight(tabHeight);
-        Tab saveTab = cp5.addTab("Save")
+        Tab saveTab = cp5.addTab("Save/Load")
                 .setWidth(w / 4)
                 .setHeight(tabHeight);
         cp5.getDefaultTab().remove();
@@ -276,19 +290,33 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
         // Transform tab
         //==============
         
-        // selection modifier menu
-        modifierMenu = cp5.addListBox("Selection Modifiers", 
-                    padding, 
-                    tabHeight + padding, 
-                    w - 2 * padding, 
-                    modifiersBoxHeight)
-                .setBarHeight(tabHeight)
-                .setItemHeight(elementHeight)
-                .setScrollbarWidth(elementHeight)
-                .moveTo(transformTab)
-                .hideBar();
-        // populate menu according to selection
-        modifierPopulator.populate(modifierMenu);
+        // modifier list controller
+		modifiersBox = new ModifiersListBox(cp5, (Tab) cp5.controlWindow
+		        .getTabs().get(1),
+		        "ModifiersBox",
+		        padding,
+		        tabHeight + padding,
+		        w - 2 * padding,
+		        modifiersBoxHeight);
+		//equivalent to cp5.AddListBox
+		cp5.register(null, "", modifiersBox);
+		modifiersBox.registerProperty("listBoxItems")
+				.registerProperty("value")
+		        .setBarHeight(tabHeight)
+		        .setItemHeight(elementHeight)
+		        .setScrollbarWidth(elementHeight)
+		        .moveTo(transformTab)
+		        .hideBar();
+		//get a list of modifiers and modifiersets
+        try {
+	        modifiers = graph.getModifiersList();
+	        modifiersets = graph.getModifierSetsList();
+        } catch (Exception e) {
+	        e.printStackTrace();
+	        System.err.println("ERROR: getting list of Modifiers/ModifierSets");
+        }
+
+        populateModifierMenu();
         
         // Transformation subtabs
         /////////////////////////
@@ -437,9 +465,85 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
         // Options tab
         //============
         
-        //=========
-        // Save tab
-        //=========
+        //==============
+        // Save/Load tab
+        //==============
+        
+        // save/load subtabs
+        ////////////////////////
+        
+        int saveTabsVert = 2 * tabHeight + padding;
+        
+        Group dataGroup = new SubTab(cp5, "Save Data")
+                .setBarHeight(tabHeight)
+                .setPosition(0, saveTabsVert)
+                .setWidth(w / 4)
+                .hideArrow()
+                .setOpen(true)
+                .moveTo(saveTab);
+        Group projectGroup = new SubTab(cp5, "Save/Load Project")
+                .setBarHeight(tabHeight)
+                .setPosition(w / 4, saveTabsVert)
+                .setWidth(w / 4)
+                .hideArrow()
+                .setOpen(false)
+                .moveTo(saveTab);
+        
+        // register save subtabs so that they may be manipulated in
+        // draw() to behave as tabs
+        saveSubTabs.add(dataGroup);
+        saveSubTabs.add(projectGroup);
+        openSaveSubTab = dataGroup;
+        
+        // Data save elements
+        
+        dataFilename = cp5.addTextfield("RDF-XML Filename",
+                padding,
+                padding,
+                w - 2 * padding,
+                elementHeight)
+                .setAutoClear(false)
+                .moveTo(dataGroup)
+                .setText("myData.rdf")
+                .addCallback(new CopyPasteMenuListener());
+        cp5.addButton("Save RDF-XML")
+                .setSize(buttonWidth, buttonHeight)
+                .setPosition(w - buttonWidth - padding, 
+                    labelledElementHeight + padding)
+                .moveTo(dataGroup)
+                .addCallback(new SaveTriplesListener());
+        
+        // Project Save elements
+        
+        projectFilename = cp5.addTextfield("Project Name",
+                padding - w / 4,
+                padding,
+                w - 2 * padding,
+                elementHeight)
+                .setAutoClear(false)
+                .moveTo(projectGroup)
+                .setText("myProject.nod")
+                .addCallback(new CopyPasteMenuListener());
+        cp5.addButton("Save Project")
+                .setSize(buttonWidth, buttonHeight)
+                .setPosition(3 * w / 4 - buttonWidth - padding, 
+                    labelledElementHeight + padding)
+                .moveTo(projectGroup)
+                .addCallback(new SaveProjectListener());
+        cp5.addButton("Load Project")
+                .setSize(buttonWidth, buttonHeight)
+                .setPosition(3 * w / 4 - buttonWidth - padding, 
+                    3 * labelledElementHeight + padding)
+                .moveTo(projectGroup)
+                .addCallback(new LoadProjectListener());
+    }
+    
+    public String getHttpSparqlEndpoint() {
+        return importSparqlEndpoint.getText();
+    }
+    
+    public boolean autoLayoutSelected() {
+        return autoLayout.getState();
     }
     
     // all controlP5 controllers are drawn after draw(), so herein lies any
@@ -462,17 +566,23 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                 openImportSubTab = subTab;
             }
         }
+        for (Group subTab : saveSubTabs) {
+            if (subTab.isOpen() && subTab != openSaveSubTab) {
+                openSaveSubTab.setOpen(false);
+                openSaveSubTab = subTab;
+            }
+        }
         
         // stop autoLayout if any other tab is selected
         if (autoLayout.getState() && (!transformTab.isOpen() || !positionGroup.isOpen())) {
             autoLayout.setState(false);
         }
-        
+
         // update controllers to selection if selection has changed since
         // last draw() call
         if (selectionUpdated.getAndSet(false)) {
             // populate the dynamic, selection-dependent selection modifier menu
-            modifierPopulator.populate(modifierMenu);
+			populateModifierMenu();
 
             // change color picker, size slider, and label size slider to reflect selection
             updateControllersToSelection();
@@ -494,11 +604,15 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
         // adjust color of selected elements (if event is not from selection update)
         if (changeElementColor && event.isFrom(colorPicker)) {
             int newColor = colorPicker.getColorValue();
-            for (GraphElement e : graph.getSelection()) {
+            for (GraphElement<?> e : graph.getSelection()) {
                 e.setColor(newColor);
             }
-        } else if (event.isFrom(modifierMenu)) {
-            modifierPopulator.run((int) event.getValue());
+        } else if (event.isFrom(modifiersBox)) {
+            try {
+	            uiModifiers.get((int) event.getValue()).modify();
+            } catch (Exception e) {
+	            e.printStackTrace();
+            }
         }
     }
     
@@ -689,35 +803,18 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
             if (event.getAction() == ControlP5.ACTION_RELEASED) {
                 // get uri from text field
                 String uri = importWebURI.getText();
-                // retrieve description as a jena model
-                Model toAdd = ModelFactory.createDefaultModel();
-        
+                Model toAdd;
                 try {
-                    RDFDataMgr.read(toAdd, uri);
+                    toAdd = IO.getDescription(uri);
                 } catch (RiotException e) {
                     logEvent("Valid RDF not hosted at uri \n  " + uri);
                     return;
                 }
-                
-                // protect from concurrency issues during import
-                graph.pApp.waitForNewFrame(this);
-                
-                int retrievedSize = (int) toAdd.size();
-                int beforeSize = graph.tripleCount();
-                
-                // add the retriveed model to the graph (toAdd is empty if 
-                // an error was encountered)
-                graph.addTriples(toAdd);
-                
-                int addedSize = graph.tripleCount() - beforeSize;
-                
-                // log number of triples added to user
-                logEvent("From uri:\n " + uri + "\n  " + 
-                         retrievedSize + " triples retrieved\n  " +
-                         addedSize + " triples are new");
-                 
-                graph.pApp.restartRendering(this);
-                
+                // add the retrived model to the graph (toAdd is empty if 
+                // an error was encountered).
+                // log results to user.
+                graph.addTriplesLogged(toAdd);
+                logEvent("From uri:\n " + uri + "\n  ");
             }
         }
     }
@@ -731,47 +828,23 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
             if (event.getAction() == ControlP5.ACTION_RELEASED) {
                 // get endpoint uri
                 String endpoint = importSparqlEndpoint.getText();
-                
                 // get uri from text field and form query
                 String uri = sparqlQueryURI.getText();
-                String queryString = "CONSTRUCT { <" + uri + "> ?p1 ?o . "
-                        + "?s ?p2 <" + uri + "> } " + ""
-                        + "WHERE { <" + uri + "> ?p1 ?o . "
-                        + "?s ?p2 <" + uri + "> }";
-                
-                // construct query
-                Query query = QueryFactory.create(queryString);
-                
-                QueryExecution qexec = QueryExecutionFactory.sparqlService(endpoint, query);
                 
                 // retrieve description as a jena model
                 Model toAdd;
                 try {
-                    toAdd = qexec.execConstruct();
+                    toAdd = IO.getDescriptionSparql(endpoint, uri);
                 } catch (Exception e) {
                     logEvent("Valid RDF not returned from endpoint:\n" + endpoint);
                     return;
                 }
-                
-                // protect from concurrency issues during import
-                graph.pApp.waitForNewFrame(this);
-                
-                int retrievedSize = (int) toAdd.size();
-                int beforeSize = graph.tripleCount();
-                
                 // add the retriveed model to the graph (toAdd is empty if 
                 // an error was encountered)
-                graph.addTriples(toAdd);
-                
-                int addedSize = graph.tripleCount() - beforeSize;
-                
-                // log number of triples added to user
+                 // log results.
+                graph.addTriplesLogged(toAdd);
                 logEvent("From endpoint:\n" + endpoint + "\n\n" +
-                         "about uri: \n" + uri + "\n " +
-                         retrievedSize + " triples retrieved\n " +
-                         addedSize + " triples are new");
-                 
-                graph.pApp.restartRendering(this);
+                         "about uri: \n" + uri + "\n ");
             }
         }
     }
@@ -821,15 +894,15 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
         public void controlEvent(CallbackEvent event) {
             if (event.getAction() == ControlP5.ACTION_RELEASED) {
                 
-                Iterator<GraphElement> it;
-                if (graph.getSelection().empty()) {
-                    it = graph.iterator();
-                } else {
-                    it = graph.getSelection().iterator();
-                }
+                Iterator<GraphElement<?>> it;
+				if (graph.getSelection().empty()) {
+					it = graph.iterator();
+				} else {
+					it = graph.getSelection().iterator();
+				}
                 
                 if (it.hasNext()) {
-                    GraphElement first = it.next();
+					GraphElement<?> first = it.next();
                     // calculate center of graph
                     PVector center = first.getPosition().get();
                     float minX = center.x;
@@ -844,7 +917,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                     float nodeCount = 1f;
 
                     while (it.hasNext()) {
-                        GraphElement e = it.next();
+						GraphElement<?> e = it.next();
                         if (e instanceof Edge) continue;
                         
                         Node n = (Node) e;
@@ -1017,7 +1090,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                 }
                 
                 // apply the new size to each element in the selection
-                for (GraphElement e : graph.getSelection()) {
+                for (GraphElement<?> e : graph.getSelection()) {
                     e.setSize(newSize);
                 }
             }
@@ -1033,7 +1106,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
         public void controlEvent(CallbackEvent event) {
             if (event.getAction() == ControlP5.ACTION_RELEASED) {
                 // hide label for each element in the selection
-                for (GraphElement e : graph.getSelection()) {
+                for (GraphElement<?> e : graph.getSelection()) {
                     e.setDisplayLabel(false);
                 }
             }
@@ -1049,7 +1122,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
         public void controlEvent(CallbackEvent event) {
             if (event.getAction() == ControlP5.ACTION_RELEASED) {
                 // show each label for each element in the selection
-                for (GraphElement e : graph.getSelection()) {
+                for (GraphElement<?> e : graph.getSelection()) {
                     e.setDisplayLabel(true);
                 }
             }
@@ -1074,7 +1147,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                 }
                 
                 // apply the new label size to each element in the selection
-                for (GraphElement e : graph.getSelection()) {
+                for (GraphElement<?> e : graph.getSelection()) {
                     e.setLabelSize(newSize);
                 }
             }
@@ -1119,4 +1192,88 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
             }
         }
     }
+    
+    /*
+     * saves rendered triples to an rdf-xml file as named by the respective text box
+     */
+    private class SaveTriplesListener implements CallbackListener {
+
+        @Override
+        public void controlEvent(CallbackEvent ce) {
+            Writer writer = null;
+            try {
+                writer = new BufferedWriter(new OutputStreamWriter(
+                      new FileOutputStream(dataFilename.getText()), "utf-8"));
+                graph.getRenderedTriples().write(writer);
+                logEvent("RDF-XML file " + dataFilename.getText() + "\nsaved to application directory.");
+            } catch (IOException ex) {
+              logEvent("Failed to save file " + dataFilename.getText());
+            } finally {
+               try {writer.close();} catch (Exception ex) {}
+            }
+        }
+    }
+    
+    /*
+     * saves the (relevant) current state of the Nodes application to be loaded
+     * at a later date.
+     */
+    private class SaveProjectListener implements CallbackListener {
+
+        /*
+         * TODO
+         */
+        @Override
+        public void controlEvent(CallbackEvent ce) {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+        
+    }
+    
+    /*
+     * loads previously saved application state.
+     */
+    private class LoadProjectListener implements CallbackListener {
+
+        /*
+         * TODO
+         */
+        @Override
+        public void controlEvent(CallbackEvent ce) {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+        
+    }
+
+    /*
+     * Refreshes the visual modifiers menu list
+     */
+    private void populateModifierMenu() {
+		if (modifiersBox == null || (modifiers.isEmpty() && modifiersets.isEmpty()))
+			return;
+
+		uiModifiers.clear();
+		modifiersBox.clear();
+
+		for (Modifier m : modifiers) {
+			if ((m.getType() == ModifierType.ALL || m.getType() == ModifierType.PANEL) && m.isCompatible()) {
+					modifiersBox.addItem(m.getTitle(), uiModifiers.size());
+	                uiModifiers.put(uiModifiers.size(), m);
+			}
+		}
+		for (ModifierSet s : modifiersets) {
+
+			if (s.getType() != ModifierType.ALL || s.getType() != ModifierType.PANEL)
+				continue;
+
+			if ((s.getType() == ModifierType.ALL || s.getType() == ModifierType.PANEL) && s.isCompatible()) {
+				s.constructModifiers();
+
+				for (Modifier m : s.getModifiers()) {
+					modifiersBox.addItem(m.getTitle(), uiModifiers.size());
+					uiModifiers.put(uiModifiers.size(), m);
+				}
+			}
+		}
+	}
 }

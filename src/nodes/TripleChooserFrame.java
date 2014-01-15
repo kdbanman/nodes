@@ -2,7 +2,6 @@ package nodes;
 
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.shared.PrefixMapping;
-import controlP5.Button;
 import controlP5.CallbackEvent;
 import controlP5.CallbackListener;
 import controlP5.ControlP5;
@@ -25,7 +24,10 @@ import processing.core.PApplet;
  * @author kdbanman
  */
 public class TripleChooserFrame extends Frame {
-    int padding;
+
+	private static final long serialVersionUID = -8593426183598734573L;
+
+	int padding;
     int elementSize;
     int buttonWidth;
     int buttonHeight;
@@ -130,10 +132,12 @@ public class TripleChooserFrame extends Frame {
     }
     
     private class TripleChooser extends PApplet {
-        ControlP5 cp5;
+
+		private static final long serialVersionUID = 5414827346348619385L;
+
+		ControlP5 cp5;
         
         RadioButton tripleRadio;
-        Button ok;
         
         public TripleChooser() {
             
@@ -158,7 +162,7 @@ public class TripleChooserFrame extends Frame {
             }
             tripleRadio.activate(0);
             
-            ok = cp5.addButton("OK")
+            cp5.addButton("OK")
                     .setPosition(width - buttonWidth - padding, height - buttonHeight - padding - 50)
                     .addCallback(new OkButtonListener());
         }

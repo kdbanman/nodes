@@ -2,6 +2,8 @@ package nodes;
 
 import java.util.ArrayList;
 
+import nodes.Modifier.ModifierType;
+
 /**
 * set of Modifiers that share a common compatibility test.
 * see documentation here as well as existing examples.
@@ -34,4 +36,9 @@ public abstract class ModifierSet {
     * modifiers.  this is only called if isCompatible() passed.
     */
    public abstract void constructModifiers();
+
+   /**
+    * constrains all the modifiers in the set to follow a type
+    */
+   public abstract ModifierType getType();
 }

@@ -1,12 +1,14 @@
 package nodes.modifiersets;
 
 import com.hp.hpl.jena.rdf.model.Statement;
+
 import java.util.NoSuchElementException;
+
 import nodes.Edge;
 import nodes.Graph;
 import nodes.Modifier;
+import nodes.Modifier.ModifierType;
 import nodes.ModifierSet;
-import nodes.Node;
 
 /**
  *
@@ -38,6 +40,11 @@ public class CorrespondingNodeSelector extends ModifierSet {
         return false;
     }
 
+	@Override
+	public ModifierType getType() {
+		return ModifierType.PANEL;
+	}
+
     @Override
     public void constructModifiers() {
         modifiers.clear();
@@ -64,6 +71,11 @@ public class CorrespondingNodeSelector extends ModifierSet {
         public String getTitle() {
             return "Select node corresponding to " + graph.prefixed(pred);
         }
+
+		@Override
+		public ModifierType getType() {
+			return ModifierType.ALL;
+		}
 
         @Override
         public void modify() {

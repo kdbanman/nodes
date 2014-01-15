@@ -32,6 +32,11 @@ public class CommonNeighboursSelector extends Modifier {
     }
 
     @Override
+	public ModifierType getType() {
+		return ModifierType.ALL;
+	}
+
+    @Override
     public void modify() {
         graph.getSelection().clearBuffer();
 

@@ -36,7 +36,12 @@ public class CorrespondingEdgesSelector extends Modifier {
         public String getTitle() {
             return "Select edges with to property " + graph.prefixed(uri);
         }
-        
+
+		@Override
+		public ModifierType getType() {
+			return ModifierType.ALL;
+		}
+
         @Override
         public void modify() {
             // select all edges with statements with node's name as property

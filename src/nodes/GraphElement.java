@@ -73,6 +73,10 @@ public class GraphElement<T> extends Controller<T> {
         return setSize(s, s);
     }
     
+    public Graph getGraph() {
+        return graph;
+    }
+    
     public float getSize() {
         return size;
     }
@@ -107,7 +111,8 @@ public class GraphElement<T> extends Controller<T> {
     
     public void notHovered() {
         //not removed from pApp.hovered because that list is regularly iterated
-        //through.  removals outside that iterator are dangerous.
+        //through and removals outside that iteration are dangerous.  this is 
+        //not a problem because the Nodes class maintains the list every frame.
         currentCol = defaultCol;
     }
     
@@ -220,7 +225,7 @@ public class GraphElement<T> extends Controller<T> {
             return false;
         }
 
-        return getName().equals(((GraphElement) e).getName());
+        return getName().equals(((GraphElement<?>) e).getName());
     }
 
     @Override
