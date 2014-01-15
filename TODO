@@ -1,11 +1,14 @@
 #META
 #####
 
--? are low priority considerations
+-? are very low priority considerations
 
 #BUGS
 #####
 - null pointer exception occurs in Selection.java:435 in broadcastChange()
+
+- null pointer exception occurs in ControlPanel.java:1350 in populateModifierMenu()
+	- I think a null is being fed into the field Collection<Modifier> modifiers
 
 - it is possible to hover over nodes and edges without having their data rendered on the information panel.
 	- UPDATE: html is now constructed on every displayInformationText() call, so that only the (slow) rendering process of swing is within the spawned Runnable
@@ -33,8 +36,6 @@
 
 - save program state to .nod file
 	- define schema within IO.class
-
-- move existing "ERROR: ..." print statements to event log in InfoPanelControllers
 
 - put more detailed feedback for lengthy processes in the event log of InfoPanelControllers
 

@@ -304,13 +304,14 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
         
         // File import elements
         
-        fileImportLocation = cp5.addTextfield("File Location",
+        fileImportLocation = cp5.addTextfield("File Path (Relative or Absolute)",
                 padding - w / 2,
                 padding,
                 w - 2 * padding,
                 elementHeight)
                 .setAutoClear(false)
                 .addCallback(new CopyPasteMenuListener())
+                .setText("Einstein.rdf")
                 .moveTo(fileGroup);
         fileImportQueryEntity = cp5.addTextfield("Entity to Query (Optional)",
                 padding - w / 2,
