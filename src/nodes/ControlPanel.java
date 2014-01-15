@@ -1,6 +1,7 @@
 package nodes;
 
 import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.RDFNode;
 
 import nodes.Modifier.ModifierType;
 import nodes.controllers.ModifiersListBox;
@@ -19,21 +20,24 @@ import controlP5.Slider;
 import controlP5.Tab;
 import controlP5.Textfield;
 import controlP5.Toggle;
+
 import processing.core.PVector;
 import processing.core.PApplet;
 
-import java.util.ArrayList;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
+
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -71,7 +75,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
     int buttonHeight;
     int modifiersBoxHeight;
     
-    // Control elements that need to be accessed outside of setup
+    // Control elements that need to be accessed outside of setup()
     
     // copy/paste menu
     Button copyButton;
@@ -101,10 +105,16 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
     // text field for sparql query formation
     Textfield sparqlQueryURI;
     
-    // text field for rdf-xml filename
+    // text field for file import location
+    Textfield fileImportLocation;
+    
+    // text field for file import query entity uri
+    Textfield fileImportQueryEntity;
+    
+    // text field for rdf-xml filename save location
     Textfield dataFilename;
     
-    // text field for project filename
+    // text field for project filename (save/load location)
     Textfield projectFilename;
     
     // Modifier list controller
@@ -233,16 +243,24 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                 .hideArrow()
                 .setOpen(false)
                 .moveTo(importTab);
+        Group fileGroup = new SubTab(cp5, "File")
+                .setBarHeight(tabHeight)
+                .setPosition(w / 2, importTabsVert)
+                .setWidth(w / 4)
+                .hideArrow()
+                .setOpen(false)
+                .moveTo(importTab);
         
         // register triple import subtabs so that they may be manipulated in
         // draw() to behave as tabs
         importSubTabs.add(webGroup);
         importSubTabs.add(sparqlGroup);
+        importSubTabs.add(fileGroup);
         openImportSubTab = webGroup;
         
         // Web import elements
         
-        importWebURI = cp5.addTextfield("Entity URI",
+        importWebURI = cp5.addTextfield("Entity or Document URI",
                 padding,
                 padding,
                 w - 2 * padding,
@@ -285,6 +303,32 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                     3 * labelledElementHeight + padding)
                 .addCallback(new QuerySparqlListener())
                 .moveTo(sparqlGroup);
+        
+        // File import elements
+        
+        fileImportLocation = cp5.addTextfield("File Path (Relative or Absolute)",
+                padding - w / 2,
+                padding,
+                w - 2 * padding,
+                elementHeight)
+                .setAutoClear(false)
+                .addCallback(new CopyPasteMenuListener())
+                .setText("Einstein.rdf")
+                .moveTo(fileGroup);
+        fileImportQueryEntity = cp5.addTextfield("Entity to Query (Optional)",
+                padding - w / 2,
+                labelledElementHeight + padding,
+                w - 2 * padding,
+                elementHeight)
+                .setAutoClear(false)
+                .addCallback(new CopyPasteMenuListener())
+                .moveTo(fileGroup);
+        cp5.addButton("Query File")
+                .setSize(buttonWidth, buttonHeight)
+                .setPosition(w - buttonWidth - padding - w / 2,
+                    3 * labelledElementHeight + padding)
+                .addCallback(new FileQueryListener())
+                .moveTo(fileGroup);
         
         //==============
         // Transform tab
@@ -847,6 +891,55 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                          "about uri: \n" + uri + "\n ");
             }
         }
+    }
+    
+    private class FileQueryListener implements CallbackListener {
+
+        @Override
+        public void controlEvent(CallbackEvent event) {
+            if (event.getAction() == ControlP5.ACTION_RELEASED) {
+                // get uris from text fields
+                String docUri = fileImportLocation.getText();
+                String entityUri = fileImportQueryEntity.getText();
+                Model toAdd;
+                try {
+                    toAdd = IO.getDescription(docUri, entityUri);
+                } catch (RiotException e) {
+                    logEvent("Error encountered reading RDF from\n  " + docUri);
+                    return;
+                }
+                
+                //NOTE: the logged items will be in reverse order as they appear below.
+                
+                // UI BEHAVIOUR:
+                // if the user did not specify an entity to describe, load all data from file
+                // if the user did specify such an entity, and that entity is within the file, load the desrcibing data
+                // if the user did specify such an entity, and that entity is not within the file, load no data
+                
+                // provide feedback as to whethere or not the file contains
+                // the query entity
+                if (!entityUri.equals("")) {
+                    RDFNode entityAsResource = toAdd.createResource(entityUri);
+                    if (toAdd.containsResource(entityAsResource)) {
+                        // add the retrived model to the graph (toAdd is empty if 
+                        // an IO error was encountered).
+                        // log results to user.
+                        graph.addTriplesLogged(toAdd);
+                        logEvent("Describing entity:\n " + entityUri + "\n  ");
+                    } else {
+                        logEvent("Warning: entity:\n " + entityUri + "\n not found!\n(All eoeo");
+                    }
+                } else {
+                    // add the retrived model to the graph (toAdd is empty if 
+                    // an IO error was encountered).
+                    // log results to user.
+                    graph.addTriplesLogged(toAdd);
+                }
+                
+                logEvent("From file:\n " + docUri + "\n  ");
+            }
+        }
+        
     }
     
     /*************************************

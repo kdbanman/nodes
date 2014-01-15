@@ -42,6 +42,7 @@ public class InfoPanelFrame extends Frame implements SelectionListener{
     private long updateInterval;
     private boolean updateScheduled;
     private final ScheduledExecutorService updateExecutor;
+    private String htmlToRender;
     
     /**
      * Must call initialize() after constructor!
@@ -76,6 +77,7 @@ public class InfoPanelFrame extends Frame implements SelectionListener{
         
         this.updateInterval = updateInterval;
         updateScheduled = false;
+        htmlToRender = "<html bgcolor=\"#000000\"></html>";
         
         graph.getSelection().addListener(this);
     	
@@ -84,7 +86,7 @@ public class InfoPanelFrame extends Frame implements SelectionListener{
     	htmlInfoPane.setContentType("text/html");
     	
         htmlInfoPane.setEditorKit(new HTMLEditorKit());
-        htmlInfoPane.setText("<html bgcolor=\"#000000\"></html>");
+        htmlInfoPane.setText(htmlToRender);
     	htmlInfoPane.setEditable(false);
         htmlInfoPane.setMargin(new Insets(0,0,0,0));
         
@@ -132,14 +134,17 @@ public class InfoPanelFrame extends Frame implements SelectionListener{
     }
     
     public void displayInformationText(final Iterable<? extends GraphElement<?>> elements) {
-        // check if minimum interval has elapsed
+        // whether or not there is an update scheduled, update the pending content
+        htmlToRender = htmlBuilder.renderAsHTML(elements, w - infoControllers.getWidth() - 20);
+        // check if minimum interval has elapsed.
+        // i.e. if no update is currently scheduled, then schedule one.
         if (!checkAndSetScheduled()) {
             updateExecutor.schedule(new Runnable() {
                 @Override
                 public void run() {
                     // try to get swing to change the contents of the HTML pane
                     try {
-                        htmlInfoPane.setText(htmlBuilder.renderAsHTML(elements, w - infoControllers.getWidth() - 20));
+                        htmlInfoPane.setText(htmlToRender);
                     } catch (Exception e) {
                         System.out.println("ERROR: Swing cannot handle this html:\n\n" + htmlBuilder.renderAsHTML(elements, w - infoControllers.getWidth() - 20));
                         e.printStackTrace();
