@@ -42,7 +42,7 @@ public class NeighbourNodesFinder extends Modifier {
 
 	@Override
 	public ModifierType getType() {
-		return ModifierType.ALL;
+		return ModifierType.PANEL;
 	}
 
     @Override
@@ -161,8 +161,11 @@ public class NeighbourNodesFinder extends Modifier {
                             @Override
                             public void controlEvent(CallbackEvent event) {
                                 if (event.getAction() == ControlP5.ACTION_RELEASED) {
-
-                                    setNeighboursSelection(Integer.parseInt(nBox.getText()));
+							        try {
+								        setNeighboursSelection(Integer.parseInt(nBox.getText()));
+							        } catch (NumberFormatException e) {
+								        setNeighboursSelection(0);
+							        }
 
                                     synchronized (waiting) {
                                         waiting.notify();

@@ -3,6 +3,7 @@ package nodes;
 import com.hp.hpl.jena.rdf.model.Model;
 
 import nodes.Modifier.ModifierType;
+import nodes.controllers.ModifiersListBox;
 
 import org.apache.jena.riot.RiotException;
 
@@ -13,7 +14,6 @@ import controlP5.ColorPicker;
 import controlP5.ControlEvent;
 import controlP5.ControlP5;
 import controlP5.Group;
-import controlP5.ListBox;
 import controlP5.RadioButton;
 import controlP5.Slider;
 import controlP5.Tab;
@@ -36,9 +36,9 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 
@@ -107,11 +107,13 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
     // text field for project filename
     Textfield projectFilename;
     
-    // selection modifier menu and populator
-    ListBox modifierMenu;
+    // Modifier list controller
+    ModifiersListBox modifiersBox;
+    // Lists of modifiers and modifiersets
     private Collection<Modifier> modifiers = Collections.emptyList();
     private Collection<ModifierSet> modifiersets = Collections.emptyList();
-    private final HashMap<Integer, Modifier> uiModifiers = new HashMap<Integer, Modifier>();
+    // Map of list indexes to each modifier
+    private final ConcurrentHashMap<Integer, Modifier> uiModifiers = new ConcurrentHashMap<Integer, Modifier>();
     
     // radio for radial layout sorting order (lexico or numerical)
     RadioButton sortOrder;
@@ -288,18 +290,24 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
         // Transform tab
         //==============
         
-        // selection modifier menu
-        modifierMenu = cp5.addListBox("Selection Modifiers", 
-                    padding, 
-                    tabHeight + padding, 
-                    w - 2 * padding, 
-                    modifiersBoxHeight)
-                .setBarHeight(tabHeight)
-                .setItemHeight(elementHeight)
-                .setScrollbarWidth(elementHeight)
-                .moveTo(transformTab)
-                .hideBar();
-
+        // modifier list controller
+		modifiersBox = new ModifiersListBox(cp5, (Tab) cp5.controlWindow
+		        .getTabs().get(1),
+		        "ModifiersBox",
+		        padding,
+		        tabHeight + padding,
+		        w - 2 * padding,
+		        modifiersBoxHeight);
+		//equivalent to cp5.AddListBox
+		cp5.register(null, "", modifiersBox);
+		modifiersBox.registerProperty("listBoxItems")
+				.registerProperty("value")
+		        .setBarHeight(tabHeight)
+		        .setItemHeight(elementHeight)
+		        .setScrollbarWidth(elementHeight)
+		        .moveTo(transformTab)
+		        .hideBar();
+		//get a list of modifiers and modifiersets
         try {
 	        modifiers = graph.getModifiersList();
 	        modifiersets = graph.getModifierSetsList();
@@ -599,7 +607,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
             for (GraphElement<?> e : graph.getSelection()) {
                 e.setColor(newColor);
             }
-        } else if (event.isFrom(modifierMenu)) {
+        } else if (event.isFrom(modifiersBox)) {
             try {
 	            uiModifiers.get((int) event.getValue()).modify();
             } catch (Exception e) {
@@ -1241,34 +1249,28 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
      * Refreshes the visual modifiers menu list
      */
     private void populateModifierMenu() {
-		if (modifierMenu == null || (modifiers.isEmpty() && modifiersets.isEmpty()))
+		if (modifiersBox == null || (modifiers.isEmpty() && modifiersets.isEmpty()))
 			return;
 
+		uiModifiers.clear();
+		modifiersBox.clear();
+
 		for (Modifier m : modifiers) {
-			if (!uiModifiers.containsValue(m)
-			        && (m.getType() == ModifierType.ALL || m.getType() == ModifierType.PANEL)
-			        && m.isCompatible()) {
-
-				modifierMenu.addItem(m.getTitle(), uiModifiers.size());
-				uiModifiers.put(uiModifiers.size(), m);
-			}
-
-			if (uiModifiers.containsValue(m) && !m.isCompatible()) {
-				uiModifiers.remove(modifierMenu.getItem(m.getTitle()).getValue());
-				modifierMenu.removeItem(m.getTitle());
+			if ((m.getType() == ModifierType.ALL || m.getType() == ModifierType.PANEL) && m.isCompatible()) {
+					modifiersBox.addItem(m.getTitle(), uiModifiers.size());
+	                uiModifiers.put(uiModifiers.size(), m);
 			}
 		}
 		for (ModifierSet s : modifiersets) {
-			for (Modifier m : s.getModifiers()) {
-				if (uiModifiers.containsValue(m)) {
-					uiModifiers.remove(modifierMenu.getItem(m.getTitle()).getValue());
-					modifierMenu.removeItem(m.getTitle());
-				}
-			}
-			if (s.isCompatible()) {
+
+			if (s.getType() != ModifierType.ALL || s.getType() != ModifierType.PANEL)
+				continue;
+
+			if ((s.getType() == ModifierType.ALL || s.getType() == ModifierType.PANEL) && s.isCompatible()) {
 				s.constructModifiers();
+
 				for (Modifier m : s.getModifiers()) {
-					modifierMenu.addItem(m.getTitle(), uiModifiers.size());
+					modifiersBox.addItem(m.getTitle(), uiModifiers.size());
 					uiModifiers.put(uiModifiers.size(), m);
 				}
 			}

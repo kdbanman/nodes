@@ -1,10 +1,13 @@
 package nodes.modifiersets;
 
 import com.hp.hpl.jena.rdf.model.Statement;
+
 import java.util.NoSuchElementException;
+
 import nodes.Edge;
 import nodes.Graph;
 import nodes.Modifier;
+import nodes.Modifier.ModifierType;
 import nodes.ModifierSet;
 
 /**
@@ -36,6 +39,11 @@ public class CorrespondingNodeSelector extends ModifierSet {
         }
         return false;
     }
+
+	@Override
+	public ModifierType getType() {
+		return ModifierType.PANEL;
+	}
 
     @Override
     public void constructModifiers() {

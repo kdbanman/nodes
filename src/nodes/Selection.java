@@ -428,8 +428,10 @@ public class Selection implements Iterable<GraphElement<?>> {
     }
     
     private void broadcastChange() {
-        for (SelectionListener l : listeners) {
-            l.selectionChanged();
+        synchronized (this) {
+	        for (SelectionListener l : listeners) {
+		        l.selectionChanged();
+	        }
         }
     }
     
@@ -457,11 +459,15 @@ public class Selection implements Iterable<GraphElement<?>> {
         private boolean iteratingThroughNodes;
         
         public SelectionIterator() {
-            itNodes = getNodes().iterator();
-            itEdges = getEdges().iterator();
-            
-            iteratingThroughNodes = true;
-        }
+			// This still needs to be synchronized using the original set
+			synchronized (getNodes()) {
+				itNodes = getNodes().iterator();
+			}
+			synchronized (getEdges()) {
+				itEdges = getEdges().iterator();
+			}
+			iteratingThroughNodes = true;
+		}
         
         /**
          * returns true if there is a selected Node or Edge left to iterate
@@ -470,7 +476,16 @@ public class Selection implements Iterable<GraphElement<?>> {
          */
         @Override
         public boolean hasNext() {
-            return itNodes.hasNext() || itEdges.hasNext();
+			boolean n, e;
+
+			synchronized (getNodes()) {
+				n = itNodes.hasNext();
+			}
+			synchronized (getEdges()) {
+				e = itEdges.hasNext();
+			}
+
+			return n || e;
         }
         
         /**
@@ -481,15 +496,25 @@ public class Selection implements Iterable<GraphElement<?>> {
         @Override
         public GraphElement<?> next() {
             GraphElement<?> ret = null;
-            if (itNodes.hasNext())  {
-                ret = (GraphElement<?>) itNodes.next();
-            } else if (itEdges.hasNext()) {
-                ret = (GraphElement<?>) itEdges.next();
-                iteratingThroughNodes = false;
-            } else {
-                throw new NoSuchElementException();
-            }
-            
+            boolean exists = false;
+
+			synchronized (getNodes()) {
+				if (itNodes.hasNext()) {
+					ret = (GraphElement<?>) itNodes.next();
+					exists = true;
+				}
+			}
+			synchronized (getEdges()) {
+				if (itEdges.hasNext()) {
+					ret = (GraphElement<?>) itEdges.next();
+					iteratingThroughNodes = false;
+					exists = true;
+				}
+			}
+
+			if (!exists)
+				throw new NoSuchElementException();
+
             return ret;
         }
 
@@ -501,11 +526,15 @@ public class Selection implements Iterable<GraphElement<?>> {
          */
         @Override
         public void remove() {
-            if (iteratingThroughNodes) {
-                itNodes.remove();
-            } else {
-                itEdges.remove();
-            }
+			if (iteratingThroughNodes) {
+				synchronized (getNodes()) {
+					itNodes.remove();
+				}
+			} else {
+				synchronized (getEdges()) {
+					itEdges.remove();
+				}
+			}
             broadcastChange();
         }
     }
