@@ -23,7 +23,7 @@ there are a few basic UI systems that are in place to help you work that flow:
     - click and drag a rectangle around nodes or edges to select them
     - hold shift to add to the selection
 - a Control Panel for
-    - importing data about a URI from a direct HTTP request or from a SPARQL endpoint
+    - importing data describing an entity/URI from a direct HTTP request, from a SPARQL endpoint, or from a local file
     - a context-aware selection menu to change the current data selection using graph algorithms or data queries
     - transforming the appearance of selected data (color, size, location, label presence)
     - deleting selected data

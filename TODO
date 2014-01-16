@@ -13,6 +13,7 @@
 - context menu(right click) is almost complete, acitivate with MOUSE3 or middle click
 	- Modifiers get excecuted but selections don't properly update
 	- Menu gets renender behind graph
+		- Kirby thinks the word renender is funny
 
 #KARIM
 ######
@@ -48,6 +49,13 @@
 
 #REFACTORS
 ##########
+
+#README
+#######
+
+- update "####selection modifier and modifier set development" section for Karim's changes
+
+- include mouse-click context menus in readme (just a sentence in the interaction bullet list 
 
 #MODIFIERS
 ##########
