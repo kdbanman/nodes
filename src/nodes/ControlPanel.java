@@ -32,6 +32,7 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -315,9 +316,15 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                 .addCallback(new CopyPasteMenuListener())
                 .setText("Einstein.rdf")
                 .moveTo(fileGroup);
+        cp5.addButton("Select File")
+                .setSize(buttonWidth, buttonHeight)
+                .setPosition(w - buttonWidth - padding - w / 2,
+                    labelledElementHeight + 2 * padding)
+                .addCallback(new SelectFileListener())
+                .moveTo(fileGroup);
         fileImportQueryEntity = cp5.addTextfield("Entity to Query (Optional)",
                 padding - w / 2,
-                labelledElementHeight + padding,
+                labelledElementHeight + buttonHeight + 3 * padding,
                 w - 2 * padding,
                 elementHeight)
                 .setAutoClear(false)
@@ -326,7 +333,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
         cp5.addButton("Query File")
                 .setSize(buttonWidth, buttonHeight)
                 .setPosition(w - buttonWidth - padding - w / 2,
-                    3 * labelledElementHeight + padding)
+                    2 * labelledElementHeight + buttonHeight + 4 * padding)
                 .addCallback(new FileQueryListener())
                 .moveTo(fileGroup);
         
@@ -635,6 +642,17 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
          background(0);
     }
     
+    /**
+     * Callback for import file selection dialog.
+     */
+    public void importFileSelected(File selection) {
+        if (selection == null) {
+            //user closed window or hit cancel
+        } else {
+            fileImportLocation.setText(selection.getAbsolutePath());
+        }
+    }
+    
     // every time selection is changed, this is called
     @Override
     public void selectionChanged() {
@@ -891,6 +909,17 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                          "about uri: \n" + uri + "\n ");
             }
         }
+    }
+    
+    private class SelectFileListener implements CallbackListener {
+
+        @Override
+        public void controlEvent(CallbackEvent event) {
+            if (event.getAction() == ControlP5.ACTION_RELEASED) {
+                ControlPanel.this.selectFolder("Select RDF File:", "importFileSelected");
+            }
+        }
+        
     }
     
     private class FileQueryListener implements CallbackListener {
