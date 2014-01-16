@@ -1,7 +1,10 @@
 package nodes;
 
 import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.NodeIterator;
 import com.hp.hpl.jena.rdf.model.RDFNode;
+import com.hp.hpl.jena.rdf.model.ResIterator;
+import com.hp.hpl.jena.rdf.model.Resource;
 
 import nodes.Modifier.ModifierType;
 import nodes.controllers.ModifiersListBox;
@@ -14,7 +17,9 @@ import controlP5.CallbackListener;
 import controlP5.ColorPicker;
 import controlP5.ControlEvent;
 import controlP5.ControlP5;
+import controlP5.DropdownList;
 import controlP5.Group;
+import controlP5.ListBox;
 import controlP5.RadioButton;
 import controlP5.Slider;
 import controlP5.Tab;
@@ -43,6 +48,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -109,8 +115,8 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
     // text field for file import location
     Textfield fileImportLocation;
     
-    // text field for file import query entity uri
-    Textfield fileImportQueryEntity;
+    // menu for file import query entity uri
+    DropdownList fileImportEntityMenu;
     
     // text field for rdf-xml filename save location
     Textfield dataFilename;
@@ -314,7 +320,6 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                 elementHeight)
                 .setAutoClear(false)
                 .addCallback(new CopyPasteMenuListener())
-                .setText("Einstein.rdf")
                 .moveTo(fileGroup);
         cp5.addButton("Select File")
                 .setSize(buttonWidth, buttonHeight)
@@ -322,19 +327,20 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                     labelledElementHeight + 2 * padding)
                 .addCallback(new SelectFileListener())
                 .moveTo(fileGroup);
-        fileImportQueryEntity = cp5.addTextfield("Entity to Query (Optional)",
-                padding - w / 2,
-                labelledElementHeight + buttonHeight + 3 * padding,
-                w - 2 * padding,
-                elementHeight)
-                .setAutoClear(false)
-                .addCallback(new CopyPasteMenuListener())
-                .moveTo(fileGroup);
+        // fileImportEntityMenu is technically the next in order of appearance,
+        // but is initialized last so it renders on top of the rest of fileGroup
         cp5.addButton("Query File")
                 .setSize(buttonWidth, buttonHeight)
                 .setPosition(w - buttonWidth - padding - w / 2,
                     2 * labelledElementHeight + buttonHeight + 4 * padding)
                 .addCallback(new FileQueryListener())
+                .moveTo(fileGroup);
+        fileImportEntityMenu = cp5.addDropdownList("Entity of Interest (Optional)")
+                .setPosition(padding - w / 2,
+                labelledElementHeight + buttonHeight + 5 * padding)
+                .setSize(w - 3 * padding - buttonWidth, h - padding - (90 + labelledElementHeight + buttonHeight + 4 * padding))
+                .setItemHeight(elementHeight)
+                .setBarHeight(elementHeight)
                 .moveTo(fileGroup);
         
         //==============
@@ -650,6 +656,39 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
             //user closed window or hit cancel
         } else {
             fileImportLocation.setText(selection.getAbsolutePath());
+            Model entityListTmp = null;
+            try {
+                entityListTmp = IO.getDescription(fileImportLocation.getText());
+            } catch (RiotException e) {
+                logEvent(fileImportLocation.getText());
+                logEvent("Error: Valid RDF not contained within:\n");
+            } finally {
+                populateFileEntityMenu(entityListTmp);
+            }
+        }
+    }
+    
+    /**
+     * Populate the entity selection menu for file import with all subjects of
+     * triples within the model.  Objects of triples are ignored.
+     */
+    public void populateFileEntityMenu(Model fileModel) {
+        fileImportEntityMenu.clear();
+        
+        if (fileModel != null) {
+            TreeSet<String> resources = new TreeSet<>();
+            ResIterator objects = fileModel.listSubjects();
+            while (objects.hasNext()) {
+                Resource node = objects.next();
+                resources.add(node.getURI());
+            }
+
+            int i = 0;
+            for (String resource : resources) {
+                fileImportEntityMenu.addItem(resource, i);
+                fileImportEntityMenu.getItem(i).setText(fileModel.shortForm(resource));
+                i++;
+            }
         }
     }
     
@@ -929,7 +968,12 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
             if (event.getAction() == ControlP5.ACTION_RELEASED) {
                 // get uris from text fields
                 String docUri = fileImportLocation.getText();
-                String entityUri = fileImportQueryEntity.getText();
+                // if the user did not specify an entity to describe, first entity of list will be queried because of controlp5 behaviour
+                String entityUri = "";
+                if (fileImportEntityMenu.getListBoxItems().length > 0) {
+                    entityUri = fileImportEntityMenu.getItem((int)fileImportEntityMenu.getValue()).getName();
+                }
+                
                 Model toAdd;
                 try {
                     toAdd = IO.getDescription(docUri, entityUri);
@@ -940,30 +984,20 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                 
                 //NOTE: the logged items will be in reverse order as they appear below.
                 
-                // UI BEHAVIOUR:
-                // if the user did not specify an entity to describe, load all data from file
-                // if the user did specify such an entity, and that entity is within the file, load the desrcibing data
-                // if the user did specify such an entity, and that entity is not within the file, load no data
-                
-                // provide feedback as to whethere or not the file contains
-                // the query entity
-                if (!entityUri.equals("")) {
-                    RDFNode entityAsResource = toAdd.createResource(entityUri);
-                    if (toAdd.containsResource(entityAsResource)) {
-                        // add the retrived model to the graph (toAdd is empty if 
-                        // an IO error was encountered).
-                        // log results to user.
-                        graph.addTriplesLogged(toAdd);
-                        logEvent("Describing entity:\n " + entityUri + "\n  ");
-                    } else {
-                        logEvent("Warning: entity:\n " + entityUri + "\n not found!\n(All eoeo");
-                    }
-                } else {
+                RDFNode entityAsResource = toAdd.createResource(entityUri);
+                if (toAdd.containsResource(entityAsResource)) {
                     // add the retrived model to the graph (toAdd is empty if 
                     // an IO error was encountered).
                     // log results to user.
                     graph.addTriplesLogged(toAdd);
+                    logEvent("Describing entity:\n " + entityUri + "\n  ");
+                } else {
+                    logEvent("Warning: entity:\n " + entityUri + "\n not found!\n");
                 }
+                // add the retrived model to the graph (toAdd is empty if 
+                // an IO error was encountered).
+                // log results to user.
+                graph.addTriplesLogged(toAdd);
                 
                 logEvent("From file:\n " + docUri + "\n  ");
             }
@@ -1321,17 +1355,19 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
     private class SaveTriplesListener implements CallbackListener {
 
         @Override
-        public void controlEvent(CallbackEvent ce) {
-            Writer writer = null;
-            try {
-                writer = new BufferedWriter(new OutputStreamWriter(
-                      new FileOutputStream(dataFilename.getText()), "utf-8"));
-                graph.getRenderedTriples().write(writer);
-                logEvent("RDF-XML file " + dataFilename.getText() + "\nsaved to application directory.");
-            } catch (IOException ex) {
-              logEvent("Failed to save file " + dataFilename.getText());
-            } finally {
-               try {writer.close();} catch (Exception ex) {}
+        public void controlEvent(CallbackEvent event) {
+            if (event.getAction() == ControlP5.ACTION_RELEASED) {
+                Writer writer = null;
+                try {
+                    writer = new BufferedWriter(new OutputStreamWriter(
+                          new FileOutputStream(dataFilename.getText()), "utf-8"));
+                    graph.getRenderedTriples().write(writer);
+                    logEvent("RDF-XML file " + dataFilename.getText() + "\nsaved to application directory.");
+                } catch (IOException ex) {
+                  logEvent("Failed to save file " + dataFilename.getText());
+                } finally {
+                   try {writer.close();} catch (Exception ex) {}
+                }
             }
         }
     }
