@@ -93,20 +93,24 @@ public class InfoPanelControllers extends PApplet {
                 .setMoveable(false);
         
         eventLog = cp5.addTextarea("Event Log")
-                .setPosition(w - padding - buttonWidth, 3 * padding + 2 * buttonHeight)
-                .setSize(buttonWidth, h - 4 * padding - 2 * buttonHeight - 50)
+                .setPosition(w - padding - buttonWidth, 4 * padding + 3 * buttonHeight)
+                .setSize(buttonWidth, h - 5 * padding - 3 * buttonHeight - 50)
                 .setText(eventLogString)
                 .setFont(eventFont)
                 .setColor(0xFFFF5555);
         
-        exploreWeb = cp5.addButton("Explore Web")
+        cp5.addButton("Explore Web")
                 .setPosition(w - padding - buttonWidth, padding)
                 .setSize(buttonWidth, buttonHeight)
                 .addCallback(new WebExplorationListener());
-        exploreSparql = cp5.addButton("Explore SPARQL endpoint")
+        cp5.addButton("Explore SPARQL endpoint")
                 .setPosition(w - padding - buttonWidth, 2 * padding + buttonHeight)
                 .setSize(buttonWidth, buttonHeight)
                 .addCallback(new SparqlExplorationListener());
+        cp5.addButton("Explore File")
+                .setPosition(w - padding - buttonWidth, 3 * padding + 2 * buttonHeight)
+                .setSize(buttonWidth, buttonHeight)
+                .addCallback(new FileExplorationListener());
         
     }
     
@@ -237,6 +241,45 @@ public class InfoPanelControllers extends PApplet {
                 graph.addTriplesLogged(toAdd);
                 logEvent("From endpoint:\n" + endpoint + "\n\n" +
                          "about uri: \n" + uri + "\n ");
+            }
+        }
+    }
+    
+    /*
+     * attach to file query button to enable retrieval of rdf
+     * descriptions as described in the file.  (coupled to textfield in
+     * ControlPanel for filename)
+     */
+    private class FileExplorationListener implements CallbackListener {
+        @Override
+        public void controlEvent(CallbackEvent event) {
+            if (event.getAction() == ControlP5.ACTION_RELEASED) {
+                
+                // get uri from selected node or edge
+                
+                String uri = getSelectedURI();
+                
+                if (uri == null) {
+                    logEvent("Select a *single* node or edge to retrieve its data.");
+                    return;
+                }
+                
+                String fileUri = graph.pApp.getFileImportPath();
+                
+                // retrieve description as a jena model
+                ///////////////////////////////////////
+                Model toAdd;
+                try {
+                    toAdd = IO.getDescription(fileUri, uri);
+                } catch (JenaException e) {
+                    logEvent("Valid RDF not hosted at uri \n  " + uri);
+                    return;
+                }
+                // add the retrieved model to the graph (toAdd is empty if 
+                // an error was encountered).
+                // log results.
+                graph.addTriplesLogged(toAdd);
+                logEvent("From uri:\n<" + uri + ">\n  ");
             }
         }
     }

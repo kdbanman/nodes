@@ -599,6 +599,10 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
         return importSparqlEndpoint.getText();
     }
     
+    public String getFileImportPath() {
+        return fileImportLocation.getText();
+    }
+    
     public boolean autoLayoutSelected() {
         return autoLayout.getState();
     }

@@ -515,6 +515,11 @@ public class Nodes extends PApplet implements Selection.SelectionListener {
         return controlPanelFrame.controls.getHttpSparqlEndpoint();
     }
     
+    // get File import uri from control panel.
+    public String getFileImportPath() {
+        return controlPanelFrame.controls.getFileImportPath();
+    }
+    
     /**
      * @param args the command line arguments
      */
