@@ -23,7 +23,7 @@ public class EdgeFilter extends Modifier {
 
 	@Override
 	public ModifierType getType() {
-		return ModifierType.PANEL;
+		return ModifierType.ALL;
 	}
 
     @Override

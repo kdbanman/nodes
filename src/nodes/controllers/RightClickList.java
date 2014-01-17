@@ -48,19 +48,10 @@ public class RightClickList extends MultiList {
 		}
 	}
 
-	public boolean removeButton(MultiListButton b) {
-		if (!buttonsList.contains(b))
-			return false;
-
-		buttonsList.remove(b);
-		b.remove();
-
-		return true;
-	}
-
 	public void clearButtons() {
-		for (MultiListButton b : buttonsList) {
-			removeButton(b);
-		}
+		for (MultiListButton b : buttonsList)
+			b.remove();
+
+		buttonsList.clear();
 	}
 }
