@@ -22,6 +22,7 @@ there are a few basic UI systems that are in place to help you work that flow:
     - click and drag a node or edge to move it (or to move the whole selection)
     - click and drag a rectangle around nodes or edges to select them
     - hold shift to add to the selection
+	- middle click or "wheel" click to display dynamic menu to alter graph selection(WIP)
 - a Control Panel for
     - importing data describing an entity/URI from a direct HTTP request, from a SPARQL endpoint, or from a local file
     - a context-aware selection menu to change the current data selection using graph algorithms or data queries
@@ -54,10 +55,10 @@ as an alternative, there is a shell script called `gitty` in the main project di
 
 ####selection modifier and modifier set development
 
-the selection modifier menu dynamically populates with actions to modify the current selection.
-each menu item corresponds to a different selection modifier, and the items are inserted into the menu if they are compatible with the current selection.
+the selection modifier menu and middle click list dynamically populate with actions to modify the current selection.
+each list/menu item corresponds to a different selection modifier, and the items are inserted into the menu if they are compatible with the current selection.
 to create one, write and compile a java class that inherits from one of the abstract classes `Modifier` or `ModifierSet`.
-for nodes to see your class, add its name to `resources/modifier_registry` or `resources/modifierset_registry`, respectively.
+Then nodes will automatically find your class and load it.
 
 ####dependencies
 

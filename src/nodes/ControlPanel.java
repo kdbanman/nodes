@@ -1,7 +1,6 @@
 package nodes;
 
 import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.NodeIterator;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.ResIterator;
 import com.hp.hpl.jena.rdf.model.Resource;
@@ -19,13 +18,11 @@ import controlP5.ControlEvent;
 import controlP5.ControlP5;
 import controlP5.DropdownList;
 import controlP5.Group;
-import controlP5.ListBox;
 import controlP5.RadioButton;
 import controlP5.Slider;
 import controlP5.Tab;
 import controlP5.Textfield;
 import controlP5.Toggle;
-
 import processing.core.PVector;
 import processing.core.PApplet;
 
@@ -35,14 +32,12 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -1419,21 +1414,20 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
 
 		for (Modifier m : modifiers) {
 			if ((m.getType() == ModifierType.ALL || m.getType() == ModifierType.PANEL) && m.isCompatible()) {
-					modifiersBox.addItem(m.getTitle(), uiModifiers.size());
-	                uiModifiers.put(uiModifiers.size(), m);
+				modifiersBox.addItem(m.getTitle(), uiModifiers.size());
+				uiModifiers.put(uiModifiers.size(), m);
 			}
 		}
+
 		for (ModifierSet s : modifiersets) {
-
-			if (s.getType() != ModifierType.ALL || s.getType() != ModifierType.PANEL)
-				continue;
-
 			if ((s.getType() == ModifierType.ALL || s.getType() == ModifierType.PANEL) && s.isCompatible()) {
 				s.constructModifiers();
 
 				for (Modifier m : s.getModifiers()) {
-					modifiersBox.addItem(m.getTitle(), uiModifiers.size());
-					uiModifiers.put(uiModifiers.size(), m);
+					if (m.isCompatible()) {
+						modifiersBox.addItem(m.getTitle(), uiModifiers.size());
+						uiModifiers.put(uiModifiers.size(), m);
+					}
 				}
 			}
 		}

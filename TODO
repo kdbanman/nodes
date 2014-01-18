@@ -12,13 +12,19 @@
 - null pointer exception occurs in ControlPanel.java:1350 in populateModifierMenu()
 	- I think a null is being fed into the field Collection<Modifier> modifiers
 
-- context menu(right click) is almost complete, acitivate with MOUSE3 or middle click
-	- Modifiers get excecuted but selections don't properly update
-	- Menu gets renender behind graph
-		- Kirby thinks the word renender is funny
+- context menu(right click) is almost complete, acitivate with MOUSE3 aka middle click
+	- Menu getting rendered behind graph
+		- Thanks Kirby
+	- Not exactly a bug but all modifier executions block the UI because selection proccessing
+	  is done in Nodes.java->Graph.java->Selection.java meaning in the same thread as rendering
 
 #KARIM
 ######
+
+- with change of the collection type in Selection.java, modifiers such as SelectAll have become noticeably slower
+	- Explore alternatives; different structure for selection? a multi-threaded Selection rewrite? Cake?
+	- Reason why Collections.synchronizedSet was ditched because it doesn't provide a synchronized iterator 
+	- Even after manually wrapping the iterator methods in synchronized blocks, ConcurrentModificationExceptions were fly in.
 
 - context menus on right click over 3D view
 
@@ -52,12 +58,6 @@
 #REFACTORS
 ##########
 
-#README
-#######
-
-- update "####selection modifier and modifier set development" section for Karim's changes
-
-- include mouse-click context menus in readme (just a sentence in the interaction bullet list 
 
 #MODIFIERS
 ##########

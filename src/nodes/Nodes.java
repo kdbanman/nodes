@@ -63,6 +63,9 @@ public class Nodes extends PApplet implements Selection.SelectionListener {
 
     // Right Click list controller
     RightClickList rightClickList;
+    // To keep track of modifiers execution on a mouse "click"
+    // since the modifier code gets executed prior to the event getting fired
+    boolean modifierFired = false;
     // Lists of modifiers and modifiersets
     private Collection<Modifier> modifiers = Collections.emptyList();
     private Collection<ModifierSet> modifiersets = Collections.emptyList();
@@ -175,7 +178,7 @@ public class Nodes extends PApplet implements Selection.SelectionListener {
 			cam.beginHUD();
 			cp5.draw();
 			cam.endHUD();
-        }
+		}
 
         // light the scene from the cursor
         proj.captureViewMatrix((PGraphics3D) this.g);
@@ -225,6 +228,8 @@ public class Nodes extends PApplet implements Selection.SelectionListener {
 				uiModifiers.get((int) event.getValue()).modify();
 			} catch (Exception e) {
 				e.printStackTrace();
+			} finally {
+				modifierFired = true;
 			}
 		}
     }
@@ -271,7 +276,8 @@ public class Nodes extends PApplet implements Selection.SelectionListener {
             lastPressedY = mouseY;
         }
 		if (mouseButton == CENTER) {
-			refreshRightClickList();
+			if (selectionUpdated.getAndSet(false))
+				refreshRightClickList();
 
 			rightClickList.updateLocation(mouseX, mouseY);
 			rightClickList.show();
@@ -382,6 +388,11 @@ public class Nodes extends PApplet implements Selection.SelectionListener {
     // called whenever the mouse button is released
     @Override
     public void mouseReleased() {
+		if (modifierFired) {
+			modifierFired = false;
+			return;
+		}
+
         if (mouseButton == LEFT) {
             if (drag == DragBehaviour.SELECT) {
                 // clear the selection if shift is not held
@@ -552,15 +563,18 @@ public class Nodes extends PApplet implements Selection.SelectionListener {
 				uiModifiers.put(uiModifiers.size(), m);
 			}
 		}
-//		for (ModifierSet s : modifiersets) {
-//
-//			if ((s.getType() != ModifierType.ALL || s.getType() != ModifierType.PANEL) || !s.isCompatible())
-//				continue;
-//
-//			for (Modifier m : s.getModifiers()) {
-//				if (m.isCompatible())
-//					uiModifiers.put(m, rightClickList.add(m.getTitle(), uiModifiers.size()));
-//			}
-//		}
+
+		for (ModifierSet s : modifiersets) {
+			if ((s.getType() != ModifierType.ALL || s.getType() != ModifierType.VIEW) && s.isCompatible()) {
+				s.constructModifiers();
+
+				for (Modifier m : s.getModifiers()) {
+					if (m.isCompatible()) {
+						rightClickList.add(m.getTitle(), uiModifiers.size());
+						uiModifiers.put(uiModifiers.size(), m);
+					}
+				}
+			}
+		}
 	}
 }

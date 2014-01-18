@@ -72,7 +72,7 @@ public class Graph implements Iterable<GraphElement<?>> {
         graphElementGroup = new DepthSortedGroup(cp5, "GraphElementGroup")
                 .open();
         
-        selection = new Selection();
+        selection = Selection.getInstance();
 
         triples = ModelFactory.createDefaultModel();
 
@@ -694,7 +694,7 @@ public class Graph implements Iterable<GraphElement<?>> {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
     }
-    
+
     /**
      * DepthSortedTab is meant to hold GraphElements only. The point of it is to
      * override the drawControllers() method so that the order in which the

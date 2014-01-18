@@ -1,11 +1,11 @@
 package nodes;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Set;
-import java.util.HashSet;
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 /**
  * listenable, iterable, buffered set of GraphElements in which Nodes and Edges
@@ -76,20 +76,41 @@ import java.util.NoSuchElementException;
  * @author kdbanman
  */
 public class Selection implements Iterable<GraphElement<?>> {
-    private final Set<Node> nodes;
-    private final Set<Edge> edges;
+	//Let's make this class a singleton
+	private static Selection selectionInstance = null;
+
+    private final Collection<Node> nodes;
+    private final Collection<Edge> edges;
     
-    private final Set<Node> nodeBuffer;
-    private final Set<Edge> edgeBuffer;
+    private final Collection<Node> nodeBuffer;
+    private final Collection<Edge> edgeBuffer;
     
     private final ArrayList<SelectionListener> listeners;
-    
-    Selection() {
-        nodes = Collections.synchronizedSet(new HashSet<Node>());
-        edges = Collections.synchronizedSet(new HashSet<Edge>());
+    //needed for the SortedSet of ConcurrentSkipListSet
+    private static final Comparator<GraphElement<?>> comparator = new Comparator<GraphElement<?>>() {
+
+		@Override
+        public int compare(GraphElement<?> e1, GraphElement<?> e2) {
+			return e1.getName().compareTo(e2.getName());
+        }
+	};
+
+	public synchronized static Selection getInstance() {
+		if (selectionInstance == null) {
+			selectionInstance = new Selection();
+		}
+		return selectionInstance;
+	}
+
+    private Selection() {
+		// Also tested ConcurrentLinkedQueue, ConcurrentLinkedDeque and CopyOnWriteArrayList
+		// ConcurrentSkipListSet seems to be the implementation  with the current setup
+		// (revisit if controlpanel gets moved into the main window, single thread?)
+        nodes = new ConcurrentSkipListSet<Node>(comparator);
+        edges = new ConcurrentSkipListSet<Edge>(comparator);
         
-        nodeBuffer = Collections.synchronizedSet(new HashSet<Node>());
-        edgeBuffer = Collections.synchronizedSet(new HashSet<Edge>());
+        nodeBuffer = new ConcurrentSkipListSet<Node>(comparator);
+        edgeBuffer = new ConcurrentSkipListSet<Edge>(comparator);
         
         listeners = new ArrayList<>();
     }
@@ -153,14 +174,14 @@ public class Selection implements Iterable<GraphElement<?>> {
     /**
      * @return set of currently selected nodes. (does not include buffered nodes)
      */
-    public Set<Node> getNodes() {
+    public Collection<Node> getNodes() {
         return nodes;
     }
     
     /**
      * @return set of currently selected edges. (does not include buffered edges)
      */
-    public Set<Edge> getEdges() {
+    public Collection<Edge> getEdges() {
         return edges;
     }
     
@@ -172,10 +193,8 @@ public class Selection implements Iterable<GraphElement<?>> {
      * does not affect buffer.
      */
     public void clearNodes() {
-        synchronized (nodes) {
-            nodes.clear();
-        }
-        broadcastChange();
+		nodes.clear();
+		broadcastChange();
     }
     
     /**
@@ -187,9 +206,7 @@ public class Selection implements Iterable<GraphElement<?>> {
      * 
      */
     public void clearEdges() {
-        synchronized (edges) {
-            edges.clear();
-        }
+		edges.clear();
         broadcastChange();
     }
     
@@ -299,12 +316,8 @@ public class Selection implements Iterable<GraphElement<?>> {
      * does not affect buffer.
      */
     public void clear() {
-        synchronized (nodes) {
-            nodes.clear();
-        }
-        synchronized (edges) {
-            edges.clear();
-        }
+		nodes.clear();
+		edges.clear();
         broadcastChange();
     }
     
@@ -385,12 +398,8 @@ public class Selection implements Iterable<GraphElement<?>> {
      * broadcasts change to SelectionListeners.
      */
     public void commitBuffer() {
-        synchronized(nodes) {
-            nodes.addAll(nodeBuffer);
-        }
-        synchronized(edges) {
-            edges.addAll(edgeBuffer);
-        }
+		nodes.addAll(nodeBuffer);
+		edges.addAll(edgeBuffer);
         broadcastChange();
         clearBuffer();
     }
@@ -401,12 +410,8 @@ public class Selection implements Iterable<GraphElement<?>> {
      * broadcasts change to SelectionListeners.
      */
     public void clearBuffer() {
-        synchronized (nodeBuffer) {
-            nodeBuffer.clear();
-        }
-        synchronized (edgeBuffer) {
-            edgeBuffer.clear();
-        }
+		nodeBuffer.clear();
+		edgeBuffer.clear();
         broadcastChange();
     }
     
@@ -459,13 +464,9 @@ public class Selection implements Iterable<GraphElement<?>> {
         private boolean iteratingThroughNodes;
         
         public SelectionIterator() {
-			// This still needs to be synchronized using the original set
-			synchronized (getNodes()) {
-				itNodes = getNodes().iterator();
-			}
-			synchronized (getEdges()) {
-				itEdges = getEdges().iterator();
-			}
+			itNodes = getNodes().iterator();
+			itEdges = getEdges().iterator();
+
 			iteratingThroughNodes = true;
 		}
         
@@ -476,16 +477,7 @@ public class Selection implements Iterable<GraphElement<?>> {
          */
         @Override
         public boolean hasNext() {
-			boolean n, e;
-
-			synchronized (getNodes()) {
-				n = itNodes.hasNext();
-			}
-			synchronized (getEdges()) {
-				e = itEdges.hasNext();
-			}
-
-			return n || e;
+			return itNodes.hasNext() || itEdges.hasNext();
         }
         
         /**
@@ -496,23 +488,15 @@ public class Selection implements Iterable<GraphElement<?>> {
         @Override
         public GraphElement<?> next() {
             GraphElement<?> ret = null;
-            boolean exists = false;
 
-			synchronized (getNodes()) {
-				if (itNodes.hasNext()) {
-					ret = (GraphElement<?>) itNodes.next();
-					exists = true;
-				}
-			}
-			synchronized (getEdges()) {
-				if (itEdges.hasNext()) {
-					ret = (GraphElement<?>) itEdges.next();
-					iteratingThroughNodes = false;
-					exists = true;
-				}
-			}
+			if (itNodes.hasNext()) {
+				ret = (GraphElement<?>) itNodes.next();
 
-			if (!exists)
+			} else if (itEdges.hasNext()) {
+				ret = (GraphElement<?>) itEdges.next();
+				iteratingThroughNodes = false;
+
+			} else
 				throw new NoSuchElementException();
 
             return ret;
@@ -527,13 +511,9 @@ public class Selection implements Iterable<GraphElement<?>> {
         @Override
         public void remove() {
 			if (iteratingThroughNodes) {
-				synchronized (getNodes()) {
-					itNodes.remove();
-				}
+				itNodes.remove();
 			} else {
-				synchronized (getEdges()) {
-					itEdges.remove();
-				}
+				itEdges.remove();
 			}
             broadcastChange();
         }
