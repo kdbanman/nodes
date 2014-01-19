@@ -94,10 +94,9 @@ public class Nodes extends PApplet implements Selection.SelectionListener {
 
         // initialize camera
         cam = new PeasyCam(this, 0, 0, 0, 600);
-        
+
         cp5 = new ControlP5(this);
         cp5.setAutoDraw(false);
-
         // configure camera controls
         cam.setLeftDragHandler(null);
         cam.setRightDragHandler(cam.getRotateDragHandler());
@@ -111,7 +110,7 @@ public class Nodes extends PApplet implements Selection.SelectionListener {
 
         proj = new UnProjector(this);
         graph = new Graph(proj, this);
-        
+
         // horrible hack means that static panelFrame has already been constructed
         // within main()
         controlPanelFrame.initialize(graph);
@@ -133,7 +132,7 @@ public class Nodes extends PApplet implements Selection.SelectionListener {
         
         waitingOnNewFrame = null;
 
-        selectionUpdated = new AtomicBoolean();
+        selectionUpdated = new AtomicBoolean(true);
 
         graph.getSelection().addListener(this);
 
@@ -172,18 +171,24 @@ public class Nodes extends PApplet implements Selection.SelectionListener {
         // light orange pastel background color
         background(0xFFFFDCBF);
 
-		// on re-draw don't erase the right click menu if it's visible
-		if (rightClickList.isVisible()) {
-			// For 2D rect
-			cam.beginHUD();
-			cp5.draw();
-			cam.endHUD();
-		}
-
         // light the scene from the cursor
         proj.captureViewMatrix((PGraphics3D) this.g);
         proj.calculatePickPoints(mouseX, mouseY);
         pointLight(255, 255, 255, proj.ptStartPos.x, proj.ptStartPos.y, proj.ptStartPos.z);
+
+        // draw the graph
+		graph.draw();
+
+		// on re-draw don't erase the right click menu if it's visible
+		if (rightClickList.isVisible()) {
+			// For 2D rect
+			hint(DISABLE_DEPTH_TEST);
+			cam.beginHUD();
+			noLights();
+			cp5.draw();
+			cam.endHUD();
+			hint(ENABLE_DEPTH_TEST);
+		}
 
         // determine if the user is currently selecting graph elements
         if (leftButtonDragging && drag == DragBehaviour.SELECT) {
@@ -201,7 +206,7 @@ public class Nodes extends PApplet implements Selection.SelectionListener {
             rect(minX, minY, maxX - minX, maxY - minY);
             cam.endHUD();
         }
-        
+
         // perform a step of the force-directed layout if the corresponding control
         // is selected
         if (controlPanelFrame.controls.autoLayoutSelected()) {

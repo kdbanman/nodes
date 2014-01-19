@@ -68,6 +68,7 @@ public class Graph implements Iterable<GraphElement<?>> {
         cp5 = new ControlP5(p)
                 .setMoveable(false);
         cp5.disableShortcuts();
+        cp5.setAutoDraw(false); // leave draw to be called by parent(Nodes) for layering
         
         graphElementGroup = new DepthSortedGroup(cp5, "GraphElementGroup")
                 .open();
@@ -203,15 +204,11 @@ public class Graph implements Iterable<GraphElement<?>> {
         // add each triple in the model to the graph
         StmtIterator it = toAdd.listStatements();
         if (it.hasNext()) {
-            // stop ControlP5 from doing stuff for possible concurrency issues
-            cp5.setAutoDraw(false);
             
             while (it.hasNext()) {
                 Statement s = it.nextStatement();
                 addTriple(s);
             }
-            // begin rendering again
-            cp5.setAutoDraw(true);
         } else {
             Nodes.println("Empty query result - no triples to add.");
         }
@@ -694,6 +691,10 @@ public class Graph implements Iterable<GraphElement<?>> {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
     }
+
+	public void draw() {
+		cp5.draw();
+	}
 
     /**
      * DepthSortedTab is meant to hold GraphElements only. The point of it is to

@@ -22,7 +22,7 @@ there are a few basic UI systems that are in place to help you work that flow:
     - click and drag a node or edge to move it (or to move the whole selection)
     - click and drag a rectangle around nodes or edges to select them
     - hold shift to add to the selection
-	- middle click or "wheel" click to display dynamic menu to alter graph selection(WIP)
+	- middle click or "wheel" click to display dynamic menu to alter graph selection
 - a Control Panel for
     - importing data describing an entity/URI from a direct HTTP request, from a SPARQL endpoint, or from a local file
     - a context-aware selection menu to change the current data selection using graph algorithms or data queries
