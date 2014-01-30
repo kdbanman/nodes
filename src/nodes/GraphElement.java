@@ -134,7 +134,11 @@ public class GraphElement<T> extends Controller<T> {
     public void setDisplayLabel(boolean setVal) {
         displayLabel = setVal;
     }
-    
+
+	public boolean getDisplayLabel() {
+		return displayLabel;
+	}
+
     public final void setLabelSize(int s) {
         labelSize = s;
         labelFont = graph.getFontBySize(labelSize);
