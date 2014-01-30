@@ -23,7 +23,6 @@
 	- Reason why Collections.synchronizedSet was ditched because it doesn't provide a synchronized iterator 
 	- Even after manually wrapping the iterator methods in synchronized blocks, ConcurrentModificationExceptions were fly in.
 
-- include hovered elements to the selection when using the middle click context menu
 
 - research maven
 	- include controlp5, peasycam, and core processing jars in project (include licenses!)

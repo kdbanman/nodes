@@ -281,6 +281,11 @@ public class Nodes extends PApplet implements Selection.SelectionListener {
             lastPressedY = mouseY;
         }
 		if (mouseButton == CENTER) {
+			GraphElement<?> hovered = getNearestHovered();
+
+			if (hovered != null)
+				graph.getSelection().add(hovered);
+
 			if (selectionUpdated.getAndSet(false))
 				refreshRightClickList();
 
@@ -479,7 +484,7 @@ public class Nodes extends PApplet implements Selection.SelectionListener {
         // the infopanel has a jarring flash every time its html contents are 
         // rerendered, so this boolean ensures it is not done more than necessary
         boolean infopanelNeedsUpdate = false;
-        
+
         // every time the mouse hovers over a GraphElement, that element 
         // references itself in the hovered list.
         // iterate over each element in hovered.
