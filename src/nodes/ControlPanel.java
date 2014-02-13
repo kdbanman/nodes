@@ -472,7 +472,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                 .setPosition(-(w / 4) + padding, 2 * padding + 80)
                 .setHeight(elementHeight)
                 .setWidth(w - 80)
-                .setRange(5, 100)
+                .setRange(1, 20)
                 .setValue(10)
                 .moveTo(colorSizeGroup)
                 .addCallback(new ElementSizeListener());

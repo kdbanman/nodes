@@ -38,6 +38,8 @@ public class Graph implements Iterable<GraphElement<?>> {
     ControllerGroup<?> graphElementGroup;
     
     private static final String FONTRESOURCE = "resources/labelFont.ttf";
+    private static final int NODESIZE = 9;
+    private static final int EDGESIZE = 3;
     private Selection selection;
     
     private Model triples;
@@ -418,7 +420,7 @@ public class Graph implements Iterable<GraphElement<?>> {
                     .setPosition(pApp.random(-initBoundary, initBoundary),
                     pApp.random(-initBoundary, initBoundary),
                     pApp.random(-initBoundary, initBoundary))
-                    .setSize(10)
+                    .setSize(NODESIZE)
                     .setGroup(graphElementGroup);
 
             adjacent.put(n, new ArrayList<Node>());
@@ -450,7 +452,7 @@ public class Graph implements Iterable<GraphElement<?>> {
         } else {
 
             Edge e = new Edge(this, s + "|" + d, src, dst)
-                    .setSize(5)
+                    .setSize(EDGESIZE)
                     .setGroup(graphElementGroup);
 
             adjacent.get(src).add(dst);
