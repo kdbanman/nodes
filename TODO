@@ -9,9 +9,6 @@
 #####
 - null pointer exception occurs in Selection.java:435 in broadcastChange()
 
-- null pointer exception occurs in ControlPanel.java:1350 in populateModifierMenu()
-	- I think a null is being fed into the field Collection<Modifier> modifiers
-
 - Not exactly a bug but all modifier executions block the UI because selection proccessing
   is done in Nodes.java->Graph.java->Selection.java meaning in the same thread as rendering
 
@@ -22,10 +19,6 @@
 	- Explore alternatives; different structure for selection? a multi-threaded Selection rewrite? Cake?
 	- Reason why Collections.synchronizedSet was ditched because it doesn't provide a synchronized iterator 
 	- Even after manually wrapping the iterator methods in synchronized blocks, ConcurrentModificationExceptions were fly in.
-
-
-- research maven
-	- include controlp5, peasycam, and core processing jars in project (include licenses!)
 
 - explore alternatives to swing for formatted infopanel text
 

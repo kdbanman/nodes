@@ -1,0 +1,18 @@
+- Licenses overview
+
+	* peasycam
+	* apache-jena
+	* guava-libraries
+	* javaassist
+	
+	Are all under the Apacahe license, which can be found in the parent/root directory.
+	
+	* Google Reflection
+	
+	Under the WTFPL license which permits anything.
+	
+	* ControlP5
+	* Processing’s Core
+	
+	Distributed under any LGPL and are dynamically linked which is permissible. 
+

@@ -167,7 +167,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
         labelledElementHeight = 40;
         buttonWidth = 100;
         buttonHeight = 30;
-        modifiersBoxHeight = 200;
+        modifiersBoxHeight = 300;
 
         // sub tab lists to manipulate in draw() for tab behaviour
         importSubTabs = new ArrayList<>();

@@ -60,21 +60,15 @@ each list/menu item corresponds to a different selection modifier, and the items
 to create one, write and compile a java class that inherits from one of the abstract classes `Modifier` or `ModifierSet`.
 Then nodes will automatically find your class and load it.
 
-####dependencies
+####libaries used
 
 - java 1.7 (verify with `java -version` or look around in your IDE)
-- [processing 2.x](https://processing.org/download/) (tested up to 2.0.3)
-    - all 15 jars from processing-2.\*/core/library/
-- [controlP5 2.0.4](http://code.google.com/p/controlp5/downloads/list)
-    - controlP5.jar from controlP5-2.0.4/controlP5/library/
-- [peasycam](https://github.com/jeffg2k/peasycam/blob/master/distribution/peasycam.zip?raw=true)
-    - peasycam.jar from peasycam/library/
-- [apache jena](http://www.apache.org/dist/jena/binaries/) (tested with 2.11.0)
-    - all 14 jars from apache-jena-2.11.0/lib/
-- [google reflections 0.9.9 RC1](https://code.google.com/p/reflections/downloads/list)
-- [google guava](https://code.google.com/p/guava-libraries/)
-	- version >= 1.5 non-gwt
-- [javassist](http://www.csg.ci.i.u-tokyo.ac.jp/~chiba/javassist/)
-	- tested with 3.18.0.GA
+- [processing 2.x](https://processing.org/) (tested up to 2.0.3)
+- [controlP5 2.0.4](http://code.google.com/p/controlp5)
+- [peasycam](https://github.com/jeffg2k/peasycam)
+- [apache jena](http://jena.apache.org/) (tested with 2.11.0)
+- [google reflections 0.9.9 RC1](https://code.google.com/p/reflections/)
+- [google guava](https://code.google.com/p/guava-libraries/) (non-gwt version)
+- [javassist](http://www.csg.ci.i.u-tokyo.ac.jp/~chiba/javassist/)	(tested up to 3.18.0.GA)
 
-dependencies will need to be downloaded manually for now untill we mavenize the project.
+An overview of the libraries's licenses can be found under libs/licenses 
