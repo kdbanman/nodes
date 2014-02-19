@@ -5,6 +5,8 @@ package nodes;
 
 import processing.core.*;
 
+import java.awt.Toolkit;
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -28,6 +30,8 @@ import processing.opengl.PGraphics3D;
 public class Nodes extends PApplet implements Selection.SelectionListener {
 
 	private static final long serialVersionUID = 8527157297916319L;
+	//Window size
+	private static final Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 	// 3D graph-viewing camera
     PeasyCam cam;
     //ControlP5
@@ -85,12 +89,15 @@ public class Nodes extends PApplet implements Selection.SelectionListener {
 
     @Override
     public void setup() {
-        // configure parent PApplet
-        int w = 1024;
-        int h = 768;
-        size(w, h, P3D);
-        frameRate(30);
-        noStroke();
+		frame.setLocation((int) (dim.width * 0.25), 0);
+		// configure parent PApplet
+		// int w = 1024;
+		// int h = 768;
+		int w = (int) (dim.width * 0.75);
+		int h = (int) (dim.height * 0.6);
+		size(w, h, P3D);
+		frameRate(30);
+		noStroke();
 
         // initialize camera
         cam = new PeasyCam(this, 0, 0, 0, 600);
