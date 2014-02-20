@@ -12,6 +12,8 @@ import processing.core.PVector;
  */
 public class GraphElement<T> extends Controller<T> {
 
+	static final int DEFAULT_FONTSIZE = 12;
+
     int hoverCol;
     int selectCol;
     int defaultCol;
@@ -57,7 +59,7 @@ public class GraphElement<T> extends Controller<T> {
         labelText = new ArrayList<>();
         constructedLabel = "";
         
-        labelSize = 12;
+        labelSize = DEFAULT_FONTSIZE;
         setLabelSize(labelSize);
         
         displayLabel = false;
@@ -141,21 +143,18 @@ public class GraphElement<T> extends Controller<T> {
 
     public final void setLabelSize(int s) {
         labelSize = s;
-        labelFont = graph.getFontBySize(labelSize);
+        labelFont = graph.getDefaultFont();
         charW = labelFont.getGlyph('A').width;
         charH = labelFont.getGlyph('A').height;
 
         calculateLabelDim();
 
-        pApp.textFont(labelFont);
+        pApp.textFont(labelFont, labelSize);
     }
     
     public void calculateLabelDim() {
         labelH = charH + (labelText.size() - 1) * charH * 5 / 3;
-        labelW = 0;
-        for (String line : labelText) {
-            labelW = Nodes.max(labelW, line.length() * charW);
-        }
+        labelW = (int) pApp.textWidth(constructedLabel);
     }
     
     /**
@@ -209,18 +208,21 @@ public class GraphElement<T> extends Controller<T> {
         
         pApp.pushMatrix();
         pApp.setMatrix(billboarded);
-        
-        pApp.fill(0xFF333333);
+        pApp.noLights();
+        pApp.fill(currentCol);
         
         pApp.pushMatrix();
         pApp.translate(0,0,size);
+        //TODO Shape of the rect is not scaling properly when size is increasing... needs fixing.
         pApp.rect(-labelW / 2 - 3, -3, labelW + 6, labelH + 6, 2);
         pApp.popMatrix();
-        
-        pApp.fill(0xFFCCCCCC);
+        pApp.noLights();
+        pApp.textFont(labelFont, labelSize);
+        pApp.fill(0xFFFFFFFF);
         pApp.text(constructedLabel, -labelW / 2, charH, size);
 
         pApp.popMatrix();
+        pApp.lights();
     }
 
     @Override

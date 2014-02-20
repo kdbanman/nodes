@@ -56,7 +56,6 @@ public class Graph implements Iterable<GraphElement<?>> {
     
     private HashMap<Node, ArrayList<Node>> adjacent;
     private HashSet<Edge> edges;
-    private HashMap<Integer, PFont> fonts;
     //shouldn't be more than single instance of Graph but just in-case
     private static final Reflections reflections = new Reflections("");
 
@@ -86,7 +85,6 @@ public class Graph implements Iterable<GraphElement<?>> {
 
         adjacent = new HashMap<>();
         edges = new HashSet<>();
-        fonts = new HashMap<>();
 
         loadModifiers();
         loadModifierSets();
@@ -642,18 +640,12 @@ public class Graph implements Iterable<GraphElement<?>> {
      * @param size size of font > 0
      * @return font element NULL if invalid size
      */
-    public PFont getFontBySize(int size) {
-
-        if(size <= 0)
-            return null;
-
-        if(fonts.containsKey(size))
-           return fonts.get(size);
+    public PFont getDefaultFont() {
 
         PFont font = cp5.getFont().getFont();
 
         try {
-            font = pApp.createFont(FONTRESOURCE, size);
+            font = pApp.createFont(FONTRESOURCE, GraphElement.DEFAULT_FONTSIZE, true);
         } catch(Exception e) {
             System.out.println("ERROR: font not loaded.  ensure " + FONTRESOURCE + " is in program directory.");
         }
