@@ -60,7 +60,7 @@ each list/menu item corresponds to a different selection modifier, and the items
 to create one, write and compile a java class that inherits from one of the abstract classes `Modifier` or `ModifierSet`.
 Then nodes will automatically find your class and load it.
 
-####libaries used
+####dependencies/libraries
 
 - java 1.7 (verify with `java -version` or look around in your IDE)
 - [processing 2.x](https://processing.org/) (tested up to 2.0.3)

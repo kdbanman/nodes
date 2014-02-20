@@ -27,8 +27,6 @@
 - conditional element sorting based on transparency
 	- see Graph.DepthSortedGroup
 
-- make labels prettier somehow
-
 #CORE FEATURES
 ##############
 
