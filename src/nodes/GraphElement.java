@@ -154,7 +154,10 @@ public class GraphElement<T> extends Controller<T> {
     
     public void calculateLabelDim() {
         labelH = charH + (labelText.size() - 1) * charH * 5 / 3;
-        labelW = (int) pApp.textWidth(constructedLabel);
+		labelW = 0;
+		for (String line : labelText) {
+			labelW = Nodes.max(labelW, line.length() * charW);
+		}
     }
     
     /**
