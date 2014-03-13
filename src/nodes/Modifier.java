@@ -20,10 +20,13 @@ public abstract class Modifier {
    // with getters.  do not tie them to local state with class fields
    // because they change.
    protected final Graph graph;
+   // Selection is a singleton, safe to say it's final
+   protected final Selection selection;
 
    // always construct with the graph to be observed and operated on.
    public Modifier(Graph graph) {
        this.graph = graph;
+       this.selection = graph.getSelection();
    }
    
    public Graph getGraph() {
