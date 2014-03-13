@@ -686,6 +686,9 @@ public class Graph implements Iterable<GraphElement<?>> {
         }
     }
 
+    /**
+     * This is meant for Nodes so it can layer to the modifiers menu
+     */
 	public void draw() {
 		cp5.draw();
 	}

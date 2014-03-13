@@ -49,10 +49,6 @@
 #MODIFIERS
 ##########
 
-- filter only literals
-
-- filter only numerical literals
-
 - filter only strings
 
 - filter only resources
