@@ -51,8 +51,6 @@
 
 - filter only strings
 
-- filter only resources
-
 - select all rdf:comment
 
 - select connected rdf:comment
