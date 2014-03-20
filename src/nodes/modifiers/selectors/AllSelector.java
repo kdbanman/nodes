@@ -1,24 +1,25 @@
-package nodes.modifiers;
+package nodes.modifiers.selectors;
 
 import nodes.Graph;
+import nodes.GraphElement;
 import nodes.Modifier;
 
 /**
  *
  * @author kdbanman
  */
-public class EdgeFilter extends Modifier {
+public class AllSelector extends Modifier {
         
-    public EdgeFilter(Graph graph) {super(graph);}
+    public AllSelector(Graph graph) {super(graph);}
 
     @Override
     public boolean isCompatible() {
-        return graph.getSelection().nodeCount() > 0 && graph.getSelection().edgeCount() > 0;
+        return true;
     }
 
     @Override
     public String getTitle() {
-        return "Filter only edges";
+        return "Select all";
     }
 
 	@Override
@@ -28,6 +29,8 @@ public class EdgeFilter extends Modifier {
 
     @Override
     public void modify() {
-        graph.getSelection().clearNodes();
+        for (GraphElement<?> e : graph) {
+            graph.getSelection().add(e);
+        }
     }
 }

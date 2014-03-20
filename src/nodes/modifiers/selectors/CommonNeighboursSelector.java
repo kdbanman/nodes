@@ -1,4 +1,4 @@
-package nodes.modifiers;
+package nodes.modifiers.selectors;
 
 import java.util.Collection;
 import java.util.Iterator;

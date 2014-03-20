@@ -1,4 +1,4 @@
-package nodes.modifiers;
+package nodes.modifiers.selectors;
 
 import nodes.Edge;
 import nodes.Graph;

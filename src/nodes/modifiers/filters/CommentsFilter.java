@@ -1,23 +1,20 @@
+package nodes.modifiers.filters;
+
 import com.hp.hpl.jena.rdf.model.Statement;
 
 import nodes.Edge;
 import nodes.Graph;
 import nodes.Modifier;
 import nodes.Node;
-import nodes.Modifier.ModifierType;
 
 /**
- * Filter out selection to have resources selected
- * For references:
- * @see LiteralsFilter
- * @see NumericalLiteralsFilter
+ * Comments selection filter
  * @author Karim
  *
  */
+public class CommentsFilter extends Modifier {
 
-public class ResourceFilter extends Modifier {
-
-	public ResourceFilter(Graph graph) {
+	public CommentsFilter(Graph graph) {
 		super(graph);
 	}
 
@@ -28,7 +25,7 @@ public class ResourceFilter extends Modifier {
 
 	@Override
 	public String getTitle() {
-		return "Filter only resources";
+		return "Filter only comments";
 	}
 
 	@Override
@@ -55,10 +52,9 @@ public class ResourceFilter extends Modifier {
 
 		for (Statement st : e.getTriples()) {
 
-			if (st.getObject().isResource()
+			if (st.getPredicate().getLocalName().equalsIgnoreCase("comment")
 					&& st.getObject().toString().equals(n.getName()))
 				continue;
-
 			else
 				selection.remove(n);
 

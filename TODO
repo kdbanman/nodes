@@ -51,8 +51,6 @@
 
 - filter only strings
 
-- select all rdf:comment
-
 - select connected rdf:comment
 
 - select connected rdf:type

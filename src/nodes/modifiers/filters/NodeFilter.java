@@ -1,4 +1,4 @@
-package nodes.modifiers;
+package nodes.modifiers.filters;
 
 import nodes.Graph;
 import nodes.Modifier;
@@ -8,7 +8,7 @@ import nodes.Modifier;
  * @author kdbanman
  */
 public class NodeFilter extends Modifier {
-        
+
     public NodeFilter(Graph graph) {super(graph);}
 
     @Override

@@ -1,4 +1,4 @@
-package nodes.modifiers;
+package nodes.modifiers.selectors;
 
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Statement;
