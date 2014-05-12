@@ -1,12 +1,9 @@
-#META
-#####
-
-- migrate this stupid file to the github issue tracker thing
-
--? are very low priority considerations
 
 #BUGS
 #####
+
+- "filter only resources" does not work
+
 - null pointer exception occurs in Selection.java:435 in broadcastChange()
 
 - Not exactly a bug but all modifier executions block the UI because selection proccessing
@@ -37,14 +34,6 @@
 
 - 2 way data interaction between infobox and graph(textual vs. 3D)
 	- hyperlinks with html infobox
-
--? collapse connections to edge
-
--? collapse subgraph to node
-
-#REFACTORS
-##########
-
 
 #MODIFIERS
 ##########
