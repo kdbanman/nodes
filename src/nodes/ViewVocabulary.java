@@ -1,8 +1,12 @@
 package nodes;
 
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.ResourceFactory;
+import com.hp.hpl.jena.rdf.model.Statement;
+import java.util.Set;
 
 /**
  * A vocabulary for describing the visual properties of an RDF model that is
@@ -81,4 +85,28 @@ public class ViewVocabulary {
     // Property intended to show that a (reified) statement shares an edge with
     // another that is already visually described.
     public static Property sharesEdge = property("sharesEdge");
+    
+    public static Model augmentedModel(Graph graph) {
+        // initialize graph to return
+        Model augmented = ModelFactory.createDefaultModel();
+        
+        // Iterate through all edges of the graph.
+        // This will allow access to every triple with easy access to each
+        // triple's visual elements (Nodes and Edges)
+        for (Edge e : graph.getEdges()) {
+            
+            // add the edge's triples to the augmented model
+            Statement[] statementArr = new Statement[e.getTriples().size()];
+            augmented.add(e.getTriples().toArray(statementArr));
+            
+            // add (to the augmented model) View triples to Edge's source RDFNode
+            //TODO
+            
+            // add (to the augmented model) View triples to Edge's target RDFNode
+            //TODO
+        }
+        
+        // return augmented model
+        return augmented;
+    }
 }

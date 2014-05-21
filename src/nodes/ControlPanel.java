@@ -1,6 +1,7 @@
 package nodes;
 
 import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.ResIterator;
 import com.hp.hpl.jena.rdf.model.Resource;
@@ -95,8 +96,6 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
     Group openImportSubTab;
     ArrayList<Group> transformSubTabs;
     Group openTransformSubTab;
-    ArrayList<Group> saveSubTabs;
-    Group openSaveSubTab;
     
     // text field for user-input URIs for description retrieval from the web
     Textfield importWebURI;
@@ -115,9 +114,6 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
     
     // text field for rdf-xml filename save location
     Textfield dataFilename;
-    
-    // text field for project filename (save/load location)
-    Textfield projectFilename;
     
     // Modifier list controller
     ModifiersListBox modifiersBox;
@@ -148,6 +144,9 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
     
     Slider labelSizeSlider;
     
+    // radio button to include visual data in saved file
+    RadioButton saveView;
+    
     public ControlPanel(int frameWidth, int frameHeight, Graph parentGraph) {
         w = frameWidth;
         h = frameHeight;
@@ -172,7 +171,6 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
         // sub tab lists to manipulate in draw() for tab behaviour
         importSubTabs = new ArrayList<>();
         transformSubTabs = new ArrayList<>();
-        saveSubTabs = new ArrayList<>();
     }
     
     @Override
@@ -200,7 +198,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
 		Tab optionTab = cp5.addTab("Options")
                 .setWidth(w / 4)
                 .setHeight(tabHeight);
-        Tab saveTab = cp5.addTab("Save/Load")
+        Tab saveTab = cp5.addTab("Save")
                 .setWidth(w / 4)
                 .setHeight(tabHeight);
         cp5.getDefaultTab().remove();
@@ -518,7 +516,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
         //============
         
         //==============
-        // Save/Load tab
+        // Save tab
         //==============
         
         // save/load subtabs
@@ -526,68 +524,31 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
         
         int saveTabsVert = 2 * tabHeight + padding;
         
-        Group dataGroup = new SubTab(cp5, "Save Data")
-                .setBarHeight(tabHeight)
-                .setPosition(0, saveTabsVert)
-                .setWidth(w / 4)
-                .hideArrow()
-                .setOpen(true)
-                .moveTo(saveTab);
-        Group projectGroup = new SubTab(cp5, "Save/Load Project")
-                .setBarHeight(tabHeight)
-                .setPosition(w / 4, saveTabsVert)
-                .setWidth(w / 4)
-                .hideArrow()
-                .setOpen(false)
-                .moveTo(saveTab);
-        
-        // register save subtabs so that they may be manipulated in
-        // draw() to behave as tabs
-        saveSubTabs.add(dataGroup);
-        saveSubTabs.add(projectGroup);
-        openSaveSubTab = dataGroup;
-        
         // Data save elements
         
         dataFilename = cp5.addTextfield("RDF-XML Filename",
-                padding,
-                padding,
-                w - 2 * padding,
-                elementHeight)
+                    padding,
+                    tabHeight + padding,
+                    w - 2 * padding,
+                    elementHeight)
                 .setAutoClear(false)
-                .moveTo(dataGroup)
+                .moveTo(saveTab)
                 .setText("myData.rdf")
                 .addCallback(new CopyPasteMenuListener());
         cp5.addButton("Save RDF-XML")
                 .setSize(buttonWidth, buttonHeight)
                 .setPosition(w - buttonWidth - padding, 
-                    labelledElementHeight + padding)
-                .moveTo(dataGroup)
+                    tabHeight + labelledElementHeight + padding)
+                .moveTo(saveTab)
                 .addCallback(new SaveTriplesListener());
-        
-        // Project Save elements
-        
-        projectFilename = cp5.addTextfield("Project Name",
-                padding - w / 4,
-                padding,
-                w - 2 * padding,
-                elementHeight)
-                .setAutoClear(false)
-                .moveTo(projectGroup)
-                .setText("myProject.nod")
-                .addCallback(new CopyPasteMenuListener());
-        cp5.addButton("Save Project")
-                .setSize(buttonWidth, buttonHeight)
-                .setPosition(3 * w / 4 - buttonWidth - padding, 
-                    labelledElementHeight + padding)
-                .moveTo(projectGroup)
-                .addCallback(new SaveProjectListener());
-        cp5.addButton("Load Project")
-                .setSize(buttonWidth, buttonHeight)
-                .setPosition(3 * w / 4 - buttonWidth - padding, 
-                    3 * labelledElementHeight + padding)
-                .moveTo(projectGroup)
-                .addCallback(new LoadProjectListener());
+        saveView = cp5.addRadioButton("Save Current View")
+                .setPosition(padding,
+                    tabHeight + labelledElementHeight + padding)
+                .setItemHeight(buttonHeight / 2)
+                .moveTo(saveTab)
+                .addItem("Don't save current view", 0)
+                .addItem("Save current view", 1)
+                .activate(0);
     }
     
     public String getHttpSparqlEndpoint() {
@@ -620,12 +581,6 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
             if (subTab.isOpen() && subTab != openImportSubTab) {
                 openImportSubTab.setOpen(false);
                 openImportSubTab = subTab;
-            }
-        }
-        for (Group subTab : saveSubTabs) {
-            if (subTab.isOpen() && subTab != openSaveSubTab) {
-                openSaveSubTab.setOpen(false);
-                openSaveSubTab = subTab;
             }
         }
         
@@ -1356,11 +1311,25 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
         @Override
         public void controlEvent(CallbackEvent event) {
             if (event.getAction() == ControlP5.ACTION_RELEASED) {
+                
+                Model dataToWrite = null;
+                // determine if user has chosen to save the view data
+                if (saveView.getState(0)) {
+                    // if the view is not being saved then we will just write the graph's model
+                    logEvent("Saving current data without view information...");
+                    dataToWrite = graph.getRenderedTriples();
+                } else {
+                    // if the view is being saved then we will write the vocabulary-added version
+                    logEvent("Saving current data with view information...");
+                    dataToWrite = ViewVocabulary.augmentedModel(graph);
+                }
+                
+                // write the data to file according to filename from dataFilename
                 Writer writer = null;
                 try {
                     writer = new BufferedWriter(new OutputStreamWriter(
                           new FileOutputStream(dataFilename.getText()), "utf-8"));
-                    graph.getRenderedTriples().write(writer);
+                    dataToWrite.write(writer);
                     logEvent("RDF-XML file " + dataFilename.getText() + "\nsaved to application directory.");
                 } catch (IOException ex) {
                   logEvent("Failed to save file " + dataFilename.getText());
@@ -1369,37 +1338,6 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                 }
             }
         }
-    }
-    
-    /*
-     * saves the (relevant) current state of the Nodes application to be loaded
-     * at a later date.
-     */
-    private class SaveProjectListener implements CallbackListener {
-
-        /*
-         * TODO
-         */
-        @Override
-        public void controlEvent(CallbackEvent ce) {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-        
-    }
-    
-    /*
-     * loads previously saved application state.
-     */
-    private class LoadProjectListener implements CallbackListener {
-
-        /*
-         * TODO
-         */
-        @Override
-        public void controlEvent(CallbackEvent ce) {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-        
     }
 
     /*
