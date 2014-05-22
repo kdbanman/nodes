@@ -12,13 +12,17 @@ import processing.core.PVector;
  * @author kdbanman
  */
 public class Node extends GraphElement<Node> {
+    
+    private RDFNode rdfNode;
   
     // name of controller is the URI or literal value
     // UnProjector is for 3D extension of inside()
-	Node(Graph parentGraph, String name) {
-		super(parentGraph, name);
+	Node(Graph parentGraph, RDFNode rdfNode) {
+		super(parentGraph, rdfNode.toString());
+        
+        this.rdfNode = rdfNode;
 
-		labelText.add(name);
+		labelText.add(rdfNode.toString());
 		updateLabel();
 
 		ControllerView<Node> view = new ControllerView<Node>() {
@@ -94,5 +98,9 @@ public class Node extends GraphElement<Node> {
             inbound = graph.getRenderedTriples().listStatements(null, null, getName());
         }
         return inbound;
+    }
+    
+    public RDFNode getRDFNode() {
+        return rdfNode;
     }
 }

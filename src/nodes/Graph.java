@@ -295,8 +295,8 @@ public class Graph implements Iterable<GraphElement<?>> {
      * @return Statement originating from the Graph's model
      */ 
     public Statement addTriple(Statement triple) {
-        String sub = triple.getSubject().toString();
-        String obj = triple.getObject().toString();
+        RDFNode sub = triple.getSubject();
+        RDFNode obj = triple.getObject();
 
         Edge e;
         
@@ -306,7 +306,7 @@ public class Graph implements Iterable<GraphElement<?>> {
 
         // addEdge returns the existing edge if one already exists between the two nodes
         //      note:  node order does not matter.
-        e = addEdge(sub, obj);
+        e = addEdge(sub.toString(), obj.toString());
         
         // create the triple using the Graph's model so that Statement.getModel()
         // works as expected
@@ -400,10 +400,10 @@ public class Graph implements Iterable<GraphElement<?>> {
      *
      * returns the new node or the existing node.
      */
-    private Node addNode(String id) {
+    private Node addNode(RDFNode rdfNode) {
 
         // ControlP5's source has been checked, this should be reliable and fast
-        Node n = (Node) cp5.getController(id);
+        Node n = (Node) cp5.getController(rdfNode.toString());
         if (n != null) {
             return n;
         } else {
@@ -414,7 +414,7 @@ public class Graph implements Iterable<GraphElement<?>> {
                     * initPositionSparsity;
             initBoundary = Nodes.min(initBoundary, 300);
 
-            n = new Node(this, id)
+            n = new Node(this, rdfNode)
                     .setPosition(pApp.random(-initBoundary, initBoundary),
                     pApp.random(-initBoundary, initBoundary),
                     pApp.random(-initBoundary, initBoundary))
