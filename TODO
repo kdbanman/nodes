@@ -17,7 +17,6 @@
 - with change of the collection type in Selection.java, modifiers such as SelectAll have become noticeably slower
 	- Explore alternatives; different structure for selection? a multi-threaded Selection rewrite? Cake?
 	- Reason why Collections.synchronizedSet was ditched because it doesn't provide a synchronized iterator 
-	- Even after manually wrapping the iterator methods in synchronized blocks, ConcurrentModificationExceptions were fly in.
 
 - explore alternatives to swing for formatted infopanel text
 
@@ -225,7 +224,7 @@ Sun 18 Aug 2013 17:30:20 MDT
 	- it will be easier to serialize the program state for load/save with it left there, but not by much.
 	- it keeps track of label prefixes, which is dandy.
 	cons:
-	- maintenance over undo and redo operations have not been considered at all.	
+	- maintenance over undo and redo operations have not been considered at all.
 NOTE: keeping it around - refactoring Edges to keep references to Statements forced the issue
 
 Fri 19 Jul 2013 14:38:42 MDT
@@ -368,7 +367,7 @@ Thu Jul  4 15:02:31 MDT 2013
 	- label prefixing isn't as simple as just iterating through labelText and prefixing each. (unless jena will replace all occurrences of nsPrefixMap keys in a string instead of just the first occurrence)  TESTED:  it will not.
 
 - prexfixLabel() function iterates through lines, best called from addNode() and addEdge(), since that is when new prefixes could be discovered
-	- push prefixing to label mechanism to avoid violating uniqueness of controller names.  
+	- push prefixing to label mechanism to avoid violating uniqueness of controller names.
 		- think about how to deal with edges properly.  probably similarly to nodes, but it will be a bit slow iterating through the predicates to check all of them.  actually no, there should never be so many predicates as to slow it down significantly, the code will just be a fair bit uglier
 
 - label text content from String to List of Strings (lines of text) so that multiline literals are easy, and so is post-discovery prefixing.

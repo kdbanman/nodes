@@ -1,17 +1,17 @@
 package nodes.modifiers.filters;
 
-import com.hp.hpl.jena.rdf.model.Statement;
+import java.util.Iterator;
+
+import com.hp.hpl.jena.rdf.model.RDFNode;
 
 import nodes.Node;
-import nodes.Edge;
 import nodes.Graph;
 import nodes.Modifier;
 
 
 /**
- *
+ * Filter selection to include literals only
  * @author Karim
- *
  */
 public class LiteralsFilter extends Modifier {
 
@@ -21,7 +21,7 @@ public class LiteralsFilter extends Modifier {
 
 	@Override
 	public boolean isCompatible() {
-		return selection.nodeCount() > 0 && selection.nodeCount() > 0;
+		return graph.nodeCount() > 0 && selection.nodeCount() > 0;
 	}
 
 	@Override
@@ -35,32 +35,19 @@ public class LiteralsFilter extends Modifier {
 		// Clear the edges
 		selection.clearEdges();
 
-		// Can only check if a node is a literal from the "Statement" that
-		// contains the node
-		// so we have iterate over every edge
-		for (Edge e : graph.getEdges()) {
-			Node src = e.getSourceNode();
-			Node dst = e.getDestinationNode();
+		Iterator<Node> it = selection.getNodes().iterator();
+		RDFNode node = null;
 
-			if (selection.contains(src)) checkAndAdd(e, src);
+		while (it.hasNext()) {
+			node = it.next().getRDFNode();
 
-			if (selection.contains(dst)) checkAndAdd(e, dst);
+			if (!node.isLiteral())
+				it.remove();
 		}
 	}
 
 	@Override
 	public ModifierType getType() {
 		return ModifierType.ALL;
-	}
-
-	private void checkAndAdd(Edge e, Node n) {
-
-		for (Statement st : e.getTriples()) {
-			// match? leave it
-			if (st.getObject().isLiteral() && st.getObject().toString().equals(n.getName()))
-				continue;
-			else // else remove it
-				selection.remove(n);
-		}
 	}
 }

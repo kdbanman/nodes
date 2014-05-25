@@ -1,18 +1,16 @@
 package nodes.modifiers.filters;
-import com.hp.hpl.jena.rdf.model.Statement;
 
-import nodes.Edge;
+import java.util.Iterator;
+
+import com.hp.hpl.jena.rdf.model.RDFNode;
+
 import nodes.Graph;
 import nodes.Modifier;
 import nodes.Node;
 
 /**
- * Filter out selection to have resources selected
- * For references:
- * @see LiteralsFilter
- * @see NumericalLiteralsFilter
+ * Filter selection to include resources only
  * @author Karim
- *
  */
 
 public class ResourceFilter extends Modifier {
@@ -34,34 +32,22 @@ public class ResourceFilter extends Modifier {
 	@Override
 	public void modify() {
 
+		// Clear the edges
 		selection.clearEdges();
 
-		for (Edge e : graph.getEdges()) {
-			Node src = e.getSourceNode();
-			Node dst = e.getDestinationNode();
+		Iterator<Node> it = selection.getNodes().iterator();
+		RDFNode node = null;
 
-			if (selection.contains(src)) checkAndAdd(e, src);
+		while (it.hasNext()) {
+			node = it.next().getRDFNode();
 
-			if (selection.contains(dst)) checkAndAdd(e, dst);
+			if (!node.isResource())
+				it.remove();
 		}
 	}
 
 	@Override
 	public ModifierType getType() {
 		return ModifierType.ALL;
-	}
-
-	private void checkAndAdd(Edge e, Node n) {
-
-		for (Statement st : e.getTriples()) {
-
-			if (st.getObject().isResource()
-					&& st.getObject().toString().equals(n.getName()))
-				continue;
-
-			else
-				selection.remove(n);
-
-		}
 	}
 }

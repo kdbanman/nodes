@@ -1,11 +1,10 @@
 package nodes.modifiers.filters;
 
-import com.hp.hpl.jena.rdf.model.Statement;
+import java.util.Iterator;
 
 import nodes.Edge;
 import nodes.Graph;
 import nodes.Modifier;
-import nodes.Node;
 
 /**
  * Comments selection filter
@@ -31,33 +30,24 @@ public class CommentsFilter extends Modifier {
 	@Override
 	public void modify() {
 
-		selection.clearEdges();
+		selection.clearNodes();
 
-		for (Edge e : graph.getEdges()) {
-			Node src = e.getSourceNode();
-			Node dst = e.getDestinationNode();
+		Iterator<Edge> it = selection.getEdges().iterator();
+		Edge edge = null;
 
-			if (selection.contains(src)) checkAndAdd(e, src);
+		while (it.hasNext()) {
+			edge = it.next();
 
-			if (selection.contains(dst)) checkAndAdd(e, dst);
+			if (!edge.getSingleTriple()
+					.getPredicate()
+					.getLocalName()
+					.contains("comment"))
+				it.remove();
 		}
 	}
 
 	@Override
 	public ModifierType getType() {
 		return ModifierType.ALL;
-	}
-
-	private void checkAndAdd(Edge e, Node n) {
-
-		for (Statement st : e.getTriples()) {
-
-			if (st.getPredicate().getLocalName().equalsIgnoreCase("comment")
-					&& st.getObject().toString().equals(n.getName()))
-				continue;
-			else
-				selection.remove(n);
-
-		}
 	}
 }
