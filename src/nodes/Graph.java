@@ -34,9 +34,12 @@ public class Graph implements Iterable<GraphElement<?>> {
     UnProjector proj;
     ControlP5 cp5;
     Nodes pApp;
-    
+
     ControllerGroup<?> graphElementGroup;
-    
+
+    public static final String COMMENTURI = "http://www.w3.org/2000/01/rdf-schema#comment";
+    public static final String TYPERURI	  = "http://www.w3.org/1999/02/22-rdf-syntax-ns#type";
+
     private static final String FONTRESOURCE = "resources/labelFont.ttf";
     private static final int NODESIZE = 9;
     private static final int EDGESIZE = 3;
@@ -579,6 +582,9 @@ public class Graph implements Iterable<GraphElement<?>> {
         return ret;
     }
 
+	public Node getNode(RDFNode n) {
+		return getNode(n.toString());
+	}
     /**
      * returns the existing edge between s and d. order of s and d are actually
      * irrelevant, the correct edge will be retrieved.  returns null if there is

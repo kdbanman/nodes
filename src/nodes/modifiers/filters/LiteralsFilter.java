@@ -11,6 +11,7 @@ import nodes.Modifier;
 
 /**
  * Filter selection to include literals only
+ *
  * @author Karim
  */
 public class LiteralsFilter extends Modifier {
