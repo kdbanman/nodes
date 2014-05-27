@@ -8,8 +8,8 @@ import nodes.Modifier;
 
 /**
  * Comments selection filter
- * @author Karim
  *
+ * @author Karim
  */
 public class CommentsFilter extends Modifier {
 
@@ -37,12 +37,13 @@ public class CommentsFilter extends Modifier {
 
 		while (it.hasNext()) {
 			edge = it.next();
-
+			System.out.println(edge.getSingleTriple().getPredicate().getURI());
 			if (!edge.getSingleTriple()
 					.getPredicate()
-					.getLocalName()
-					.contains("comment"))
+					.getURI()
+					.equals(Graph.COMMENTURI))
 				it.remove();
+
 		}
 	}
 

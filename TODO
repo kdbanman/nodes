@@ -2,14 +2,9 @@
 #BUGS
 #####
 
-- "filter only resources" does not work
-
 - load from file only shows folders
 
 - null pointer exception occurs in Selection.java:435 in broadcastChange()
-
-- Not exactly a bug but all modifier executions block the UI because selection proccessing
-  is done in Nodes.java->Graph.java->Selection.java meaning in the same thread as rendering
 
 #KARIM
 ######
@@ -35,12 +30,6 @@
 
 #MODIFIERS
 ##########
-
-- filter only strings
-
-- select connected rdf:comment
-
-- select connected rdf:type
 
 - MODIFIERSET (resource can have multiple types) : select all nodes of same rdf:Type
 

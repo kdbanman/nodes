@@ -9,14 +9,12 @@ import nodes.Modifier;
 import nodes.Node;
 
 /**
- * Filter selection to include resources only
  *
  * @author Karim
  */
+public class NumericalsFilter extends Modifier {
 
-public class ResourceFilter extends Modifier {
-
-	public ResourceFilter(Graph graph) {
+	public NumericalsFilter(Graph graph) {
 		super(graph);
 	}
 
@@ -27,7 +25,7 @@ public class ResourceFilter extends Modifier {
 
 	@Override
 	public String getTitle() {
-		return "Filter only resources";
+		return "Filter only numericals";
 	}
 
 	@Override
@@ -42,8 +40,10 @@ public class ResourceFilter extends Modifier {
 		while (it.hasNext()) {
 			node = it.next().getRDFNode();
 
-			if (!node.isResource())
+			if (!node.isLiteral()
+					|| !(node.asLiteral().getValue() instanceof Number))
 				it.remove();
+
 		}
 	}
 

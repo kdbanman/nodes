@@ -12,9 +12,9 @@ import nodes.Node;
  *
  * @author Karim
  */
-public class NumericalLiteralsFilter extends Modifier {
+public class StringsFilter extends Modifier {
 
-	public NumericalLiteralsFilter(Graph graph) {
+	public StringsFilter(Graph graph) {
 		super(graph);
 	}
 
@@ -25,7 +25,7 @@ public class NumericalLiteralsFilter extends Modifier {
 
 	@Override
 	public String getTitle() {
-		return "Filter only numerical literals";
+		return "Filter only strings";
 	}
 
 	@Override
@@ -41,9 +41,9 @@ public class NumericalLiteralsFilter extends Modifier {
 			node = it.next().getRDFNode();
 
 			if (!node.isLiteral()
-					|| !(node.asLiteral().getValue() instanceof Number)) {
+					|| !(node.asLiteral().getValue() instanceof String))
 				it.remove();
-			}
+
 		}
 	}
 
