@@ -1321,7 +1321,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                 } else {
                     // if the view is being saved then we will write the vocabulary-added version
                     logEvent("Saving current data with view information...");
-                    dataToWrite = ViewVocabulary.augmentedModel(graph);
+                    dataToWrite = ViewModelAugmentor.augmentedModel(graph);
                 }
                 
                 // write the data to file according to filename from dataFilename
