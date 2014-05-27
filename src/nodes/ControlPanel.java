@@ -472,6 +472,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                 .setWidth(w - 80)
                 .setRange(1, 20)
                 .setValue(10)
+                .setNumberOfTickMarks(20)
                 .snapToTickMarks(true)
                 .moveTo(colorSizeGroup)
                 .addCallback(new ElementSizeListener());
