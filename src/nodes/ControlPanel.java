@@ -472,6 +472,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                 .setWidth(w - 80)
                 .setRange(1, 20)
                 .setValue(10)
+                .snapToTickMarks(true)
                 .moveTo(colorSizeGroup)
                 .addCallback(new ElementSizeListener());
         
@@ -692,7 +693,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
         colorPicker.setColorValue(graph.getSelection().getColorOfSelection());
         changeElementColor = true;
         
-        sizeSlider.setValue(graph.getSelection().getSizeOfSelection());
+        sizeSlider.setValue((float) graph.getSelection().getSizeOfSelection());
         labelSizeSlider.setValue(graph.getSelection().getLabelSizeOfSelection());
     }
     
@@ -1022,7 +1023,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                     float minZ = center.z;
                     float maxZ = center.z;
                     
-                    float minCamDist = 15 * first.getSize();
+                    float minCamDist = 15 * (float) first.getSize();
                     
                     float nodeCount = 1f;
 
@@ -1093,7 +1094,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                 float maxSize = 0;
                 for (Node n : graph.getSelection().getNodes()) {
                     center.add(n.getPosition());
-                    maxSize = Nodes.max(maxSize, n.getSize());
+                    maxSize = Nodes.max(maxSize, (float) n.getSize());
                 }
                 // radius is circumference / 2pi, but this has been adjusted for appearance
                 float radius = (float) ((float) graph.getSelection().nodeCount() * 2 * maxSize) / (Nodes.PI);

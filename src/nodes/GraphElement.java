@@ -21,7 +21,7 @@ public class GraphElement<T> extends Controller<T> {
     // currentCol responds to mouse hover
     int currentCol;
     
-    float size;
+    int size;
     
     int labelSize;
     PFont labelFont;
@@ -79,7 +79,7 @@ public class GraphElement<T> extends Controller<T> {
         return graph;
     }
     
-    public float getSize() {
+    public int getSize() {
         return size;
     }
     

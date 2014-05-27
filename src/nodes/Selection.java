@@ -551,16 +551,16 @@ public class Selection implements Iterable<GraphElement<?>> {
      * @return float size of selected element(s). returns 0 if selection is
      * empty or heterogeneous in size
      */
-    public float getSizeOfSelection() {
+    public int getSizeOfSelection() {
         // same pattern as getColor, but for size
-        float size;
+        int size;
         Iterator<GraphElement<?>> it = this.iterator();
         
         if (it.hasNext()) size = it.next().getSize();
         else return 0;
         
         while (it.hasNext()) {
-            float nextSize = it.next().getSize();
+            int nextSize = it.next().getSize();
             if (nextSize != size) return 0;
         }
         
