@@ -25,29 +25,81 @@ public class ViewModelAugmentor {
      * triples for View parameters.
      */
     private static Model nodeDescription(Node node) {
+        // create jena model to contain description triples
         Model description = ModelFactory.createDefaultModel();
         
         // use Node's RDFNode as the object of each description triple
         RDFNode obj = node.getRDFNode();
         
         // create subject resources for each description triple
+        
         Resource posX = ViewVocabulary.createResource(node.getPosition().x);
         Resource posY = ViewVocabulary.createResource(node.getPosition().y);
         Resource posZ = ViewVocabulary.createResource(node.getPosition().z);
         
+        Resource col = ViewVocabulary.createResource(node.getCol());
+        Resource size = ViewVocabulary.createResource(node.getSize());
+        
+        Resource labelVis = ViewVocabulary.createResource(node.getDisplayLabel());
+        Resource labelSize = ViewVocabulary.createResource(node.getLabelSize());
         
         // create and add Statements to description model using created
         // resources for each View property.
-        //TODO description.add(description.createStatement(sub, pred, obj));
         
+        description.add(description.createStatement(posX,
+                                                    ViewVocabulary.positionX,
+                                                    obj));
+        description.add(description.createStatement(posY,
+                                                    ViewVocabulary.positionY,
+                                                    obj));
+        description.add(description.createStatement(posZ,
+                                                    ViewVocabulary.positionZ,
+                                                    obj));
+        
+        description.add(description.createStatement(col,
+                                                    ViewVocabulary.color,
+                                                    obj));
+        description.add(description.createStatement(size,
+                                                    ViewVocabulary.size,
+                                                    obj));
+        
+        description.add(description.createStatement(labelVis,
+                                                    ViewVocabulary.labelVisibility,
+                                                    obj));
+        description.add(description.createStatement(labelSize,
+                                                    ViewVocabulary.labelSize,
+                                                    obj));
         
         return description;
     }
     
     private static Model edgeDescription(Edge edge, ReifiedStatement object) {
+        // create jena model to contain description triples
         Model description = ModelFactory.createDefaultModel();
         
-        //TODO
+        // create subject resources for each description triple
+        
+        Resource col = ViewVocabulary.createResource(edge.getCol());
+        Resource size = ViewVocabulary.createResource(edge.getSize());
+        
+        Resource labelVis = ViewVocabulary.createResource(edge.getDisplayLabel());
+        Resource labelSize = ViewVocabulary.createResource(edge.getLabelSize());
+        
+        // create and add Statements to description model using created
+        // resources for each View property.
+        
+        description.add(description.createStatement(col,
+                                                    ViewVocabulary.color,
+                                                    object));
+        description.add(description.createStatement(size,
+                                                    ViewVocabulary.size,
+                                                    object));
+        description.add(description.createStatement(labelVis,
+                                                    ViewVocabulary.labelVisibility,
+                                                    object));
+        description.add(description.createStatement(labelSize,
+                                                    ViewVocabulary.labelSize,
+                                                    object));
         
         return description;
     }
@@ -55,7 +107,11 @@ public class ViewModelAugmentor {
     private static Model sharedEdgeDescription(ArrayList<ReifiedStatement> slaves, ReifiedStatement master) {
         Model description = ModelFactory.createDefaultModel();
         
-        //TODO
+        for (ReifiedStatement slave : slaves) {
+            description.add(description.createStatement(slave,
+                                                        ViewVocabulary.sharesEdge,
+                                                        master));
+        }
         
         return description;
     }

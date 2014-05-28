@@ -82,5 +82,18 @@ public class ViewVocabulary {
         return resource(Boolean.toString(val));
     }
     
+    public static double extractDouble(Resource doubleRes) {
+        //TODO
+        return 0;
+    }
     
+    public static int extractInt(Resource intRes) {
+        //TODO
+        return 0;
+    }
+    
+    public static boolean extractBool(Resource boolRes) {
+        //TODO
+        return false;
+    }
 }
