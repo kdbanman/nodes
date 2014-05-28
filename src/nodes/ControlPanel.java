@@ -313,7 +313,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                 .setAutoClear(false)
                 .addCallback(new CopyPasteMenuListener())
                 .moveTo(fileGroup);
-        cp5.addButton("Select File")
+        cp5.addButton("Select RDF File")
                 .setSize(buttonWidth, buttonHeight)
                 .setPosition(w - buttonWidth - padding - w / 2,
                     labelledElementHeight + 2 * padding)
@@ -327,7 +327,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                     2 * labelledElementHeight + buttonHeight + 4 * padding)
                 .addCallback(new FileQueryListener())
                 .moveTo(fileGroup);
-        fileImportEntityMenu = cp5.addDropdownList("Entity of Interest (Optional)")
+        fileImportEntityMenu = cp5.addDropdownList("Entity of Interest (Select RDF File First)")
                 .setPosition(padding - w / 2,
                 labelledElementHeight + buttonHeight + 5 * padding)
                 .setSize(w - 3 * padding - buttonWidth, h - padding - (90 + labelledElementHeight + buttonHeight + 4 * padding))
@@ -549,7 +549,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                 .moveTo(saveTab)
                 .addItem("Don't save current view", 0)
                 .addItem("Save current view", 1)
-                .activate(0);
+                .activate(1);
     }
     
     public String getHttpSparqlEndpoint() {
