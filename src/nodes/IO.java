@@ -72,20 +72,19 @@ public class IO {
      * @return jena Model of Statements
      */
     public static Model getDescriptionSparql(String endpointURL, String resourceURI) {
-        String resoruceURI = "";
-                String queryString = "CONSTRUCT { <" + resoruceURI + "> ?p1 ?o . "
-                        + "?s ?p2 <" + resoruceURI + "> } " + ""
-                        + "WHERE { <" + resoruceURI + "> ?p1 ?o . "
-                        + "?s ?p2 <" + resoruceURI + "> }";
-                
-                // construct query
-                Query query = QueryFactory.create(queryString);
-                
-                QueryExecution qexec = QueryExecutionFactory.sparqlService(endpointURL, query);
-                
-                // retrieve description as a jena model
-                Model toAdd = qexec.execConstruct();
-                
-                return toAdd;
+        String queryString = "CONSTRUCT { <" + resourceURI + "> ?p1 ?o . "
+                + "?s ?p2 <" + resourceURI + "> } " + ""
+                + "WHERE { <" + resourceURI + "> ?p1 ?o . "
+                + "?s ?p2 <" + resourceURI + "> }";
+
+        // construct query
+        Query query = QueryFactory.create(queryString);
+
+        QueryExecution qexec = QueryExecutionFactory.sparqlService(endpointURL, query);
+
+        // retrieve description as a jena model
+        Model toAdd = qexec.execConstruct();
+
+        return toAdd;
     }
 }

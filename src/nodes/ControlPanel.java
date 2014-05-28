@@ -1,7 +1,6 @@
 package nodes;
 
 import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.ResIterator;
 import com.hp.hpl.jena.rdf.model.Resource;
@@ -314,7 +313,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                 .setAutoClear(false)
                 .addCallback(new CopyPasteMenuListener())
                 .moveTo(fileGroup);
-        cp5.addButton("Select File")
+        cp5.addButton("Select RDF File")
                 .setSize(buttonWidth, buttonHeight)
                 .setPosition(w - buttonWidth - padding - w / 2,
                     labelledElementHeight + 2 * padding)
@@ -328,7 +327,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                     2 * labelledElementHeight + buttonHeight + 4 * padding)
                 .addCallback(new FileQueryListener())
                 .moveTo(fileGroup);
-        fileImportEntityMenu = cp5.addDropdownList("Entity of Interest (Optional)")
+        fileImportEntityMenu = cp5.addDropdownList("Entity of Interest (Select RDF File First)")
                 .setPosition(padding - w / 2,
                 labelledElementHeight + buttonHeight + 5 * padding)
                 .setSize(w - 3 * padding - buttonWidth, h - padding - (90 + labelledElementHeight + buttonHeight + 4 * padding))
@@ -390,7 +389,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                 .hideArrow()
                 .setOpen(false)
                 .moveTo(transformTab);
-        Group labelGroup = new SubTab(cp5, "Label")
+        Group labelGroup = new SubTab(cp5, "Labels")
                 .setBarHeight(tabHeight)
                 .setPosition(w / 2, transformTabsVert)
                 .setWidth(w / 4)
@@ -479,14 +478,14 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
         
         // label controllers
         
-        cp5.addButton("Show Labels")
+        cp5.addButton("Show Selected Labels")
                 .setPosition(padding - w / 2, padding)
                 .setHeight(buttonHeight)
                 .setWidth(buttonWidth)
                 .moveTo(labelGroup)
                 .addCallback(new ShowLabelListener());
         
-        cp5.addButton("Hide Labels")
+        cp5.addButton("Hide Selected Labels")
                 .setPosition(padding - w / 2, buttonHeight + 2 * padding)
                 .setHeight(buttonHeight)
                 .setWidth(buttonWidth)
@@ -550,7 +549,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                 .moveTo(saveTab)
                 .addItem("Don't save current view", 0)
                 .addItem("Save current view", 1)
-                .activate(0);
+                .activate(1);
     }
     
     public String getHttpSparqlEndpoint() {
@@ -911,7 +910,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
         @Override
         public void controlEvent(CallbackEvent event) {
             if (event.getAction() == ControlP5.ACTION_RELEASED) {
-                ControlPanel.this.selectFolder("Select RDF File:", "importFileSelected");
+                ControlPanel.this.selectInput("Select RDF File:", "importFileSelected");
             }
         }
         
