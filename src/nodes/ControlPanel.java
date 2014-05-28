@@ -1,7 +1,6 @@
 package nodes;
 
 import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.ResIterator;
 import com.hp.hpl.jena.rdf.model.Resource;
@@ -390,7 +389,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                 .hideArrow()
                 .setOpen(false)
                 .moveTo(transformTab);
-        Group labelGroup = new SubTab(cp5, "Label")
+        Group labelGroup = new SubTab(cp5, "Labels")
                 .setBarHeight(tabHeight)
                 .setPosition(w / 2, transformTabsVert)
                 .setWidth(w / 4)
@@ -479,14 +478,14 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
         
         // label controllers
         
-        cp5.addButton("Show Labels")
+        cp5.addButton("Show Selected Labels")
                 .setPosition(padding - w / 2, padding)
                 .setHeight(buttonHeight)
                 .setWidth(buttonWidth)
                 .moveTo(labelGroup)
                 .addCallback(new ShowLabelListener());
         
-        cp5.addButton("Hide Labels")
+        cp5.addButton("Hide Selected Labels")
                 .setPosition(padding - w / 2, buttonHeight + 2 * padding)
                 .setHeight(buttonHeight)
                 .setWidth(buttonWidth)
@@ -911,7 +910,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
         @Override
         public void controlEvent(CallbackEvent event) {
             if (event.getAction() == ControlP5.ACTION_RELEASED) {
-                ControlPanel.this.selectFolder("Select RDF File:", "importFileSelected");
+                ControlPanel.this.selectInput("Select RDF File:", "importFileSelected");
             }
         }
         

@@ -2,7 +2,9 @@
 #BUGS
 #####
 
-- load from file only shows folders
+- strange change in lighting after toggling labels
+
+- importing from dbpedia no longer works (other endpoints not tested yet)
 
 - null pointer exception occurs in Selection.java:435 in broadcastChange()
 
