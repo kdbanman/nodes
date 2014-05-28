@@ -19,6 +19,7 @@ there are a few basic UI systems that are in place to help you work that flow:
     - right click and drag to rotate the graph
     - scroll wheel to zoom in or out (or click and drag the scroll wheel)
     - click a node or edge to select it
+    - arrow keys to pan the view
     - click and drag a node or edge to move it (or to move the whole selection)
     - click and drag a rectangle around nodes or edges to select them
     - hold shift to add to the selection
@@ -71,4 +72,4 @@ Then nodes will automatically find your class and load it.
 - [google guava](https://code.google.com/p/guava-libraries/) (non-gwt version)
 - [javassist](http://www.csg.ci.i.u-tokyo.ac.jp/~chiba/javassist/)	(tested up to 3.18.0.GA)
 
-An overview of the libraries's licenses can be found under libs/licenses 
+An overview of the libraries's licenses can be found under libs/licenses
