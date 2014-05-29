@@ -327,7 +327,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                     2 * labelledElementHeight + buttonHeight + 4 * padding)
                 .addCallback(new FileQueryListener())
                 .moveTo(fileGroup);
-        fileImportEntityMenu = cp5.addDropdownList("Entity of Interest (Select RDF File First)")
+        fileImportEntityMenu = cp5.addDropdownList("Optional Entity of Interest (Select RDF File First)")
                 .setPosition(padding - w / 2,
                 labelledElementHeight + buttonHeight + 5 * padding)
                 .setSize(w - 3 * padding - buttonWidth, h - padding - (90 + labelledElementHeight + buttonHeight + 4 * padding))
