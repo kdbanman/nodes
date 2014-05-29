@@ -18,6 +18,7 @@ import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.PriorityQueue;
 import java.util.Set;
+import nodes.ViewModelReader.MissingElementsException;
 
 import org.reflections.Reflections;
 
@@ -195,14 +196,26 @@ public class Graph implements Iterable<GraphElement<?>> {
      * adds triples to model, adding Nodes and Edges as necessary.
      */
     public void addTriples(Model toAdd) {
-        // protect from concurrency issues during import
-        pApp.waitForNewFrame(this);
-        // triples to be added are now the most recently added triples
-
+        
+        // log whether or not existing view parameters exist within the model
+        if (ViewModelReader.containsViewTriples(toAdd)) {
+            pApp.logEvent("Triples contain existing view.");
+        } else {
+            pApp.logEvent("Triples do not contain existing view.");
+        }
+        
+        // extract view parameters from incoming triples if they exist
+        Model viewTriples = ViewModelReader.extractViewTriples(toAdd);
+        toAdd.remove(viewTriples);
+        
+        // triples to be added will become the most recently added triples
         allPreviouslyAddedTriples = toAdd;
         
         // add yet undiscovered namespace prefixes to the model
         triples.withDefaultMappings(toAdd);
+        
+        // protect from concurrency issues during controller creation
+        pApp.waitForNewFrame(this);
         
         // add each triple in the model to the graph
         StmtIterator it = toAdd.listStatements();
@@ -218,6 +231,14 @@ public class Graph implements Iterable<GraphElement<?>> {
         
         // concurrency danger over
         pApp.restartRendering(this);
+        
+        try {
+            // apply view parameters to new Nodes and Edges
+            ViewModelReader.applyViewTriples(this, viewTriples);
+        } catch (MissingElementsException e) {
+            pApp.logEvent(e.listMissingElements());
+            pApp.logEvent(e.getMessage());
+        }
     }
     
     /**
