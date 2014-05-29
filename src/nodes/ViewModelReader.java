@@ -15,7 +15,8 @@ public class ViewModelReader {
     
     /**
      * Returns a model containing only the triples used for visual description,
-     * including all reifications for Edge identification.
+     * including all reifications for Edge identification.  Does not mutate
+     * passed Model.
      * 
      * @param toExtract
      * @return 
@@ -25,7 +26,9 @@ public class ViewModelReader {
         Model extracted = ModelFactory.createDefaultModel();
         
         if (containsViewTriples(toExtract)) {
-            //TODO
+            //TODO iterate through all statements
+            // if the subject or the predicate contain the view uri
+                // then add them to the extracted model
         }
         return extracted;
     }
@@ -44,6 +47,19 @@ public class ViewModelReader {
      */
     public static void applyViewTriples(Graph graph, Model toApply) throws MissingElementsException {
         //TODO
+        // iterate through every statment of view
+        // if predicate is sharesEdge
+            //ignore it
+        // if the predicate is Node-specific (position)
+            // then get the target name to get the Node
+            // and apply the position
+        // otherwise
+            // define a GraphElement for later assignment
+            // if it points to a reification resource of view namespace
+                // then get the source and target names to get the edge as the GraphElement
+            // otherwise
+                // get the resource name to get the node as the GraphElement
+            // and apply the view parameter to the GraphElement
     }
     
     /**
