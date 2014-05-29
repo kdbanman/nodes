@@ -4,6 +4,7 @@
 package nodes;
 
 import processing.core.*;
+import processing.event.KeyEvent;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -221,6 +222,16 @@ public class Nodes extends PApplet implements Selection.SelectionListener {
         updateSelectColor();
 	}
 
+    @Override
+	public void keyPressed(KeyEvent e) {
+		switch(e.getKeyCode()) {
+			case PConstants.UP: 	cam.getPanDragHandler().handleDrag(0, 60); break;
+			case PConstants.DOWN: 	cam.getPanDragHandler().handleDrag(0, -60); break;
+			case PConstants.LEFT: 	cam.getPanDragHandler().handleDrag(60, 0); break;
+			case PConstants.RIGHT: 	cam.getPanDragHandler().handleDrag(-60, 0); break;
+		}
+    }
+
     // every time selection is changed, this is called
     @Override
     public void selectionChanged() {
@@ -258,6 +269,7 @@ public class Nodes extends PApplet implements Selection.SelectionListener {
             waitingOnNewFrame = null;
         }
     }
+
     public void restartRendering(Object o) {
         if (waitingOnNewFrame != o) {
             System.out.println("ERROR: " + waitingOnNewFrame.toString() 

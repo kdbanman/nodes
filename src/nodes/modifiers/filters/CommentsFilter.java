@@ -37,7 +37,7 @@ public class CommentsFilter extends Modifier {
 
 		while (it.hasNext()) {
 			edge = it.next();
-			System.out.println(edge.getSingleTriple().getPredicate().getURI());
+
 			if (!edge.getSingleTriple()
 					.getPredicate()
 					.getURI()
