@@ -4,6 +4,8 @@
 
 - no entity selected on file import does not trigger entire file import
 
+- entity of interest menu is populated before view data is extracted
+
 - strange change in lighting after toggling labels
 
 - null pointer exception occurs in Selection.java:435 in broadcastChange()

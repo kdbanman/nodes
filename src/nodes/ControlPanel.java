@@ -949,10 +949,6 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
                 } else {
                     logEvent("Warning: entity:\n " + entityUri + "\n not found!\n");
                 }
-                // add the retrived model to the graph (toAdd is empty if 
-                // an IO error was encountered).
-                // log results to user.
-                graph.addTriplesLogged(toAdd);
                 
                 logEvent("From file:\n " + docUri + "\n  ");
             }
