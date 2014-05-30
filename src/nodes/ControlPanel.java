@@ -614,6 +614,8 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
             Model entityListTmp = null;
             try {
                 entityListTmp = IO.getDescription(fileImportLocation.getText());
+                Model viewData = ViewModelReader.extractViewTriples(entityListTmp);
+                entityListTmp.remove(viewData);
             } catch (RiotException e) {
                 logEvent(fileImportLocation.getText());
                 logEvent("Error: Valid RDF not contained within:\n");

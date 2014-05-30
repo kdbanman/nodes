@@ -3,6 +3,8 @@ package nodes;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.NsIterator;
+import com.hp.hpl.jena.rdf.model.Statement;
+import com.hp.hpl.jena.rdf.model.StmtIterator;
 import java.util.ArrayList;
 
 /**
@@ -26,9 +28,19 @@ public class ViewModelReader {
         Model extracted = ModelFactory.createDefaultModel();
         
         if (containsViewTriples(toExtract)) {
-            //TODO iterate through all statements
-            // if the subject or the predicate contain the view uri
-                // then add them to the extracted model
+            // iterate through all statements
+            StmtIterator it = toExtract.listStatements();
+            while (it.hasNext()) {
+                Statement stmt = it.next();
+                
+                // if the subject or the predicate contain the view uri
+                // (objects of View triples are always original data elements)
+                if (stmt.getPredicate().getNameSpace().equals(ViewVocabulary.getURI()) ||
+                    stmt.getSubject().getNameSpace().equals(ViewVocabulary.getURI())) {
+                    // then add the statement to the extracted model
+                    extracted.add(stmt);
+                }
+            }
         }
         return extracted;
     }
