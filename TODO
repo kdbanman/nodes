@@ -2,6 +2,8 @@
 #BUGS
 #####
 
+- no entity selected on file import does not trigger entire file import
+
 - strange change in lighting after toggling labels
 
 - null pointer exception occurs in Selection.java:435 in broadcastChange()
