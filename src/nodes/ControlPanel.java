@@ -15,6 +15,7 @@ import controlP5.CallbackEvent;
 import controlP5.CallbackListener;
 import controlP5.ColorPicker;
 import controlP5.ControlEvent;
+import controlP5.ControlListener;
 import controlP5.ControlP5;
 import controlP5.DropdownList;
 import controlP5.Group;
@@ -120,7 +121,7 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
     private Collection<Modifier> modifiers = Collections.emptyList();
     private Collection<ModifierSet> modifiersets = Collections.emptyList();
     // Map of list indexes to each modifier
-    private final ConcurrentHashMap<Integer, Modifier> uiModifiers = new ConcurrentHashMap<Integer, Modifier>();
+    private final ConcurrentHashMap<Integer, Modifier> uiModifiers = new ConcurrentHashMap<>();
     
     // radio for radial layout sorting order (lexico or numerical)
     RadioButton sortOrder;
@@ -305,34 +306,33 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
         
         // File import elements
         
-        fileImportLocation = cp5.addTextfield("File Path (Relative or Absolute)",
+        cp5.addButton("Select RDF File")
+                .setSize(buttonWidth, buttonHeight)
+                .setPosition(padding - w / 2, padding)
+                .addCallback(new SelectFileListener())
+                .moveTo(fileGroup);
+        fileImportLocation = cp5.addTextfield("File Location",
                 padding - w / 2,
-                padding,
+                labelledElementHeight + 2 * padding,
                 w - 2 * padding,
                 elementHeight)
                 .setAutoClear(false)
                 .addCallback(new CopyPasteMenuListener())
                 .moveTo(fileGroup);
-        cp5.addButton("Select RDF File")
+        cp5.addButton("Load Entire File")
                 .setSize(buttonWidth, buttonHeight)
-                .setPosition(w - buttonWidth - padding - w / 2,
-                    labelledElementHeight + 2 * padding)
-                .addCallback(new SelectFileListener())
-                .moveTo(fileGroup);
-        // fileImportEntityMenu is technically the next in order of appearance,
-        // but is initialized last so it renders on top of the rest of fileGroup
-        cp5.addButton("Query File")
-                .setSize(buttonWidth, buttonHeight)
-                .setPosition(w - buttonWidth - padding - w / 2,
-                    2 * labelledElementHeight + buttonHeight + 4 * padding)
-                .addCallback(new FileQueryListener())
-                .moveTo(fileGroup);
-        fileImportEntityMenu = cp5.addDropdownList("Optional Entity of Interest (Select RDF File First)")
                 .setPosition(padding - w / 2,
                 labelledElementHeight + buttonHeight + 5 * padding)
+                .addCallback(new FileQueryListener())
+                .moveTo(fileGroup);
+        // fileImportEntityMenu is initialized last so it renders on top of the rest of fileGroup
+        fileImportEntityMenu = cp5.addDropdownList("Query Specific Entity")
+                .setPosition(buttonWidth + 2 * padding - w / 2,
+                2 * labelledElementHeight + buttonHeight + 4 * padding)
                 .setSize(w - 3 * padding - buttonWidth, h - padding - (90 + labelledElementHeight + buttonHeight + 4 * padding))
                 .setItemHeight(elementHeight)
                 .setBarHeight(elementHeight)
+                .addListener(new FileEntityQueryListener())
                 .moveTo(fileGroup);
         
         //==============
@@ -925,35 +925,56 @@ public class ControlPanel extends PApplet implements Selection.SelectionListener
             if (event.getAction() == ControlP5.ACTION_RELEASED) {
                 // get uris from text fields
                 String docUri = fileImportLocation.getText();
-                // if the user did not specify an entity to describe, first entity of list will be queried because of controlp5 behaviour
-                String entityUri = "";
-                if (fileImportEntityMenu.getListBoxItems().length > 0) {
-                    entityUri = fileImportEntityMenu.getItem((int)fileImportEntityMenu.getValue()).getName();
-                }
                 
                 Model toAdd;
                 try {
-                    toAdd = IO.getDescription(docUri, entityUri);
+                    // read the document into a model
+                    toAdd = IO.getDescription(docUri);
+                    // add the model to the graph
+                    graph.addTriplesLogged(toAdd);
+                    logEvent("From file:\n " + docUri + "\n  ");
                 } catch (RiotException e) {
                     logEvent("Error encountered reading RDF from\n  " + docUri);
-                    return;
                 }
-                
-                //NOTE: the logged items will be in reverse order as they appear below.
-                
-                RDFNode entityAsResource = toAdd.createResource(entityUri);
-                if (toAdd.containsResource(entityAsResource)) {
-                    // add the retrived model to the graph (toAdd is empty if 
-                    // an IO error was encountered).
-                    // log results to user.
-                    graph.addTriplesLogged(toAdd);
-                    logEvent("Describing entity:\n " + entityUri + "\n  ");
-                } else {
-                    logEvent("Warning: entity:\n " + entityUri + "\n not found!\n");
-                }
-                
-                logEvent("From file:\n " + docUri + "\n  ");
             }
+        }   
+    }
+    
+    private class FileEntityQueryListener implements ControlListener {
+
+        @Override
+        public void controlEvent(ControlEvent event) {
+            // get uris from text fields
+            String docUri = fileImportLocation.getText();
+            // if the user did not specify an entity to describe, first entity of list will be queried because of controlp5 behaviour
+            String entityUri = "";
+            if (fileImportEntityMenu.getListBoxItems().length > 0) {
+                entityUri = fileImportEntityMenu.getItem((int)fileImportEntityMenu.getValue()).getName();
+            }
+
+            Model toAdd;
+            try {
+                toAdd = IO.getDescription(docUri, entityUri);
+            } catch (RiotException e) {
+                logEvent("Error encountered reading RDF from\n  " + docUri);
+                return;
+            }
+
+            //NOTE: the logged items will be in reverse order as they appear below.
+
+            RDFNode entityAsResource = toAdd.createResource(entityUri);
+            if (toAdd.containsResource(entityAsResource)) {
+                // add the retrived model to the graph (toAdd is empty if 
+                // an IO error was encountered).
+                // log results to user.
+                graph.addTriplesLogged(toAdd);
+                logEvent("Describing entity:\n " + entityUri + "\n  ");
+            } else {
+                logEvent("Warning: entity:\n " + entityUri + "\n not found!\n");
+            }
+
+            logEvent("From file:\n " + docUri + "\n  ");
+            
         }
         
     }
