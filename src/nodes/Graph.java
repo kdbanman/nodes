@@ -18,7 +18,6 @@ import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.PriorityQueue;
 import java.util.Set;
-import nodes.ViewModelReader.MissingElementsException;
 
 import org.reflections.Reflections;
 
@@ -237,6 +236,8 @@ public class Graph implements Iterable<GraphElement<?>> {
             ViewModelReader.applyViewTriples(this, viewTriples);
         } catch (MissingElementsException e) {
             pApp.logEvent(e.listMissingElements());
+            pApp.logEvent(e.getMessage());
+        } catch (MalformedViewTripleException e) {
             pApp.logEvent(e.getMessage());
         }
     }
