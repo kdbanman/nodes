@@ -20,8 +20,11 @@
 - conditional element sorting based on transparency
 	- see Graph.DepthSortedGroup
 
-#CORE FEATURES
+#MAJOR CHANGES
 ##############
+
+- "Query File" reads the entire file, entity dropdown queries that entity on click.
+    - swap their UI element positions.
 
 - 2 way data interaction between infobox and graph(textual vs. 3D)
 	- hyperlinks with html infobox
@@ -44,10 +47,11 @@
 
 - select most central edge of selection
 
-#MISC
-#####
+#MINOR
+######
 
 - event log needs a better API.  right now different parts of an event need to be logged with logEvent() in reverse order to appear in the correct order to the user.  also, dividers appear between each of these different parts.  silliness.
+    - solution: append to the end, not the beginning.
 
 - additional logic to Node and Edge isInside() code: whether it visible (opposite the camera from the near frustum plane)
 	- if this isn't already there, it should be
