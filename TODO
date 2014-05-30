@@ -2,6 +2,8 @@
 #BUGS
 #####
 
+- loading specific entity from file does not load visual data
+
 - strange change in lighting after toggling labels
 
 - null pointer exception occurs in Selection.java:435 in broadcastChange()
