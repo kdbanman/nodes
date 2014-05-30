@@ -84,6 +84,16 @@ public class Node extends GraphElement<Node> {
       return setPosition(new PVector(x, y, z));
     }
     
+    public void setPositionX(double x) {
+        this.getPosition().x = (float) x;
+    }
+    public void setPositionY(double y) {
+        this.getPosition().y = (float) y;
+    }
+    public void setPositionZ(double z) {
+        this.getPosition().z = (float) z;
+    }
+    
     public String getPrefixedName() {
         return graph.prefixed(getName());
     }
