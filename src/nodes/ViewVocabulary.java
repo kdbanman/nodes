@@ -1,8 +1,12 @@
 package nodes;
 
+import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Property;
+import com.hp.hpl.jena.rdf.model.ReifiedStatement;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.ResourceFactory;
+import com.hp.hpl.jena.rdf.model.Statement;
+import java.util.UUID;
 
 /**
  * A vocabulary for describing the visual properties of an RDF model that is
@@ -82,18 +86,10 @@ public class ViewVocabulary {
         return resource(Boolean.toString(val));
     }
     
-    public static double extractDouble(Resource doubleRes) {
-        //TODO
-        return 0;
-    }
-    
-    public static int extractInt(Resource intRes) {
-        //TODO
-        return 0;
-    }
-    
-    public static boolean extractBool(Resource boolRes) {
-        //TODO
-        return false;
+    /*
+     * MUTATES MODEL PARAMETER
+     */
+    public static ReifiedStatement reifyStatement(Model toAugment, Statement toReify) {
+        return toAugment.createReifiedStatement(ViewVocabulary.getURI() + "Statement_" + UUID.randomUUID().toString(), toReify);
     }
 }

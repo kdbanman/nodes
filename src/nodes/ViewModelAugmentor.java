@@ -116,13 +116,6 @@ public class ViewModelAugmentor {
         return description;
     }
     
-    /*
-     * MUTATES MODEL PARAMETER
-     */
-    private static ReifiedStatement reifyStatement(Model toAugment, Statement toReify) {
-        return toAugment.createReifiedStatement(ViewVocabulary.getURI() + "Statement_" + UUID.randomUUID().toString(), toReify);
-    }
-    
     public static Model augmentedModel(Graph graph) {
         // initialize graph to return
         Model augmented = ModelFactory.createDefaultModel();
@@ -146,14 +139,14 @@ public class ViewModelAugmentor {
             
             // reify the first triple associated with the Edge and add (to the
             // augmented model) View triples associated with the nodes.Edge/jena.Statement
-            ReifiedStatement firstTriple = reifyStatement(augmented, statementArr[0]);
+            ReifiedStatement firstTriple = ViewVocabulary.reifyStatement(augmented, statementArr[0]);
             augmented.add(edgeDescription(e, firstTriple));
             
             // reify the remaining triples and associate them with the first
             // one using the sharesEdge property
             ArrayList<ReifiedStatement> remainingTriples = new ArrayList<>();
             for (int i = 1; i < statementArr.length; i++) {
-                remainingTriples.add(reifyStatement(augmented, statementArr[i]));
+                remainingTriples.add(ViewVocabulary.reifyStatement(augmented, statementArr[i]));
             }
             augmented.add(sharedEdgeDescription(remainingTriples, firstTriple));
         }

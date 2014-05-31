@@ -3,9 +3,11 @@ package nodes;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.NsIterator;
+import com.hp.hpl.jena.rdf.model.Property;
+import com.hp.hpl.jena.rdf.model.RDFNode;
+import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
-import java.util.ArrayList;
 
 /**
  * Reads and applies view parameters from previously visualized Graph using the
@@ -14,6 +16,34 @@ import java.util.ArrayList;
  * @author kdbanman
  */
 public class ViewModelReader {
+    
+    public static double extractDouble(Resource doubleRes) {
+        return Double.parseDouble(getLocalValue(doubleRes));
+    }
+    
+    public static int extractInt(Resource intRes) {
+        return Integer.parseInt(getLocalValue(intRes));
+    }
+    
+    public static boolean extractBool(Resource boolRes) {
+        return Boolean.parseBoolean(getLocalValue(boolRes));
+    }
+    
+    /**
+     * Gets local values ONLY from the ViewVocabulary namespace.
+     * @param res
+     * @return 
+     */
+    private static String getLocalValue(Resource res) {
+        // assert that there is the viewvocabulary namespace with a local value.
+        // throw the right exception if not.
+        String[] both = res.toString().split("#");
+        if (both.length == 2 && ViewVocabulary.getURI().equals(both[0] + "#")) {
+            return both[1];
+        } else {
+            throw new IllegalArgumentException();
+        }
+    }
     
     /**
      * Returns a model containing only the triples used for visual description,
@@ -46,7 +76,7 @@ public class ViewModelReader {
     }
     
     /**
-     * Mutates the passed Graph's Nodes and Edges as per the visual parameters
+     * *MUTATES* the passed Graph's Nodes and Edges as per the visual parameters
      * in the passed visual model.
      * 
      * If any Nodes or Edges are described
@@ -57,21 +87,101 @@ public class ViewModelReader {
      * @param graph Graph whose Nodes and Edges will be mutated.
      * @param toApply 
      */
-    public static void applyViewTriples(Graph graph, Model toApply) throws MissingElementsException {
-        //TODO
-        // iterate through every statment of view
-        // if predicate is sharesEdge
-            //ignore it
-        // if the predicate is Node-specific (position)
-            // then get the target name to get the Node
-            // and apply the position
-        // otherwise
-            // define a GraphElement for later assignment
-            // if it points to a reification resource of view namespace
-                // then get the source and target names to get the edge as the GraphElement
-            // otherwise
-                // get the resource name to get the node as the GraphElement
-            // and apply the view parameter to the GraphElement
+    public static void applyViewTriples(Graph graph, Model toApply) throws MissingElementsException, MalformedViewTripleException {
+        
+        // prepare MissingElementsException in case it needs to be thrown at the end
+        MissingElementsException missingElements = new MissingElementsException();
+        
+        // iterate through every statment of view to mutate the Nodes of the graph
+        StmtIterator viewIt = toApply.listStatements();
+        while (viewIt.hasNext()) {
+            Statement viewStmt = viewIt.next();
+            try {
+                // if the subject/object are part of a reified statement,
+                // then ignore this statement because it identifies an Edge
+                if (!(isReifiedViewStatement(viewStmt.getObject()) ||
+                      isReifiedViewStatement(viewStmt.getSubject()))) {
+                    // get the target name to get the Node
+                    Node toMutate = graph.getNode(viewStmt.getObject());
+                    if (toMutate != null) {
+                        mutateNode(toMutate, viewStmt);
+                    } else {
+                         missingElements.addMissingNode(viewStmt.getObject().toString());
+                    }
+                }
+            } catch (IllegalArgumentException e) {
+                throw new MalformedViewTripleException(viewStmt);
+            }
+        }
+        
+        //TODO iterate through all reified statements to find the Edges of the graph
+            // if the statement points to a reification resource of the view namespace
+                // then get the source and target names to get the Edge
+        if (!missingElements.isEmpty()) {
+            throw missingElements;
+        }
+    }
+    
+    private static void mutateNode(Node toMutate, Statement viewStmt) {
+        if (viewStmt.getPredicate().equals(ViewVocabulary.positionX)) {
+
+            // apply the position
+            toMutate.setPositionX(extractDouble(viewStmt.getSubject()));
+
+        } else if (viewStmt.getPredicate().equals(ViewVocabulary.positionY)) {
+
+            // apply the position
+            toMutate.setPositionY(extractDouble(viewStmt.getSubject()));
+
+        } else if (viewStmt.getPredicate().equals(ViewVocabulary.positionZ)) {
+
+            // apply the position
+            toMutate.setPositionZ(extractDouble(viewStmt.getSubject()));
+
+        }
+        mutateGraphElement(toMutate, viewStmt);
+    }
+    
+    private static void mutateGraphElement(GraphElement toMutate, Statement viewStmt) {
+         if (viewStmt.getPredicate().equals(ViewVocabulary.color)) {
+
+            // apply the position
+            toMutate.setColor(extractInt(viewStmt.getSubject()));
+            
+        } else if (viewStmt.getPredicate().equals(ViewVocabulary.size)) {
+
+            // apply the position
+            toMutate.setSize(extractInt(viewStmt.getSubject()));
+
+        } else if (viewStmt.getPredicate().equals(ViewVocabulary.labelVisibility)) {
+
+            // apply the position
+            toMutate.setLabelVisible(extractBool(viewStmt.getSubject()));
+
+        } else if (viewStmt.getPredicate().equals(ViewVocabulary.labelSize)) {
+
+            // apply the position
+            toMutate.setLabelSize(extractInt(viewStmt.getSubject()));
+
+        }
+    }
+    
+    private static boolean isPosition(Property p) {
+        return p.toString().matches(".*position[XYZ]");
+    }
+    
+    private static boolean isReifiedViewStatement(RDFNode res) {
+        String[] both = res.toString().split("#");
+        if (both.length == 2 && ViewVocabulary.getURI().equals(both[0] + "#")) {
+            return both[1].matches("Statement_.*");
+        } else {
+            return false;
+        }
+    }
+    
+    private static boolean isViewVocabNamespaced(RDFNode res) {
+        String[] both = res.toString().split("#");
+        return ViewVocabulary.getURI().equals(both[0] + "#");
     }
     
     /**
@@ -87,39 +197,5 @@ public class ViewModelReader {
             if (nsIt.nextNs().equals(ViewVocabulary.getURI())) return true;
         }
         return false;
-    }
-    
-    public class MissingElementsException extends Exception {
-        private ArrayList<String> missingNodes;
-        private ArrayList<String> missingEdges;
-        
-        public MissingElementsException() {
-            super("WARNING: Visually described GraphElements do not exist within Graph.");
-            
-            missingNodes = new ArrayList<>();
-            missingEdges = new ArrayList<>();
-        }
-        
-        public void addMissingNode(String id) {
-            missingNodes.add(id);
-        }
-        
-        public void addMissingEdge(String id) {
-            missingEdges.add(id);
-        }
-        
-        public String listMissingElements() {
-            String list = "";
-            
-            for (String node : missingNodes) {
-                list += "Misisng Node: " + node + "\n";
-            }
-            
-            for (String edge : missingEdges) {
-                list += "Missing Edge: " + edge + "\n";
-            }
-            
-            return list;
-        }
     }
 }
