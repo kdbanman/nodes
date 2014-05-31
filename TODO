@@ -5,6 +5,7 @@
 - loading specific entity from file does not load visual data
 
 - strange change in lighting after toggling labels
+    - only objects between camera and label plane are affected
 
 - null pointer exception occurs in Selection.java:435 in broadcastChange()
 
@@ -51,6 +52,12 @@
 
 #MINOR
 ######
+
+- Node and Edge IDs (during creation, getting, and setting) should be
+  explicitly URI or literal value, because a ReifiedStatement's .toString()
+  method does not return something that will work in a SPARQL query
+    - GraphElement name compliance with SPARQL queriability was part of 
+      the *intended* design
 
 - event log needs a better API.  right now different parts of an event need to be logged with logEvent() in reverse order to appear in the correct order to the user.  also, dividers appear between each of these different parts.  silliness.
     - solution: append to the end, not the beginning.
