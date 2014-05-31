@@ -1,0 +1,2055 @@
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:j.0="http://semanticweb.ca/nodesView#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" > 
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#93.47850799560547">
+    <j.0:positionZ>rest</j.0:positionZ>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Ontology"/>
+    <dc:title>The RDF Concepts Vocabulary (RDF)</dc:title>
+    <dc:description>This is the RDF Schema for the RDF vocabulary terms in the RDF Namespace, defined in RDF 1.1 Concepts.</dc:description>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#45.60710525512695">
+    <j.0:positionY rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#66.26908111572266">
+    <j.0:positionY>Bag</j.0:positionY>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_1411fd04-792f-4f47-a48b-0d915e2cf3b6">
+    <rdf:object rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#range"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#subject"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#132.03038024902344">
+    <j.0:positionZ>The class of RDF Lists.</j.0:positionZ>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_27b2c4bb-e407-48a3-8f6c-28d0ed4fbd60">
+    <rdf:object rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#domain"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#118.96768188476562">
+    <j.0:positionY rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#rest"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_787f092e-dcaf-4dde-b686-0dbe683cd74c">
+    <rdf:object rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#isDefinedBy"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#type"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-172.0754852294922">
+    <j.0:positionY>The class of plain (i.e. untyped) literal values, as used in RIF and OWL 2</j.0:positionY>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#38.447139739990234">
+    <j.0:positionZ rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-85.08186340332031">
+    <j.0:positionY rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_128e5513-bdba-4aeb-ba35-993af2cda62d">
+    <rdf:object rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#subClassOf"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#PlainLiteral"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-124.63128662109375">
+    <j.0:positionY rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#70.63877868652344">
+    <j.0:positionZ rdf:resource="http://www.w3.org/2002/07/owl#Ontology"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_191001e3-fd78-4b01-a7a4-eb132e72dbdf">
+    <rdf:object rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#range"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#object"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#92.8320083618164">
+    <j.0:positionZ>value</j.0:positionZ>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_a17896ac-c5e9-47f6-8efd-a418bd8265d0">
+    <rdf:object>PlainLiteral</rdf:object>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#label"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#PlainLiteral"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.w3.org/1999/02/22-rdf-syntax-ns#rest">
+    <rdfs:comment>The rest of the subject RDF list after the first item.</rdfs:comment>
+    <rdfs:isDefinedBy rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+    <rdfs:domain rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+    <rdfs:label>rest</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#95.63561248779297">
+    <j.0:positionX rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#27.896469116210938">
+    <j.0:positionX rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#61.90472412109375">
+    <j.0:positionY>Seq</j.0:positionY>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_27aad7bd-a129-4399-a53a-cbb463327be4">
+    <rdf:object rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#type"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#rest"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#20">
+    <j.0:size rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-6.693220138549805">
+    <j.0:positionX>type</j.0:positionX>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-65.13755798339844">
+    <j.0:positionX rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#subject"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-96.84883880615234">
+    <j.0:positionY rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#HTML"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#61.674800872802734">
+    <j.0:positionY rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-80.9836654663086">
+    <j.0:positionZ rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Seq"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#89.69647979736328">
+    <j.0:positionY>predicate</j.0:positionY>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_d04417e6-027b-48b7-a74b-8ea29663c63d">
+    <rdf:object rdf:resource="http://www.w3.org/2000/01/rdf-schema#Container"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#subClassOf"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_d56053df-622f-449c-8d78-b3ec91dad000">
+    <rdf:object>Alt</rdf:object>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#label"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Alt"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-33.91941833496094">
+    <j.0:positionX rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_a33cfeff-f23a-433b-a314-864519373d68">
+    <rdf:object rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#domain"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#type"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-6.691809177398682">
+    <j.0:positionZ>XMLLiteral</j.0:positionZ>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#43.37870407104492">
+    <j.0:positionX>The class of RDF Lists.</j.0:positionX>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-31.544809341430664">
+    <j.0:positionZ rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#type"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-8.450005531311035">
+    <j.0:positionX>The subject is an instance of a class.</j.0:positionX>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-75.37947845458984">
+    <j.0:positionZ rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-78.83486938476562">
+    <j.0:positionY>object</j.0:positionY>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#136.89134216308594">
+    <j.0:positionX>This is the RDF Schema for the RDF vocabulary terms in the RDF Namespace, defined in RDF 1.1 Concepts.</j.0:positionX>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#179.63194274902344">
+    <j.0:positionY>rest</j.0:positionY>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_c4836860-8fee-4ec9-ac6e-a03ba66fa078">
+    <rdf:object>The class of unordered containers.</rdf:object>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#comment"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_b5618690-9cec-4377-91b4-391b18094f14">
+    <rdf:object rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#type"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Alt"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-184.21636962890625">
+    <j.0:positionY>langString</j.0:positionY>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#27.219205856323242">
+    <j.0:positionX>The datatype of language-tagged string values</j.0:positionX>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-51.656166076660156">
+    <j.0:positionZ rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#subject"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_b8a35927-2e59-4a5e-a7a8-98108388ad5c">
+    <rdf:object>Idiomatic property used for structured values.</rdf:object>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#comment"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#value"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_7d5d2646-779d-461d-8fc4-cdf8c8c08b84">
+    <rdf:object rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#isDefinedBy"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#PlainLiteral"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#12.207956314086914">
+    <j.0:positionY rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#11.645877838134766">
+    <j.0:positionY rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#subject"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_f368384a-321d-4590-9f59-d4fd82ce06ae">
+    <rdf:object>The subject is an instance of a class.</rdf:object>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#comment"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#type"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-23.645994186401367">
+    <j.0:positionY rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#object"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_9e28fd1d-bbc7-4481-9ced-bdbde674fb96">
+    <rdf:object>Seq</rdf:object>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#label"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Seq"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#58.3009147644043">
+    <j.0:positionY>The first item in the subject RDF list.</j.0:positionY>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#1.714376449584961">
+    <j.0:positionZ rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#34.925418853759766">
+    <j.0:positionZ>The RDF Concepts Vocabulary (RDF)</j.0:positionZ>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.w3.org/1999/02/22-rdf-syntax-ns#type">
+    <rdfs:comment>The subject is an instance of a class.</rdfs:comment>
+    <rdfs:isDefinedBy rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <rdfs:domain rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource"/>
+    <rdfs:label>type</rdfs:label>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_d8a42829-72a2-40eb-9e95-5552e9e47456">
+    <rdf:object rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#isDefinedBy"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Alt"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#132.94918823242188">
+    <j.0:positionX rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_fca73041-2f05-41b2-b910-da235549b151">
+    <rdf:object>predicate</rdf:object>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#label"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_b9266d1f-5615-4de7-9d05-0e24a010e11d">
+    <rdf:object rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#isDefinedBy"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Seq"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-30.464582443237305">
+    <j.0:positionZ rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#object"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#103.22710418701172">
+    <j.0:positionY rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Alt"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_0880ec39-e76d-4b5c-9cb5-1ecb2599d7f4">
+    <rdf:object rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#range"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#type"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#44.65706253051758">
+    <j.0:positionY rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#first"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#209.8560333251953">
+    <j.0:positionX>Bag</j.0:positionX>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-137.05422973632812">
+    <j.0:positionY>HTML</j.0:positionY>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_3d4253bc-aa17-420a-af93-eb176a9d2a9a">
+    <rdf:object rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#isDefinedBy"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_696baf56-8627-4282-a707-315150ff757b">
+    <rdf:object>object</rdf:object>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#label"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#object"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#143.84234619140625">
+    <j.0:positionZ>first</j.0:positionZ>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#17.8383846282959">
+    <j.0:positionY rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-33.14419937133789">
+    <j.0:positionZ rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_8a0ac2da-41b6-43bb-8684-9b24cf576b76">
+    <rdf:object>The RDF Concepts Vocabulary (RDF)</rdf:object>
+    <rdf:predicate rdf:resource="http://purl.org/dc/elements/1.1/title"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_d44f5758-a010-45ae-a72c-4bee659cf5ac">
+    <rdf:object rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#isDefinedBy"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#HTML"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#112.29645538330078">
+    <j.0:positionZ>HTML</j.0:positionZ>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#67.03963470458984">
+    <j.0:positionY rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-3.639307737350464">
+    <j.0:positionZ rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-178.5532989501953">
+    <j.0:positionY>The datatype of language-tagged string values</j.0:positionY>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_1e91240e-b045-4e4c-a6d5-97962f482190">
+    <rdf:object>List</rdf:object>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#label"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#176.59814453125">
+    <j.0:positionY>The subject is an instance of a class.</j.0:positionY>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#153.38052368164062">
+    <j.0:positionX>Seq</j.0:positionX>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#186.3596954345703">
+    <j.0:positionY>The rest of the subject RDF list after the first item.</j.0:positionY>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_edfbafc0-48f6-4a77-ba4e-04085f0b136f">
+    <rdf:object>nil</rdf:object>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#label"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.w3.org/1999/02/22-rdf-syntax-ns#List">
+    <rdfs:label>List</rdfs:label>
+    <rdfs:comment>The class of RDF Lists.</rdfs:comment>
+    <rdfs:isDefinedBy rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource"/>
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-59.76715850830078">
+    <j.0:positionZ>object</j.0:positionZ>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-68.7022705078125">
+    <j.0:positionZ>The class of plain (i.e. untyped) literal values, as used in RIF and OWL 2</j.0:positionZ>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-1.3305859565734863">
+    <j.0:positionY>subject</j.0:positionY>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#17.82701873779297">
+    <j.0:positionZ rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-10.49789810180664">
+    <j.0:positionY>The subject of the subject RDF statement.</j.0:positionY>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_6c92b71f-0c35-4862-ab36-d4420516d9ca">
+    <rdf:object>type</rdf:object>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#label"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#type"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-31.67371368408203">
+    <j.0:positionZ rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#PlainLiteral"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-113.05994415283203">
+    <j.0:positionY>XMLLiteral</j.0:positionY>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.w3.org/1999/02/22-rdf-syntax-ns#first">
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource"/>
+    <rdfs:domain rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+    <rdfs:isDefinedBy rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:label>first</rdfs:label>
+    <rdfs:comment>The first item in the subject RDF list.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-51.36214065551758">
+    <j.0:positionZ>type</j.0:positionZ>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_0a504359-7298-4d37-8fce-8baf0fa30761">
+    <rdf:object>Bag</rdf:object>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#label"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_79b89ecc-a3c7-46ee-8f68-19846c951c67">
+    <rdf:object rdf:resource="http://www.w3.org/2000/01/rdf-schema#Datatype"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#type"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#PlainLiteral"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#65.13539123535156">
+    <j.0:positionZ>The datatype of language-tagged string values</j.0:positionZ>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_ae66a20e-2379-4553-b05f-0a0653655743">
+    <rdf:object rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#domain"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#object"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-13421015">
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_2559a3d6-2f61-4448-b1ca-64f7359c10e1"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_d392234e-4095-47fd-a0a0-d91a06ec139a"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_1b8822eb-d9c4-4b7e-a67a-596ccbdacc3c"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_b8a35927-2e59-4a5e-a7a8-98108388ad5c"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_c4836860-8fee-4ec9-ac6e-a03ba66fa078"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_669af7e2-25c6-4aa5-ad1e-4eaf48f19c88"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_da538f5a-3235-440a-b94b-4c5ee62517de"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_a9a076af-9aac-4ce3-9a27-ebf3dc49df7c"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_ed20bcd0-8826-49f3-9af3-6dcb769ecbdf"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_0b7ec71f-669c-435f-862d-5608c8aaec59"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_97ee699c-357d-407f-8754-2110125be4bf"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_25baf5c3-a732-4f05-af4d-e97aacd026a9"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_047cbd16-8ba6-4ed4-ace9-87d13bdfa719"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_71b9d6fc-e6f6-4579-aa1a-0a593bca4b37"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_11cbe45f-303e-41b4-9992-cee672984fd6"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_f368384a-321d-4590-9f59-d4fd82ce06ae"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_f5f70a37-7b30-4516-a114-2639c10e01cb"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_383cd5c1-a4d9-40a7-b879-aaa1f04e4b7a"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#113.16667175292969">
+    <j.0:positionY>List</j.0:positionY>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.w3.org/1999/02/22-rdf-syntax-ns#value">
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource"/>
+    <rdfs:domain rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource"/>
+    <rdfs:label>value</rdfs:label>
+    <rdfs:comment>Idiomatic property used for structured values.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:isDefinedBy rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_44574eee-8b04-49af-b3a6-7285c445c6c2">
+    <rdf:object rdf:resource="http://www.w3.org/2002/07/owl#Ontology"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#type"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#10.043148040771484">
+    <j.0:positionY>This is the RDF Schema for the RDF vocabulary terms in the RDF Namespace, defined in RDF 1.1 Concepts.</j.0:positionY>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-1">
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_2287f20a-66bb-4426-a57c-863e65638370"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_d44f5758-a010-45ae-a72c-4bee659cf5ac"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_7d5d2646-779d-461d-8fc4-cdf8c8c08b84"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_19c457ac-04f4-4b02-a401-9081b9f39530"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#143.47496032714844">
+    <j.0:positionX>The class of ordered containers.</j.0:positionX>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#102.15284729003906">
+    <j.0:positionX rdf:resource="http://www.w3.org/TR/rdf-plain-literal/"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-36096">
+    <j.0:color rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#PlainLiteral"/>
+    <j.0:color rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#HTML"/>
+    <j.0:color>PlainLiteral</j.0:color>
+    <j.0:color>The datatype of language-tagged string values</j.0:color>
+    <j.0:color rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <j.0:color rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral"/>
+    <j.0:color>HTML</j.0:color>
+    <j.0:color rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"/>
+    <j.0:color>XMLLiteral</j.0:color>
+    <j.0:color>The class of plain (i.e. untyped) literal values, as used in RIF and OWL 2</j.0:color>
+    <j.0:color rdf:resource="http://www.w3.org/TR/rdf11-concepts/#section-Graph-Literal"/>
+    <j.0:color rdf:resource="http://www.w3.org/TR/rdf11-concepts/#section-html"/>
+    <j.0:color>langString</j.0:color>
+    <j.0:color>The datatype of RDF literals storing fragments of HTML content</j.0:color>
+    <j.0:color rdf:resource="http://www.w3.org/2000/01/rdf-schema#Datatype"/>
+    <j.0:color rdf:resource="http://www.w3.org/TR/rdf-plain-literal/"/>
+    <j.0:color>The datatype of XML literal values.</j.0:color>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#116.20413970947266">
+    <j.0:positionY>Property</j.0:positionY>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-95.11181640625">
+    <j.0:positionZ>subject</j.0:positionZ>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-8.504281997680664">
+    <j.0:positionY>The class of RDF statements.</j.0:positionY>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#94.01705169677734">
+    <j.0:positionY rdf:resource="http://www.w3.org/2000/01/rdf-schema#Container"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral">
+    <rdfs:comment>The datatype of XML literal values.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <rdfs:isDefinedBy rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Datatype"/>
+    <rdfs:label>XMLLiteral</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_6601d278-809f-4b5b-99f1-ce482baa8ca6">
+    <rdf:object rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#domain"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#subject"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-164.7303924560547">
+    <j.0:positionY rdf:resource="http://www.w3.org/TR/rdf-plain-literal/"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_effd511a-eb6b-44a1-9e94-2b7007fafd9d">
+    <rdf:object rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#type"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-126.60639190673828">
+    <j.0:positionZ>predicate</j.0:positionZ>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#143.92543029785156">
+    <j.0:positionX>The RDF Concepts Vocabulary (RDF)</j.0:positionX>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#84.17430877685547">
+    <j.0:positionZ>The rest of the subject RDF list after the first item.</j.0:positionZ>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-104.31423950195312">
+    <j.0:positionX>The object of the subject RDF statement.</j.0:positionX>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-16741120">
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_6c92b71f-0c35-4862-ab36-d4420516d9ca"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_0880ec39-e76d-4b5c-9cb5-1ecb2599d7f4"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_2421b054-b807-43e0-a06f-f8c84cf481b1"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_6734dac6-37b8-448f-89bb-12e1ce3e80ed"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_0a504359-7298-4d37-8fce-8baf0fa30761"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_787f092e-dcaf-4dde-b686-0dbe683cd74c"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_d04417e6-027b-48b7-a74b-8ea29663c63d"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_19190521-3d51-4720-8dfd-9c8c7c769446"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_9e95fc75-b731-443c-911a-0e36aa90edfa"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_390f1ea6-dcc8-44ae-be77-a38f48e3b21a"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_1f7cf6db-756d-4bdf-8fbb-1994709cd13e"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_8c9943c4-e6e3-4d13-b200-448c86a38045"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_9cb3de06-54a7-4139-9a9f-358a097a9edc"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_2f90ff00-414a-4f74-9bba-31d5347cb68e"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_a4d20429-5272-4185-a344-e5c1e6781e28"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_1c585536-c504-4cdd-9236-6d43179e21a1"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_1e91240e-b045-4e4c-a6d5-97962f482190"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_375eb545-5aa4-444c-a866-30847bc14695"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_27aad7bd-a129-4399-a53a-cbb463327be4"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_72afb811-f9cb-4b63-80b7-6b016fd7a00f"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_fb71fe62-c74b-40b7-b0e6-9ed37a6e0e49"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_7bbe6c8c-e877-4bed-b5b3-749db24f38c6"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_b5618690-9cec-4377-91b4-391b18094f14"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_44574eee-8b04-49af-b3a6-7285c445c6c2"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_b1f768f4-78e8-4bad-b61c-41a4e44491cc"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_b9266d1f-5615-4de7-9d05-0e24a010e11d"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_b7dc54ca-27dc-4765-9a49-39e95b64654b"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_effd511a-eb6b-44a1-9e94-2b7007fafd9d"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_af64a9f4-e1cf-40d4-9047-33acab8ad542"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_c37a09a5-094f-482e-94bc-db9ae1ce5b86"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_8a0ac2da-41b6-43bb-8684-9b24cf576b76"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_23d2fa9b-e5a5-41e2-a3b2-49c0498f8ce0"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_320696ec-19e3-4480-9b6b-4287dccfc10b"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_09785553-8c1c-4332-90f1-2a48a1865ec4"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_3d4253bc-aa17-420a-af93-eb176a9d2a9a"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_9247411e-83e7-407f-8297-cab711959946"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_4d29b8f9-d0a4-4332-8b86-96ae11389285"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_fca73041-2f05-41b2-b910-da235549b151"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_c8ad64cc-636a-486a-81f5-047399338e8e"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_041a6c32-06ba-4877-bded-e4809d5172f7"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_1e21b276-7761-4b24-8552-c5c2e66b2f2c"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_4335faec-2163-4c86-b9e9-d3e2586c7c38"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_d8a7d270-4480-4e96-add4-061348946d9b"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_d56053df-622f-449c-8d78-b3ec91dad000"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_a33cfeff-f23a-433b-a314-864519373d68"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_9e28fd1d-bbc7-4481-9ced-bdbde674fb96"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_696baf56-8627-4282-a707-315150ff757b"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_fff76dac-56e0-4c2b-97af-075c72a7742b"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_076f8b76-1e80-4c5b-9fb9-6759b2709ad0"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_47fd92d6-c8e3-401f-86db-9adadf5b478b"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_d4dd6b63-a7a7-469e-a9b1-17ade1870b25"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_ae66a20e-2379-4553-b05f-0a0653655743"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_d4b1ed55-5e0a-4f99-8668-8200cd47d7ba"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_84796f7d-c9b1-4237-9c11-74e6e37b9cc1"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_0be488bf-fb7d-4283-bdfb-9c7795e5a35f"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_6601d278-809f-4b5b-99f1-ce482baa8ca6"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_41e72e98-69bd-43ad-b829-3f3cd46ea924"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_1411fd04-792f-4f47-a48b-0d915e2cf3b6"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_191001e3-fd78-4b01-a7a4-eb132e72dbdf"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_d8a42829-72a2-40eb-9e95-5552e9e47456"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_27b2c4bb-e407-48a3-8f6c-28d0ed4fbd60"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_ef16ade5-db3c-4834-ac47-090bf78ff16b"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_edfbafc0-48f6-4a77-ba4e-04085f0b136f"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag">
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2000/01/rdf-schema#Container"/>
+    <rdfs:comment>The class of unordered containers.</rdfs:comment>
+    <rdfs:isDefinedBy rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <rdfs:label>Bag</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_d4b1ed55-5e0a-4f99-8668-8200cd47d7ba">
+    <rdf:object rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#subClassOf"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-187.6605682373047">
+    <j.0:positionY rdf:resource="http://www.w3.org/TR/rdf11-concepts/#section-Graph-Literal"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#141.82125854492188">
+    <j.0:positionX rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#46.68770217895508">
+    <j.0:positionY>nil</j.0:positionY>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-149.9521484375">
+    <j.0:positionZ>The class of RDF statements.</j.0:positionZ>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#115.02883911132812">
+    <j.0:positionZ rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#48.546627044677734">
+    <j.0:positionX rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-69.79373168945312">
+    <j.0:positionZ>The subject is an instance of a class.</j.0:positionZ>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.w3.org/1999/02/22-rdf-syntax-ns#Alt">
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2000/01/rdf-schema#Container"/>
+    <rdfs:isDefinedBy rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <rdfs:comment>The class of containers of alternatives.</rdfs:comment>
+    <rdfs:label>Alt</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#54.307132720947266">
+    <j.0:positionX rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#9">
+    <j.0:size>rest</j.0:size>
+    <j.0:size>The class of RDF statements.</j.0:size>
+    <j.0:size>object</j.0:size>
+    <j.0:size>nil</j.0:size>
+    <j.0:size>The subject of the subject RDF statement.</j.0:size>
+    <j.0:size>The class of RDF Lists.</j.0:size>
+    <j.0:size>The empty list, with no items in it. If the rest of a list is nil then the list has no more items in it.</j.0:size>
+    <j.0:size>The class of ordered containers.</j.0:size>
+    <j.0:size>This is the RDF Schema for the RDF vocabulary terms in the RDF Namespace, defined in RDF 1.1 Concepts.</j.0:size>
+    <j.0:size>Property</j.0:size>
+    <j.0:size>Alt</j.0:size>
+    <j.0:size>The class of containers of alternatives.</j.0:size>
+    <j.0:size>Idiomatic property used for structured values.</j.0:size>
+    <j.0:size>type</j.0:size>
+    <j.0:size>The predicate of the subject RDF statement.</j.0:size>
+    <j.0:size>first</j.0:size>
+    <j.0:size>subject</j.0:size>
+    <j.0:size>The RDF Concepts Vocabulary (RDF)</j.0:size>
+    <j.0:size>value</j.0:size>
+    <j.0:size>predicate</j.0:size>
+    <j.0:size>The class of RDF properties.</j.0:size>
+    <j.0:size>List</j.0:size>
+    <j.0:size>The class of unordered containers.</j.0:size>
+    <j.0:size>Bag</j.0:size>
+    <j.0:size>The rest of the subject RDF list after the first item.</j.0:size>
+    <j.0:size>Seq</j.0:size>
+    <j.0:size>The object of the subject RDF statement.</j.0:size>
+    <j.0:size>The first item in the subject RDF list.</j.0:size>
+    <j.0:size>Statement</j.0:size>
+    <j.0:size>The subject is an instance of a class.</j.0:size>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#184.38339233398438">
+    <j.0:positionX>The datatype of XML literal values.</j.0:positionX>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#96.14222717285156">
+    <j.0:positionX>PlainLiteral</j.0:positionX>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_19190521-3d51-4720-8dfd-9c8c7c769446">
+    <rdf:object rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#isDefinedBy"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#first"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#76.5893783569336">
+    <j.0:positionZ>Idiomatic property used for structured values.</j.0:positionZ>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#109.99073028564453">
+    <j.0:positionZ rdf:resource="http://www.w3.org/TR/rdf11-concepts/#section-html"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#130.99038696289062">
+    <j.0:positionX>HTML</j.0:positionX>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-34.67823791503906">
+    <j.0:positionY>value</j.0:positionY>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_d392234e-4095-47fd-a0a0-d91a06ec139a">
+    <rdf:object>The class of plain (i.e. untyped) literal values, as used in RIF and OWL 2</rdf:object>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#comment"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#PlainLiteral"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#124.489501953125">
+    <j.0:positionY>The class of RDF Lists.</j.0:positionY>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#75.52600860595703">
+    <j.0:positionZ rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#first"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#30.133947372436523">
+    <j.0:positionY rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#169.24180603027344">
+    <j.0:positionZ>The empty list, with no items in it. If the rest of a list is nil then the list has no more items in it.</j.0:positionZ>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#191.66403198242188">
+    <j.0:positionX>XMLLiteral</j.0:positionX>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#79.10416412353516">
+    <j.0:positionX>The class of plain (i.e. untyped) literal values, as used in RIF and OWL 2</j.0:positionX>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_2287f20a-66bb-4426-a57c-863e65638370">
+    <rdf:object rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#isDefinedBy"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_320696ec-19e3-4480-9b6b-4287dccfc10b">
+    <rdf:object rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#type"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#object"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#76.33563995361328">
+    <j.0:positionY rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_fff76dac-56e0-4c2b-97af-075c72a7742b">
+    <rdf:object rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#type"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#subject"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-9342864">
+    <j.0:color>Seq</j.0:color>
+    <j.0:color>nil</j.0:color>
+    <j.0:color>subject</j.0:color>
+    <j.0:color>The RDF Concepts Vocabulary (RDF)</j.0:color>
+    <j.0:color>Statement</j.0:color>
+    <j.0:color>first</j.0:color>
+    <j.0:color>rest</j.0:color>
+    <j.0:color>predicate</j.0:color>
+    <j.0:color>Property</j.0:color>
+    <j.0:color>type</j.0:color>
+    <j.0:color>value</j.0:color>
+    <j.0:color>Alt</j.0:color>
+    <j.0:color>List</j.0:color>
+    <j.0:color>This is the RDF Schema for the RDF vocabulary terms in the RDF Namespace, defined in RDF 1.1 Concepts.</j.0:color>
+    <j.0:color>object</j.0:color>
+    <j.0:color>Bag</j.0:color>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-36.139564514160156">
+    <j.0:positionZ>The class of unordered containers.</j.0:positionZ>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-112.1378402709961">
+    <j.0:positionX>Property</j.0:positionX>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#139.10684204101562">
+    <j.0:positionZ>The first item in the subject RDF list.</j.0:positionZ>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_a9a076af-9aac-4ce3-9a27-ebf3dc49df7c">
+    <rdf:object>The class of RDF Lists.</rdf:object>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#comment"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-69.70951843261719">
+    <j.0:positionZ rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-118.05040740966797">
+    <j.0:positionY rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#PlainLiteral"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_f5f70a37-7b30-4516-a114-2639c10e01cb">
+    <rdf:object>The datatype of XML literal values.</rdf:object>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#comment"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_390f1ea6-dcc8-44ae-be77-a38f48e3b21a">
+    <rdf:object>value</rdf:object>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#label"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#value"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_1f7cf6db-756d-4bdf-8fbb-1994709cd13e">
+    <rdf:object rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#type"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#113.6018295288086">
+    <j.0:positionX rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#HTML"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#62.249725341796875">
+    <j.0:positionY rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#14">
+    <j.0:size>The class of plain (i.e. untyped) literal values, as used in RIF and OWL 2</j.0:size>
+    <j.0:size>The datatype of XML literal values.</j.0:size>
+    <j.0:size>PlainLiteral</j.0:size>
+    <j.0:size>HTML</j.0:size>
+    <j.0:size>The datatype of RDF literals storing fragments of HTML content</j.0:size>
+    <j.0:size>langString</j.0:size>
+    <j.0:size>XMLLiteral</j.0:size>
+    <j.0:size>The datatype of language-tagged string values</j.0:size>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_47fd92d6-c8e3-401f-86db-9adadf5b478b">
+    <rdf:object rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#isDefinedBy"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_034bd375-5da5-41d5-a594-99f1d1460c3a">
+    <rdf:object>HTML</rdf:object>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#label"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#HTML"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-0.864767849445343">
+    <j.0:positionY>The RDF Concepts Vocabulary (RDF)</j.0:positionY>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_c8ad64cc-636a-486a-81f5-047399338e8e">
+    <rdf:object>This is the RDF Schema for the RDF vocabulary terms in the RDF Namespace, defined in RDF 1.1 Concepts.</rdf:object>
+    <rdf:predicate rdf:resource="http://purl.org/dc/elements/1.1/description"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_19c457ac-04f4-4b02-a401-9081b9f39530">
+    <rdf:object rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#isDefinedBy"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_d4dd6b63-a7a7-469e-a9b1-17ade1870b25">
+    <rdf:object>Statement</rdf:object>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#label"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_1c585536-c504-4cdd-9236-6d43179e21a1">
+    <rdf:object rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#isDefinedBy"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#object"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_375eb545-5aa4-444c-a866-30847bc14695">
+    <rdf:object rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#type"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-82.56430053710938">
+    <j.0:positionX>predicate</j.0:positionX>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#66.08639526367188">
+    <j.0:positionZ>langString</j.0:positionZ>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement">
+    <rdfs:comment>The class of RDF statements.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource"/>
+    <rdfs:label>Statement</rdfs:label>
+    <rdfs:isDefinedBy rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#120.6103515625">
+    <j.0:positionX rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Alt"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_6734dac6-37b8-448f-89bb-12e1ce3e80ed">
+    <rdf:object rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#range"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#first"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#64.43451690673828">
+    <j.0:positionZ rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#HTML"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_602c5b82-782f-4571-b789-19e9689c1c29">
+    <j.0:sharesEdge rdf:resource="http://semanticweb.ca/nodesView#Statement_1e21b276-7761-4b24-8552-c5c2e66b2f2c"/>
+    <rdf:object rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#range"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#rest"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_041a6c32-06ba-4877-bded-e4809d5172f7">
+    <rdf:object>first</rdf:object>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#label"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#first"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_188922f9-b65a-495d-9871-69cd070e6c53">
+    <rdf:object rdf:resource="http://www.w3.org/2000/01/rdf-schema#Datatype"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#type"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#13">
+    <j.0:size rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#first"/>
+    <j.0:size rdf:resource="http://www.w3.org/2002/07/owl#Ontology"/>
+    <j.0:size rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#type"/>
+    <j.0:size rdf:resource="http://www.w3.org/2000/01/rdf-schema#Container"/>
+    <j.0:size rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+    <j.0:size rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#rest"/>
+    <j.0:size rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#subject"/>
+    <j.0:size rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate"/>
+    <j.0:size rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Alt"/>
+    <j.0:size rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#value"/>
+    <j.0:size rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <j.0:size rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag"/>
+    <j.0:size rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource"/>
+    <j.0:size rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Seq"/>
+    <j.0:size rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <j.0:size rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+    <j.0:size rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+    <j.0:size rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#object"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil">
+    <rdfs:comment>The empty list, with no items in it. If the rest of a list is nil then the list has no more items in it.</rdfs:comment>
+    <rdfs:label>nil</rdfs:label>
+    <rdfs:isDefinedBy rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_7bbe6c8c-e877-4bed-b5b3-749db24f38c6">
+    <rdf:object rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#isDefinedBy"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.w3.org/1999/02/22-rdf-syntax-ns#PlainLiteral">
+    <rdfs:comment>The class of plain (i.e. untyped) literal values, as used in RIF and OWL 2</rdfs:comment>
+    <rdfs:label>PlainLiteral</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Datatype"/>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <rdfs:isDefinedBy rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <rdfs:seeAlso rdf:resource="http://www.w3.org/TR/rdf-plain-literal/"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-73.8839111328125">
+    <j.0:positionX>The first item in the subject RDF list.</j.0:positionX>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-36.95947265625">
+    <j.0:positionX rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#94.71703338623047">
+    <j.0:positionY>The predicate of the subject RDF statement.</j.0:positionY>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#46.8040885925293">
+    <j.0:positionZ rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#value"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#1.3867111206054688">
+    <j.0:positionZ>Property</j.0:positionZ>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_0be488bf-fb7d-4283-bdfb-9c7795e5a35f">
+    <rdf:object rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#domain"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#value"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#47.66651153564453">
+    <j.0:positionX>langString</j.0:positionX>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-4.011751651763916">
+    <j.0:positionY rdf:resource="http://www.w3.org/2002/07/owl#Ontology"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#57.81263732910156">
+    <j.0:positionY>The empty list, with no items in it. If the rest of a list is nil then the list has no more items in it.</j.0:positionY>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_84796f7d-c9b1-4237-9c11-74e6e37b9cc1">
+    <rdf:object rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#domain"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#first"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-137.91722106933594">
+    <j.0:positionZ>Seq</j.0:positionZ>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-73.5479736328125">
+    <j.0:positionZ rdf:resource="http://www.w3.org/2000/01/rdf-schema#Container"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_2559a3d6-2f61-4448-b1ca-64f7359c10e1">
+    <rdf:object>The datatype of language-tagged string values</rdf:object>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#comment"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#12">
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_4335faec-2163-4c86-b9e9-d3e2586c7c38"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_a33cfeff-f23a-433b-a314-864519373d68"/>
+    <j.0:labelSize>The class of ordered containers.</j.0:labelSize>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_375eb545-5aa4-444c-a866-30847bc14695"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_25baf5c3-a732-4f05-af4d-e97aacd026a9"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_c1ae3a19-9a27-4892-adde-0e2576e2eacb"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_9e95fc75-b731-443c-911a-0e36aa90edfa"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_787f092e-dcaf-4dde-b686-0dbe683cd74c"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_ed20bcd0-8826-49f3-9af3-6dcb769ecbdf"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_8a0ac2da-41b6-43bb-8684-9b24cf576b76"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_1e21b276-7761-4b24-8552-c5c2e66b2f2c"/>
+    <j.0:labelSize>Alt</j.0:labelSize>
+    <j.0:labelSize>HTML</j.0:labelSize>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_0be488bf-fb7d-4283-bdfb-9c7795e5a35f"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_c8ad64cc-636a-486a-81f5-047399338e8e"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_0b7ec71f-669c-435f-862d-5608c8aaec59"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_27b2c4bb-e407-48a3-8f6c-28d0ed4fbd60"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_7836d2b8-9e8e-4e0c-9736-c449b58f47d7"/>
+    <j.0:labelSize rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <j.0:labelSize>Seq</j.0:labelSize>
+    <j.0:labelSize rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_6896ea76-b35a-4d3c-a485-cbe3da7b246c"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_2fff31c4-7904-4faa-8255-9dce97230c45"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_d04417e6-027b-48b7-a74b-8ea29663c63d"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_696baf56-8627-4282-a707-315150ff757b"/>
+    <j.0:labelSize>The datatype of RDF literals storing fragments of HTML content</j.0:labelSize>
+    <j.0:labelSize>XMLLiteral</j.0:labelSize>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_076f8b76-1e80-4c5b-9fb9-6759b2709ad0"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_eea25a31-6512-4e93-8a51-5b5cf3834f57"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_09785553-8c1c-4332-90f1-2a48a1865ec4"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_1c585536-c504-4cdd-9236-6d43179e21a1"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_72afb811-f9cb-4b63-80b7-6b016fd7a00f"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_af64a9f4-e1cf-40d4-9047-33acab8ad542"/>
+    <j.0:labelSize rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Seq"/>
+    <j.0:labelSize rdf:resource="http://www.w3.org/TR/rdf-plain-literal/"/>
+    <j.0:labelSize rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_d392234e-4095-47fd-a0a0-d91a06ec139a"/>
+    <j.0:labelSize rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#value"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_97ee699c-357d-407f-8754-2110125be4bf"/>
+    <j.0:labelSize>The first item in the subject RDF list.</j.0:labelSize>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_9e28fd1d-bbc7-4481-9ced-bdbde674fb96"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_191001e3-fd78-4b01-a7a4-eb132e72dbdf"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_f5f70a37-7b30-4516-a114-2639c10e01cb"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_b9266d1f-5615-4de7-9d05-0e24a010e11d"/>
+    <j.0:labelSize rdf:resource="http://www.w3.org/2000/01/rdf-schema#Datatype"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_3d4253bc-aa17-420a-af93-eb176a9d2a9a"/>
+    <j.0:labelSize>The rest of the subject RDF list after the first item.</j.0:labelSize>
+    <j.0:labelSize>Bag</j.0:labelSize>
+    <j.0:labelSize rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_619897ca-5cd2-49ea-b672-fb2289495c83"/>
+    <j.0:labelSize>The RDF Concepts Vocabulary (RDF)</j.0:labelSize>
+    <j.0:labelSize>The empty list, with no items in it. If the rest of a list is nil then the list has no more items in it.</j.0:labelSize>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_b8a35927-2e59-4a5e-a7a8-98108388ad5c"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_1b8822eb-d9c4-4b7e-a67a-596ccbdacc3c"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_fff76dac-56e0-4c2b-97af-075c72a7742b"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_047cbd16-8ba6-4ed4-ace9-87d13bdfa719"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_0a504359-7298-4d37-8fce-8baf0fa30761"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_d8a42829-72a2-40eb-9e95-5552e9e47456"/>
+    <j.0:labelSize rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate"/>
+    <j.0:labelSize>The class of unordered containers.</j.0:labelSize>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_383cd5c1-a4d9-40a7-b879-aaa1f04e4b7a"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_84796f7d-c9b1-4237-9c11-74e6e37b9cc1"/>
+    <j.0:labelSize>PlainLiteral</j.0:labelSize>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_b5618690-9cec-4377-91b4-391b18094f14"/>
+    <j.0:labelSize rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag"/>
+    <j.0:labelSize rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#subject"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_d56053df-622f-449c-8d78-b3ec91dad000"/>
+    <j.0:labelSize>Property</j.0:labelSize>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_91c4f577-1551-4c42-b4ff-9c8ffb1712b2"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_0880ec39-e76d-4b5c-9cb5-1ecb2599d7f4"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_2f90ff00-414a-4f74-9bba-31d5347cb68e"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_320696ec-19e3-4480-9b6b-4287dccfc10b"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_27aad7bd-a129-4399-a53a-cbb463327be4"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_79b89ecc-a3c7-46ee-8f68-19846c951c67"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_ef16ade5-db3c-4834-ac47-090bf78ff16b"/>
+    <j.0:labelSize>value</j.0:labelSize>
+    <j.0:labelSize rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <j.0:labelSize>The class of containers of alternatives.</j.0:labelSize>
+    <j.0:labelSize rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#object"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_edfbafc0-48f6-4a77-ba4e-04085f0b136f"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_c37a09a5-094f-482e-94bc-db9ae1ce5b86"/>
+    <j.0:labelSize>langString</j.0:labelSize>
+    <j.0:labelSize rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#HTML"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_1f7cf6db-756d-4bdf-8fbb-1994709cd13e"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_6601d278-809f-4b5b-99f1-ce482baa8ca6"/>
+    <j.0:labelSize rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_034bd375-5da5-41d5-a594-99f1d1460c3a"/>
+    <j.0:labelSize>List</j.0:labelSize>
+    <j.0:labelSize rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"/>
+    <j.0:labelSize>The subject of the subject RDF statement.</j.0:labelSize>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_da538f5a-3235-440a-b94b-4c5ee62517de"/>
+    <j.0:labelSize>This is the RDF Schema for the RDF vocabulary terms in the RDF Namespace, defined in RDF 1.1 Concepts.</j.0:labelSize>
+    <j.0:labelSize rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_669af7e2-25c6-4aa5-ad1e-4eaf48f19c88"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_1e91240e-b045-4e4c-a6d5-97962f482190"/>
+    <j.0:labelSize rdf:resource="http://www.w3.org/TR/rdf11-concepts/#section-html"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_d44f5758-a010-45ae-a72c-4bee659cf5ac"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_8c9943c4-e6e3-4d13-b200-448c86a38045"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_a4d20429-5272-4185-a344-e5c1e6781e28"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_47fd92d6-c8e3-401f-86db-9adadf5b478b"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_d4dd6b63-a7a7-469e-a9b1-17ade1870b25"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_b7dc54ca-27dc-4765-9a49-39e95b64654b"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_fb71fe62-c74b-40b7-b0e6-9ed37a6e0e49"/>
+    <j.0:labelSize>first</j.0:labelSize>
+    <j.0:labelSize rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#rest"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_19190521-3d51-4720-8dfd-9c8c7c769446"/>
+    <j.0:labelSize>type</j.0:labelSize>
+    <j.0:labelSize>The class of RDF Lists.</j.0:labelSize>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_a9a076af-9aac-4ce3-9a27-ebf3dc49df7c"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_ce5de038-6af6-401f-a19e-0ed6e00f22a6"/>
+    <j.0:labelSize rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#PlainLiteral"/>
+    <j.0:labelSize>The datatype of XML literal values.</j.0:labelSize>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_c4836860-8fee-4ec9-ac6e-a03ba66fa078"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_7bbe6c8c-e877-4bed-b5b3-749db24f38c6"/>
+    <j.0:labelSize>The datatype of language-tagged string values</j.0:labelSize>
+    <j.0:labelSize>The predicate of the subject RDF statement.</j.0:labelSize>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_f368384a-321d-4590-9f59-d4fd82ce06ae"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_6c92b71f-0c35-4862-ab36-d4420516d9ca"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_2559a3d6-2f61-4448-b1ca-64f7359c10e1"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_19c457ac-04f4-4b02-a401-9081b9f39530"/>
+    <j.0:labelSize>predicate</j.0:labelSize>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_44574eee-8b04-49af-b3a6-7285c445c6c2"/>
+    <j.0:labelSize>Statement</j.0:labelSize>
+    <j.0:labelSize>The class of RDF statements.</j.0:labelSize>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_41e72e98-69bd-43ad-b829-3f3cd46ea924"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_041a6c32-06ba-4877-bded-e4809d5172f7"/>
+    <j.0:labelSize>object</j.0:labelSize>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_fca73041-2f05-41b2-b910-da235549b151"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_11cbe45f-303e-41b4-9992-cee672984fd6"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_390f1ea6-dcc8-44ae-be77-a38f48e3b21a"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_23d2fa9b-e5a5-41e2-a3b2-49c0498f8ce0"/>
+    <j.0:labelSize>Idiomatic property used for structured values.</j.0:labelSize>
+    <j.0:labelSize rdf:resource="http://www.w3.org/2002/07/owl#Ontology"/>
+    <j.0:labelSize>subject</j.0:labelSize>
+    <j.0:labelSize>rest</j.0:labelSize>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_71b9d6fc-e6f6-4579-aa1a-0a593bca4b37"/>
+    <j.0:labelSize rdf:resource="http://www.w3.org/TR/rdf11-concepts/#section-Graph-Literal"/>
+    <j.0:labelSize rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+    <j.0:labelSize rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#first"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_9247411e-83e7-407f-8297-cab711959946"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_1411fd04-792f-4f47-a48b-0d915e2cf3b6"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_2421b054-b807-43e0-a06f-f8c84cf481b1"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_b1f768f4-78e8-4bad-b61c-41a4e44491cc"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_d8a7d270-4480-4e96-add4-061348946d9b"/>
+    <j.0:labelSize rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_5f7eb114-5aa4-4b08-9c48-a78b800512ad"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_effd511a-eb6b-44a1-9e94-2b7007fafd9d"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_d4b1ed55-5e0a-4f99-8668-8200cd47d7ba"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_4d29b8f9-d0a4-4332-8b86-96ae11389285"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_ae66a20e-2379-4553-b05f-0a0653655743"/>
+    <j.0:labelSize>The object of the subject RDF statement.</j.0:labelSize>
+    <j.0:labelSize>The class of RDF properties.</j.0:labelSize>
+    <j.0:labelSize rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#type"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_7d5d2646-779d-461d-8fc4-cdf8c8c08b84"/>
+    <j.0:labelSize rdf:resource="http://www.w3.org/2000/01/rdf-schema#Container"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_128e5513-bdba-4aeb-ba35-993af2cda62d"/>
+    <j.0:labelSize>nil</j.0:labelSize>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_9cb3de06-54a7-4139-9a9f-358a097a9edc"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_0808c4ff-c8a9-4029-baa3-423572bcfa64"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_6734dac6-37b8-448f-89bb-12e1ce3e80ed"/>
+    <j.0:labelSize rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Alt"/>
+    <j.0:labelSize>The class of plain (i.e. untyped) literal values, as used in RIF and OWL 2</j.0:labelSize>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_2287f20a-66bb-4426-a57c-863e65638370"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_188922f9-b65a-495d-9871-69cd070e6c53"/>
+    <j.0:labelSize rdf:resource="http://semanticweb.ca/nodesView#Statement_a17896ac-c5e9-47f6-8efd-a418bd8265d0"/>
+    <j.0:labelSize>The subject is an instance of a class.</j.0:labelSize>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_2421b054-b807-43e0-a06f-f8c84cf481b1">
+    <rdf:object rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#isDefinedBy"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#rest"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_9247411e-83e7-407f-8297-cab711959946">
+    <rdf:object rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#range"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_2fff31c4-7904-4faa-8255-9dce97230c45">
+    <rdf:object rdf:resource="http://www.w3.org/TR/rdf-plain-literal/"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#seeAlso"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#PlainLiteral"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_fb71fe62-c74b-40b7-b0e6-9ed37a6e0e49">
+    <rdf:object rdf:resource="http://www.w3.org/2000/01/rdf-schema#Container"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#subClassOf"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Alt"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-9367552">
+    <j.0:color rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#55.154605865478516">
+    <j.0:positionZ>This is the RDF Schema for the RDF vocabulary terms in the RDF Namespace, defined in RDF 1.1 Concepts.</j.0:positionZ>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-56.76047134399414">
+    <j.0:positionZ>PlainLiteral</j.0:positionZ>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-177.90513610839844">
+    <j.0:positionY>PlainLiteral</j.0:positionY>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#10.135721206665039">
+    <j.0:positionX>The rest of the subject RDF list after the first item.</j.0:positionX>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#8.899602890014648">
+    <j.0:positionX rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#rest"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#110.55740356445312">
+    <j.0:positionX>The empty list, with no items in it. If the rest of a list is nil then the list has no more items in it.</j.0:positionX>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_ed20bcd0-8826-49f3-9af3-6dcb769ecbdf">
+    <rdf:object>The class of containers of alternatives.</rdf:object>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#comment"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Alt"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_9e95fc75-b731-443c-911a-0e36aa90edfa">
+    <rdf:object rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#isDefinedBy"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#subject"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#34.93685531616211">
+    <j.0:positionX rdf:resource="http://www.w3.org/TR/rdf11-concepts/#section-Graph-Literal"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_9cb3de06-54a7-4139-9a9f-358a097a9edc">
+    <rdf:object>rest</rdf:object>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#label"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#rest"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_d8a7d270-4480-4e96-add4-061348946d9b">
+    <rdf:object rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#isDefinedBy"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#value"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_619897ca-5cd2-49ea-b672-fb2289495c83">
+    <rdf:object rdf:resource="http://www.w3.org/2000/01/rdf-schema#Datatype"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#type"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#HTML"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#124.52536010742188">
+    <j.0:positionX rdf:resource="http://www.w3.org/2002/07/owl#Ontology"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#79.6051025390625">
+    <j.0:positionY>The class of ordered containers.</j.0:positionY>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_047cbd16-8ba6-4ed4-ace9-87d13bdfa719">
+    <rdf:object>The class of RDF properties.</rdf:object>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#comment"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-3.9073212146759033">
+    <j.0:positionY rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#value"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-155.79833984375">
+    <j.0:positionZ>Statement</j.0:positionZ>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_25baf5c3-a732-4f05-af4d-e97aacd026a9">
+    <rdf:object>The datatype of RDF literals storing fragments of HTML content</rdf:object>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#comment"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#HTML"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource"/>
+    <rdfs:isDefinedBy rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <rdfs:comment>The predicate of the subject RDF statement.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+    <rdfs:label>predicate</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-9.770490646362305">
+    <j.0:positionX rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_1b8822eb-d9c4-4b7e-a67a-596ccbdacc3c">
+    <rdf:object>The class of ordered containers.</rdf:object>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#comment"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Seq"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_72afb811-f9cb-4b63-80b7-6b016fd7a00f">
+    <rdf:object>Property</rdf:object>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#label"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property">
+    <rdfs:isDefinedBy rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <rdfs:label>Property</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource"/>
+    <rdfs:comment>The class of RDF properties.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-1.5943454504013062">
+    <j.0:positionZ rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_b7dc54ca-27dc-4765-9a49-39e95b64654b">
+    <rdf:object rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#type"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-35.04254913330078">
+    <j.0:positionX rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-77.14210510253906">
+    <j.0:positionY>The object of the subject RDF statement.</j.0:positionY>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_076f8b76-1e80-4c5b-9fb9-6759b2709ad0">
+    <rdf:object rdf:resource="http://www.w3.org/2000/01/rdf-schema#Container"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#subClassOf"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Seq"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#3">
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_a9a076af-9aac-4ce3-9a27-ebf3dc49df7c"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_2fff31c4-7904-4faa-8255-9dce97230c45"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_b5618690-9cec-4377-91b4-391b18094f14"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_076f8b76-1e80-4c5b-9fb9-6759b2709ad0"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_047cbd16-8ba6-4ed4-ace9-87d13bdfa719"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_d56053df-622f-449c-8d78-b3ec91dad000"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_787f092e-dcaf-4dde-b686-0dbe683cd74c"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_2559a3d6-2f61-4448-b1ca-64f7359c10e1"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_1f7cf6db-756d-4bdf-8fbb-1994709cd13e"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_6896ea76-b35a-4d3c-a485-cbe3da7b246c"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_8c9943c4-e6e3-4d13-b200-448c86a38045"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_f5f70a37-7b30-4516-a114-2639c10e01cb"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_ae66a20e-2379-4553-b05f-0a0653655743"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_188922f9-b65a-495d-9871-69cd070e6c53"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_ef16ade5-db3c-4834-ac47-090bf78ff16b"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_6c92b71f-0c35-4862-ab36-d4420516d9ca"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_d392234e-4095-47fd-a0a0-d91a06ec139a"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_47fd92d6-c8e3-401f-86db-9adadf5b478b"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_effd511a-eb6b-44a1-9e94-2b7007fafd9d"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_375eb545-5aa4-444c-a866-30847bc14695"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_b1f768f4-78e8-4bad-b61c-41a4e44491cc"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_191001e3-fd78-4b01-a7a4-eb132e72dbdf"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_0be488bf-fb7d-4283-bdfb-9c7795e5a35f"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_0a504359-7298-4d37-8fce-8baf0fa30761"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_91c4f577-1551-4c42-b4ff-9c8ffb1712b2"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_320696ec-19e3-4480-9b6b-4287dccfc10b"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_1411fd04-792f-4f47-a48b-0d915e2cf3b6"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_9cb3de06-54a7-4139-9a9f-358a097a9edc"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_1e91240e-b045-4e4c-a6d5-97962f482190"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_09785553-8c1c-4332-90f1-2a48a1865ec4"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_27b2c4bb-e407-48a3-8f6c-28d0ed4fbd60"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_84796f7d-c9b1-4237-9c11-74e6e37b9cc1"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_7836d2b8-9e8e-4e0c-9736-c449b58f47d7"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_97ee699c-357d-407f-8754-2110125be4bf"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_fb71fe62-c74b-40b7-b0e6-9ed37a6e0e49"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_b8a35927-2e59-4a5e-a7a8-98108388ad5c"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_23d2fa9b-e5a5-41e2-a3b2-49c0498f8ce0"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_2f90ff00-414a-4f74-9bba-31d5347cb68e"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_eea25a31-6512-4e93-8a51-5b5cf3834f57"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_44574eee-8b04-49af-b3a6-7285c445c6c2"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_5f7eb114-5aa4-4b08-9c48-a78b800512ad"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_25baf5c3-a732-4f05-af4d-e97aacd026a9"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_2421b054-b807-43e0-a06f-f8c84cf481b1"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_0b7ec71f-669c-435f-862d-5608c8aaec59"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_7bbe6c8c-e877-4bed-b5b3-749db24f38c6"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_1e21b276-7761-4b24-8552-c5c2e66b2f2c"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_6601d278-809f-4b5b-99f1-ce482baa8ca6"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_1c585536-c504-4cdd-9236-6d43179e21a1"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_79b89ecc-a3c7-46ee-8f68-19846c951c67"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_a4d20429-5272-4185-a344-e5c1e6781e28"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_d8a7d270-4480-4e96-add4-061348946d9b"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_af64a9f4-e1cf-40d4-9047-33acab8ad542"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_27aad7bd-a129-4399-a53a-cbb463327be4"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_383cd5c1-a4d9-40a7-b879-aaa1f04e4b7a"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_11cbe45f-303e-41b4-9992-cee672984fd6"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_041a6c32-06ba-4877-bded-e4809d5172f7"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_9e28fd1d-bbc7-4481-9ced-bdbde674fb96"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_9e95fc75-b731-443c-911a-0e36aa90edfa"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_a17896ac-c5e9-47f6-8efd-a418bd8265d0"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_c8ad64cc-636a-486a-81f5-047399338e8e"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_696baf56-8627-4282-a707-315150ff757b"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_d4b1ed55-5e0a-4f99-8668-8200cd47d7ba"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_0880ec39-e76d-4b5c-9cb5-1ecb2599d7f4"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_a33cfeff-f23a-433b-a314-864519373d68"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_9247411e-83e7-407f-8297-cab711959946"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_8a0ac2da-41b6-43bb-8684-9b24cf576b76"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_0808c4ff-c8a9-4029-baa3-423572bcfa64"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_3d4253bc-aa17-420a-af93-eb176a9d2a9a"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_f368384a-321d-4590-9f59-d4fd82ce06ae"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_ed20bcd0-8826-49f3-9af3-6dcb769ecbdf"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_d8a42829-72a2-40eb-9e95-5552e9e47456"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_034bd375-5da5-41d5-a594-99f1d1460c3a"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_619897ca-5cd2-49ea-b672-fb2289495c83"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_19190521-3d51-4720-8dfd-9c8c7c769446"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_edfbafc0-48f6-4a77-ba4e-04085f0b136f"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_ce5de038-6af6-401f-a19e-0ed6e00f22a6"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_4335faec-2163-4c86-b9e9-d3e2586c7c38"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_c4836860-8fee-4ec9-ac6e-a03ba66fa078"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_390f1ea6-dcc8-44ae-be77-a38f48e3b21a"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_6734dac6-37b8-448f-89bb-12e1ce3e80ed"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_d04417e6-027b-48b7-a74b-8ea29663c63d"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_669af7e2-25c6-4aa5-ad1e-4eaf48f19c88"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_c37a09a5-094f-482e-94bc-db9ae1ce5b86"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_41e72e98-69bd-43ad-b829-3f3cd46ea924"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_da538f5a-3235-440a-b94b-4c5ee62517de"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_1b8822eb-d9c4-4b7e-a67a-596ccbdacc3c"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_fca73041-2f05-41b2-b910-da235549b151"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_71b9d6fc-e6f6-4579-aa1a-0a593bca4b37"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_b9266d1f-5615-4de7-9d05-0e24a010e11d"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_d4dd6b63-a7a7-469e-a9b1-17ade1870b25"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_b7dc54ca-27dc-4765-9a49-39e95b64654b"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_72afb811-f9cb-4b63-80b7-6b016fd7a00f"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_c1ae3a19-9a27-4892-adde-0e2576e2eacb"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_4d29b8f9-d0a4-4332-8b86-96ae11389285"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_128e5513-bdba-4aeb-ba35-993af2cda62d"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_fff76dac-56e0-4c2b-97af-075c72a7742b"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-25.46003532409668">
+    <j.0:positionZ>The datatype of XML literal values.</j.0:positionZ>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_2f90ff00-414a-4f74-9bba-31d5347cb68e">
+    <rdf:object rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#isDefinedBy"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_4d29b8f9-d0a4-4332-8b86-96ae11389285">
+    <rdf:object rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#type"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_af64a9f4-e1cf-40d4-9047-33acab8ad542">
+    <rdf:object rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#type"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#type"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-54.18251037597656">
+    <j.0:positionZ>The class of containers of alternatives.</j.0:positionZ>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#111.92109680175781">
+    <j.0:positionX rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Seq"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#160.380126953125">
+    <j.0:positionX>The class of containers of alternatives.</j.0:positionX>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#9.228754043579102">
+    <j.0:positionY>Statement</j.0:positionY>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#false">
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_c8ad64cc-636a-486a-81f5-047399338e8e"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_ed20bcd0-8826-49f3-9af3-6dcb769ecbdf"/>
+    <j.0:labelVisibility>langString</j.0:labelVisibility>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_d4dd6b63-a7a7-469e-a9b1-17ade1870b25"/>
+    <j.0:labelVisibility>The class of RDF Lists.</j.0:labelVisibility>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_b8a35927-2e59-4a5e-a7a8-98108388ad5c"/>
+    <j.0:labelVisibility>rest</j.0:labelVisibility>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_0808c4ff-c8a9-4029-baa3-423572bcfa64"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_188922f9-b65a-495d-9871-69cd070e6c53"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_9e28fd1d-bbc7-4481-9ced-bdbde674fb96"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_d56053df-622f-449c-8d78-b3ec91dad000"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_191001e3-fd78-4b01-a7a4-eb132e72dbdf"/>
+    <j.0:labelVisibility>Property</j.0:labelVisibility>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_390f1ea6-dcc8-44ae-be77-a38f48e3b21a"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_1f7cf6db-756d-4bdf-8fbb-1994709cd13e"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_1e91240e-b045-4e4c-a6d5-97962f482190"/>
+    <j.0:labelVisibility>The empty list, with no items in it. If the rest of a list is nil then the list has no more items in it.</j.0:labelVisibility>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_ce5de038-6af6-401f-a19e-0ed6e00f22a6"/>
+    <j.0:labelVisibility>object</j.0:labelVisibility>
+    <j.0:labelVisibility rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#rest"/>
+    <j.0:labelVisibility rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Seq"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_c37a09a5-094f-482e-94bc-db9ae1ce5b86"/>
+    <j.0:labelVisibility>The object of the subject RDF statement.</j.0:labelVisibility>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_d4b1ed55-5e0a-4f99-8668-8200cd47d7ba"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_c4836860-8fee-4ec9-ac6e-a03ba66fa078"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_d44f5758-a010-45ae-a72c-4bee659cf5ac"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_9cb3de06-54a7-4139-9a9f-358a097a9edc"/>
+    <j.0:labelVisibility>Bag</j.0:labelVisibility>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_5f7eb114-5aa4-4b08-9c48-a78b800512ad"/>
+    <j.0:labelVisibility rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#HTML"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_a17896ac-c5e9-47f6-8efd-a418bd8265d0"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_7836d2b8-9e8e-4e0c-9736-c449b58f47d7"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_b1f768f4-78e8-4bad-b61c-41a4e44491cc"/>
+    <j.0:labelVisibility>The subject of the subject RDF statement.</j.0:labelVisibility>
+    <j.0:labelVisibility rdf:resource="http://www.w3.org/TR/rdf11-concepts/#section-Graph-Literal"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_1b8822eb-d9c4-4b7e-a67a-596ccbdacc3c"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_84796f7d-c9b1-4237-9c11-74e6e37b9cc1"/>
+    <j.0:labelVisibility>The datatype of XML literal values.</j.0:labelVisibility>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_0880ec39-e76d-4b5c-9cb5-1ecb2599d7f4"/>
+    <j.0:labelVisibility rdf:resource="http://www.w3.org/2000/01/rdf-schema#Datatype"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_3d4253bc-aa17-420a-af93-eb176a9d2a9a"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_72afb811-f9cb-4b63-80b7-6b016fd7a00f"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_787f092e-dcaf-4dde-b686-0dbe683cd74c"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_0a504359-7298-4d37-8fce-8baf0fa30761"/>
+    <j.0:labelVisibility>The class of RDF statements.</j.0:labelVisibility>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_19c457ac-04f4-4b02-a401-9081b9f39530"/>
+    <j.0:labelVisibility rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#value"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_9e95fc75-b731-443c-911a-0e36aa90edfa"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_eea25a31-6512-4e93-8a51-5b5cf3834f57"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_af64a9f4-e1cf-40d4-9047-33acab8ad542"/>
+    <j.0:labelVisibility rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_da538f5a-3235-440a-b94b-4c5ee62517de"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_91c4f577-1551-4c42-b4ff-9c8ffb1712b2"/>
+    <j.0:labelVisibility rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#PlainLiteral"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_d392234e-4095-47fd-a0a0-d91a06ec139a"/>
+    <j.0:labelVisibility rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#subject"/>
+    <j.0:labelVisibility rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_11cbe45f-303e-41b4-9992-cee672984fd6"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_696baf56-8627-4282-a707-315150ff757b"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_041a6c32-06ba-4877-bded-e4809d5172f7"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_19190521-3d51-4720-8dfd-9c8c7c769446"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_09785553-8c1c-4332-90f1-2a48a1865ec4"/>
+    <j.0:labelVisibility rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Alt"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_b9266d1f-5615-4de7-9d05-0e24a010e11d"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_7d5d2646-779d-461d-8fc4-cdf8c8c08b84"/>
+    <j.0:labelVisibility rdf:resource="http://www.w3.org/2002/07/owl#Ontology"/>
+    <j.0:labelVisibility>The class of ordered containers.</j.0:labelVisibility>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_d8a42829-72a2-40eb-9e95-5552e9e47456"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_ae66a20e-2379-4553-b05f-0a0653655743"/>
+    <j.0:labelVisibility>The datatype of language-tagged string values</j.0:labelVisibility>
+    <j.0:labelVisibility rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_25baf5c3-a732-4f05-af4d-e97aacd026a9"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_076f8b76-1e80-4c5b-9fb9-6759b2709ad0"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_8c9943c4-e6e3-4d13-b200-448c86a38045"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_8a0ac2da-41b6-43bb-8684-9b24cf576b76"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_383cd5c1-a4d9-40a7-b879-aaa1f04e4b7a"/>
+    <j.0:labelVisibility rdf:resource="http://www.w3.org/TR/rdf11-concepts/#section-html"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_d04417e6-027b-48b7-a74b-8ea29663c63d"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_0b7ec71f-669c-435f-862d-5608c8aaec59"/>
+    <j.0:labelVisibility>first</j.0:labelVisibility>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_034bd375-5da5-41d5-a594-99f1d1460c3a"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_27aad7bd-a129-4399-a53a-cbb463327be4"/>
+    <j.0:labelVisibility>The subject is an instance of a class.</j.0:labelVisibility>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_1411fd04-792f-4f47-a48b-0d915e2cf3b6"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_2fff31c4-7904-4faa-8255-9dce97230c45"/>
+    <j.0:labelVisibility rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral"/>
+    <j.0:labelVisibility rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#object"/>
+    <j.0:labelVisibility>Idiomatic property used for structured values.</j.0:labelVisibility>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_320696ec-19e3-4480-9b6b-4287dccfc10b"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_71b9d6fc-e6f6-4579-aa1a-0a593bca4b37"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_4335faec-2163-4c86-b9e9-d3e2586c7c38"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_f368384a-321d-4590-9f59-d4fd82ce06ae"/>
+    <j.0:labelVisibility>subject</j.0:labelVisibility>
+    <j.0:labelVisibility rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_97ee699c-357d-407f-8754-2110125be4bf"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_a33cfeff-f23a-433b-a314-864519373d68"/>
+    <j.0:labelVisibility>Alt</j.0:labelVisibility>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_a4d20429-5272-4185-a344-e5c1e6781e28"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_0be488bf-fb7d-4283-bdfb-9c7795e5a35f"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_a9a076af-9aac-4ce3-9a27-ebf3dc49df7c"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_d8a7d270-4480-4e96-add4-061348946d9b"/>
+    <j.0:labelVisibility rdf:resource="http://www.w3.org/TR/rdf-plain-literal/"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_23d2fa9b-e5a5-41e2-a3b2-49c0498f8ce0"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_b5618690-9cec-4377-91b4-391b18094f14"/>
+    <j.0:labelVisibility>XMLLiteral</j.0:labelVisibility>
+    <j.0:labelVisibility>The class of RDF properties.</j.0:labelVisibility>
+    <j.0:labelVisibility rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_669af7e2-25c6-4aa5-ad1e-4eaf48f19c88"/>
+    <j.0:labelVisibility>PlainLiteral</j.0:labelVisibility>
+    <j.0:labelVisibility>value</j.0:labelVisibility>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_1e21b276-7761-4b24-8552-c5c2e66b2f2c"/>
+    <j.0:labelVisibility>The class of plain (i.e. untyped) literal values, as used in RIF and OWL 2</j.0:labelVisibility>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_1c585536-c504-4cdd-9236-6d43179e21a1"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_2421b054-b807-43e0-a06f-f8c84cf481b1"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_41e72e98-69bd-43ad-b829-3f3cd46ea924"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_effd511a-eb6b-44a1-9e94-2b7007fafd9d"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_128e5513-bdba-4aeb-ba35-993af2cda62d"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_fff76dac-56e0-4c2b-97af-075c72a7742b"/>
+    <j.0:labelVisibility rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate"/>
+    <j.0:labelVisibility rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_b7dc54ca-27dc-4765-9a49-39e95b64654b"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_2f90ff00-414a-4f74-9bba-31d5347cb68e"/>
+    <j.0:labelVisibility rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#first"/>
+    <j.0:labelVisibility>The predicate of the subject RDF statement.</j.0:labelVisibility>
+    <j.0:labelVisibility>This is the RDF Schema for the RDF vocabulary terms in the RDF Namespace, defined in RDF 1.1 Concepts.</j.0:labelVisibility>
+    <j.0:labelVisibility>The class of unordered containers.</j.0:labelVisibility>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_9247411e-83e7-407f-8297-cab711959946"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_fca73041-2f05-41b2-b910-da235549b151"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_fb71fe62-c74b-40b7-b0e6-9ed37a6e0e49"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_2559a3d6-2f61-4448-b1ca-64f7359c10e1"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_edfbafc0-48f6-4a77-ba4e-04085f0b136f"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_6601d278-809f-4b5b-99f1-ce482baa8ca6"/>
+    <j.0:labelVisibility>Statement</j.0:labelVisibility>
+    <j.0:labelVisibility rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#type"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_047cbd16-8ba6-4ed4-ace9-87d13bdfa719"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_6c92b71f-0c35-4862-ab36-d4420516d9ca"/>
+    <j.0:labelVisibility>type</j.0:labelVisibility>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_c1ae3a19-9a27-4892-adde-0e2576e2eacb"/>
+    <j.0:labelVisibility rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <j.0:labelVisibility rdf:resource="http://www.w3.org/2000/01/rdf-schema#Container"/>
+    <j.0:labelVisibility>The datatype of RDF literals storing fragments of HTML content</j.0:labelVisibility>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_2287f20a-66bb-4426-a57c-863e65638370"/>
+    <j.0:labelVisibility>nil</j.0:labelVisibility>
+    <j.0:labelVisibility rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource"/>
+    <j.0:labelVisibility>The class of containers of alternatives.</j.0:labelVisibility>
+    <j.0:labelVisibility>Seq</j.0:labelVisibility>
+    <j.0:labelVisibility rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+    <j.0:labelVisibility>The RDF Concepts Vocabulary (RDF)</j.0:labelVisibility>
+    <j.0:labelVisibility>predicate</j.0:labelVisibility>
+    <j.0:labelVisibility>List</j.0:labelVisibility>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_27b2c4bb-e407-48a3-8f6c-28d0ed4fbd60"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_44574eee-8b04-49af-b3a6-7285c445c6c2"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_619897ca-5cd2-49ea-b672-fb2289495c83"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_47fd92d6-c8e3-401f-86db-9adadf5b478b"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_6896ea76-b35a-4d3c-a485-cbe3da7b246c"/>
+    <j.0:labelVisibility>HTML</j.0:labelVisibility>
+    <j.0:labelVisibility rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <j.0:labelVisibility>The first item in the subject RDF list.</j.0:labelVisibility>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_4d29b8f9-d0a4-4332-8b86-96ae11389285"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_f5f70a37-7b30-4516-a114-2639c10e01cb"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_79b89ecc-a3c7-46ee-8f68-19846c951c67"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_375eb545-5aa4-444c-a866-30847bc14695"/>
+    <j.0:labelVisibility>The rest of the subject RDF list after the first item.</j.0:labelVisibility>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_6734dac6-37b8-448f-89bb-12e1ce3e80ed"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_ef16ade5-db3c-4834-ac47-090bf78ff16b"/>
+    <j.0:labelVisibility rdf:resource="http://semanticweb.ca/nodesView#Statement_7bbe6c8c-e877-4bed-b5b3-749db24f38c6"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_669af7e2-25c6-4aa5-ad1e-4eaf48f19c88">
+    <rdf:object>The class of RDF statements.</rdf:object>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#comment"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#83.32887268066406">
+    <j.0:positionY rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_09785553-8c1c-4332-90f1-2a48a1865ec4">
+    <rdf:object rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#subClassOf"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#3.6815879344940186">
+    <j.0:positionX rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#type"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_0b7ec71f-669c-435f-862d-5608c8aaec59">
+    <rdf:object>The object of the subject RDF statement.</rdf:object>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#comment"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#object"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_ce5de038-6af6-401f-a19e-0ed6e00f22a6">
+    <rdf:object rdf:resource="http://www.w3.org/TR/rdf11-concepts/#section-Graph-Literal"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#seeAlso"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-141.15284729003906">
+    <j.0:positionZ>The class of ordered containers.</j.0:positionZ>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_a4d20429-5272-4185-a344-e5c1e6781e28">
+    <rdf:object rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#type"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_383cd5c1-a4d9-40a7-b879-aaa1f04e4b7a">
+    <rdf:object>The empty list, with no items in it. If the rest of a list is nil then the list has no more items in it.</rdf:object>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#comment"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-46848">
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_eea25a31-6512-4e93-8a51-5b5cf3834f57"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_0808c4ff-c8a9-4029-baa3-423572bcfa64"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_a17896ac-c5e9-47f6-8efd-a418bd8265d0"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_79b89ecc-a3c7-46ee-8f68-19846c951c67"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_6896ea76-b35a-4d3c-a485-cbe3da7b246c"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_91c4f577-1551-4c42-b4ff-9c8ffb1712b2"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_5f7eb114-5aa4-4b08-9c48-a78b800512ad"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_ce5de038-6af6-401f-a19e-0ed6e00f22a6"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_c1ae3a19-9a27-4892-adde-0e2576e2eacb"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_034bd375-5da5-41d5-a594-99f1d1460c3a"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_188922f9-b65a-495d-9871-69cd070e6c53"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_128e5513-bdba-4aeb-ba35-993af2cda62d"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_2fff31c4-7904-4faa-8255-9dce97230c45"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_7836d2b8-9e8e-4e0c-9736-c449b58f47d7"/>
+    <j.0:color rdf:resource="http://semanticweb.ca/nodesView#Statement_619897ca-5cd2-49ea-b672-fb2289495c83"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#152.29202270507812">
+    <j.0:positionY>Alt</j.0:positionY>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_ef16ade5-db3c-4834-ac47-090bf78ff16b">
+    <rdf:object rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#subClassOf"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#39.87222671508789">
+    <j.0:positionY>first</j.0:positionY>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_7836d2b8-9e8e-4e0c-9736-c449b58f47d7">
+    <rdf:object rdf:resource="http://www.w3.org/TR/rdf11-concepts/#section-html"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#seeAlso"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#HTML"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-52.23434829711914">
+    <j.0:positionZ>Bag</j.0:positionZ>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_1e21b276-7761-4b24-8552-c5c2e66b2f2c">
+    <rdf:object rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#domain"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#rest"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-32.888084411621094">
+    <j.0:positionZ rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Alt"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#20.9580020904541">
+    <j.0:positionZ>The class of RDF properties.</j.0:positionZ>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_6896ea76-b35a-4d3c-a485-cbe3da7b246c">
+    <rdf:object rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#subClassOf"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#18">
+    <j.0:size rdf:resource="http://www.w3.org/TR/rdf-plain-literal/"/>
+    <j.0:size rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#PlainLiteral"/>
+    <j.0:size rdf:resource="http://www.w3.org/2000/01/rdf-schema#Datatype"/>
+    <j.0:size rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral"/>
+    <j.0:size rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <j.0:size rdf:resource="http://www.w3.org/TR/rdf11-concepts/#section-html"/>
+    <j.0:size rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#HTML"/>
+    <j.0:size rdf:resource="http://www.w3.org/TR/rdf11-concepts/#section-Graph-Literal"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_71b9d6fc-e6f6-4579-aa1a-0a593bca4b37">
+    <rdf:object>The subject of the subject RDF statement.</rdf:object>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#comment"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#subject"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#184.25653076171875">
+    <j.0:positionY>type</j.0:positionY>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-46.2768440246582">
+    <j.0:positionX rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#object"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_8c9943c4-e6e3-4d13-b200-448c86a38045">
+    <rdf:object rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#isDefinedBy"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#157.18777465820312">
+    <j.0:positionY>The class of containers of alternatives.</j.0:positionY>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#149.09706115722656">
+    <j.0:positionX>The datatype of RDF literals storing fragments of HTML content</j.0:positionX>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_c1ae3a19-9a27-4892-adde-0e2576e2eacb">
+    <rdf:object rdf:resource="http://www.w3.org/2000/01/rdf-schema#Datatype"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#type"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-25.31513214111328">
+    <j.0:positionX>Statement</j.0:positionX>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#54.202911376953125">
+    <j.0:positionX rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#79.07415008544922">
+    <j.0:positionX rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.w3.org/1999/02/22-rdf-syntax-ns#object">
+    <rdfs:isDefinedBy rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <rdfs:comment>The object of the subject RDF statement.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:label>object</rdfs:label>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-33.11367416381836">
+    <j.0:positionZ rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-68.2493896484375">
+    <j.0:positionX>first</j.0:positionX>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-140.44036865234375">
+    <j.0:positionY>The datatype of RDF literals storing fragments of HTML content</j.0:positionY>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.w3.org/1999/02/22-rdf-syntax-ns#Seq">
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+    <rdfs:label>Seq</rdfs:label>
+    <rdfs:comment>The class of ordered containers.</rdfs:comment>
+    <rdfs:isDefinedBy rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2000/01/rdf-schema#Container"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#60.676212310791016">
+    <j.0:positionY rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Seq"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_41e72e98-69bd-43ad-b829-3f3cd46ea924">
+    <rdf:object rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#isDefinedBy"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_da538f5a-3235-440a-b94b-4c5ee62517de">
+    <rdf:object>The first item in the subject RDF list.</rdf:object>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#comment"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#first"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-36.221405029296875">
+    <j.0:positionZ>Alt</j.0:positionZ>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-59.51607894897461">
+    <j.0:positionX rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#value"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-106.50816345214844">
+    <j.0:positionX>The class of RDF properties.</j.0:positionX>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString">
+    <rdfs:isDefinedBy rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <rdfs:label>langString</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Datatype"/>
+    <rdfs:comment>The datatype of language-tagged string values</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <rdfs:seeAlso rdf:resource="http://www.w3.org/TR/rdf11-concepts/#section-Graph-Literal"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#150.6025848388672">
+    <j.0:positionX rdf:resource="http://www.w3.org/TR/rdf11-concepts/#section-html"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-137.20872497558594">
+    <j.0:positionY rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#107.91323852539062">
+    <j.0:positionY rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#type"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_97ee699c-357d-407f-8754-2110125be4bf">
+    <rdf:object>The rest of the subject RDF list after the first item.</rdf:object>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#comment"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#rest"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#140.93206787109375">
+    <j.0:positionZ>List</j.0:positionZ>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#7.241957664489746">
+    <j.0:positionZ rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#17">
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_2287f20a-66bb-4426-a57c-863e65638370"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_d44f5758-a010-45ae-a72c-4bee659cf5ac"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_7d5d2646-779d-461d-8fc4-cdf8c8c08b84"/>
+    <j.0:size rdf:resource="http://semanticweb.ca/nodesView#Statement_19c457ac-04f4-4b02-a401-9081b9f39530"/>
+    <j.0:size rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-111.46858978271484">
+    <j.0:positionX>value</j.0:positionX>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-65.14704132080078">
+    <j.0:positionX>The predicate of the subject RDF statement.</j.0:positionX>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#52.963924407958984">
+    <j.0:positionZ rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#rest"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-79.16172790527344">
+    <j.0:positionZ>The subject of the subject RDF statement.</j.0:positionZ>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_0808c4ff-c8a9-4029-baa3-423572bcfa64">
+    <rdf:object>XMLLiteral</rdf:object>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#label"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#45.499141693115234">
+    <j.0:positionZ rdf:resource="http://www.w3.org/TR/rdf11-concepts/#section-Graph-Literal"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-33.40334701538086">
+    <j.0:positionX>The class of RDF statements.</j.0:positionX>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#67.20005798339844">
+    <j.0:positionZ rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-30.062885284423828">
+    <j.0:positionX rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#first"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#80.21026611328125">
+    <j.0:positionY>The class of unordered containers.</j.0:positionY>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-121.745361328125">
+    <j.0:positionX>Idiomatic property used for structured values.</j.0:positionX>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-126.93020629882812">
+    <j.0:positionY rdf:resource="http://www.w3.org/2000/01/rdf-schema#Datatype"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.w3.org/1999/02/22-rdf-syntax-ns#subject">
+    <rdfs:domain rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+    <rdfs:comment>The subject of the subject RDF statement.</rdfs:comment>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:label>subject</rdfs:label>
+    <rdfs:isDefinedBy rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_23d2fa9b-e5a5-41e2-a3b2-49c0498f8ce0">
+    <rdf:object>subject</rdf:object>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#label"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#subject"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-35.953311920166016">
+    <j.0:positionY>Idiomatic property used for structured values.</j.0:positionY>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#85.3882064819336">
+    <j.0:positionX rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#PlainLiteral"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-11119361">
+    <j.0:color>The subject is an instance of a class.</j.0:color>
+    <j.0:color>The empty list, with no items in it. If the rest of a list is nil then the list has no more items in it.</j.0:color>
+    <j.0:color>The object of the subject RDF statement.</j.0:color>
+    <j.0:color>The subject of the subject RDF statement.</j.0:color>
+    <j.0:color>The class of ordered containers.</j.0:color>
+    <j.0:color>The first item in the subject RDF list.</j.0:color>
+    <j.0:color>The class of RDF properties.</j.0:color>
+    <j.0:color>Idiomatic property used for structured values.</j.0:color>
+    <j.0:color>The class of unordered containers.</j.0:color>
+    <j.0:color>The class of RDF statements.</j.0:color>
+    <j.0:color>The class of RDF Lists.</j.0:color>
+    <j.0:color>The class of containers of alternatives.</j.0:color>
+    <j.0:color>The rest of the subject RDF list after the first item.</j.0:color>
+    <j.0:color>The predicate of the subject RDF statement.</j.0:color>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_b1f768f4-78e8-4bad-b61c-41a4e44491cc">
+    <rdf:object rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#type"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#value"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#27.755861282348633">
+    <j.0:positionX>List</j.0:positionX>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-256">
+    <j.0:color rdf:resource="http://www.w3.org/2000/01/rdf-schema#Container"/>
+    <j.0:color rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+    <j.0:color rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#value"/>
+    <j.0:color rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource"/>
+    <j.0:color rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#rest"/>
+    <j.0:color rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <j.0:color rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate"/>
+    <j.0:color rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#type"/>
+    <j.0:color rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+    <j.0:color rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <j.0:color rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Alt"/>
+    <j.0:color rdf:resource="http://www.w3.org/2002/07/owl#Ontology"/>
+    <j.0:color rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Seq"/>
+    <j.0:color rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#object"/>
+    <j.0:color rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag"/>
+    <j.0:color rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#first"/>
+    <j.0:color rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#subject"/>
+    <j.0:color rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_eea25a31-6512-4e93-8a51-5b5cf3834f57">
+    <rdf:object rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#subClassOf"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#HTML"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_5f7eb114-5aa4-4b08-9c48-a78b800512ad">
+    <rdf:object rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#subClassOf"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#159.5442352294922">
+    <j.0:positionX rdf:resource="http://www.w3.org/2000/01/rdf-schema#Container"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_4335faec-2163-4c86-b9e9-d3e2586c7c38">
+    <rdf:object rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#type"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Seq"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-122.85954284667969">
+    <j.0:positionY rdf:resource="http://www.w3.org/TR/rdf11-concepts/#section-html"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_7063138e-051d-42b0-aa7b-83240215bf3d">
+    <j.0:sharesEdge rdf:resource="http://semanticweb.ca/nodesView#Statement_0be488bf-fb7d-4283-bdfb-9c7795e5a35f"/>
+    <rdf:object rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#range"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#value"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#209.967529296875">
+    <j.0:positionX>The class of unordered containers.</j.0:positionX>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.w3.org/1999/02/22-rdf-syntax-ns#HTML">
+    <rdfs:label>HTML</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <rdfs:isDefinedBy rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <rdfs:comment>The datatype of RDF literals storing fragments of HTML content</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Datatype"/>
+    <rdfs:seeAlso rdf:resource="http://www.w3.org/TR/rdf11-concepts/#section-html"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#120.50074768066406">
+    <j.0:positionY>The class of RDF properties.</j.0:positionY>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-74.19766998291016">
+    <j.0:positionZ rdf:resource="http://www.w3.org/TR/rdf-plain-literal/"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_c37a09a5-094f-482e-94bc-db9ae1ce5b86">
+    <rdf:object rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdf:predicate rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#type"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#first"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#96.9195785522461">
+    <j.0:positionZ>The datatype of RDF literals storing fragments of HTML content</j.0:positionZ>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-125.6060562133789">
+    <j.0:positionX>subject</j.0:positionX>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#19.537593841552734">
+    <j.0:positionZ rdf:resource="http://www.w3.org/2000/01/rdf-schema#Datatype"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#121.32798767089844">
+    <j.0:positionX rdf:resource="http://www.w3.org/2000/01/rdf-schema#Datatype"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-118.10620880126953">
+    <j.0:positionY>The datatype of XML literal values.</j.0:positionY>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-132.1637420654297">
+    <j.0:positionX>The subject of the subject RDF statement.</j.0:positionX>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_91c4f577-1551-4c42-b4ff-9c8ffb1712b2">
+    <rdf:object>langString</rdf:object>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#label"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-135.06492614746094">
+    <j.0:positionZ>The predicate of the subject RDF statement.</j.0:positionZ>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#Statement_11cbe45f-303e-41b4-9992-cee672984fd6">
+    <rdf:object>The predicate of the subject RDF statement.</rdf:object>
+    <rdf:predicate rdf:resource="http://www.w3.org/2000/01/rdf-schema#comment"/>
+    <rdf:subject rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-41.73749542236328">
+    <j.0:positionZ>The object of the subject RDF statement.</j.0:positionZ>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-95.59265899658203">
+    <j.0:positionX>object</j.0:positionX>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#96.03939056396484">
+    <j.0:positionX>nil</j.0:positionX>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#170.43142700195312">
+    <j.0:positionX>Alt</j.0:positionX>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#-6.352043628692627">
+    <j.0:positionX>rest</j.0:positionX>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://semanticweb.ca/nodesView#176.87989807128906">
+    <j.0:positionZ>nil</j.0:positionZ>
+  </rdf:Description>
+</rdf:RDF>
