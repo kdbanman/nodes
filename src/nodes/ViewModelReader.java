@@ -5,6 +5,8 @@ import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.NsIterator;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.RDFNode;
+import com.hp.hpl.jena.rdf.model.RSIterator;
+import com.hp.hpl.jena.rdf.model.ReifiedStatement;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
@@ -103,6 +105,9 @@ public class ViewModelReader {
                       isReifiedViewStatement(viewStmt.getSubject()))) {
                     // get the target name to get the Node
                     Node toMutate = graph.getNode(viewStmt.getObject());
+                    // this should be a node based on the if(!isReified...
+                    // filter above, so classify the object as missing if it
+                    // wasn't found
                     if (toMutate != null) {
                         mutateNode(toMutate, viewStmt);
                     } else {
@@ -114,9 +119,35 @@ public class ViewModelReader {
             }
         }
         
-        //TODO iterate through all reified statements to find the Edges of the graph
-            // if the statement points to a reification resource of the view namespace
-                // then get the source and target names to get the Edge
+        // iterate through all reified statements to find the Edges of the graph
+        RSIterator reifiedIt = toApply.listReifiedStatements();
+        while (reifiedIt.hasNext()) {
+            ReifiedStatement viewReifiedStmt = reifiedIt.next();
+            
+            // if the statement is a reification resource of the view namespace
+            if (isReifiedViewStatement(viewReifiedStmt)) {
+                // get the source and target RDFNodes to get the Edge
+                RDFNode source = viewReifiedStmt.getStatement().getSubject();
+                RDFNode target = viewReifiedStmt.getStatement().getObject();
+                
+                // get the Edge from the. source and target resource names
+                Edge toMutate = graph.getEdge(source.toString(), target.toString());
+                if (toMutate != null) {
+                    
+                    // iterate through all statements with the reified view statement
+                    // as the object.  (those should all be ViewVocabulary Property triples)
+                    StmtIterator edgeViewIt = toApply.listStatements(null, null, viewReifiedStmt);
+                    while (edgeViewIt.hasNext()) {
+                        Statement edgeViewStmt = edgeViewIt.next();
+                        
+                        // mutate the edge based on the View triple
+                        mutateGraphElement(toMutate, edgeViewStmt);
+                    }
+                } else {
+                    missingElements.addMissingEdge(source.toString() + " | " + target.toString());
+                }
+            }
+        }
         if (!missingElements.isEmpty()) {
             throw missingElements;
         }
@@ -171,7 +202,11 @@ public class ViewModelReader {
     }
     
     private static boolean isReifiedViewStatement(RDFNode res) {
-        String[] both = res.toString().split("#");
+        return res.isResource() && isReifiedViewStatement(res.asResource());
+    }
+    
+    private static boolean isReifiedViewStatement(Resource res) {
+        String[] both = res.getURI().toString().split("#");
         if (both.length == 2 && ViewVocabulary.getURI().equals(both[0] + "#")) {
             return both[1].matches("Statement_.*");
         } else {
