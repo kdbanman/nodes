@@ -28,7 +28,7 @@ public class ControlPanelFrame extends Frame {
 		h = 600;
 
 		setLayout(new BorderLayout());
-		setAlwaysOnTop(true);
+		//setAlwaysOnTop(true);
 		setSize(w, h);
 		setLocation(1, 20);
 		setResizable(false);
